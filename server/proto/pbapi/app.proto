@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package pbapi;
+
+option go_package="mlib.com/gofy/server/proto/pbapi";
+
+import "exceptions/exceptions.proto";
+
+
+service app {
+  rpc AppRun(AppRunRequest) returns (stream AppRunReply) {}
+}
+
+message AppRunRequest {
+  string user_id = 1;
+  string app_id = 2;
+  string args_str = 3;
+  string response_mode = 4;
+  bool is_draft = 5;
+}
+message AppRunReply {
+  exceptions.HTTPException exp = 1;
+  string direct_reply_dict_str = 2;
+  string stream_reply_str = 3;
+}

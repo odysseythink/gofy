@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package entities;
+
+option go_package="mlib.com/gofy/server/proto/entities;entities";
+
+message SubscriptionModel {
+	string plan    = 1;
+  string interval    = 2;
+}
+
+
+message BillingModel {
+	bool enabled = 1;
+    SubscriptionModel subscription = 2;
+}
+
+
+message LimitationModel {
+	int64 size = 1;
+	int64 limit = 2;
+}
+
+message FeatureModel {
+	BillingModel    billing = 1;
+	LimitationModel members = 2;
+	LimitationModel apps = 3;
+	LimitationModel vector_space = 4;
+	LimitationModel annotation_quota_limit = 5;
+	LimitationModel documents_upload_quota = 6;
+	string           docs_processing = 7;
+	bool             can_replace_logo = 8;
+	bool             model_load_balancing_enabled = 9;
+	bool             dataset_operator_enabled = 10;
+	string   model_config = 11;
+}
+
+message LicenseModel {
+	string status = 1;
+	string  expired_at = 2;
+}
+message SystemFeature {
+	bool          sso_enforced_for_signin = 1;
+	string        sso_enforced_for_signin_protocol = 2;
+	bool          sso_enforced_for_web = 3;
+	string        sso_enforced_for_web_protocol = 4;
+	bool          enable_web_sso_switch_component = 5;
+	bool          enable_email_code_login = 6;
+	bool          enable_email_password_login = 7;
+	bool          enable_social_oauth_login = 8;
+	bool          is_allow_register = 9;
+	bool          is_allow_create_workspace = 10;
+	bool          is_email_setup = 11;
+	LicenseModel  license = 12;
+}
+
+

@@ -1,0 +1,7 @@
+package constants
+
+const (
+	SYSTEM_VARIABLE_NODE_ID       = "sys"
+	ENVIRONMENT_VARIABLE_NODE_ID  = "env"
+	CONVERSATION_VARIABLE_NODE_ID = "conversation"
+)

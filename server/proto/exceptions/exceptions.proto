@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package exceptions;
+
+option go_package="mlib.com/gofy/server/proto/exceptions;exceptions";
+
+message HTTPException {
+	string code    = 1;
+	int32 status  = 2;
+  string message    = 3;
+}
+

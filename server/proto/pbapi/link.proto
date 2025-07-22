@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package pbapi;
+
+option go_package="mlib.com/gofy/server/proto/pbapi";
+
+service link {
+  rpc LinkStatus (LinkStatusRequest) returns (LinkStatusReply) {}
+}
+
+message LinkStatusRequest {
+  string name = 1;
+}
+
+message LinkStatusReply {
+  string message = 1;
+}

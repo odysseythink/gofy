@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package request;
+
+option go_package="mlib.com/gofy/server/proto/request;request";
+
+
+message PageInfo {
+	int64  page = 1;         // 页码
+	int64  page_size = 2; // 每页大小
+	string keyword = 3;    //关键字
+}
+
+message BasePageReq {
+	int64 page = 1;   // 页码
+	int64 limit = 2;// 每页大小
+}

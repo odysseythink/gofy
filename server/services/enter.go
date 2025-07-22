@@ -1,0 +1,67 @@
+package services
+
+import "mlib.com/gofy/server/models"
+
+type ServiceGroup struct {
+	App                   *AppService
+	Account               *AccountService
+	Tenant                *TenantService
+	TenantAccoutJoin      *TenantAccountJoinService
+	Tag                   *TagService
+	Enterprise            *EnterpriseService
+	Feature               *FeatureService
+	ModelProvide          *ModelProvideService
+	Workflow              *WorkflowService
+	WorkflowRun           *WorkflowRunService
+	Tool                  *ToolService
+	Register              *RegisterService
+	DifySetup             *DifySetupService
+	Billing               *BillingService
+	AppGenerate           *AppGenerateService
+	ModelLoadBalancing    *ModelLoadBalancingService
+	ProviderConfiguration *ProviderConfigurationService
+	ApiKey                *ApiKeyService
+	Dataset               *DatasetService
+	WorkflowAppLog        *WorkflowAppLogService
+	Statistic             *StatisticService
+	Ops                   *OpsService
+	Extension             *ExtensionService
+	EndUserMessage        *MessageService[*models.EndUser]
+	AccountMessage        *MessageService[*models.Account]
+	EndUserConversation   *ConversationService[*models.EndUser]
+	AccountConversation   *ConversationService[*models.Account]
+	AppAnnotation         *AppAnnotationService
+	AppDSL                *AppDSLService
+}
+
+var ServiceGroupApp = ServiceGroup{
+	App:                   &AppService{},
+	Account:               &AccountService{},
+	Tenant:                &TenantService{},
+	TenantAccoutJoin:      &TenantAccountJoinService{},
+	Tag:                   &TagService{},
+	Enterprise:            &EnterpriseService{},
+	Feature:               &FeatureService{},
+	ModelProvide:          &ModelProvideService{},
+	Workflow:              &WorkflowService{},
+	Tool:                  &ToolService{},
+	Register:              &RegisterService{},
+	DifySetup:             &DifySetupService{},
+	Billing:               &BillingService{},
+	AppGenerate:           &AppGenerateService{},
+	ModelLoadBalancing:    &ModelLoadBalancingService{},
+	ProviderConfiguration: &ProviderConfigurationService{},
+	WorkflowRun:           &WorkflowRunService{},
+	ApiKey:                &ApiKeyService{},
+	Dataset:               &DatasetService{},
+	WorkflowAppLog:        &WorkflowAppLogService{},
+	Statistic:             &StatisticService{},
+	Ops:                   &OpsService{},
+	Extension:             &ExtensionService{},
+	EndUserMessage:        &MessageService[*models.EndUser]{},
+	AccountMessage:        &MessageService[*models.Account]{},
+	EndUserConversation:   &ConversationService[*models.EndUser]{},
+	AccountConversation:   &ConversationService[*models.Account]{},
+	AppAnnotation:         &AppAnnotationService{},
+	AppDSL:                &AppDSLService{},
+}

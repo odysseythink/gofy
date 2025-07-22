@@ -1,0 +1,836 @@
+syntax = "proto3";
+
+package pbapi;
+
+option go_package="mlib.com/gofy/server/proto/pbapi";
+
+import "exceptions/exceptions.proto";
+import "entities/feature.proto";
+import "entities/app.proto";
+
+service admin {
+  rpc Login (LoginRequest) returns (LoginReply) {}
+  rpc Logout (LogoutRequest) returns (LogoutReply) {}
+  rpc GetSetupStatus(GetSetupStatusRequest) returns (GetSetupStatusReply) {}
+  rpc Setup(SetupRequest) returns (SetupReply) {}
+  rpc GetSystemFeatures(GetSystemFeaturesRequest) returns (GetSystemFeaturesReply) {}
+  rpc GetFeatures(GetFeaturesRequest) returns (GetFeaturesReply) {}
+  rpc GetVersion(GetVersionRequest) returns (GetVersionReply) {}
+  rpc GetFileUploadConfig(GetFileUploadConfigRequest) returns (GetFileUploadConfigReply) {}
+  rpc ListApps(ListAppsRequest) returns (ListAppsReply) {}
+  rpc FindApp(FindAppRequest) returns (FindAppReply) {}
+  rpc UpdateApp(UpdateAppRequest) returns (UpdateAppReply) {} 
+  rpc DeleteApp(DeleteAppRequest) returns (DeleteAppReply) {} 
+  rpc CreateApp(CreateAppRequest) returns (CreateAppReply) {} 
+  rpc ImportApp(ImportAppRequest) returns (ImportAppReply) {} 
+  rpc GetWorkflowAppLogList(GetWorkflowAppLogListRequest) returns (GetWorkflowAppLogListReply) {}
+  rpc SetAppName(SetAppNameRequest) returns (SetAppNameReply) {}
+  rpc SetAppIcon(SetAppIconRequest) returns (SetAppIconReply) {}
+  rpc CopyApp(CopyAppRequest) returns (CopyAppReply) {}
+  rpc ExportApp(ExportAppRequest) returns (ExportAppReply) {}
+  rpc AppUpdateSiteStatus  (AppUpdateSiteStatusRequest) returns (AppUpdateSiteStatusReply) {}
+  rpc AppUpdateApiStatus   (AppUpdateApiStatusRequest) returns (AppUpdateApiStatusReply) {}
+  rpc AppGetTrace(AppGetTraceRequest) returns (AppGetTraceReply) {}  
+  rpc AppSetTrace(AppSetTraceRequest) returns (AppSetTraceReply) {}  
+  rpc GetTraceAppConfig(GetTraceAppConfigRequest) returns (GetTraceAppConfigReply) {}  
+  rpc GetWorkflowDraft(GetWorkflowDraftRequest) returns (GetWorkflowDraftReply) {}
+  rpc WorkflowSyncDraft(WorkflowSyncDraftRequest) returns (WorkflowSyncDraftReply) {}
+  // rpc AppRun(AppRunRequest) returns (stream AppRunReply) {}
+  rpc WorkflowNodeRun(WorkflowNodeRunRequest) returns (WorkflowNodeRunReply) {}
+  rpc GetWorkflowConfig(GetWorkflowConfigRequest) returns (GetWorkflowConfigReply) {}
+  rpc GetWorkflowDefaultBlockConfigs(GetWorkflowDefaultBlockConfigsRequest) returns (GetWorkflowDefaultBlockConfigsReply) {}
+  rpc GetWorkflowDefaultBlockConfig(GetWorkflowDefaultBlockConfigRequest) returns (GetWorkflowDefaultBlockConfigReply) {}
+  rpc GetWorkflowPublished(GetWorkflowPublishedRequest) returns (GetWorkflowPublishedReply) {}
+  rpc WorkflowPublished(WorkflowPublishedRequest) returns (WorkflowPublishedReply) {}  
+  rpc GetChatConversationPagination(GetChatConversationPaginationRequest)returns(GetChatConversationPaginationReply){}
+  rpc ChatConversationDetail(ChatConversationDetailRequest)returns(ChatConversationDetailReply){}
+  rpc DelChatConversation(DelChatConversationRequest)returns(DelChatConversationReply){}   
+  rpc Statistic(StatisticRequest) returns (StatisticReply) {} 
+  rpc GetSuggestedQuestionMessage(GetSuggestedQuestionMessageRequest) returns (GetSuggestedQuestionMessageReply) {}
+  rpc ChatMessageList(ChatMessageListRequest) returns (ChatMessageListReply) {}
+  rpc MessageFeedback(MessageFeedbackRequest) returns (MessageFeedbackReply) {}
+  rpc SetMessageAnnotation(SetMessageAnnotationRequest) returns (SetMessageAnnotationReply) {}
+  rpc MessageAnnotationCount(MessageAnnotationCountRequest) returns (MessageAnnotationCountReply) {}
+  rpc GetMessage(GetMessageRequest) returns (GetMessageReply) {}	  
+  rpc GetAccountProfile(GetAccountProfileRequest) returns (GetAccountProfileReply) {}
+  rpc UpdateAccount(UpdateAccountRequest) returns (UpdateAccountReply) {}
+  rpc GetApiKeyList(GetApiKeyListRequest) returns (GetApiKeyListReply) {}
+  rpc GenerateApiKey(GenerateApiKeyRequest) returns (GenerateApiKeyReply) {}
+  rpc DelApiKey(DelApiKeyRequest) returns (DelApiKeyReply) {}
+  rpc AppWorkflowRunList(AppWorkflowRunListRequest) returns (AppWorkflowRunListReply) {}
+  rpc GetWorkflowRunDetail(GetWorkflowRunDetailRequest) returns (GetWorkflowRunDetailReply) {}  
+  rpc GetWorkspaceList(GetWorkspaceListRequest) returns (GetWorkspaceListReply) {}
+  rpc SetDefaultModel(SetDefaultModelRequest) returns (SetDefaultModelReply) {}
+  rpc GetDefaultModel(GetDefaultModelRequest) returns (GetDefaultModelReply) {}
+  rpc GetTenantList(GetTenantListRequest) returns (GetTenantListReply) {}  
+  rpc GetCurrentTenant(GetCurrentTenantRequest) returns (GetCurrentTenantReply) {}  
+  rpc GetModelProviderList(GetModelProviderListRequest) returns (GetModelProviderListReply) {}
+  rpc UpdateModelProvider(UpdateModelProviderRequest) returns (UpdateModelProviderReply) {}
+  rpc DelModelProvider(DelModelProviderRequest) returns (DelModelProviderReply) {}
+  rpc GetModelProviderModel(GetModelProviderModelRequest) returns (GetModelProviderModelReply) {}
+  rpc SetModelProviderModel(SetModelProviderModelRequest) returns (SetModelProviderModelReply) {}
+  rpc EnableModelProviderModel(EnableModelProviderModelRequest) returns (EnableModelProviderModelReply) {}
+  rpc GetModelProviderCredentials(GetModelProviderCredentialsRequest) returns (GetModelProviderCredentialsReply) {}
+  rpc GetModelParameterRules(GetModelParameterRulesRequest) returns (GetModelParameterRulesReply) {}
+  rpc GetAvailableModelProvider(GetAvailableModelProviderRequest) returns (GetAvailableModelProviderReply) {}  	 
+  rpc GetMemberList(GetMemberListRequest) returns (GetMemberListReply) {}  	
+  rpc GetDatasetRetrievalSetting(GetDatasetRetrievalSettingRequest) returns (GetDatasetRetrievalSettingReply){}
+  rpc GetTagList(GetTagListRequest) returns (GetTagListReply) {}
+  rpc AddTag(AddTagRequest) returns (AddTagReply) {}
+  rpc UpdateTag(UpdateTagRequest) returns (UpdateTagReply) {}
+  rpc DelTag(DelTagRequest) returns (DelTagReply) {}
+  rpc AddTagBinding(AddTagBindingRequest) returns (AddTagBindingReply) {}
+  rpc DelTagBinding(DelTagBindingRequest) returns (DelTagBindingReply) {}  
+  rpc GetCodeBasedExtension(GetCodeBasedExtensionRequest) returns (GetCodeBasedExtensionReply) {}
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+  bool remember_me = 3;
+  string invite_token = 4;
+  string language = 5;
+  string client_ip = 6;
+}
+
+message LoginReply {
+  string result = 1;
+  string errmsg = 2;
+  string access_token = 3;
+  string refresh_token = 4;
+  exceptions.HTTPException exp = 5;
+}
+
+message LogoutRequest {
+  string account_id = 1;
+}
+message LogoutReply {
+  exceptions.HTTPException exp = 1;
+}
+message GetSetupStatusRequest {
+}
+message GetSetupStatusReply {
+  string step = 1;
+  string setup_at = 2;
+  exceptions.HTTPException exp = 3;
+}
+message SetupRequest {
+  string email = 1;
+  string name = 2;
+  string password = 3;
+  string client_ip = 4;
+}
+message SetupReply {
+  exceptions.HTTPException exp = 1;
+}
+
+message GetSystemFeaturesRequest {
+}
+message GetSystemFeaturesReply {
+  exceptions.HTTPException exp = 1;
+  entities.SystemFeature feature = 2;
+}
+message GetFeaturesRequest {
+  string tenant_id = 1;
+}
+message GetFeaturesReply {
+  exceptions.HTTPException exp = 1;
+  entities.FeatureModel feature = 2;
+}
+
+message GetVersionRequest {
+  string current_version = 1;
+}
+
+message VersionFeatures {
+  bool can_replace_logo = 1;
+  bool model_load_balancing_enabled = 2;
+}
+message GetVersionReply {
+  exceptions.HTTPException exp = 1;
+  string version = 2;
+  string release_date = 3;
+  string release_notes = 4;
+  bool can_auto_update = 5;
+  VersionFeatures features = 6;
+}
+message GetFileUploadConfigRequest {
+
+}
+message GetFileUploadConfigReply {
+  exceptions.HTTPException exp = 1;
+  int64 file_size_limit = 2;
+  int64 batch_count_limit = 3;
+  int64 image_file_size_limit = 4;
+  int64 video_file_size_limit = 5;
+  int64 audio_file_size_limit = 6;
+  int64 workflow_file_upload_limit = 7;  
+}
+
+message ListAppsRequest {
+  string account_id = 1;
+	int32 page = 2;   // 页码
+	int32 limit = 3;// 每页大小
+	string   mode = 4; // "chat", "workflow", "agent-chat", "channel", "all"
+	string   name = 5;
+	repeated string tag_ids = 6;
+	bool     is_created_by_me = 7;
+}
+message ListAppsReply {
+	exceptions.HTTPException exp = 1;
+  string paginate_apps_str = 2;
+}
+message CreateAppRequest {
+  string account_id = 1;
+  string name = 2;
+  string description = 3;
+  string mode = 4;
+  string icon_type = 5;
+  string icon = 6;
+  string icon_background = 7;
+  int64 api_rph = 8;
+  int64 api_rpm = 9;
+}
+message CreateAppReply {
+	exceptions.HTTPException exp = 1;
+  string app_detail_str = 2;
+}
+message FindAppRequest {
+  string account_id = 1;
+  string app_id = 2;
+}
+message FindAppReply {
+	exceptions.HTTPException exp = 1;
+  string app_detail_with_site_str = 2;
+}
+message UpdateAppRequest {
+  string account_id = 1;
+  string name = 2;
+  string description = 3;
+  string icon_type = 4;
+  string icon = 5;
+  string icon_background = 6;
+  int64 max_active_requests = 7;
+  bool use_icon_as_answer_icon = 8;
+  string app_id = 9;
+}
+message UpdateAppReply {
+	exceptions.HTTPException exp = 1;
+  string app_detail_with_site_str = 2;
+}
+message DeleteAppRequest {
+  string account_id = 1;
+  string app_id = 2;
+}
+message DeleteAppReply {
+	exceptions.HTTPException exp = 1;
+  string result = 2;
+}
+message SetAppNameRequest {
+  string account_id = 1;
+  string app_id = 2;
+  string name = 3;
+}
+message SetAppNameReply {
+	exceptions.HTTPException exp = 1;
+  string app_detail_str = 2;
+}
+message ImportAppRequest {
+  string account_id = 1;
+  string mode = 2;
+  string yaml_content = 3;
+  string yaml_url = 4;
+  string name = 5;
+  string description = 6;
+  string icon_type = 7;
+  string icon = 8;
+  string icon_background = 9;
+  string app_id = 10;
+}
+message ImportAppReply {
+	exceptions.HTTPException exp = 1;
+  entities.Import import = 2;
+  int32 http_status = 3;
+}
+message GetWorkflowAppLogListRequest {
+  string account_id = 1;
+  string keyword = 2;
+  string status = 3;
+  int32 page = 4;
+  int32 limit = 5;
+  string app_id = 6;
+}
+message GetWorkflowAppLogListReply {
+	exceptions.HTTPException exp = 1;
+  string workflow_app_log_pagination_str = 2;
+}
+message SetAppIconRequest {
+  string account_id = 1;
+  string app_id = 2;
+  string icon = 3;
+  string icon_background = 4;
+}
+message SetAppIconReply {
+	exceptions.HTTPException exp = 1;
+  string app_detail_str = 2;
+}
+message CopyAppRequest {
+  string account_id = 1;
+  string app_id = 2;
+  string name = 3;
+  string description = 4;
+  string icon_type = 5;
+  string icon = 6;
+  string icon_background = 7;  
+}
+message CopyAppReply {
+	exceptions.HTTPException exp = 1;
+  string app_detail_with_site_str = 3;
+}
+message ExportAppRequest {
+  string account_id = 1;
+  string app_id = 2;
+  bool include_secret = 3;
+}
+message ExportAppReply {
+	exceptions.HTTPException exp = 1;
+  string dsl = 2;
+}
+message AppUpdateSiteStatusRequest {
+  string account_id = 1;
+  string app_id = 2;
+  bool enable_site = 3;
+}
+message AppUpdateSiteStatusReply {
+	exceptions.HTTPException exp = 1;
+  string app_detail_str = 2;
+}
+message AppUpdateApiStatusRequest {
+  string account_id = 1;
+  string app_id = 2;
+  bool enable_api = 3;
+}
+message AppUpdateApiStatusReply {
+	exceptions.HTTPException exp = 1;
+  string app_detail_str = 2;
+}
+message AppGetTraceRequest {
+  string account_id = 1;
+  string app_id = 2;
+}
+message AppGetTraceReply {
+	exceptions.HTTPException exp = 1;
+  string app_trace_config_str = 2;
+}
+message AppSetTraceRequest {
+  string account_id = 1;
+  string app_id = 2;
+  bool enabled = 3;
+  string tracing_provider = 4;
+}
+message AppSetTraceReply {
+	exceptions.HTTPException exp = 1;
+}
+message GetTraceAppConfigRequest {
+  string account_id = 1;
+  string app_id = 2;
+  string tracing_provider = 3;
+}
+message GetTraceAppConfigReply {
+	exceptions.HTTPException exp = 1;
+  string trace_config_str = 2;
+}
+message GetChatConversationPaginationRequest {
+	string account_id = 1;
+	string app_id = 2;
+  string keyword = 3;
+  string start = 4;
+  string end = 5;
+  string annotation_status = 6;
+  int32 message_count_gte = 7;
+  int32 page = 8;
+  int32 limit = 9;
+  string sort_by = 10;
+}
+message GetChatConversationPaginationReply{
+	exceptions.HTTPException exp = 1;
+  string conversation_with_summary_pagination_str = 2;
+}
+message ChatConversationDetailRequest {
+	string account_id = 1;
+	string app_id = 2;
+  string conversation_id = 3;
+}
+message ChatConversationDetailReply{
+	exceptions.HTTPException exp = 1;
+  string conversation_detail_str = 4;
+}
+message DelChatConversationRequest {
+	string account_id = 1;
+	string app_id = 2;
+  string conversation_id = 3;  
+}
+message DelChatConversationReply{
+	exceptions.HTTPException exp = 1;
+}
+message StatisticRequest {
+	string account_id = 1;
+	string app_id = 2;
+  string start = 3;
+  string end = 4;
+  string method = 5;
+}
+message StatisticReply {
+	exceptions.HTTPException exp = 1;
+  string result_str = 2;
+}
+message GetSuggestedQuestionMessageRequest {
+  string account_id = 1;
+  string app_id = 2;
+  string message_id = 3;
+}
+message GetSuggestedQuestionMessageReply {
+  exceptions.HTTPException exp = 1;
+  repeated string questions = 2;
+}
+message ChatMessageListRequest {
+  string account_id = 1;
+  string app_id = 2;
+  string conversation_id = 3;
+  string first_id = 4;
+  int32 limit = 5;
+}
+message ChatMessageListReply {
+  exceptions.HTTPException exp = 1;
+  string message_infinite_scroll_pagination_str = 2;
+}
+message MessageFeedbackRequest {
+  string account_id = 1;
+  string app_id = 2;
+  string message_id = 3;
+  string rating = 4;
+}
+message MessageFeedbackReply {
+  exceptions.HTTPException exp = 1;
+}
+message SetMessageAnnotationRequest {
+  string account_id = 1;
+  string app_id = 2;
+  string message_id = 3;
+  string question = 4;
+  string answer = 5;
+  string annotation_reply_str = 6;
+}
+message SetMessageAnnotationReply {
+  exceptions.HTTPException exp = 1;
+  string annotation_str = 2;
+}
+message MessageAnnotationCountRequest {
+  string account_id = 1;
+  string app_id = 2;
+}
+message MessageAnnotationCountReply {
+  exceptions.HTTPException exp = 1;
+  int64 count = 2;
+}
+message GetMessageRequest {
+  string account_id = 1;
+  string app_id = 2;
+  string message_id = 3;
+}	
+message GetMessageReply {
+  exceptions.HTTPException exp = 1;
+  string message_detail_str = 2;
+}
+
+message GetWorkflowDraftRequest {
+  string account_id = 1;
+  string app_id = 2;
+}
+message GetWorkflowDraftReply {
+	exceptions.HTTPException exp = 1;
+  string workflow_response_str = 2;
+}
+message WorkflowSyncDraftRequest {
+  string account_id = 1;
+  string app_id = 2;
+  string graph_str = 3;
+  string features_str = 4;
+  string hash = 5;
+  string environment_variables_str = 6;
+  string conversation_variables_str = 7;
+}
+message WorkflowSyncDraftReply {
+	exceptions.HTTPException exp = 1;
+  string unique_hash = 2;
+  int64 updated_at = 3;
+}
+message WorkflowNodeRunRequest {
+  string account_id = 1;
+  string app_id = 2;
+  string node_id = 3;
+  string inputs_dict_str = 4;
+}
+message WorkflowNodeRunReply {
+	exceptions.HTTPException exp = 1;
+  string workflow_run_node_execution_response_str = 2;
+}
+message GetWorkflowConfigRequest {
+  string account_id = 1;
+  string app_id = 2;
+}
+message GetWorkflowConfigReply {
+	exceptions.HTTPException exp = 1;
+  int32 parallel_depth_limit = 2;
+}
+message GetWorkflowDefaultBlockConfigsRequest {
+  string account_id = 1;
+}
+message GetWorkflowDefaultBlockConfigsReply {
+	exceptions.HTTPException exp = 1;
+  string cfgs_str = 2;
+}
+message GetWorkflowDefaultBlockConfigRequest {
+  string account_id = 1;
+  string app_id = 2;
+  string block_type = 3;
+  string filter_dict_str = 4;
+}
+message GetWorkflowDefaultBlockConfigReply {
+	exceptions.HTTPException exp = 1;
+  string cfg_str = 2;
+}
+message GetWorkflowPublishedRequest {
+  string account_id = 1;
+  string app_id = 2;
+}
+message GetWorkflowPublishedReply {
+	exceptions.HTTPException exp = 1;
+  string workflow_response_str = 2;
+}
+message WorkflowPublishedRequest {
+  string account_id = 1;
+  string app_id = 2;
+}	
+message WorkflowPublishedReply {
+	exceptions.HTTPException exp = 1;
+  int64 created_at = 2;
+}	
+message GetAccountProfileRequest {
+  string account_id = 1;
+}
+message GetAccountProfileReply {
+  exceptions.HTTPException exp = 1;
+  string name = 2;
+  string avatar = 3;
+  string avatar_url = 4;
+  string email = 5;
+  bool   is_password_set = 6;
+  string interface_language = 7;
+  string interface_theme = 8;
+  string timezone = 9;
+  int64  last_login_at = 10;
+  string last_login_ip = 11;
+  int64  created_at = 12;  
+  string id = 13;  
+}
+message UpdateAccountRequest {
+  string account_id = 1;
+  map<string,string> infos = 2;
+}
+message UpdateAccountReply {
+  exceptions.HTTPException exp = 1;
+  string account_response_str = 2;
+}
+message GetApiKeyListRequest {
+  string account_id = 1;
+  string resource_id = 2;
+  string resource_type = 3;
+  string resource_id_field = 4;
+  string token_prefix = 5;
+}
+message ApiKeyResponse  {
+  string id = 1;
+  string type = 2;
+  string token = 3;
+  int64 last_used_at = 4;
+  int64 created_at = 5;
+}
+message GetApiKeyListReply {
+  exceptions.HTTPException exp = 1;
+  repeated ApiKeyResponse items = 2;
+}
+message GenerateApiKeyRequest {
+  string account_id = 1;
+  string resource_id = 2;
+  string resource_type = 3;
+  string resource_id_field = 4;
+  string token_prefix = 5;
+}
+message GenerateApiKeyReply {
+  exceptions.HTTPException exp = 1;
+  ApiKeyResponse item = 2;
+}
+message DelApiKeyRequest {
+  string account_id = 1;
+  string resource_id = 2;
+  string resource_type = 3;
+  string resource_id_field = 4;
+  string token_prefix = 5;
+  string api_key_id = 6;
+}
+message DelApiKeyReply {
+  exceptions.HTTPException exp = 1;
+}
+
+message AppWorkflowRunListRequest {
+  string account_id = 1;
+  string app_id = 2;
+  string last_id = 3;
+  int32 limit = 4;
+  string app_mode = 5;
+}
+message AppWorkflowRunListReply {
+  exceptions.HTTPException exp = 1;
+  string response_str = 2;
+}
+message GetWorkspaceListRequest {
+  int32 page = 1;
+  int32 limit = 2;  
+}
+message WorkspaceResponse {
+  string id = 1;
+  string name = 2;
+  string status = 3;
+  int64 created_at = 4;
+}
+message GetWorkspaceListReply {
+	exceptions.HTTPException exp = 1;
+  repeated WorkspaceResponse data = 2;
+  bool has_more = 3;
+  int32 page = 4;
+  int32 limit = 5;  
+  int64 total = 6;
+  string result = 7;
+  int32 code = 8;
+}
+message ModelSetting {
+  string model= 1;
+  string model_type= 2;
+  string provider= 3;
+}
+message SetDefaultModelRequest {
+	string tenant_id = 1;
+  repeated ModelSetting model_settings = 2;
+}
+message SetDefaultModelReply {
+	exceptions.HTTPException exp = 1;
+}
+message GetDefaultModelRequest {
+	string tenant_id = 1;
+  string model_type = 2;
+}
+message GetDefaultModelReply {
+	exceptions.HTTPException exp = 1;
+  string default_model_response_str = 2;
+}
+message GetTenantListRequest {
+	string account_id = 1;
+}
+message TenantResponse  {
+  string id= 1;
+  string name= 2;
+  string plan= 3;
+  string status= 4;
+  int64 created_at = 5;
+  bool current = 6;
+}
+message GetTenantListReply {
+	exceptions.HTTPException exp = 1;
+  repeated TenantResponse workspaces = 2;
+}
+message GetCurrentTenantRequest {
+	string account_id = 1;
+}
+message GetCurrentTenantReply {
+	exceptions.HTTPException exp = 1;
+  string result_dict_str = 2;
+}
+message GetModelProviderListRequest {
+  string tenant_id = 1;
+  string model_type = 2;
+}
+message GetModelProviderListReply {
+  exceptions.HTTPException exp = 1;
+  string provider_list_str = 2;
+}
+message UpdateModelProviderRequest {
+  string tenant_id = 1;
+  string provider = 2;
+  string credentials_dict_str = 3;
+}
+message UpdateModelProviderReply {
+  exceptions.HTTPException exp = 1;
+}
+message DelModelProviderRequest {
+  string tenant_id = 1;
+  string provider = 2;
+}
+message DelModelProviderReply {
+  exceptions.HTTPException exp = 1;
+}
+message GetAvailableModelProviderRequest {
+  string tenant_id = 1;
+  string model_type = 2;
+}
+message GetAvailableModelProviderReply {
+  exceptions.HTTPException exp = 1;
+  string models_str = 2;
+}
+message GetModelProviderModelRequest {
+  string tenant_id = 1;
+  string provider = 2;
+}
+message GetModelProviderModelReply {
+  exceptions.HTTPException exp = 1;
+  string models_str = 2;
+}
+message SetModelProviderModelRequest {
+  string tenant_id = 1;
+  string provider = 2;
+  string model = 3;
+  string model_type = 4;
+  string credentials_dict_str = 5;
+  string load_balancing_dict_str = 6;
+  string config_from = 7;
+}
+message SetModelProviderModelReply {
+  exceptions.HTTPException exp = 1;
+}
+message EnableModelProviderModelRequest {
+  string tenant_id = 1;
+  string provider = 2;
+  string model = 3;
+  string model_type = 4;
+  bool   enable = 5;
+}
+message EnableModelProviderModelReply {
+  exceptions.HTTPException exp = 1;
+}
+message GetModelProviderCredentialsRequest {
+  string tenant_id = 1;
+  string provider = 2;
+}
+message GetModelProviderCredentialsReply {
+  exceptions.HTTPException exp = 1;
+  string credentials_dict_str = 2;
+}
+message GetModelParameterRulesRequest {
+  string tenant_id = 1;
+  string provider = 2;
+  string model = 3;
+}	
+message GetModelParameterRulesReply {
+  exceptions.HTTPException exp = 1;
+  string parameter_rules_str = 2;
+}
+message GetMemberListRequest {
+  string tenant_id = 1;
+}	
+message GetMemberListReply {
+  exceptions.HTTPException exp = 1;
+  string members_str = 2;
+}
+message GetDatasetRetrievalSettingRequest {
+}
+message GetDatasetRetrievalSettingReply {
+  exceptions.HTTPException exp = 1;
+  repeated string retrieval_method = 2;
+}
+message GetTagListRequest {
+  string tenant_id = 1;
+  string type = 2;
+  string keyword = 3;
+}
+message TagField  {
+  string id = 1; 
+  string name = 2; 
+  string type = 3; 
+  int64 binding_count = 4; 
+}
+message GetTagListReply {
+  exceptions.HTTPException exp = 1;
+  repeated TagField tags = 2;
+}
+message AddTagRequest {
+  string account_id = 1;
+  string name = 2;
+  string type = 3;
+}
+message AddTagReply {
+  exceptions.HTTPException exp = 1;
+  string id = 2;
+  string name = 3;
+  string type = 4;
+  int64 binding_count = 5; 
+}
+message UpdateTagRequest {
+  string account_id = 1;
+  string name = 2;
+  string tag_id = 3;
+}
+message UpdateTagReply {
+  exceptions.HTTPException exp = 1;
+  string id = 2;
+  string name = 3;
+  string type = 4;
+  int64 binding_count = 5;
+}
+message DelTagRequest {
+  string account_id = 1;
+  string tag_id = 2;
+}
+message DelTagReply {
+  exceptions.HTTPException exp = 1;
+}
+message AddTagBindingRequest {
+  string account_id = 1;
+  repeated string tag_ids = 2;
+  string target_id = 3;
+  string type = 4;
+}
+message AddTagBindingReply {
+  exceptions.HTTPException exp = 1;
+}
+message DelTagBindingRequest {
+  string account_id = 1;
+  string tag_id = 2;
+  string target_id = 3;
+  string type = 4;
+}
+message DelTagBindingReply {
+  exceptions.HTTPException exp = 1;
+}
+message GetCodeBasedExtensionRequest {
+  string module = 1;
+}
+message ModuleExtension {
+  string name = 1;
+  string label = 2;
+  string form_schema = 3;
+}
+message GetCodeBasedExtensionReply {
+  exceptions.HTTPException exp = 1;
+  string module = 2;
+  repeated ModuleExtension data = 3;
+}
+message GetWorkflowRunDetailRequest {
+  string user_id = 1;
+  string app_id = 2;
+  string workflow_run_id = 3;
+  bool is_node_execution = 4;
+}
+message GetWorkflowRunDetailReply {
+  exceptions.HTTPException exp = 1;
+  string response_str = 2;
+}

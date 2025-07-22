@@ -1,0 +1,7 @@
+#!/bin/bash
+
+go build -o ../deploy/FrameWorkServer main/FrameWorkServer/main.go
+go build -buildmode=plugin -o ../deploy/link.so main/link/main.go 
+go build -buildmode=plugin -o ../deploy/admin.so main/admin/*.go 
+go build -buildmode=plugin -o ../deploy/app.so main/app/*.go 
+go build -buildmode=plugin -o ../deploy/tools.so main/tools/*.go

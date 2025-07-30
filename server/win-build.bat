@@ -12,3 +12,6 @@ cd ..\..\
 cd main\tools 
 go build -o ..\..\..\deploy\tools.exe 
 cd ..\..\
+cd main\plugins 
+go build -o ..\..\..\deploy\plugins.exe 
+cd ..\..\

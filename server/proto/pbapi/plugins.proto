@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package pbapi;
+
+option go_package="mlib.com/gofy/server/proto/pbapi";
+
+import "exceptions/exceptions.proto";
+
+service plugins {
+    rpc FetchPreferences (FetchPreferencesRequest) returns (FetchPreferencesReply) {}
+    rpc FetchInstallTasks (FetchInstallTasksRequest) returns (FetchInstallTasksReply) {}
+}
+
+message FetchPreferencesRequest {
+  string tenant_id = 1;
+}
+message FetchPreferencesReply{
+  exceptions.HTTPException exp = 1;
+  map<string, string> permission_dict = 2;
+  string auto_upgrade_dict_str = 3;
+}
+
+message FetchInstallTasksRequest {
+  string tenant_id = 1;
+  int64 page = 2;
+  int64 page_size = 3;
+}
+message FetchInstallTasksReply{
+  exceptions.HTTPException exp = 1;
+  map<string, string> permission_dict = 2;
+  string auto_upgrade_dict_str = 3;
+}

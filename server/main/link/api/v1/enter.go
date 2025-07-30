@@ -24,6 +24,7 @@ type ApiGroup struct {
 	VersionApi
 	OpsTraceApi
 	ModelsApi
+	PluginApi
 }
 
 var ApiGroupApp = new(ApiGroup)

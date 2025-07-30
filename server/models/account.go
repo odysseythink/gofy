@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"time"
 
+	"gorm.io/datatypes"
 	dbengine "mlib.com/gofy/server/db_engine"
 	enumtypes "mlib.com/gofy/server/enum_types"
 	"mlib.com/mlog"
@@ -229,3 +230,64 @@ type InvitationCode struct {
 func (InvitationCode) TableName() string {
 	return "invitation_codes"
 }
+
+type TenantPluginInstallPermissionType string
+
+const (
+	TenantPluginInstallPermission_EVERYONE TenantPluginInstallPermissionType = "everyone"
+	TenantPluginInstallPermission_ADMINS   TenantPluginInstallPermissionType = "admins"
+	TenantPluginInstallPermission_NOBODY   TenantPluginInstallPermissionType = "noone"
+)
+
+type TenantPluginDebugPermissionType string
+
+const (
+	TenantPluginDebugPermission_EVERYONE TenantPluginDebugPermissionType = "everyone"
+	TenantPluginDebugPermission_ADMINS   TenantPluginDebugPermissionType = "admins"
+	TenantPluginDebugPermission_NOBODY   TenantPluginDebugPermissionType = "noone"
+)
+
+type TenantPluginPermission struct {
+	ID                string                            `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	TenantID          string                            `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
+	InstallPermission TenantPluginInstallPermissionType `gorm:"column:install_permission;type:varchar(16);not null" json:"install_permission"`
+	DebugPermission   TenantPluginDebugPermissionType   `gorm:"column:debug_permission;type:varchar(16);not null" json:"debug_permission"`
+}
+
+func (TenantPluginPermission) TableName() string {
+	return "account_plugin_permissions"
+}
+
+type TenantPluginAutoUpgradeStrategy struct {
+	ID                string                                         `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	TenantID          string                                         `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
+	StrategySetting   TenantPluginAutoUpgradeStrategySettingType     `gorm:"column:strategy_setting;type:varchar(16);not null" json:"strategy_setting"`
+	UpgradeTimeOfDay  int                                            `gorm:"column:upgrade_time_of_day;type:int;not null" json:"upgrade_time_of_day"` // seconds of the day
+	UpgradeMode       TenantPluginAutoUpgradeStrategyUpgradeModeType `gorm:"column:upgrade_mode;type:varchar(16);not null" json:"upgrade_mode"`
+	ExcludePlugins    datatypes.JSON                                 `gorm:"column:exclude_plugins;type:json" json:"exclude_plugins"` // plugin_id (author/name)
+	ExcludePluginList []string                                       `gorm:"-" json:"exclude_plugin_list"`
+	IncludePlugins    datatypes.JSON                                 `gorm:"column:include_plugins;type:json" json:"include_plugins"` // plugin_id (author/name)
+	IncludePluginList []string                                       `gorm:"-" json:"include_plugin_list"`
+	CreatedAt         *time.Time                                     `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt         *time.Time                                     `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+}
+
+func (TenantPluginAutoUpgradeStrategy) TableName() string {
+	return "tenant_plugin_auto_upgrade_strategies"
+}
+
+type TenantPluginAutoUpgradeStrategySettingType string
+
+const (
+	TenantPluginAutoUpgradeStrategySetting_DISABLED TenantPluginAutoUpgradeStrategySettingType = "disabled"
+	TenantPluginAutoUpgradeStrategySetting_FIX_ONLY TenantPluginAutoUpgradeStrategySettingType = "fix_only"
+	TenantPluginAutoUpgradeStrategySetting_LATEST   TenantPluginAutoUpgradeStrategySettingType = "latest"
+)
+
+type TenantPluginAutoUpgradeStrategyUpgradeModeType string
+
+const (
+	TenantPluginAutoUpgradeStrategyUpgradeMode_ALL     TenantPluginAutoUpgradeStrategyUpgradeModeType = "all"
+	TenantPluginAutoUpgradeStrategyUpgradeMode_PARTIAL TenantPluginAutoUpgradeStrategyUpgradeModeType = "partial"
+	TenantPluginAutoUpgradeStrategyUpgradeMode_EXCLUDE TenantPluginAutoUpgradeStrategyUpgradeModeType = "exclude"
+)

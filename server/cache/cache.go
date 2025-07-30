@@ -2,6 +2,7 @@ package cache
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 	"sync"
@@ -24,12 +25,12 @@ func (m *Cache) validatorConfig() bool {
 
 func (m *Cache) Init(args ...any) error {
 	if viper.Get("redis") == nil {
-		mlog.Warningf("don't exist redis config, return")
-		return nil
+		mlog.Errorf("don't exist redis config, return")
+		return errors.New("don't exist redis config, return")
 	}
 
 	if !m.validatorConfig() {
-		mlog.Warningf("redis config is invalid")
+		mlog.Errorf("redis config is invalid")
 		return fmt.Errorf("redis config is invalid")
 	}
 	//  = NewRedisClient(

@@ -99,7 +99,6 @@ func (s *PluginAutoUpgradeService) ExcludePlugin(tenant_id string, plugin_id str
 		)
 		return true
 	} else {
-		exist_strategy.ExcludePlugins.MarshalJSON()
 		exist_strategy.ExcludePlugins.Unmarshal(exist_strategy.ExcludePluginList)
 		exist_strategy.IncludePlugins.Unmarshal(exist_strategy.IncludePluginList)
 		if exist_strategy.UpgradeMode == models.TenantPluginAutoUpgradeStrategyUpgradeMode_EXCLUDE {

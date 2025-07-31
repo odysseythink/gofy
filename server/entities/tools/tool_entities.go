@@ -28,15 +28,15 @@ func NewToolInvokeMessage() *ToolInvokeMessage {
 }
 
 type ToolInvokeMessageBinary struct {
-	MimeType string/*/*= Field(..., description="The mimetype of the binary")*/ `json:"mimetype"`
-	Url      string/*/*= Field(..., description="The url of the binary")*/ `json:"url"`
+	MimeType string `json:"mimetype"` //description="The mimetype of the binary"
+	Url      string `json:"url"` //description="The url of the binary"
 	SaveAs   string         `json:"save_as"`
 	FileVar  map[string]any `json:"file_var"`
 }
 
 type ToolParameterOption struct {
-	Value string/*/*= Field(..., description="The value of the option")*/ `json:"value"`
-	Label commontypes.I18nObject/*/*= Field(..., description="The label of the option")*/ `json:"label"`
+	Value string `json:"value"` //description="The value of the option"
+	Label commontypes.I18nObject `json:"label"` //description="The label of the option"
 }
 
 func NewToolParameterOption(data any) *ToolParameterOption {
@@ -72,12 +72,12 @@ type ToolParameter struct {
 	// deprecated, should not use.
 	// SYSTEM_FILES = "systme-files"
 
-	Name             string/*= Field(..., description="The name of the parameter")*/ `json:"name"`
-	Label            commontypes.I18nObject/*= Field(..., description="The label presented to the user")*/ `json:"label"`
-	HumanDescription *commontypes.I18nObject/*= Field(None, description="The description presented to the user")*/ `json:"human_description"`
-	Placeholder      *commontypes.I18nObject/*= Field(None, description="The placeholder presented to the user")*/ `json:"placeholder"`
-	Type             toolsenumtypes.ToolParameterType/*= Field(..., description="The type of the parameter")*/ `json:"type"`
-	Form             toolsenumtypes.ToolParameterForm/*= Field(..., description="The form of the parameter, schema/form/llm")*/ `json:"form"`
+	Name             string  `json:"name"` //description="The name of the parameter"
+	Label            commontypes.I18nObject  `json:"label"` //description="The label presented to the user"
+	HumanDescription *commontypes.I18nObject `json:"human_description"`//description="The description presented to the user")
+	Placeholder      *commontypes.I18nObject `json:"placeholder"`//description="The placeholder presented to the user"
+	Type             toolsenumtypes.ToolParameterType  `json:"type"` //description="The type of the parameter")
+	Form             toolsenumtypes.ToolParameterForm  `json:"form"` //description="The form of the parameter, schema/form/llm"
 	LLMDescription   string                 `json:"llm_description"`
 	Required         bool                   `json:"required"`
 	Default          any                    `json:"default"`
@@ -194,17 +194,17 @@ func GetSimpleInstance(
 }
 
 type ToolProviderIdentity struct {
-	Author      string/*= Field(..., description="The author of the tool")*/ `json:"author"`
-	Name        string/*= Field(..., description="The name of the tool")*/ `json:"name"`
-	Description commontypes.I18nObject/*= Field(..., description="The description of the tool")*/ `json:"description"`
-	Icon        string/*= Field(..., description="The icon of the tool")*/ `json:"icon"`
-	Label       commontypes.I18nObject/*= Field(..., description="The label of the tool")*/ `json:"label"`
-	Tags        []toolsenumtypes.ToolLabelType/*= Field(default=[],description="The tags of the tool",)*/ `json:"tags"`
+	Author      string  `json:"author"` //description="The author of the tool"
+	Name        string  `json:"name"` //description="The name of the tool"
+	Description commontypes.I18nObject  `json:"description"` //description="The description of the tool"
+	Icon        string  `json:"icon"` //description="The icon of the tool"
+	Label       commontypes.I18nObject  `json:"label"` //description="The label of the tool"
+	Tags        []toolsenumtypes.ToolLabelType `json:"tags"`//description="The tags of the tool"
 }
 
 type ToolDescription struct {
-	Human commontypes.I18nObject/*= Field(..., description="The description presented to the user")*/ `json:"human"`
-	LLM   string/*= Field(..., description="The description presented to the LLM")*/ `json:"llm"`
+	Human commontypes.I18nObject `json:"human"` //description="The description presented to the user"
+	LLM   string  `json:"llm"` //description="The description presented to the LLM"
 }
 
 func NewToolDescription(data any) *ToolDescription {
@@ -236,10 +236,10 @@ func NewToolDescription(data any) *ToolDescription {
 }
 
 type ToolIdentity struct {
-	Author   string/*= Field(..., description="The author of the tool")*/ `json:"author"`
-	Name     string/*= Field(..., description="The name of the tool")*/ `json:"name"`
-	Label    commontypes.I18nObject/*= Field(..., description="The label of the tool")*/ `json:"label"`
-	Provider string/*= Field(..., description="The provider of the tool")*/ `json:"provider"`
+	Author   string  `json:"author"` //description="The author of the tool"
+	Name     string  `json:"name"` //description="The name of the tool"
+	Label    commontypes.I18nObject  `json:"label"` //description="The label of the tool"
+	Provider string  `json:"provider"` //description="The provider of the tool"
 	Icon     string `json:"icon"`
 }
 
@@ -275,13 +275,13 @@ func NewToolIdentity(data any) *ToolIdentity {
 }
 
 type ToolCredentialsOption struct {
-	Value string/*= Field(..., description="The value of the option")*/ `json:"value"`
-	Label commontypes.I18nObject/*= Field(..., description="The label of the option")*/ `json:"label"`
+	Value string  `json:"value"` //description="The value of the option"
+	Label commontypes.I18nObject  `json:"label"` //description="The label of the option"
 }
 
 type ToolProviderCredentials struct {
-	Name        string/*= Field(..., description="The name of the credentials")*/ `json:"name"`
-	Type        toolsenumtypes.CredentialsType/*= Field(..., description="The type of the credentials")*/ `json:"type"`
+	Name        string  `json:"name"` //description="The name of the credentials"
+	Type        toolsenumtypes.CredentialsType  `json:"type"` //description="The type of the credentials"
 	Required    bool                     `json:"required"`
 	Default     any                      `json:"default"`
 	Options     []*ToolCredentialsOption `json:"options"`
@@ -312,10 +312,9 @@ type ToolRuntimeVariabler interface {
 	GetToolName() string
 }
 type ToolRuntimeVariable struct {
-	// Type     toolsenumtypes.ToolRuntimeVariableType/*= Field(..., description="The type of the variable")*/ `json:"type"`
-	Name     string/*= Field(..., description="The name of the variable")*/ `json:"name"`
-	Position int/*= Field(..., description="The position of the variable")*/ `json:"position"`
-	ToolName string/*= Field(..., description="The name of the tool")*/ `json:"tool_name"`
+	Name     string  `json:"name"` //description="The name of the variable"
+	Position int  `json:"position"` //description="The position of the variable"
+	ToolName string  `json:"tool_name"` //description="The name of the tool"
 }
 
 func (t *ToolRuntimeVariable) GetName() string {
@@ -330,7 +329,7 @@ func (t *ToolRuntimeVariable) GetToolName() string {
 
 type ToolRuntimeTextVariable struct {
 	*ToolRuntimeVariable
-	Value string/*= Field(..., description="The value of the variable")*/ `json:"value"`
+	Value string  `json:"value"` //description="The value of the variable"
 }
 
 func (variable *ToolRuntimeTextVariable) Type() toolsenumtypes.ToolRuntimeVariableType {
@@ -350,7 +349,7 @@ func (variable ToolRuntimeTextVariable) MarshalJSON() ([]byte, error) {
 
 type ToolRuntimeImageVariable struct {
 	*ToolRuntimeVariable
-	Value string/*= Field(..., description="The path of the image")*/ `json:"value"`
+	Value string  `json:"value"` //description="The path of the image"
 }
 
 func (variable *ToolRuntimeImageVariable) Type() toolsenumtypes.ToolRuntimeVariableType {
@@ -370,11 +369,11 @@ func (variable ToolRuntimeImageVariable) MarshalJSON() ([]byte, error) {
 }
 
 type ToolRuntimeVariablePool struct {
-	ConversationID string/*= Field(..., description="The conversation id")*/ `json:"conversation_id"`
-	UserID         string/*= Field(..., description="The user id")*/ `json:"user_id"`
-	TenantID       string/*= Field(..., description="The tenant id of assistant")*/ `json:"tenant_id"`
+	ConversationID string  `json:"conversation_id"` //description="The conversation id"
+	UserID         string  `json:"user_id"` //description="The user id"
+	TenantID       string  `json:"tenant_id"` //description="The tenant id of assistant"
 
-	Pool []ToolRuntimeVariabler/*= Field(..., description="The pool of variables")*/ `json:"pool"`
+	Pool []ToolRuntimeVariabler  `json:"pool"` //description="The pool of variables"
 }
 
 func NewToolRuntimeVariablePool(conversation_id, user_id, tenant_id string, pool []ToolRuntimeVariabler) *ToolRuntimeVariablePool {
@@ -454,10 +453,10 @@ type ModelToolConfiguration struct {
 	// Model tool configuration
 	// """
 
-	Type       string/*= Field(..., description="The type of the model tool")*/ `json:"type"`
-	Model      string/*= Field(..., description="The model")*/ `json:"model"`
-	Label      commontypes.I18nObject/*= Field(..., description="The label of the model tool")*/ `json:"label"`
-	Properties map[toolsenumtypes.ModelToolPropertyKey]any/*= Field(..., description="The properties of the model tool")*/ `json:"properties"`
+	Type       string  `json:"type"` //description="The type of the model tool"
+	Model      string  `json:"model"` //description="The model"
+	Label      commontypes.I18nObject  `json:"label"` //description="The label of the model tool"
+	Properties map[toolsenumtypes.ModelToolPropertyKey]any  `json:"properties"` //description="The properties of the model tool"
 }
 
 type ModelToolProviderConfiguration struct {
@@ -465,9 +464,9 @@ type ModelToolProviderConfiguration struct {
 	// Model tool provider configuration
 	// """
 
-	Provider string/*= Field(..., description="The provider of the model tool")*/ `json:"provider"`
-	Models   []*ModelToolConfiguration/*= Field(..., description="The models of the model tool")*/ `json:"models"`
-	Label    commontypes.I18nObject/*= Field(..., description="The label of the model tool")*/ `json:"label"`
+	Provider string  `json:"provider"` //description="The provider of the model tool"
+	Models   []*ModelToolConfiguration  `json:"models"` //description="The models of the model tool"
+	Label    commontypes.I18nObject  `json:"label"` //description="The label of the model tool"
 }
 
 type WorkflowToolParameterConfiguration struct {
@@ -475,9 +474,9 @@ type WorkflowToolParameterConfiguration struct {
 	// Workflow tool configuration
 	// """
 
-	Name        string/*= Field(..., description="The name of the parameter")*/ `json:"name"`
-	Description string/*= Field(..., description="The description of the parameter")*/ `json:"description"`
-	Form        toolsenumtypes.ToolParameterForm/*= Field(..., description="The form of the parameter")*/ `json:"form"`
+	Name        string  `json:"name"` //description="The name of the parameter"
+	Description string  `json:"description"` //description="The description of the parameter"
+	Form        toolsenumtypes.ToolParameterForm  `json:"form"` //description="The form of the parameter"
 }
 
 type ToolInvokeMeta struct {
@@ -485,7 +484,7 @@ type ToolInvokeMeta struct {
 	// Tool invoke meta
 	// """
 
-	TimeCost   float64/*= Field(..., description="The time cost of the tool invoke")*/ `json:"time_cost"`
+	TimeCost   float64  `json:"time_cost"` //description="The time cost of the tool invoke"
 	Error      string         `json:"error"`
 	ToolConfig map[string]any `json:"tool_config"`
 }
@@ -516,7 +515,37 @@ type ToolLabel struct {
 	// Tool label
 	// """
 
-	Name  string/*= Field(..., description="The name of the tool")*/ `json:"name"`
-	Label commontypes.I18nObject/*= Field(..., description="The label of the tool")*/ `json:"Label"`
-	Icon  string/*= Field(..., description="The icon of the tool")*/ `json:"icon"`
+	Name  string  `json:"name"` //description="The name of the tool"
+	Label commontypes.I18nObject  `json:"label"` //description="The label of the tool"
+	Icon  string  `json:"icon"` //description="The icon of the tool"
 }
+    type Parameter[T int|float64|string] struct {
+        Name  string `json:"name"` //description="The name of the parameter"
+        Type toolsenumtypes.ToolParameterType `json:"type"` //description="The type of the parameter"
+        Required bool  `json:"required"` //description="Whether the parameter is required"
+        Description  string `json:"description"` //description="The description of the parameter"
+        Default T `json:"default"`
+        options: Optional[list[PluginParameterOption]] = None
+	}
+type ToolSelector struct {
+    provider_id  string `json:"provider_id"` //description="The id of the provider")
+    credential_id: Optional[str] = Field(default=None, description="The id of the credential")
+    tool_name  string `json:"tool_name"` //description="The name of the tool")
+    tool_description  string `json:"tool_description"` //description="The description of the tool")
+    tool_configuration: Mapping[str, Any]  `json:"tool_configuration"` //description="Configuration, type form")
+    tool_parameters: Mapping[str, Parameter]  `json:"tool_parameters"` //description="Parameters, type llm")
+}
+
+func (ts *ToolSelector) DifyModelIdentity() string{
+	return TOOL_SELECTOR_MODEL_IDENTITY
+}
+func (ts *ToolSelector)  ToPluginParameter()map[string]any{
+	bindata, _ := json.Marshal(ts)
+	res := map[string]any{}
+	err := json.Unmarshal(bindata, &res)
+	if err != nil {
+		mlog.Error("unmarshal ToolSelector to map failed:", err)
+		return nil
+	}
+        return res
+		}

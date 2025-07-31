@@ -244,3 +244,26 @@ const (
 	ToolVariableKey_AUDIO    ToolVariableKey = "audio"
 	ToolVariableKey_CUSTOM   ToolVariableKey = "custom"
 )
+
+type CredentialType string
+
+const (
+	Credential_API_KEY CredentialType = "api-key"
+	Credential_OAUTH2  CredentialType = "oauth2"
+)
+
+func (c CredentialType) GetName() string {
+	if c == Credential_API_KEY {
+		return "API KEY"
+	} else if c == Credential_OAUTH2 {
+		return "AUTH"
+	} else {
+		return strings.ToUpper(strings.ReplaceAll(string(c), "-", " "))
+	}
+}
+func (c CredentialType) IsEditable() bool {
+	return c == Credential_API_KEY
+}
+func (c CredentialType) IsValidateAllowed() bool {
+	return c == Credential_API_KEY
+}

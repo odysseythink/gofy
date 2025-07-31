@@ -1,6 +1,9 @@
 package tools
 
 import (
+	"iter"
+	"maps"
+
 	toolsenumtypes "mlib.com/gofy/server/enum_types/tools"
 	commontypes "mlib.com/gofy/server/types/common"
 )
@@ -111,4 +114,23 @@ var (
 			Name: "other", Label: commontypes.I18nObject{EnUS: "Other", ZhHans: "其他"}, Icon: ICONS[toolsenumtypes.ToolLabel_OTHER],
 		},
 	}
+
+	default_tool_labels          = maps.Values(DefaultToolLabelDict)
+	default_tool_label_name_list []string
 )
+
+func DefaultToolLabels() iter.Seq[ToolLabel] {
+	return default_tool_labels
+}
+
+func DefaultToolLabelNameList() []string {
+	if len(default_tool_label_name_list) == 0 {
+		if default_tool_label_name_list == nil {
+			default_tool_label_name_list = make([]string, 0)
+		}
+		for _, v := range DefaultToolLabelDict {
+			default_tool_label_name_list = append(default_tool_label_name_list, v.Name)
+		}
+	}
+	return default_tool_label_name_list
+}

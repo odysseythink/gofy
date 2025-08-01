@@ -1,12 +1,9 @@
 package tools
 
 import (
-	"fmt"
-	"strconv"
 	"strings"
 
-	"github.com/spf13/cast"
-	"mlib.com/gofy/server/core/exceptions"
+	pluginenumtypes "mlib.com/gofy/server/enum_types/plugin"
 )
 
 type ToolLabelType string
@@ -43,6 +40,7 @@ const (
 	ToolProvider_API               ToolProviderType = "api"
 	ToolProvider_APP               ToolProviderType = "app"
 	ToolProvider_DATASET_RETRIEVAL ToolProviderType = "dataset-retrieval"
+	ToolProvider_MCP               ToolProviderType = "mcp"
 )
 
 type ApiProviderSchemaType string
@@ -74,131 +72,34 @@ const (
 	   Enum class for api provider auth type.
 	*/
 
-	ApiProviderAuth_NONE    = "none"
-	ApiProviderAuth_API_KEY = "api_key"
+	ApiProviderAuth_NONE           = "none"
+	ApiProviderAuth_API_KEY_HEADER = "api_key_header"
+	ApiProviderAuth_API_KEY_QUERY  = "api_key_query"
 )
 
 type MessageType string
 
 const (
-	Message_TEXT       MessageType = "text"
-	Message_IMAGE      MessageType = "image"
-	Message_LINK       MessageType = "link"
-	Message_BLOB       MessageType = "blob"
-	Message_JSON       MessageType = "json"
-	Message_IMAGE_LINK MessageType = "image_link"
-	Message_FILE       MessageType = "file"
+	Message_TEXT                MessageType = "text"
+	Message_IMAGE               MessageType = "image"
+	Message_LINK                MessageType = "link"
+	Message_BLOB                MessageType = "blob"
+	Message_JSON                MessageType = "json"
+	Message_IMAGE_LINK          MessageType = "image_link"
+	Message_BINARY_LINK         MessageType = "binary_link"
+	Message_VARIABLE            MessageType = "variable"
+	Message_FILE                MessageType = "file"
+	Message_LOG                 MessageType = "log"
+	Message_BLOB_CHUNK          MessageType = "blob_chunk"
+	Message_RETRIEVER_RESOURCES MessageType = "retriever_resources"
 )
 
-type ToolParameterType string
+type ToolParameterFormType string
 
 const (
-	ToolParameter_STRING       ToolParameterType = "string"
-	ToolParameter_NUMBER       ToolParameterType = "number"
-	ToolParameter_BOOLEAN      ToolParameterType = "boolean"
-	ToolParameter_SELECT       ToolParameterType = "select"
-	ToolParameter_SECRET_INPUT ToolParameterType = "secret-input"
-	ToolParameter_FILE         ToolParameterType = "file"
-	ToolParameter_FILES        ToolParameterType = "files"
-	// deprecated, should not use.
-	ToolParameter_SYSTEM_FILES ToolParameterType = "systme-files"
-)
-
-func (tp ToolParameterType) CastValue(value any) any {
-	// try:
-	switch tp {
-	case ToolParameter_SECRET_INPUT:
-		fallthrough
-	case ToolParameter_SELECT:
-		fallthrough
-	case ToolParameter_STRING:
-		if value == nil {
-			return ""
-		} else {
-			if _, ok := value.(string); ok {
-				return value.(string)
-			} else {
-				return fmt.Sprintf("%v", value)
-			}
-		}
-
-	case ToolParameter_BOOLEAN:
-		if value == nil {
-			return false
-		} else if real_value, ok := value.(string); ok {
-			// Allowed YAML boolean value strings: https://yaml.org/type/bool.html
-			// and also '0' for False and '1' for True
-			switch strings.ToLower(real_value) {
-			case "true":
-				fallthrough
-			case "yes":
-				fallthrough
-			case "y":
-				fallthrough
-			case "1":
-				return true
-			case "false":
-				fallthrough
-			case "no":
-				fallthrough
-			case "n":
-				fallthrough
-			case "0":
-				return false
-			default:
-				tmp, err := cast.ToBoolE(real_value)
-				if err != nil {
-					panic(exceptions.NewValueError(fmt.Sprintf("The tool parameter value=%#v is not in correct type.", value)))
-				}
-				return tmp
-			}
-		} else if real_value, ok := value.(bool); ok {
-			return real_value
-		} else {
-			tmp, err := cast.ToBoolE(value)
-			if err != nil {
-				panic(exceptions.NewValueError(fmt.Sprintf("The tool parameter value=%#v is not in correct type.", value)))
-			}
-			return tmp
-		}
-	case ToolParameter_NUMBER:
-		if real_value, ok := value.(int); ok {
-			return real_value
-		} else if real_value, ok := value.(float64); ok {
-			return real_value
-		} else if real_value, ok := value.(string); ok {
-			if strings.Contains(real_value, ".") {
-				tmp, err := strconv.ParseFloat(real_value, 64)
-				if err != nil {
-					panic(exceptions.NewValueError(fmt.Sprintf("The tool parameter value=%#v is not in correct type.", value)))
-				}
-				return tmp
-			} else {
-				tmp, err := strconv.Atoi(real_value)
-				if err != nil {
-					panic(exceptions.NewValueError(fmt.Sprintf("The tool parameter value=%#v is not in correct type.", value)))
-				}
-				return tmp
-			}
-		}
-	case ToolParameter_SYSTEM_FILES:
-		fallthrough
-	case ToolParameter_FILES:
-		fallthrough
-	case ToolParameter_FILE:
-		return value
-	default:
-		return fmt.Sprintf("%v", value)
-	}
-	panic(exceptions.NewValueError(fmt.Sprintf("The tool parameter value=%#v is not in correct type.", value)))
-}
-
-type ToolParameterForm string
-
-const (
-	ToolParameterForm_SCHEMA ToolParameterForm = "schema" //# should be set while adding tool
-	ToolParameterForm_FORM   ToolParameterForm = "form"   //# should be set before invoking tool
-	ToolParameterForm_LLM    ToolParameterForm = "llm"    //# will be set by LLM
+	ToolParameterForm_SCHEMA ToolParameterFormType = "schema" // should be set while adding tool
+	ToolParameterForm_FORM   ToolParameterFormType = "form"   // should be set before invoking tool
+	ToolParameterForm_LLM    ToolParameterFormType = "llm"    // will be set by LLM
 )
 
 type CredentialsType string
@@ -267,3 +168,41 @@ func (c CredentialType) IsEditable() bool {
 func (c CredentialType) IsValidateAllowed() bool {
 	return c == Credential_API_KEY
 }
+
+type ToolParameterType string
+
+const (
+	ToolParameter_STRING         = ToolParameterType(pluginenumtypes.PluginParameter_STRING)
+	ToolParameter_NUMBER         = ToolParameterType(pluginenumtypes.PluginParameter_NUMBER)
+	ToolParameter_BOOLEAN        = ToolParameterType(pluginenumtypes.PluginParameter_BOOLEAN)
+	ToolParameter_SELECT         = ToolParameterType(pluginenumtypes.PluginParameter_SELECT)
+	ToolParameter_SECRET_INPUT   = ToolParameterType(pluginenumtypes.PluginParameter_SECRET_INPUT)
+	ToolParameter_FILE           = ToolParameterType(pluginenumtypes.PluginParameter_FILE)
+	ToolParameter_FILES          = ToolParameterType(pluginenumtypes.PluginParameter_FILES)
+	ToolParameter_APP_SELECTOR   = ToolParameterType(pluginenumtypes.PluginParameter_APP_SELECTOR)
+	ToolParameter_MODEL_SELECTOR = ToolParameterType(pluginenumtypes.PluginParameter_MODEL_SELECTOR)
+	ToolParameter_ANY            = ToolParameterType(pluginenumtypes.PluginParameter_ANY)
+	ToolParameter_DYNAMIC_SELECT = ToolParameterType(pluginenumtypes.PluginParameter_DYNAMIC_SELECT)
+
+	// MCP object and array type parameters
+	ToolParameter_ARRAY  = ToolParameterType(pluginenumtypes.MCPServerParameter_ARRAY)
+	ToolParameter_OBJECT = ToolParameterType(pluginenumtypes.MCPServerParameter_OBJECT)
+
+	// deprecated, should not use.
+	ToolParameter_SYSTEM_FILES = ToolParameterType(pluginenumtypes.PluginParameter_SYSTEM_FILES)
+)
+
+func (tp ToolParameterType) CastValue(value any) any {
+	return pluginenumtypes.CastParameterValue(string(tp), value)
+}
+func (tp ToolParameterType) AsNormalType() string {
+	return pluginenumtypes.AsNormalType(string(tp))
+}
+
+type LogStatusType string
+
+const (
+	LogStatus_START   LogStatusType = "start"
+	LogStatus_ERROR   LogStatusType = "error"
+	LogStatus_SUCCESS LogStatusType = "success"
+)

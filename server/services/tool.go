@@ -15,10 +15,6 @@ import (
 type ToolService struct {
 }
 
-func (s *ToolService) ListApiTools(user_id, tenant_id string) []*toolsentities.UserToolProvider {
-	return nil
-}
-
 func (s *ToolService) GetToolIcon(tenant_id, provider_type, provider_id string) (any, error) {
 	// """
 	// get the tool icon

@@ -6,19 +6,6 @@ import (
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 )
 
-type ProviderQuotaType string
-
-const (
-	ProviderQuota_PAID ProviderQuotaType = "paid"
-	// """hosted paid quota"""
-
-	ProviderQuota_FREE ProviderQuotaType = "free"
-	// """third-party free quota"""
-
-	ProviderQuota_TRIAL ProviderQuotaType = "trial"
-	// """hosted trial quota"""
-)
-
 type ProviderType string
 
 const (

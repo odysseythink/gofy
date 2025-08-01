@@ -83,7 +83,7 @@ func (t *Tool) ForkToolRuntime(runtime map[string]any) *Tool {
 		if new_tool.Parameters == nil {
 			new_tool.Parameters = make([]*toolsentities.ToolParameter, 0)
 		}
-		new_tool.Parameters = append(new_tool.Parameters, toolsentities.NewToolParameter(v))
+		new_tool.Parameters = append(new_tool.Parameters, v.Copy())
 	}
 
 	return new_tool

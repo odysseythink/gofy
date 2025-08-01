@@ -19,7 +19,7 @@ type SiteFields struct {
 	Description            string     `json:"description"`
 	DefaultLanguage        string     `json:"default_language"`
 	ChatColorTheme         string     `json:"chat_color_theme"`
-	ChatColorThemeInverted bool       `json:""`
+	ChatColorThemeInverted bool       `json:"chat_color_theme_inverted"`
 	CustomizeDomain        string     `json:"customize_domain"`
 	Copyright              string     `json:"copyright"`
 	PrivacyPolicy          string     `json:"privacy_policy"`

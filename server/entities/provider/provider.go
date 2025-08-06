@@ -16,18 +16,18 @@ type RestrictModel struct {
 	ModelConfig map[string]any `json:"model_config"`
 }
 type QuotaConfiguration struct {
-	QuotaType      models.ProviderQuotaType `json:"quota_type"`
-	QuotaUnit      coreenumtypes.QuotaUnit  `json:"quota_unit"`
-	QuotaLimit     int                      `json:"quota_limit"`
-	QuotaUsed      int                      `json:"quota_used"`
-	IsValid        bool                     `json:"is_valid"`
-	RestrictModels []*RestrictModel         `json:"restrict_models"`
+	QuotaType      providerenumtypes.ProviderQuotaType `json:"quota_type"`
+	QuotaUnit      providerenumtypes.QuotaUnitType     `json:"quota_unit"`
+	QuotaLimit     int                                 `json:"quota_limit"`
+	QuotaUsed      int                                 `json:"quota_used"`
+	IsValid        bool                                `json:"is_valid"`
+	RestrictModels []*RestrictModel                    `json:"restrict_models"`
 }
 type SystemConfiguration struct {
-	Enabled             bool                     `json:"enabled"`
-	CurrentQuotaType    models.ProviderQuotaType `json:"current_quota_type"`
-	QuotaConfigurations []*QuotaConfiguration    `json:"quota_configurations"`
-	Credentials         map[string]any           `json:"credentials"`
+	Enabled             bool                                `json:"enabled"`
+	CurrentQuotaType    providerenumtypes.ProviderQuotaType `json:"current_quota_type"`
+	QuotaConfigurations []*QuotaConfiguration               `json:"quota_configurations"`
+	Credentials         map[string]any                      `json:"credentials"`
 }
 type CustomProviderConfiguration struct {
 	Credentials map[string]any `json:"credentials"`

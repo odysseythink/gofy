@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/viper"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	commontypes "mlib.com/gofy/server/types/common"
 	"mlib.com/gofy/server/utils"
 )
@@ -84,11 +85,11 @@ type ModelCredentialSchema struct {
 
 // SimpleProviderEntity represents a simplified provider entity.
 type SimpleProviderEntity struct {
-	Provider            string                  `json:"provider" yaml:"provider"`
-	Label               commontypes.I18nObject  `json:"label" yaml:"label"`
-	IconSmall           *commontypes.I18nObject `json:"icon_small" yaml:"icon_small"`
-	IconLarge           *commontypes.I18nObject `json:"icon_large" yaml:"icon_large"`
-	SupportedModelTypes []ModelType             `json:"supported_model_types" yaml:"supported_model_types"`
+	Provider            string                            `json:"provider" yaml:"provider"`
+	Label               commontypes.I18nObject            `json:"label" yaml:"label"`
+	IconSmall           *commontypes.I18nObject           `json:"icon_small" yaml:"icon_small"`
+	IconLarge           *commontypes.I18nObject           `json:"icon_large" yaml:"icon_large"`
+	SupportedModelTypes []modelruntimeenumtypes.ModelType `json:"supported_model_types" yaml:"supported_model_types"`
 	Models              []*AIModelEntity/*ProviderModel*/ `json:"models" yaml:"models"`
 }
 
@@ -100,15 +101,15 @@ type ProviderHelpEntity struct {
 
 // ProviderEntity represents a provider entity.
 type ProviderEntity struct {
-	Provider                 string                  `json:"provider" yaml:"provider"`
-	Label                    commontypes.I18nObject  `json:"label" yaml:"label"`
-	Description              *commontypes.I18nObject `json:"description" yaml:"description"`
-	IconSmall                *commontypes.I18nObject `json:"icon_small" yaml:"icon_small"`
-	IconLarge                *commontypes.I18nObject `json:"icon_large" yaml:"icon_large"`
-	Background               string                  `json:"background" yaml:"background"`
-	Help                     *ProviderHelpEntity     `json:"help" yaml:"help"`
-	SupportedModelTypes      []ModelType             `json:"supported_model_types" yaml:"supported_model_types"`
-	ConfigurateMethods       []ConfigurateMethod     `json:"configurate_methods" yaml:"configurate_methods"`
+	Provider                 string                            `json:"provider" yaml:"provider"`
+	Label                    commontypes.I18nObject            `json:"label" yaml:"label"`
+	Description              *commontypes.I18nObject           `json:"description" yaml:"description"`
+	IconSmall                *commontypes.I18nObject           `json:"icon_small" yaml:"icon_small"`
+	IconLarge                *commontypes.I18nObject           `json:"icon_large" yaml:"icon_large"`
+	Background               string                            `json:"background" yaml:"background"`
+	Help                     *ProviderHelpEntity               `json:"help" yaml:"help"`
+	SupportedModelTypes      []modelruntimeenumtypes.ModelType `json:"supported_model_types" yaml:"supported_model_types"`
+	ConfigurateMethods       []ConfigurateMethod               `json:"configurate_methods" yaml:"configurate_methods"`
 	Models                   []*AIModelEntity/*ProviderModel*/ `json:"models" yaml:"models"`
 	ProviderCredentialSchema *ProviderCredentialSchema `json:"provider_credential_schema" yaml:"provider_credential_schema"`
 	ModelCredentialSchema    *ModelCredentialSchema    `json:"model_credential_schema" yaml:"model_credential_schema"`

@@ -124,7 +124,7 @@ const (
 	ModelToolPropertyKey_IMAGE_PARAMETER_NAME ModelToolPropertyKey = "image_parameter_name"
 )
 
-type ToolInvokeFrom string
+type ToolInvokeFromType string
 
 const (
 
@@ -132,8 +132,9 @@ const (
 	// Enum class for tool invoke
 	// """
 
-	ToolInvokeFrom_WORKFLOW ToolInvokeFrom = "workflow"
-	ToolInvokeFrom_AGENT    ToolInvokeFrom = "agent"
+	ToolInvokeFrom_WORKFLOW ToolInvokeFromType = "workflow"
+	ToolInvokeFrom_AGENT    ToolInvokeFromType = "agent"
+	ToolInvokeFrom_PLUGIN   ToolInvokeFromType = "plugin"
 )
 
 type ToolVariableKey string

@@ -8,7 +8,9 @@ import (
 
 	"mlib.com/gofy/server/core/exceptions"
 	pluginparameter "mlib.com/gofy/server/entities/plugin/parameter"
+	providerentities "mlib.com/gofy/server/entities/provider"
 	ragentities "mlib.com/gofy/server/entities/rag"
+	parameterenumtypes "mlib.com/gofy/server/enum_types/parameter"
 	toolsenumtypes "mlib.com/gofy/server/enum_types/tools"
 	commontypes "mlib.com/gofy/server/types/common"
 	"mlib.com/mlog"
@@ -466,272 +468,78 @@ type ToolEntity[T1 float64 | int | string, T2 float64 | int] struct {
 	// pydantic configs
 	ModelConfig map[string]any `json:"model_config"`
 }
-type OAuthSchema struct {
-    client_schema: list[ProviderConfig] = Field(default_factory=list, description="The schema of the OAuth client")
-    credentials_schema: list[ProviderConfig] = Field(
-        default_factory=list, description="The schema of the OAuth credentials"
-    )
-}
-type ToolCredentialsOption struct {
-	Value string                 `json:"value"` //description="The value of the option"
-	Label commontypes.I18nObject `json:"label"` //description="The label of the option"
+type OAuthSchema[T1 parameterenumtypes.AppSelectorScopeType | parameterenumtypes.ModelSelectorScopeType | parameterenumtypes.ToolSelectorScopeType, T2 int | string] struct {
+	ClientSchema      []providerentities.ProviderConfig[T1, T2] `json:"client_schema"`      //description="The schema of the OAuth client")
+	CredentialsSchema []providerentities.ProviderConfig[T1, T2] `json:"credentials_schema"` //description="The schema of the OAuth credentials"
 }
 
-type ToolProviderCredentials struct {
-	Name        string                         `json:"name"` //description="The name of the credentials"
-	Type        toolsenumtypes.CredentialsType `json:"type"` //description="The type of the credentials"
-	Required    bool                           `json:"required"`
-	Default     any                            `json:"default"`
-	Options     []*ToolCredentialsOption       `json:"options"`
-	Label       *commontypes.I18nObject        `json:"label"`
-	Help        *commontypes.I18nObject        `json:"help"`
-	URL         string                         `json:"url"`
-	Placeholder *commontypes.I18nObject        `json:"placeholder"`
+type ToolProviderEntity[T1 parameterenumtypes.AppSelectorScopeType | parameterenumtypes.ModelSelectorScopeType | parameterenumtypes.ToolSelectorScopeType, T2 int | string] struct {
+	Identity          ToolProviderIdentity                       `json:"identity"`
+	PluginID          string                                     `json:"plugin_id"`
+	CredentialsSchema []*providerentities.ProviderConfig[T1, T2] `json:"credentials_schema"`
+	OauthSchema       *OAuthSchema[T1, T2]                       `json:"oauth_schema"`
 }
 
-func (tpc *ToolProviderCredentials) ToDict() map[string]any {
-	return map[string]any{
-		"name":        tpc.Name,
-		"type":        tpc.Type,
-		"required":    tpc.Required,
-		"default":     tpc.Default,
-		"options":     tpc.Options,
-		"help":        tpc.Help,
-		"label":       tpc.Label,
-		"url":         tpc.URL,
-		"placeholder": tpc.Placeholder,
-	}
-}
-
-type ToolRuntimeVariabler interface {
-	Type() toolsenumtypes.ToolRuntimeVariableType
-	GetName() string
-	GetPosition() int
-	GetToolName() string
-}
-type ToolRuntimeVariable struct {
-	Name     string `json:"name"`      //description="The name of the variable"
-	Position int    `json:"position"`  //description="The position of the variable"
-	ToolName string `json:"tool_name"` //description="The name of the tool"
-}
-
-func (t *ToolRuntimeVariable) GetName() string {
-	return t.Name
-}
-func (t *ToolRuntimeVariable) GetPosition() int {
-	return t.Position
-}
-func (t *ToolRuntimeVariable) GetToolName() string {
-	return t.ToolName
-}
-
-type ToolRuntimeTextVariable struct {
-	*ToolRuntimeVariable
-	Value string `json:"value"` //description="The value of the variable"
-}
-
-func (variable *ToolRuntimeTextVariable) Type() toolsenumtypes.ToolRuntimeVariableType {
-	return toolsenumtypes.ToolRuntimeVariable_TEXT
-}
-func (variable ToolRuntimeTextVariable) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		*ToolRuntimeVariable
-		Value string `json:"value"`
-		Type  string `json:"type"`
-	}{
-		ToolRuntimeVariable: variable.ToolRuntimeVariable,
-		Value:               variable.Value,
-		Type:                string((&variable).Type()),
-	})
-}
-
-type ToolRuntimeImageVariable struct {
-	*ToolRuntimeVariable
-	Value string `json:"value"` //description="The path of the image"
-}
-
-func (variable *ToolRuntimeImageVariable) Type() toolsenumtypes.ToolRuntimeVariableType {
-	return toolsenumtypes.ToolRuntimeVariable_IMAGE
-}
-
-func (variable ToolRuntimeImageVariable) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		*ToolRuntimeVariable
-		Value string `json:"value"`
-		Type  string `json:"type"`
-	}{
-		ToolRuntimeVariable: variable.ToolRuntimeVariable,
-		Value:               variable.Value,
-		Type:                string((&variable).Type()),
-	})
-}
-
-type ToolRuntimeVariablePool struct {
-	ConversationID string `json:"conversation_id"` //description="The conversation id"
-	UserID         string `json:"user_id"`         //description="The user id"
-	TenantID       string `json:"tenant_id"`       //description="The tenant id of assistant"
-
-	Pool []ToolRuntimeVariabler `json:"pool"` //description="The pool of variables"
-}
-
-func NewToolRuntimeVariablePool(conversation_id, user_id, tenant_id string, pool []ToolRuntimeVariabler) *ToolRuntimeVariablePool {
-	return &ToolRuntimeVariablePool{
-		ConversationID: conversation_id,
-		UserID:         user_id,
-		TenantID:       tenant_id,
-		Pool:           pool,
-	}
-
-}
-
-func (vp *ToolRuntimeVariablePool) SetText(tool_name string, name string, value string) {
-	for idx, variable := range vp.Pool {
-		if real_variable, ok := any(variable).(*ToolRuntimeTextVariable); ok {
-			if real_variable.Name == name {
-				real_variable := any(variable).(*ToolRuntimeTextVariable)
-				real_variable.Value = value
-				vp.Pool[idx] = real_variable
-				return
-			}
-		}
-	}
-	variable := &ToolRuntimeTextVariable{
-		ToolRuntimeVariable: &ToolRuntimeVariable{
-			Name:     name,
-			Position: len(vp.Pool),
-			ToolName: tool_name,
-		},
-		Value: value,
-	}
-	if vp.Pool == nil {
-		vp.Pool = make([]ToolRuntimeVariabler, 0)
-	}
-	vp.Pool = append(vp.Pool, variable)
-}
-func (vp *ToolRuntimeVariablePool) SetFile(tool_name string, value string, name string) {
-	// check how many image variables are there
-	image_variable_count := 0
-	for _, variable := range vp.Pool {
-		if variable.Type() == toolsenumtypes.ToolRuntimeVariable_IMAGE {
-			image_variable_count += 1
-		}
-	}
-	if name == "" {
-		name = fmt.Sprintf("file_%d", image_variable_count)
-	}
-	for idx, variable := range vp.Pool {
-		if real_variable, ok := any(variable).(*ToolRuntimeImageVariable); ok {
-			if real_variable.Name == name {
-				real_variable := any(variable).(*ToolRuntimeImageVariable)
-				real_variable.Value = value
-				vp.Pool[idx] = real_variable
-				return
-			}
-		}
-
-	}
-
-	variable := &ToolRuntimeImageVariable{
-		ToolRuntimeVariable: &ToolRuntimeVariable{
-			Name:     name,
-			Position: len(vp.Pool),
-			ToolName: tool_name,
-		},
-		Value: value,
-	}
-
-	if vp.Pool == nil {
-		vp.Pool = make([]ToolRuntimeVariabler, 0)
-	}
-	vp.Pool = append(vp.Pool, variable)
-}
-
-type ModelToolConfiguration struct {
-	// """
-	// Model tool configuration
-	// """
-
-	Type       string                                      `json:"type"`       //description="The type of the model tool"
-	Model      string                                      `json:"model"`      //description="The model"
-	Label      commontypes.I18nObject                      `json:"label"`      //description="The label of the model tool"
-	Properties map[toolsenumtypes.ModelToolPropertyKey]any `json:"properties"` //description="The properties of the model tool"
-}
-
-type ModelToolProviderConfiguration struct {
-	// """
-	// Model tool provider configuration
-	// """
-
-	Provider string                    `json:"provider"` //description="The provider of the model tool"
-	Models   []*ModelToolConfiguration `json:"models"`   //description="The models of the model tool"
-	Label    commontypes.I18nObject    `json:"label"`    //description="The label of the model tool"
+type ToolProviderEntityWithPlugin[T1 parameterenumtypes.AppSelectorScopeType | parameterenumtypes.ModelSelectorScopeType | parameterenumtypes.ToolSelectorScopeType, T2 int | string, T3 float64 | int | string, T4 float64 | int] struct {
+	*ToolProviderEntity[T1, T2]
+	tools []*ToolEntity[T3, T4]
 }
 
 type WorkflowToolParameterConfiguration struct {
-	// """
-	// Workflow tool configuration
-	// """
-
-	Name        string                           `json:"name"`        //description="The name of the parameter"
-	Description string                           `json:"description"` //description="The description of the parameter"
-	Form        toolsenumtypes.ToolParameterForm `json:"form"`        //description="The form of the parameter"
+	Name        string                               `json:"name"`        //description="The name of the parameter"
+	Description string                               `json:"description"` //description="The description of the parameter"
+	Form        toolsenumtypes.ToolParameterFormType `json:"form"`        //description="The form of the parameter"
 }
 
 type ToolInvokeMeta struct {
-	// """
-	// Tool invoke meta
-	// """
-
 	TimeCost   float64        `json:"time_cost"` //description="The time cost of the tool invoke"
 	Error      string         `json:"error"`
 	ToolConfig map[string]any `json:"tool_config"`
 }
 
-// @classmethod
-// def empty(cls) -> "ToolInvokeMeta":
-//     """
-//     Get an empty instance of ToolInvokeMeta
-//     """
-//     return cls(time_cost=0.0, error=None, tool_config={})
+func EmptyToolInvokeMeta() *ToolInvokeMeta {
+	return &ToolInvokeMeta{
+		TimeCost:   0.0,
+		Error:      "",
+		ToolConfig: map[string]any{},
+	}
+}
+func ErrorToolInvokeMeta(errmsg string) *ToolInvokeMeta {
+	return &ToolInvokeMeta{
+		TimeCost:   0.0,
+		Error:      errmsg,
+		ToolConfig: map[string]any{},
+	}
+}
 
-// @classmethod
-// def error_instance(cls, error string) -> "ToolInvokeMeta":
-//     """
-//     Get an instance of ToolInvokeMeta with error
-//     """
-//     return cls(time_cost=0.0, error=error, tool_config={})
-
-// def to_dict(self) -> dict:
-//     return {
-//         "time_cost": self.time_cost,
-//         "error": self.error,
-//         "tool_config": self.tool_config,
-//     }
+func (meta *ToolInvokeMeta) ToDict() map[string]any {
+	return map[string]any{
+		"time_cost":   meta.TimeCost,
+		"error":       meta.Error,
+		"tool_config": meta.ToolConfig,
+	}
+}
 
 type ToolLabel struct {
-	// """
-	// Tool label
-	// """
-
 	Name  string                 `json:"name"`  //description="The name of the tool"
 	Label commontypes.I18nObject `json:"label"` //description="The label of the tool"
 	Icon  string                 `json:"icon"`  //description="The icon of the tool"
 }
-type Parameter[T int | float64 | string] struct {
-	Name        string                                   `json:"name"`        //description="The name of the parameter"
-	Type        toolsenumtypes.ToolParameterType         `json:"type"`        //description="The type of the parameter"
-	Required    bool                                     `json:"required"`    //description="Whether the parameter is required"
-	Description string                                   `json:"description"` //description="The description of the parameter"
-	Default     T                                        `json:"default"`
-	Options     []*pluginparameter.PluginParameterOption `json:"options"`
-}
+
 type ToolSelector[T int | float64 | string] struct {
-	ProviderID        string                   `json:"provider_id"`        //description="The id of the provider")
-	CredentialID      *string                  `json:"credential_id"`      //description="The id of the credential")
-	ToolName          string                   `json:"tool_name"`          //description="The name of the tool")
-	ToolDescription   string                   `json:"tool_description"`   //description="The description of the tool")
-	ToolConfiguration map[string]any           `json:"tool_configuration"` //description="Configuration, type form")
-	ToolParameters    map[string]*Parameter[T] `json:"tool_parameters"`    //description="Parameters, type llm")
+	ProviderID        string         `json:"provider_id"`        //description="The id of the provider")
+	CredentialID      *string        `json:"credential_id"`      //description="The id of the credential")
+	ToolName          string         `json:"tool_name"`          //description="The name of the tool")
+	ToolDescription   string         `json:"tool_description"`   //description="The description of the tool")
+	ToolConfiguration map[string]any `json:"tool_configuration"` //description="Configuration, type form")
+	ToolParameters    map[string]struct {
+		Name        string                                   `json:"name"`        //description="The name of the parameter"
+		Type        toolsenumtypes.ToolParameterType         `json:"type"`        //description="The type of the parameter"
+		Required    bool                                     `json:"required"`    //description="Whether the parameter is required"
+		Description string                                   `json:"description"` //description="The description of the parameter"
+		Default     T                                        `json:"default"`
+		Options     []*pluginparameter.PluginParameterOption `json:"options"`
+	} `json:"tool_parameters"` //description="Parameters, type llm")
 }
 
 func (ts *ToolSelector[T]) DifyModelIdentity() string {
@@ -745,5 +553,201 @@ func (ts *ToolSelector[T]) ToPluginParameter() map[string]any {
 		mlog.Error("unmarshal ToolSelector to map failed:", err)
 		return nil
 	}
+	res["dify_model_identity"] = ts.DifyModelIdentity()
 	return res
 }
+
+// type ToolCredentialsOption struct {
+// 	Value string                 `json:"value"` //description="The value of the option"
+// 	Label commontypes.I18nObject `json:"label"` //description="The label of the option"
+// }
+
+// type ToolProviderCredentials struct {
+// 	Name        string                         `json:"name"` //description="The name of the credentials"
+// 	Type        toolsenumtypes.CredentialsType `json:"type"` //description="The type of the credentials"
+// 	Required    bool                           `json:"required"`
+// 	Default     any                            `json:"default"`
+// 	Options     []*ToolCredentialsOption       `json:"options"`
+// 	Label       *commontypes.I18nObject        `json:"label"`
+// 	Help        *commontypes.I18nObject        `json:"help"`
+// 	URL         string                         `json:"url"`
+// 	Placeholder *commontypes.I18nObject        `json:"placeholder"`
+// }
+
+// func (tpc *ToolProviderCredentials) ToDict() map[string]any {
+// 	return map[string]any{
+// 		"name":        tpc.Name,
+// 		"type":        tpc.Type,
+// 		"required":    tpc.Required,
+// 		"default":     tpc.Default,
+// 		"options":     tpc.Options,
+// 		"help":        tpc.Help,
+// 		"label":       tpc.Label,
+// 		"url":         tpc.URL,
+// 		"placeholder": tpc.Placeholder,
+// 	}
+// }
+
+// type ToolRuntimeVariabler interface {
+// 	Type() toolsenumtypes.ToolRuntimeVariableType
+// 	GetName() string
+// 	GetPosition() int
+// 	GetToolName() string
+// }
+// type ToolRuntimeVariable struct {
+// 	Name     string `json:"name"`      //description="The name of the variable"
+// 	Position int    `json:"position"`  //description="The position of the variable"
+// 	ToolName string `json:"tool_name"` //description="The name of the tool"
+// }
+
+// func (t *ToolRuntimeVariable) GetName() string {
+// 	return t.Name
+// }
+// func (t *ToolRuntimeVariable) GetPosition() int {
+// 	return t.Position
+// }
+// func (t *ToolRuntimeVariable) GetToolName() string {
+// 	return t.ToolName
+// }
+
+// type ToolRuntimeTextVariable struct {
+// 	*ToolRuntimeVariable
+// 	Value string `json:"value"` //description="The value of the variable"
+// }
+
+// func (variable *ToolRuntimeTextVariable) Type() toolsenumtypes.ToolRuntimeVariableType {
+// 	return toolsenumtypes.ToolRuntimeVariable_TEXT
+// }
+// func (variable ToolRuntimeTextVariable) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		*ToolRuntimeVariable
+// 		Value string `json:"value"`
+// 		Type  string `json:"type"`
+// 	}{
+// 		ToolRuntimeVariable: variable.ToolRuntimeVariable,
+// 		Value:               variable.Value,
+// 		Type:                string((&variable).Type()),
+// 	})
+// }
+
+// type ToolRuntimeImageVariable struct {
+// 	*ToolRuntimeVariable
+// 	Value string `json:"value"` //description="The path of the image"
+// }
+
+// func (variable *ToolRuntimeImageVariable) Type() toolsenumtypes.ToolRuntimeVariableType {
+// 	return toolsenumtypes.ToolRuntimeVariable_IMAGE
+// }
+
+// func (variable ToolRuntimeImageVariable) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		*ToolRuntimeVariable
+// 		Value string `json:"value"`
+// 		Type  string `json:"type"`
+// 	}{
+// 		ToolRuntimeVariable: variable.ToolRuntimeVariable,
+// 		Value:               variable.Value,
+// 		Type:                string((&variable).Type()),
+// 	})
+// }
+
+// type ToolRuntimeVariablePool struct {
+// 	ConversationID string `json:"conversation_id"` //description="The conversation id"
+// 	UserID         string `json:"user_id"`         //description="The user id"
+// 	TenantID       string `json:"tenant_id"`       //description="The tenant id of assistant"
+
+// 	Pool []ToolRuntimeVariabler `json:"pool"` //description="The pool of variables"
+// }
+
+// func NewToolRuntimeVariablePool(conversation_id, user_id, tenant_id string, pool []ToolRuntimeVariabler) *ToolRuntimeVariablePool {
+// 	return &ToolRuntimeVariablePool{
+// 		ConversationID: conversation_id,
+// 		UserID:         user_id,
+// 		TenantID:       tenant_id,
+// 		Pool:           pool,
+// 	}
+
+// }
+
+// func (vp *ToolRuntimeVariablePool) SetText(tool_name string, name string, value string) {
+// 	for idx, variable := range vp.Pool {
+// 		if real_variable, ok := any(variable).(*ToolRuntimeTextVariable); ok {
+// 			if real_variable.Name == name {
+// 				real_variable := any(variable).(*ToolRuntimeTextVariable)
+// 				real_variable.Value = value
+// 				vp.Pool[idx] = real_variable
+// 				return
+// 			}
+// 		}
+// 	}
+// 	variable := &ToolRuntimeTextVariable{
+// 		ToolRuntimeVariable: &ToolRuntimeVariable{
+// 			Name:     name,
+// 			Position: len(vp.Pool),
+// 			ToolName: tool_name,
+// 		},
+// 		Value: value,
+// 	}
+// 	if vp.Pool == nil {
+// 		vp.Pool = make([]ToolRuntimeVariabler, 0)
+// 	}
+// 	vp.Pool = append(vp.Pool, variable)
+// }
+// func (vp *ToolRuntimeVariablePool) SetFile(tool_name string, value string, name string) {
+// 	// check how many image variables are there
+// 	image_variable_count := 0
+// 	for _, variable := range vp.Pool {
+// 		if variable.Type() == toolsenumtypes.ToolRuntimeVariable_IMAGE {
+// 			image_variable_count += 1
+// 		}
+// 	}
+// 	if name == "" {
+// 		name = fmt.Sprintf("file_%d", image_variable_count)
+// 	}
+// 	for idx, variable := range vp.Pool {
+// 		if real_variable, ok := any(variable).(*ToolRuntimeImageVariable); ok {
+// 			if real_variable.Name == name {
+// 				real_variable := any(variable).(*ToolRuntimeImageVariable)
+// 				real_variable.Value = value
+// 				vp.Pool[idx] = real_variable
+// 				return
+// 			}
+// 		}
+
+// 	}
+
+// 	variable := &ToolRuntimeImageVariable{
+// 		ToolRuntimeVariable: &ToolRuntimeVariable{
+// 			Name:     name,
+// 			Position: len(vp.Pool),
+// 			ToolName: tool_name,
+// 		},
+// 		Value: value,
+// 	}
+
+// 	if vp.Pool == nil {
+// 		vp.Pool = make([]ToolRuntimeVariabler, 0)
+// 	}
+// 	vp.Pool = append(vp.Pool, variable)
+// }
+
+// type ModelToolConfiguration struct {
+// 	// """
+// 	// Model tool configuration
+// 	// """
+
+// 	Type       string                                      `json:"type"`       //description="The type of the model tool"
+// 	Model      string                                      `json:"model"`      //description="The model"
+// 	Label      commontypes.I18nObject                      `json:"label"`      //description="The label of the model tool"
+// 	Properties map[toolsenumtypes.ModelToolPropertyKey]any `json:"properties"` //description="The properties of the model tool"
+// }
+
+// type ModelToolProviderConfiguration struct {
+// 	// """
+// 	// Model tool provider configuration
+// 	// """
+
+// 	Provider string                    `json:"provider"` //description="The provider of the model tool"
+// 	Models   []*ModelToolConfiguration `json:"models"`   //description="The models of the model tool"
+// 	Label    commontypes.I18nObject    `json:"label"`    //description="The label of the model tool"
+// }

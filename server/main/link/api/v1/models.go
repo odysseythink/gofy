@@ -11,6 +11,7 @@ import (
 	"mlib.com/gofy/server/core/exceptions"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	servicesentities "mlib.com/gofy/server/entities/services"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/models/response"
 	"mlib.com/gofy/server/proto/pbapi"
@@ -22,7 +23,7 @@ type ModelsApi struct {
 
 func (api *ModelsApi) DefaultModel(c *gin.Context) {
 	model_type := c.Query("model_type")
-	if !modelruntimeentities.ModelType(model_type).Valid() {
+	if !modelruntimeenumtypes.ModelType(model_type).Valid() {
 		mlog.Errorf("invalid model type=%s", model_type)
 		response.InvalidArgError(c)
 		return
@@ -77,7 +78,7 @@ func (api *ModelsApi) SetDefaultModel(c *gin.Context) {
 		return
 	}
 	for _, model_setting := range in.ModelSettings {
-		if !modelruntimeentities.ModelType(model_setting.ModelType).Valid() {
+		if !modelruntimeenumtypes.ModelType(model_setting.ModelType).Valid() {
 			c.Set("http_exceptions", exceptions.NewValueError("invalid model type"))
 			return
 		}
@@ -114,7 +115,7 @@ func (api *ModelsApi) Available(c *gin.Context) {
 	rawuser, _ := c.Get("current_user")
 	acc := rawuser.(*models.Account)
 	model_type := c.Param("model_type")
-	if !modelruntimeentities.ModelType(model_type).Valid() {
+	if !modelruntimeenumtypes.ModelType(model_type).Valid() {
 		mlog.Errorf("model_type=%s is invalid", model_type)
 		response.InvalidArgErrorWithDetail(c, fmt.Sprintf("model_type=%s is invalid", model_type))
 		return
@@ -237,11 +238,11 @@ func (api *ModelsApi) SetModel(c *gin.Context) {
 		return
 	}
 	type Req struct {
-		Model         string                         `json:"model"`
-		ModelType     modelruntimeentities.ModelType `json:"model_type"`
-		Credentials   map[string]any                 `json:"credentials"`
-		LoadBalancing map[string]any                 `json:"load_balancing"`
-		ConfigFrom    string                         `json:"config_from"`
+		Model         string                          `json:"model"`
+		ModelType     modelruntimeenumtypes.ModelType `json:"model_type"`
+		Credentials   map[string]any                  `json:"credentials"`
+		LoadBalancing map[string]any                  `json:"load_balancing"`
+		ConfigFrom    string                          `json:"config_from"`
 	}
 	var req Req
 	err := c.ShouldBindJSON(&req)
@@ -314,8 +315,8 @@ func (api *ModelsApi) EnableModel(c *gin.Context) {
 		return
 	}
 	type Req struct {
-		Model     string                         `json:"model"`
-		ModelType modelruntimeentities.ModelType `json:"model_type"`
+		Model     string                          `json:"model"`
+		ModelType modelruntimeenumtypes.ModelType `json:"model_type"`
 	}
 	var req Req
 	err := c.ShouldBindJSON(&req)

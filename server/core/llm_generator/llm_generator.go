@@ -10,6 +10,7 @@ import (
 	modelmanager "mlib.com/gofy/server/core/manageres/model_manager"
 	promptutils "mlib.com/gofy/server/core/prompt/utils"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	"mlib.com/mlog"
 )
 
@@ -29,7 +30,7 @@ func (g *LLMGenerator) GenerateConversationName(
 
 	model_instance := manageres.Instance.Model.GetDefaultModelInstance(
 		tenant_id,
-		modelruntimeentities.Model_LLM,
+		modelruntimeenumtypes.Model_LLM,
 	)
 
 	prompts := []modelruntimeentities.PromptMessager{modelruntimeentities.NewUserPromptMessage(prompt, "")}
@@ -79,7 +80,7 @@ func (g *LLMGenerator) GenerateSuggestedQuestionsAfterAnswer(tenant_id, historie
 				}
 			}
 		}()
-		return manageres.Instance.Model.GetDefaultModelInstance(tenant_id, modelruntimeentities.Model_LLM)
+		return manageres.Instance.Model.GetDefaultModelInstance(tenant_id, modelruntimeenumtypes.Model_LLM)
 	}()
 	if questions != nil {
 		return questions

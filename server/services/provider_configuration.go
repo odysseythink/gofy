@@ -17,6 +17,8 @@ import (
 	dbengine "mlib.com/gofy/server/db_engine"
 	coreentities "mlib.com/gofy/server/entities/core"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
+	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
 	"mlib.com/gofy/server/models"
 	"mlib.com/mlog"
 )
@@ -24,7 +26,7 @@ import (
 type ProviderConfigurationService struct {
 }
 
-func (service *ProviderConfigurationService) EnableModelLoadBalancing(tenant_id string, provider string, model_type modelruntimeentities.ModelType, model string) (*models.ProviderModelSetting, error) {
+func (service *ProviderConfigurationService) EnableModelLoadBalancing(tenant_id string, provider string, model_type modelruntimeenumtypes.ModelType, model string) (*models.ProviderModelSetting, error) {
 	/*
 	   Enable model load balancing.
 	   :param model_type: model type
@@ -73,7 +75,7 @@ func (service *ProviderConfigurationService) EnableModelLoadBalancing(tenant_id 
 	}
 	return model_setting, nil
 }
-func (service *ProviderConfigurationService) DisableModelLoadBalancing(tenant_id string, provider string, model_type modelruntimeentities.ModelType, model string) (*models.ProviderModelSetting, error) {
+func (service *ProviderConfigurationService) DisableModelLoadBalancing(tenant_id string, provider string, model_type modelruntimeenumtypes.ModelType, model string) (*models.ProviderModelSetting, error) {
 	/*
 	   Disable model load balancing.
 	   :param model_type: model type
@@ -114,7 +116,7 @@ func (service *ProviderConfigurationService) DisableModelLoadBalancing(tenant_id
 }
 
 func (service *ProviderConfigurationService) CustomModelCredentialsValidate(
-	provider_configuration *coreentities.ProviderConfiguration, model_type modelruntimeentities.ModelType, model string, credentials map[string]any,
+	provider_configuration *coreentities.ProviderConfiguration, model_type modelruntimeenumtypes.ModelType, model string, credentials map[string]any,
 ) (*models.ProviderModel, map[string]any) {
 	/*
 		Validate custom model credentials.
@@ -170,7 +172,7 @@ func (service *ProviderConfigurationService) CustomModelCredentialsValidate(
 	return provider_model_record, credentials
 }
 
-func (service *ProviderConfigurationService) AddOrUpdateCustomModelCredentials(tenant_id string, provider string, model_type modelruntimeentities.ModelType, model string, credentials map[string]any) error {
+func (service *ProviderConfigurationService) AddOrUpdateCustomModelCredentials(tenant_id string, provider string, model_type modelruntimeenumtypes.ModelType, model string, credentials map[string]any) error {
 	/*
 	   Add or update custom model credentials.
 
@@ -221,7 +223,7 @@ func (service *ProviderConfigurationService) AddOrUpdateCustomModelCredentials(t
 	provider_model_credentials_cache.Delete()
 	return nil
 }
-func (service *ProviderConfigurationService) DeleteCustomModelCredentials(tenant_id string, provider string, model_type modelruntimeentities.ModelType, model string) error {
+func (service *ProviderConfigurationService) DeleteCustomModelCredentials(tenant_id string, provider string, model_type modelruntimeenumtypes.ModelType, model string) error {
 	/*
 	   Delete custom model credentials.
 	   :param model_type: model type
@@ -265,7 +267,7 @@ func (s *ProviderConfigurationService) DeleteCustomCredentials(pc *coreentities.
 	*/
 	// get Provider
 	provider_record := new(models.Provider)
-	err := dbengine.Instance().DB.Model(&models.Provider{}).Where("tenant_id = ? and provider_name = ? and provider_type = ?", pc.TenantID, pc.Provider.Provider, models.Provider_CUSTOM).First(provider_record).Error
+	err := dbengine.Instance().DB.Model(&models.Provider{}).Where("tenant_id = ? and provider_name = ? and provider_type = ?", pc.TenantID, pc.Provider.Provider, providerenumtypes.Provider_CUSTOM).First(provider_record).Error
 	if err != nil {
 		mlog.Errorf("get TenantPreferredModelProvider failed:%v", err)
 		provider_record = nil
@@ -274,7 +276,7 @@ func (s *ProviderConfigurationService) DeleteCustomCredentials(pc *coreentities.
 
 	// delete Provider
 	if provider_record != nil {
-		s.SwitchPreferredProviderType(pc, models.Provider_SYSTEM)
+		s.SwitchPreferredProviderType(pc, providerenumtypes.Provider_SYSTEM)
 		dbengine.Instance().DB.Delete(provider_record)
 
 		provider_model_credentials_cache := datamanager.NewProviderCredentialsCache(pc.TenantID, provider_record.ID, datamanager.ProviderCredentialsCache_PROVIDER)
@@ -346,7 +348,7 @@ func (s *ProviderConfigurationService) CustomCredentialsValidate(pc *coreentitie
 	*/
 	// get provider
 	provider_record := new(models.Provider)
-	err := dbengine.Instance().DB.Model(&models.Provider{}).Where("tenant_id = ? and provider_name = ? and provider_type = ?", pc.TenantID, pc.Provider.Provider, models.Provider_CUSTOM).First(provider_record).Error
+	err := dbengine.Instance().DB.Model(&models.Provider{}).Where("tenant_id = ? and provider_name = ? and provider_type = ?", pc.TenantID, pc.Provider.Provider, providerenumtypes.Provider_CUSTOM).First(provider_record).Error
 	if err != nil {
 		mlog.Warningf("get TenantPreferredModelProvider failed:%v", err)
 		provider_record = nil
@@ -423,7 +425,7 @@ func (s *ProviderConfigurationService) AddOrUpdateCustomCredentials(tenant_id st
 			ID:              uuid.NewV4().String(),
 			TenantID:        provider_configuration.TenantID,
 			ProviderName:    provider_configuration.Provider.Provider,
-			ProviderType:    models.Provider_CUSTOM,
+			ProviderType:    providerenumtypes.Provider_CUSTOM,
 			EncryptedConfig: string(bindata),
 			IsValid:         true,
 		}
@@ -435,11 +437,11 @@ func (s *ProviderConfigurationService) AddOrUpdateCustomCredentials(tenant_id st
 
 	provider_model_credentials_cache.Delete()
 
-	s.SwitchPreferredProviderType(provider_configuration, models.Provider_CUSTOM)
+	s.SwitchPreferredProviderType(provider_configuration, providerenumtypes.Provider_CUSTOM)
 	return nil
 }
 
-func (s *ProviderConfigurationService) SwitchPreferredProviderType(pc *coreentities.ProviderConfiguration, provider_type models.ProviderType) {
+func (s *ProviderConfigurationService) SwitchPreferredProviderType(pc *coreentities.ProviderConfiguration, provider_type providerenumtypes.ProviderType) {
 	/*
 	   Switch preferred provider type.
 	   :param provider_type:
@@ -448,7 +450,7 @@ func (s *ProviderConfigurationService) SwitchPreferredProviderType(pc *coreentit
 	if provider_type == pc.PreferredProviderType {
 		return
 	}
-	if provider_type == models.Provider_SYSTEM && !pc.SystemConfiguration.Enabled {
+	if provider_type == providerenumtypes.Provider_SYSTEM && !pc.SystemConfiguration.Enabled {
 		return
 	}
 	// get preferred provider
@@ -490,7 +492,7 @@ func (s *ProviderConfigurationService) DeleteCustomCredentialsByTenantAndProvide
 	return nil
 }
 
-func (s *ProviderConfigurationService) DisableModel(tenant_id string, provider string, model_type modelruntimeentities.ModelType, model string) (*models.ProviderModelSetting, error) {
+func (s *ProviderConfigurationService) DisableModel(tenant_id string, provider string, model_type modelruntimeenumtypes.ModelType, model string) (*models.ProviderModelSetting, error) {
 	/*
 	   Disable model.
 	   :param model_type: model type

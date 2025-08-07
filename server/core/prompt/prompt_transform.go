@@ -8,6 +8,7 @@ import (
 	appconfigentities "mlib.com/gofy/server/entities/app/config"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	promptentities "mlib.com/gofy/server/entities/prompt"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 )
 
 type PromptTransform struct {
@@ -30,8 +31,8 @@ func (transform *PromptTransform) _calculate_rest_token(
 ) int {
 	rest_tokens := 2000
 
-	if _, ok := model_config.ModelSchema.ModelProperties[modelruntimeentities.ModelPropertyKey_CONTEXT_SIZE]; ok {
-		if model_context_tokens, ok := model_config.ModelSchema.ModelProperties[modelruntimeentities.ModelPropertyKey_CONTEXT_SIZE].(int); ok {
+	if _, ok := model_config.ModelSchema.ModelProperties[modelruntimeenumtypes.ModelPropertyKey_CONTEXT_SIZE]; ok {
+		if model_context_tokens, ok := model_config.ModelSchema.ModelProperties[modelruntimeenumtypes.ModelPropertyKey_CONTEXT_SIZE].(int); ok {
 			model_instance := modelmanager.NewModelInstance(
 				model_config.ProviderModelBundle, model_config.Model,
 			)

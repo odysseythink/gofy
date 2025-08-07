@@ -5,7 +5,7 @@ import (
 
 	"mlib.com/gofy/server/core/exceptions"
 	providermanager "mlib.com/gofy/server/core/manageres/provider_manager"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 )
 
 type ModelManager struct {
@@ -18,7 +18,7 @@ func NewModelManager() *ModelManager {
 	}
 }
 
-func (mgr *ModelManager) GetDefaultProviderModelName(tenant_id string, model_type modelruntimeentities.ModelType) (string, string) {
+func (mgr *ModelManager) GetDefaultProviderModelName(tenant_id string, model_type modelruntimeenumtypes.ModelType) (string, string) {
 	/*
 	   Return first provider and the first model in the provider
 	   :param tenant_id: tenant id
@@ -28,7 +28,7 @@ func (mgr *ModelManager) GetDefaultProviderModelName(tenant_id string, model_typ
 	return mgr.ProviderManager.GetFirstProviderFirstModel(tenant_id, model_type)
 }
 
-func (mgr *ModelManager) GetDefaultModelInstance(tenant_id string, model_type modelruntimeentities.ModelType) *ModelInstance {
+func (mgr *ModelManager) GetDefaultModelInstance(tenant_id string, model_type modelruntimeenumtypes.ModelType) *ModelInstance {
 	/*
 	   Get default model instance
 	   :param tenant_id: tenant id
@@ -47,7 +47,7 @@ func (mgr *ModelManager) GetDefaultModelInstance(tenant_id string, model_type mo
 		default_model_entity.Model,
 	)
 }
-func (mgr *ModelManager) GetModelInstance(tenant_id string, provider string, model_type modelruntimeentities.ModelType, model string) *ModelInstance {
+func (mgr *ModelManager) GetModelInstance(tenant_id string, provider string, model_type modelruntimeenumtypes.ModelType, model string) *ModelInstance {
 	/*
 	   Get model instance
 	   :param tenant_id: tenant id

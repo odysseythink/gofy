@@ -1,6 +1,8 @@
 package parameter
 
 import (
+	"encoding/json"
+	"errors"
 	"fmt"
 	"slices"
 
@@ -41,7 +43,7 @@ type PluginParameterAutoGenerate struct {
 type PluginParameterTemplate struct {
 	Enabled bool `json:"enabled"` //description="Whether the parameter is jinja enabled")
 }
-type PluginParameter[T1 float64 | int | string, T2 float64 | int] struct {
+type PluginParameter struct {
 	Name         string                       `json:"name"`        //description="The name of the parameter")
 	Label        commontypes.I18nObject       `json:"label"`       //description="The label presented to the user")
 	Placeholder  *commontypes.I18nObject      `json:"placeholder"` //description="The placeholder presented to the user")
@@ -49,14 +51,72 @@ type PluginParameter[T1 float64 | int | string, T2 float64 | int] struct {
 	AutoGenerate *PluginParameterAutoGenerate `json:"auto_generate"`
 	Template     *PluginParameterTemplate     `json:"template"`
 	Required     bool                         `json:"required"`
-	Default      T1                           `json:"default"`
-	Min          T2                           `json:"min"`
-	Max          T2                           `json:"max"`
+	Default      any                          `json:"default"` //float64 | int | string
+	Min          any                          `json:"min"`     // float64 | int
+	Max          any                          `json:"max"`     //  float64 | int
 	Precision    int                          `json:"precision"`
 	Options      []*PluginParameterOption     `json:"options"`
 }
 
-func InitFrontendParameter[T1 float64 | int | string, T2 float64 | int](rule *PluginParameter[T1, T2], typ string, value any) any {
+func (param *PluginParameter) UnmarshalJSON(data []byte) error {
+	type alias PluginParameter
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(param), // 把原始对象嵌进去，避免递归
+	}
+
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return err
+	}
+
+	switch aux.alias.Default.(type) {
+	case string:
+		switch aux.alias.Min.(type) {
+		case string:
+		default:
+			return errors.New("when type of default field is string, type of min field must be string too")
+		}
+		switch aux.alias.Max.(type) {
+		case string:
+		default:
+			return errors.New("when type of default field is string, type of min field must be string too")
+		}
+	case float64:
+		switch aux.alias.Min.(type) {
+		case float64:
+		default:
+			return errors.New("when type of default field is float64, type of min field must be float64 too")
+		}
+		switch aux.alias.Max.(type) {
+		case float64:
+		default:
+			return errors.New("when type of default field is float64, type of min field must be float64 too")
+		}
+		if aux.alias.Default.(float64) < aux.alias.Min.(float64) || aux.alias.Default.(float64) > aux.alias.Max.(float64) {
+			return fmt.Errorf("when default field {%v} must be in range[%v~%v]", aux.alias.Default.(float64), aux.alias.Min.(float64), aux.alias.Max.(float64))
+		}
+	case int:
+		switch aux.alias.Min.(type) {
+		case int:
+		default:
+			return errors.New("when type of default field is int, type of min field must be int too")
+		}
+		switch aux.alias.Max.(type) {
+		case int:
+		default:
+			return errors.New("when type of default field is int, type of min field must be int too")
+		}
+		if aux.alias.Default.(int) < aux.alias.Min.(int) || aux.alias.Default.(int) > aux.alias.Max.(int) {
+			return fmt.Errorf("when default field {%v} must be in range[%v~%v]", aux.alias.Default.(int), aux.alias.Min.(int), aux.alias.Max.(int))
+		}
+	default:
+		return errors.New("type default field must be string, float64 or int")
+	}
+	return nil
+}
+
+func InitFrontendParameter(rule *PluginParameter, typ string, value any) any {
 	parameter_value := value
 	if parameter_value == nil {
 		// get default value

@@ -5,27 +5,26 @@ import (
 	"sync"
 
 	"github.com/spf13/viper"
-	coreentities "mlib.com/gofy/server/entities/core"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	coreenumtypes "mlib.com/gofy/server/enum_types/core"
-	"mlib.com/gofy/server/models"
+	providerentities "mlib.com/gofy/server/entities/provider"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
+	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
 )
 
 type HostingQuotaer interface {
-	Type() models.ProviderQuotaType
-	GetRestrictModels() []*coreentities.RestrictModel
-	SetRestrictModels([]*coreentities.RestrictModel)
+	Type() providerenumtypes.ProviderQuotaType
+	GetRestrictModels() []*providerentities.RestrictModel
+	SetRestrictModels([]*providerentities.RestrictModel)
 }
 
 // HostingQuota 定义 Hosting 配额
 type HostingQuota struct {
-	RestrictModels []*coreentities.RestrictModel
+	RestrictModels []*providerentities.RestrictModel
 }
 
-func (q *HostingQuota) GetRestrictModels() []*coreentities.RestrictModel {
+func (q *HostingQuota) GetRestrictModels() []*providerentities.RestrictModel {
 	return q.RestrictModels
 }
-func (q *HostingQuota) SetRestrictModels(val []*coreentities.RestrictModel) {
+func (q *HostingQuota) SetRestrictModels(val []*providerentities.RestrictModel) {
 	q.RestrictModels = val
 }
 
@@ -35,8 +34,8 @@ type TrialHostingQuota struct {
 	QuotaLimit int
 }
 
-func (q *TrialHostingQuota) Type() models.ProviderQuotaType {
-	return models.ProviderQuota_TRIAL
+func (q *TrialHostingQuota) Type() providerenumtypes.ProviderQuotaType {
+	return providerenumtypes.ProviderQuota_TRIAL
 }
 
 // PaidHostingQuota 定义付费 Hosting 配额
@@ -44,8 +43,8 @@ type PaidHostingQuota struct {
 	*HostingQuota
 }
 
-func (q *PaidHostingQuota) Type() models.ProviderQuotaType {
-	return models.ProviderQuota_PAID
+func (q *PaidHostingQuota) Type() providerenumtypes.ProviderQuotaType {
+	return providerenumtypes.ProviderQuota_PAID
 }
 
 // FreeHostingQuota 定义免费 Hosting 配额
@@ -53,15 +52,15 @@ type FreeHostingQuota struct {
 	*HostingQuota
 }
 
-func (q *FreeHostingQuota) Type() models.ProviderQuotaType {
-	return models.ProviderQuota_FREE
+func (q *FreeHostingQuota) Type() providerenumtypes.ProviderQuotaType {
+	return providerenumtypes.ProviderQuota_FREE
 }
 
 // HostingProvider 定义 Hosting 提供商
 type HostingProvider struct {
 	Enabled     bool
-	Credentials map[string]any          // 使用 any来表示任意类型
-	QuotaUnit   coreenumtypes.QuotaUnit // 使用指针来表示可选字段
+	Credentials map[string]any                  // 使用 any来表示任意类型
+	QuotaUnit   providerenumtypes.QuotaUnitType // 使用指针来表示可选字段
 	Quotas      []HostingQuotaer
 }
 
@@ -111,7 +110,7 @@ func (hc *HostingConfiguration) InitApp() {
 }
 
 func (hc *HostingConfiguration) initAzureOpenAI() *HostingProvider {
-	quotaUnit := coreenumtypes.QuotaUnit_TIMES
+	quotaUnit := providerenumtypes.QuotaUnit_TIMES
 	if viper.GetBoolWithDefault("hosted_azure_openai_config.enable", false) {
 		credentials := map[string]any{
 			"openai_api_key":  viper.GetStringWithDefault("hosted_azure_openai_config.api_key", ""),
@@ -122,21 +121,21 @@ func (hc *HostingConfiguration) initAzureOpenAI() *HostingProvider {
 		hostedQuotaLimit := viper.GetIntWithDefault("hosted_azure_openai_config.quota_limit", 200)
 		trialQuota := &TrialHostingQuota{
 			HostingQuota: &HostingQuota{
-				RestrictModels: []*coreentities.RestrictModel{
-					&coreentities.RestrictModel{Model: "gpt-4", BaseModelName: "gpt-4", ModelType: modelruntimeentities.Model_LLM},
-					&coreentities.RestrictModel{Model: "gpt-4o", BaseModelName: "gpt-4o", ModelType: modelruntimeentities.Model_LLM},
-					&coreentities.RestrictModel{Model: "gpt-4o-mini", BaseModelName: "gpt-4o-mini", ModelType: modelruntimeentities.Model_LLM},
-					&coreentities.RestrictModel{Model: "gpt-4-32k", BaseModelName: "gpt-4-32k", ModelType: modelruntimeentities.Model_LLM},
-					&coreentities.RestrictModel{Model: "gpt-4-1106-preview", BaseModelName: "gpt-4-1106-preview", ModelType: modelruntimeentities.Model_LLM},
-					&coreentities.RestrictModel{Model: "gpt-4-vision-preview", BaseModelName: "gpt-4-vision-preview", ModelType: modelruntimeentities.Model_LLM},
-					&coreentities.RestrictModel{Model: "gpt-35-turbo", BaseModelName: "gpt-35-turbo", ModelType: modelruntimeentities.Model_LLM},
-					&coreentities.RestrictModel{Model: "gpt-35-turbo-1106", BaseModelName: "gpt-35-turbo-1106", ModelType: modelruntimeentities.Model_LLM},
-					&coreentities.RestrictModel{Model: "gpt-35-turbo-instruct", BaseModelName: "gpt-35-turbo-instruct", ModelType: modelruntimeentities.Model_LLM},
-					&coreentities.RestrictModel{Model: "gpt-35-turbo-16k", BaseModelName: "gpt-35-turbo-16k", ModelType: modelruntimeentities.Model_LLM},
-					&coreentities.RestrictModel{Model: "text-davinci-003", BaseModelName: "text-davinci-003", ModelType: modelruntimeentities.Model_LLM},
-					&coreentities.RestrictModel{Model: "text-embedding-ada-002", BaseModelName: "text-embedding-ada-002", ModelType: modelruntimeentities.Model_TEXT_EMBEDDING},
-					&coreentities.RestrictModel{Model: "text-embedding-3-small", BaseModelName: "text-embedding-3-small", ModelType: modelruntimeentities.Model_TEXT_EMBEDDING},
-					&coreentities.RestrictModel{Model: "text-embedding-3-large", BaseModelName: "text-embedding-3-large", ModelType: modelruntimeentities.Model_TEXT_EMBEDDING},
+				RestrictModels: []*providerentities.RestrictModel{
+					&providerentities.RestrictModel{Model: "gpt-4", BaseModelName: "gpt-4", ModelType: modelruntimeenumtypes.Model_LLM},
+					&providerentities.RestrictModel{Model: "gpt-4o", BaseModelName: "gpt-4o", ModelType: modelruntimeenumtypes.Model_LLM},
+					&providerentities.RestrictModel{Model: "gpt-4o-mini", BaseModelName: "gpt-4o-mini", ModelType: modelruntimeenumtypes.Model_LLM},
+					&providerentities.RestrictModel{Model: "gpt-4-32k", BaseModelName: "gpt-4-32k", ModelType: modelruntimeenumtypes.Model_LLM},
+					&providerentities.RestrictModel{Model: "gpt-4-1106-preview", BaseModelName: "gpt-4-1106-preview", ModelType: modelruntimeenumtypes.Model_LLM},
+					&providerentities.RestrictModel{Model: "gpt-4-vision-preview", BaseModelName: "gpt-4-vision-preview", ModelType: modelruntimeenumtypes.Model_LLM},
+					&providerentities.RestrictModel{Model: "gpt-35-turbo", BaseModelName: "gpt-35-turbo", ModelType: modelruntimeenumtypes.Model_LLM},
+					&providerentities.RestrictModel{Model: "gpt-35-turbo-1106", BaseModelName: "gpt-35-turbo-1106", ModelType: modelruntimeenumtypes.Model_LLM},
+					&providerentities.RestrictModel{Model: "gpt-35-turbo-instruct", BaseModelName: "gpt-35-turbo-instruct", ModelType: modelruntimeenumtypes.Model_LLM},
+					&providerentities.RestrictModel{Model: "gpt-35-turbo-16k", BaseModelName: "gpt-35-turbo-16k", ModelType: modelruntimeenumtypes.Model_LLM},
+					&providerentities.RestrictModel{Model: "text-davinci-003", BaseModelName: "text-davinci-003", ModelType: modelruntimeenumtypes.Model_LLM},
+					&providerentities.RestrictModel{Model: "text-embedding-ada-002", BaseModelName: "text-embedding-ada-002", ModelType: modelruntimeenumtypes.Model_TEXT_EMBEDDING},
+					&providerentities.RestrictModel{Model: "text-embedding-3-small", BaseModelName: "text-embedding-3-small", ModelType: modelruntimeenumtypes.Model_TEXT_EMBEDDING},
+					&providerentities.RestrictModel{Model: "text-embedding-3-large", BaseModelName: "text-embedding-3-large", ModelType: modelruntimeenumtypes.Model_TEXT_EMBEDDING},
 				},
 			},
 			QuotaLimit: hostedQuotaLimit,
@@ -157,7 +156,7 @@ func (hc *HostingConfiguration) initAzureOpenAI() *HostingProvider {
 }
 
 func (hc *HostingConfiguration) initOpenAI() *HostingProvider {
-	quotaUnit := coreenumtypes.QuotaUnit_CREDITS
+	quotaUnit := providerenumtypes.QuotaUnit_CREDITS
 	quotas := make([]HostingQuotaer, 0)
 
 	if viper.GetBoolWithDefault("hosted_openai_config.trial_enable", false) {
@@ -204,7 +203,7 @@ func (hc *HostingConfiguration) initOpenAI() *HostingProvider {
 }
 
 func (hc *HostingConfiguration) initAnthropic() *HostingProvider {
-	quotaUnit := coreenumtypes.QuotaUnit_TOKENS
+	quotaUnit := providerenumtypes.QuotaUnit_TOKENS
 	quotas := make([]HostingQuotaer, 0)
 
 	if viper.GetBoolWithDefault("hosted_anthropic_config.trial_enable", false) {
@@ -244,7 +243,7 @@ func (hc *HostingConfiguration) initAnthropic() *HostingProvider {
 }
 
 func (hc *HostingConfiguration) initMinimax() *HostingProvider {
-	quotaUnit := coreenumtypes.QuotaUnit_TOKENS
+	quotaUnit := providerenumtypes.QuotaUnit_TOKENS
 	if viper.GetBoolWithDefault("hosted_minmax_config.enable", false) {
 		quotas := []HostingQuotaer{&FreeHostingQuota{HostingQuota: &HostingQuota{}}}
 
@@ -263,7 +262,7 @@ func (hc *HostingConfiguration) initMinimax() *HostingProvider {
 }
 
 func (hc *HostingConfiguration) initSpark() *HostingProvider {
-	quotaUnit := coreenumtypes.QuotaUnit_TOKENS
+	quotaUnit := providerenumtypes.QuotaUnit_TOKENS
 	if viper.GetBoolWithDefault("hosted_spark_config.enable", false) {
 		quotas := []HostingQuotaer{&FreeHostingQuota{HostingQuota: &HostingQuota{}}}
 
@@ -282,7 +281,7 @@ func (hc *HostingConfiguration) initSpark() *HostingProvider {
 }
 
 func (hc *HostingConfiguration) initZhipuai() *HostingProvider {
-	quotaUnit := coreenumtypes.QuotaUnit_TOKENS
+	quotaUnit := providerenumtypes.QuotaUnit_TOKENS
 	if viper.GetBoolWithDefault("hosted_zhipu_ai_config.enable", false) {
 		quotas := []HostingQuotaer{&FreeHostingQuota{HostingQuota: &HostingQuota{}}}
 
@@ -314,6 +313,6 @@ func (hc *HostingConfiguration) initModerationConfig() *HostedModerationConfig {
 	}
 }
 
-func (hc *HostingConfiguration) parseRestrictModelsFromEnv(envVar string) []*coreentities.RestrictModel {
+func (hc *HostingConfiguration) parseRestrictModelsFromEnv(envVar string) []*providerentities.RestrictModel {
 	return nil
 }

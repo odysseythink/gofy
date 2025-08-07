@@ -24,6 +24,7 @@ import (
 	modelruntimeexceptions "mlib.com/gofy/server/core/exceptions/model_runtime"
 	"mlib.com/gofy/server/core/model_runtime/model_provides/base"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	commontypes "mlib.com/gofy/server/types/common"
 	dashscopetypes "mlib.com/gofy/server/types/dashscope"
 	"mlib.com/mlog"
@@ -262,8 +263,8 @@ func (m *TongyiLargeLanguageModel) ProviderName() string {
 	return "tongyi"
 }
 
-func (m *TongyiLargeLanguageModel) ModelType() modelruntimeentities.ModelType {
-	return modelruntimeentities.Model_LLM
+func (m *TongyiLargeLanguageModel) ModelType() modelruntimeenumtypes.ModelType {
+	return modelruntimeenumtypes.Model_LLM
 }
 
 func (m *TongyiLargeLanguageModel) generate_call(
@@ -318,7 +319,7 @@ func (m *TongyiLargeLanguageModel) generate_call(
 		}
 		requestBody["parameters"] = parameters
 		model_schema := m.GetModelSchema(m, model, credentials)
-		if slices.Contains(model_schema.Features, modelruntimeentities.ModelFeature_VISION) {
+		if slices.Contains(model_schema.Features, modelruntimeenumtypes.ModelFeature_VISION) {
 			messages, _ := m._convert_prompt_messages_to_tongyi_messages(prompt_messages, true)
 			requestBody["input"] = map[string]any{"messages": messages}
 			url = "https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation"
@@ -952,19 +953,19 @@ func (m *TongyiLargeLanguageModel) GetCustomizableModelSchema(model string, cred
 			max_tokens = credentials["max_tokens"].(int)
 		}
 	}
-	features := []modelruntimeentities.ModelFeature{}
+	features := []modelruntimeenumtypes.ModelFeature{}
 	if function_calling_type == "tool_call" {
-		features = []modelruntimeentities.ModelFeature{modelruntimeentities.ModelFeature_TOOL_CALL, modelruntimeentities.ModelFeature_MULTI_TOOL_CALL, modelruntimeentities.ModelFeature_STREAM_TOOL_CALL}
+		features = []modelruntimeenumtypes.ModelFeature{modelruntimeenumtypes.ModelFeature_TOOL_CALL, modelruntimeenumtypes.ModelFeature_MULTI_TOOL_CALL, modelruntimeenumtypes.ModelFeature_STREAM_TOOL_CALL}
 	}
 	return &modelruntimeentities.AIModelEntity{
 		Model:     model,
 		Label:     commontypes.I18nObject{EnUS: model, ZhHans: model},
-		ModelType: modelruntimeentities.Model_LLM,
+		ModelType: modelruntimeenumtypes.Model_LLM,
 		Features:  features,
-		FetchFrom: modelruntimeentities.FetchFrom_CUSTOMIZABLE_MODEL,
-		ModelProperties: map[modelruntimeentities.ModelPropertyKey]any{
-			modelruntimeentities.ModelPropertyKey_CONTEXT_SIZE: context_size,
-			modelruntimeentities.ModelPropertyKey_MODE:         modelruntimeentities.LLMMode_CHAT,
+		FetchFrom: modelruntimeenumtypes.FetchFrom_CUSTOMIZABLE_MODEL,
+		ModelProperties: map[modelruntimeenumtypes.ModelPropertyKey]any{
+			modelruntimeenumtypes.ModelPropertyKey_CONTEXT_SIZE: context_size,
+			modelruntimeenumtypes.ModelPropertyKey_MODE:         modelruntimeentities.LLMMode_CHAT,
 		},
 
 		ParameterRules: []*modelruntimeentities.ParameterRule{
@@ -972,7 +973,7 @@ func (m *TongyiLargeLanguageModel) GetCustomizableModelSchema(model string, cred
 				Name:        "temperature",
 				UseTemplate: "temperature",
 				Label:       commontypes.I18nObject{EnUS: "Temperature", ZhHans: "温度"},
-				Type:        modelruntimeentities.ParameterType_FLOAT,
+				Type:        modelruntimeenumtypes.ParameterType_FLOAT,
 			},
 			{
 				Name:        "max_tokens",
@@ -981,25 +982,25 @@ func (m *TongyiLargeLanguageModel) GetCustomizableModelSchema(model string, cred
 				Min:         1,
 				Max:         float64(max_tokens),
 				Label:       commontypes.I18nObject{EnUS: "Max Tokens", ZhHans: "最大标记"},
-				Type:        modelruntimeentities.ParameterType_INT,
+				Type:        modelruntimeenumtypes.ParameterType_INT,
 			},
 			{
 				Name:        "top_p",
 				UseTemplate: "top_p",
 				Label:       commontypes.I18nObject{EnUS: "Top P", ZhHans: "Top P"},
-				Type:        modelruntimeentities.ParameterType_FLOAT,
+				Type:        modelruntimeenumtypes.ParameterType_FLOAT,
 			},
 			{
 				Name:        "top_k",
 				UseTemplate: "top_k",
 				Label:       commontypes.I18nObject{EnUS: "Top K", ZhHans: "Top K"},
-				Type:        modelruntimeentities.ParameterType_FLOAT,
+				Type:        modelruntimeenumtypes.ParameterType_FLOAT,
 			},
 			{
 				Name:        "frequency_penalty",
 				UseTemplate: "frequency_penalty",
 				Label:       commontypes.I18nObject{EnUS: "Frequency Penalty", ZhHans: "重复惩罚"},
-				Type:        modelruntimeentities.ParameterType_FLOAT,
+				Type:        modelruntimeenumtypes.ParameterType_FLOAT,
 			},
 		},
 	}

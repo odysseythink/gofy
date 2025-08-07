@@ -7,6 +7,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	"mlib.com/mlog"
 )
 
@@ -44,7 +45,7 @@ func (mp *BaseModelProvide) GetProviderSchema(provider_name string) *modelruntim
 	return provider_schema
 }
 
-func (mp *BaseModelProvide) Models(provider modelruntimeentities.ModelProvider, model_type modelruntimeentities.ModelType) []*modelruntimeentities.AIModelEntity {
+func (mp *BaseModelProvide) Models(provider modelruntimeentities.ModelProvider, model_type modelruntimeenumtypes.ModelType) []*modelruntimeentities.AIModelEntity {
 	/*
 	   Get all models for given model type
 	   :param model_type: model type defined in `ModelType`

@@ -5,7 +5,7 @@ import (
 	dbengine "mlib.com/gofy/server/db_engine"
 	appconfigentities "mlib.com/gofy/server/entities/app/config"
 	appgeneratorentities "mlib.com/gofy/server/entities/app/generator"
-	coreenumtypes "mlib.com/gofy/server/enum_types/core"
+	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
 	"mlib.com/gofy/server/models"
 )
 
@@ -26,12 +26,12 @@ func DeductQuotaWhenMessageCreatedHandle(message *models.Message, application_ge
 	provider_model_bundle := model_config.ProviderModelBundle
 	provider_configuration := provider_model_bundle.Configuration
 
-	if provider_configuration.UsingProviderType != models.Provider_SYSTEM {
+	if provider_configuration.UsingProviderType != providerenumtypes.Provider_SYSTEM {
 		return
 	}
 	system_configuration := provider_configuration.SystemConfiguration
 
-	var quota_unit coreenumtypes.QuotaUnit
+	var quota_unit providerenumtypes.QuotaUnitType
 	for _, quota_configuration := range system_configuration.QuotaConfigurations {
 		if quota_configuration.QuotaType == system_configuration.CurrentQuotaType {
 			quota_unit = quota_configuration.QuotaUnit
@@ -43,15 +43,15 @@ func DeductQuotaWhenMessageCreatedHandle(message *models.Message, application_ge
 	}
 	var used_quota int
 	if string(quota_unit) != "" {
-		if quota_unit == coreenumtypes.QuotaUnit_TOKENS {
+		if quota_unit == providerenumtypes.QuotaUnit_TOKENS {
 			used_quota = message.MessageTokens + message.AnswerTokens
-		} else if quota_unit == coreenumtypes.QuotaUnit_CREDITS {
+		} else if quota_unit == providerenumtypes.QuotaUnit_CREDITS {
 			used_quota = 1
 		} else {
 			used_quota = 1
 		}
 	}
 	if used_quota != 0 && string(system_configuration.CurrentQuotaType) != "" {
-		dbengine.Instance().DB.Model(&models.Provider{}).UpdateColumn("quota_used", gorm.Expr("quota_used + ?", used_quota)).Where("tenant_id = ? and provider_name = ? and provider_type = ? and quota_type = ? and quota_limit > quota_used", tenant_id, model_config.Provider, models.Provider_SYSTEM, system_configuration.CurrentQuotaType)
+		dbengine.Instance().DB.Model(&models.Provider{}).UpdateColumn("quota_used", gorm.Expr("quota_used + ?", used_quota)).Where("tenant_id = ? and provider_name = ? and provider_type = ? and quota_type = ? and quota_limit > quota_used", tenant_id, model_config.Provider, providerenumtypes.Provider_SYSTEM, system_configuration.CurrentQuotaType)
 	}
 }

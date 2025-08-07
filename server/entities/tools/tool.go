@@ -4,13 +4,13 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"maps"
 	"slices"
 
 	"mlib.com/gofy/server/core/exceptions"
 	pluginparameter "mlib.com/gofy/server/entities/plugin/parameter"
 	providerentities "mlib.com/gofy/server/entities/provider"
 	ragentities "mlib.com/gofy/server/entities/rag"
-	parameterenumtypes "mlib.com/gofy/server/enum_types/parameter"
 	toolsenumtypes "mlib.com/gofy/server/enum_types/tools"
 	commontypes "mlib.com/gofy/server/types/common"
 	"mlib.com/mlog"
@@ -243,17 +243,13 @@ func (msg RetrieverResourceMessage) MarshalJSON() ([]byte, error) {
 }
 
 type ToolInvokeMessage struct {
-	Message Messager       `json:"message"`
-	Meta    map[string]any `json:"meta"`
-}
-
-func (msg *ToolInvokeMessage) Type() toolsenumtypes.MessageType {
-	return toolsenumtypes.Message_TEXT
+	Type    toolsenumtypes.MessageType `json:"type"`
+	Message Messager                   `json:"message"`
+	Meta    map[string]any             `json:"meta"`
 }
 
 func (msg *ToolInvokeMessage) ToDict() map[string]any {
 	return map[string]any{
-		"type":    msg.Type(),
 		"meta":    msg.Meta,
 		"message": msg.Message.ToDict(),
 	}
@@ -268,8 +264,8 @@ type ToolInvokeMessageBinary struct {
 	FileVar  map[string]any `json:"file_var"`
 }
 
-type ToolParameter[T1 float64 | int | string, T2 float64 | int] struct {
-	*pluginparameter.PluginParameter[T1, T2]
+type ToolParameter struct {
+	*pluginparameter.PluginParameter
 
 	Type             toolsenumtypes.ToolParameterType     `json:"type"`              //description="The type of the parameter")
 	HumanDescription *commontypes.I18nObject              `json:"human_description"` //description="The description presented to the user")
@@ -279,8 +275,8 @@ type ToolParameter[T1 float64 | int | string, T2 float64 | int] struct {
 	InputSchema map[string]any `json:"input_schema"`
 }
 
-func (tp *ToolParameter[T1, T2]) Copy() *ToolParameter[T1, T2] {
-	tool_parameter := new(ToolParameter[T1, T2])
+func (tp *ToolParameter) Copy() *ToolParameter {
+	tool_parameter := new(ToolParameter)
 
 	tool_parameter.Name = tp.Name
 	tool_parameter.Label = commontypes.I18nObject{
@@ -320,16 +316,16 @@ func (tp *ToolParameter[T1, T2]) Copy() *ToolParameter[T1, T2] {
 	}
 	return tool_parameter
 }
-func (tp *ToolParameter[T1, T2]) init_frontend_parameter(value any) any {
+func (tp *ToolParameter) InitFrontendParameter(value any) any {
 	return pluginparameter.InitFrontendParameter(tp.PluginParameter, string(tp.Type), value)
 }
-func GetSimpleInstance[T1 float64 | int | string, T2 float64 | int](
+func GetSimpleInstance(
 	name string,
 	llm_description string,
 	param_type toolsenumtypes.ToolParameterType,
 	required bool,
 	options []string,
-) *ToolParameter[T1, T2] {
+) *ToolParameter {
 	// """
 	// get a simple tool parameter
 
@@ -354,8 +350,8 @@ func GetSimpleInstance[T1 float64 | int | string, T2 float64 | int](
 			},
 		})
 	}
-	return &ToolParameter[T1, T2]{
-		PluginParameter: &pluginparameter.PluginParameter[T1, T2]{
+	return &ToolParameter{
+		PluginParameter: &pluginparameter.PluginParameter{
 			Name: name,
 			Label: commontypes.I18nObject{
 				EnUS:   "",
@@ -458,31 +454,73 @@ func NewToolDescription(data any) *ToolDescription {
 	}
 }
 
-type ToolEntity[T1 float64 | int | string, T2 float64 | int] struct {
-	Identity             ToolIdentity             `json:"identity"`
-	Parameters           []*ToolParameter[T1, T2] `json:"parameters"`
-	Description          *ToolDescription         `json:"description"`
-	OutputSchema         map[string]any           `json:"output_schema"`
-	HasRuntimeParameters bool                     `json:"has_runtime_parameters"` //description="Whether the tool has runtime parameters")
+type ToolEntity struct {
+	Identity             ToolIdentity     `json:"identity"`
+	Parameters           []*ToolParameter `json:"parameters"`
+	Description          *ToolDescription `json:"description"`
+	OutputSchema         map[string]any   `json:"output_schema"`
+	HasRuntimeParameters bool             `json:"has_runtime_parameters"` //description="Whether the tool has runtime parameters")
 
 	// pydantic configs
 	ModelConfig map[string]any `json:"model_config"`
 }
-type OAuthSchema[T1 parameterenumtypes.AppSelectorScopeType | parameterenumtypes.ModelSelectorScopeType | parameterenumtypes.ToolSelectorScopeType, T2 int | string] struct {
-	ClientSchema      []providerentities.ProviderConfig[T1, T2] `json:"client_schema"`      //description="The schema of the OAuth client")
-	CredentialsSchema []providerentities.ProviderConfig[T1, T2] `json:"credentials_schema"` //description="The schema of the OAuth credentials"
+
+func NewToolEntity(data any) *ToolEntity {
+	tool_entity := new(ToolEntity)
+	if data == nil {
+		return tool_entity
+	}
+	if _, ok := data.(map[string]any); ok {
+		bindata, _ := json.Marshal(data.(map[string]any))
+		err := json.Unmarshal(bindata, tool_entity)
+		if err != nil {
+			mlog.Errorf("json unmarshal(%s) failed:%v", string(bindata), err)
+			panic(exceptions.NewValueError("new ToolEntity failed, because of provided invalid initial data"))
+		}
+		return tool_entity
+	} else if _, ok := data.(*ToolEntity); ok {
+		tool_entity.Identity = ToolIdentity{
+			Author:   data.(*ToolEntity).Identity.Author,
+			Name:     data.(*ToolEntity).Identity.Name,
+			Label:    data.(*ToolEntity).Identity.Label,
+			Provider: data.(*ToolEntity).Identity.Provider,
+			Icon:     data.(*ToolEntity).Identity.Icon,
+		}
+		tool_entity.Parameters = []*ToolParameter{}
+		for _, v := range data.(*ToolEntity).Parameters {
+			tool_entity.Parameters = append(tool_entity.Parameters, v.Copy())
+		}
+		if data.(*ToolEntity).Description != nil {
+			tool_entity.Description = &ToolDescription{
+				Human: data.(*ToolEntity).Description.Human,
+				LLM:   data.(*ToolEntity).Description.LLM,
+			}
+		}
+		maps.Copy(tool_entity.OutputSchema, data.(*ToolEntity).OutputSchema)
+		tool_entity.HasRuntimeParameters = data.(*ToolEntity).HasRuntimeParameters
+		maps.Copy(tool_entity.ModelConfig, data.(*ToolEntity).ModelConfig)
+		return tool_entity
+	} else {
+		mlog.Warningf("provaded initial data=%#v is unsupported", data)
+		return tool_entity
+	}
 }
 
-type ToolProviderEntity[T1 parameterenumtypes.AppSelectorScopeType | parameterenumtypes.ModelSelectorScopeType | parameterenumtypes.ToolSelectorScopeType, T2 int | string] struct {
-	Identity          ToolProviderIdentity                       `json:"identity"`
-	PluginID          string                                     `json:"plugin_id"`
-	CredentialsSchema []*providerentities.ProviderConfig[T1, T2] `json:"credentials_schema"`
-	OauthSchema       *OAuthSchema[T1, T2]                       `json:"oauth_schema"`
+type OAuthSchema struct {
+	ClientSchema      []providerentities.ProviderConfig `json:"client_schema"`      //description="The schema of the OAuth client")
+	CredentialsSchema []providerentities.ProviderConfig `json:"credentials_schema"` //description="The schema of the OAuth credentials"
 }
 
-type ToolProviderEntityWithPlugin[T1 parameterenumtypes.AppSelectorScopeType | parameterenumtypes.ModelSelectorScopeType | parameterenumtypes.ToolSelectorScopeType, T2 int | string, T3 float64 | int | string, T4 float64 | int] struct {
-	*ToolProviderEntity[T1, T2]
-	tools []*ToolEntity[T3, T4]
+type ToolProviderEntity struct {
+	Identity          ToolProviderIdentity               `json:"identity"`
+	PluginID          string                             `json:"plugin_id"`
+	CredentialsSchema []*providerentities.ProviderConfig `json:"credentials_schema"`
+	OauthSchema       *OAuthSchema                       `json:"oauth_schema"`
+}
+
+type ToolProviderEntityWithPlugin struct {
+	*ToolProviderEntity
+	Tools []*ToolEntity `json:"tools"`
 }
 
 type WorkflowToolParameterConfiguration struct {

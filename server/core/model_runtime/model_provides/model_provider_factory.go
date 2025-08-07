@@ -7,6 +7,7 @@ import (
 	_ "mlib.com/gofy/server/core/model_runtime/model_provides/tongyi"
 	schemavalidators "mlib.com/gofy/server/core/model_runtime/schema_validators"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	"mlib.com/gofy/server/global"
 	"mlib.com/mlog"
 )
@@ -28,7 +29,7 @@ func (factory *ModelProviderFactory) GetProviders() []*modelruntimeentities.Prov
 		// get provider schema
 		provider_schema := model_provider_instance.GetProviderSchema(provider_name)
 		for _, model_type := range provider_schema.SupportedModelTypes {
-			models := model_provider_instance.Models(model_provider_instance, modelruntimeentities.ModelType(model_type))
+			models := model_provider_instance.Models(model_provider_instance, modelruntimeenumtypes.ModelType(model_type))
 			if len(models) > 0 {
 				provider_schema.Models = append(provider_schema.Models, models...)
 			}
@@ -92,7 +93,7 @@ func (factory *ModelProviderFactory) ProviderCredentialsValidate(provider string
 }
 
 func (factory *ModelProviderFactory) ModelCredentialsValidate(
-	provider string, model_type modelruntimeentities.ModelType, model string, credentials map[string]any,
+	provider string, model_type modelruntimeenumtypes.ModelType, model string, credentials map[string]any,
 ) map[string]any {
 	/*
 	   Validate model credentials

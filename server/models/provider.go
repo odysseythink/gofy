@@ -3,31 +3,25 @@ package models
 import (
 	"time"
 
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-)
-
-type ProviderType string
-
-const (
-	Provider_CUSTOM ProviderType = "custom"
-	Provider_SYSTEM ProviderType = "system"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
+	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
 )
 
 // Provider [...]
 type Provider struct {
-	ID              string  `gorm:"column:id;type:varchar(36);not null" json:"id"`
-	TenantID        string  `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
-	Tenant          *Tenant `json:"tenant" form:"tenant" gorm:"foreignKey:TenantID;references:ID;"`
-	ProviderName    string  `gorm:"column:provider_name;type:varchar(255);not null" json:"provider_name"`
-	ProviderType    `gorm:"column:provider_type;type:varchar(40);default:custom" json:"provider_type"`
-	EncryptedConfig string     `gorm:"column:encrypted_config;type:text" json:"encrypted_config"`
-	IsValid         bool       `gorm:"column:is_valid;type:tinyint(1);not null;default:0" json:"is_valid"`
-	LastUsed        *time.Time `gorm:"column:last_used;type:timestamp" json:"last_used"`
-	QuotaType       string     `gorm:"column:quota_type;type:varchar(40);default:''" json:"quota_type"`
-	QuotaLimit      int64      `gorm:"column:quota_limit;type:bigint" json:"quota_limit"`
-	QuotaUsed       int64      `gorm:"column:quota_used;type:bigint" json:"quota_used"`
-	CreatedAt       *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt       *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+	ID                             string  `gorm:"column:id;type:varchar(36);not null" json:"id"`
+	TenantID                       string  `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
+	Tenant                         *Tenant `json:"tenant" form:"tenant" gorm:"foreignKey:TenantID;references:ID;"`
+	ProviderName                   string  `gorm:"column:provider_name;type:varchar(255);not null" json:"provider_name"`
+	providerenumtypes.ProviderType `gorm:"column:provider_type;type:varchar(40);default:custom" json:"provider_type"`
+	EncryptedConfig                string     `gorm:"column:encrypted_config;type:text" json:"encrypted_config"`
+	IsValid                        bool       `gorm:"column:is_valid;type:tinyint(1);not null;default:0" json:"is_valid"`
+	LastUsed                       *time.Time `gorm:"column:last_used;type:timestamp" json:"last_used"`
+	QuotaType                      string     `gorm:"column:quota_type;type:varchar(40);default:''" json:"quota_type"`
+	QuotaLimit                     int64      `gorm:"column:quota_limit;type:bigint" json:"quota_limit"`
+	QuotaUsed                      int64      `gorm:"column:quota_used;type:bigint" json:"quota_used"`
+	CreatedAt                      *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt                      *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
 
 // TableName get sql table name.获取数据库表名
@@ -45,7 +39,7 @@ func (p *Provider) IsEnabled() bool {
 	// """
 	// Returns True if the provider is enabled.
 	// """
-	if p.ProviderType == Provider_SYSTEM {
+	if p.ProviderType == providerenumtypes.Provider_SYSTEM {
 		return p.IsValid
 	} else {
 		return p.IsValid && p.TokenIsSet()
@@ -72,14 +66,14 @@ func (ProviderModel) TableName() string {
 
 // TenantDefaultModel [...]
 type TenantDefaultModel struct {
-	ID           string                         `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
-	TenantID     string                         `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
-	Tenant       *Tenant                        `json:"tenant" form:"tenant" gorm:"foreignKey:TenantID;references:ID;"`
-	ProviderName string                         `gorm:"column:provider_name;type:varchar(255);not null" json:"provider_name"`
-	ModelName    string                         `gorm:"column:model_name;type:varchar(255);not null" json:"model_name"`
-	ModelType    modelruntimeentities.ModelType `gorm:"column:model_type;type:varchar(40);not null" json:"model_type"`
-	CreatedAt    *time.Time                     `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt    *time.Time                     `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+	ID           string                          `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	TenantID     string                          `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
+	Tenant       *Tenant                         `json:"tenant" form:"tenant" gorm:"foreignKey:TenantID;references:ID;"`
+	ProviderName string                          `gorm:"column:provider_name;type:varchar(255);not null" json:"provider_name"`
+	ModelName    string                          `gorm:"column:model_name;type:varchar(255);not null" json:"model_name"`
+	ModelType    modelruntimeenumtypes.ModelType `gorm:"column:model_type;type:varchar(40);not null" json:"model_type"`
+	CreatedAt    *time.Time                      `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt    *time.Time                      `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
 
 // TableName get sql table name.获取数据库表名
@@ -89,12 +83,12 @@ func (TenantDefaultModel) TableName() string {
 
 // TenantPreferredModelProvider [...]
 type TenantPreferredModelProvider struct {
-	ID                    string       `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
-	TenantID              string       `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
-	ProviderName          string       `gorm:"column:provider_name;type:varchar(255);not null" json:"provider_name"`
-	PreferredProviderType ProviderType `gorm:"column:preferred_provider_type;type:varchar(40);not null" json:"preferred_provider_type"`
-	CreatedAt             *time.Time   `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt             *time.Time   `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+	ID                    string                         `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	TenantID              string                         `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
+	ProviderName          string                         `gorm:"column:provider_name;type:varchar(255);not null" json:"provider_name"`
+	PreferredProviderType providerenumtypes.ProviderType `gorm:"column:preferred_provider_type;type:varchar(40);not null" json:"preferred_provider_type"`
+	CreatedAt             *time.Time                     `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt             *time.Time                     `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
 
 // TableName get sql table name.获取数据库表名

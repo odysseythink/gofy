@@ -8,6 +8,9 @@ import (
 	"time"
 
 	"mlib.com/gofy/server/core/exceptions"
+	agententities "mlib.com/gofy/server/entities/agent"
+	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	toolsentities "mlib.com/gofy/server/entities/tools"
 	commontypes "mlib.com/gofy/server/types/common"
 	"mlib.com/mlog"
 )
@@ -62,7 +65,7 @@ type PluginResourceRequirements struct {
 		Storage *struct {
 			Enabled bool `json:"enabled"`
 			Size    int  `json:"size"` //(ge=1024, le=1073741824, default=1048576)
-		} `json:"endpoint"`
+		} `json:"storage"`
 	} `json:"permission"`
 }
 
@@ -82,13 +85,13 @@ type PluginDeclaration struct {
 		Models    []string `json:"models"`
 		Endpoints []string `json:"endpoints"`
 	} `json:"plugins"`
-	Tags          []string                     `json:"tags"`
-	Repo          string                       `json:"repo"`
-	Verified      bool                         `json:"verified"`
-	Tool          *ToolProviderEntity          `json:"tool"`
-	Model         *ProviderEntity              `json:"model"`
-	Endpoint      *EndpointProviderDeclaration `json:"endpoint"`
-	AgentStrategy *AgentStrategyProviderEntity `json:"agent_strategy"`
+	Tags          []string                                   `json:"tags"`
+	Repo          string                                     `json:"repo"`
+	Verified      bool                                       `json:"verified"`
+	Tool          *toolsentities.ToolProviderEntity          `json:"tool"`
+	Model         *modelruntimeentities.ProviderEntity       `json:"model"`
+	Endpoint      *EndpointProviderDeclaration               `json:"endpoint"`
+	AgentStrategy *agententities.AgentStrategyProviderEntity `json:"agent_strategy"`
 	Meta          struct {
 		MinimumDifyVersion string `json:"minimum_dify_version"` // pattern=r"^\d{1,4}(\.\d{1,4}){1,3}(-\w{1,16})?$")
 		Version            string `json:"version"`
@@ -125,7 +128,7 @@ type PluginInstallation struct {
 }
 
 type PluginEntity struct {
-	PluginInstallation
+	*PluginInstallation
 	Name           string `json:"name"`
 	InstallationID string `json:"installation_id"`
 	Version        string `json:"version"`

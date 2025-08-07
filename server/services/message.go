@@ -9,8 +9,8 @@ import (
 	modelmanager "mlib.com/gofy/server/core/manageres/model_manager"
 	"mlib.com/gofy/server/core/memory"
 	dbengine "mlib.com/gofy/server/db_engine"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	appenumtypes "mlib.com/gofy/server/enum_types/app"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	"mlib.com/gofy/server/models"
 	"mlib.com/mlog"
 )
@@ -79,7 +79,7 @@ func (service *MessageService[T]) GetSuggestedQuestionsAfterAnswer(
 		if !app_config.AdditionalFeatures.SuggestedQuestionsAfterAnswer {
 			panic(exceptions.NewSuggestedQuestionsAfterAnswerDisabledError(""))
 		}
-		model_instance = manageres.Instance.Model.GetDefaultModelInstance(app_model.TenantID, modelruntimeentities.Model_LLM)
+		model_instance = manageres.Instance.Model.GetDefaultModelInstance(app_model.TenantID, modelruntimeenumtypes.Model_LLM)
 	} else {
 		override_model_configs := conversation.OverrideModelConfigs()
 		var app_model_config *models.AppModelConfig
@@ -127,7 +127,7 @@ func (service *MessageService[T]) GetSuggestedQuestionsAfterAnswer(
 		model_instance = manageres.Instance.Model.GetModelInstance(
 			app_model.TenantID,
 			provider,
-			modelruntimeentities.Model_LLM,
+			modelruntimeenumtypes.Model_LLM,
 			model_name,
 		)
 	}

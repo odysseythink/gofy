@@ -2,7 +2,8 @@ package providermanager
 
 import (
 	coreentities "mlib.com/gofy/server/entities/core"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	modelentities "mlib.com/gofy/server/entities/model"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 )
 
 type ProviderConfigurationsManager struct {
@@ -11,9 +12,9 @@ type ProviderConfigurationsManager struct {
 func (mgr *ProviderConfigurationsManager) GetModels(
 	pcs *coreentities.ProviderConfigurations,
 	provider string,
-	model_type modelruntimeentities.ModelType,
+	model_type modelruntimeenumtypes.ModelType,
 	only_active bool,
-) []*coreentities.ModelWithProviderEntity {
+) []*modelentities.ModelWithProviderEntity {
 	/*
 		Get available models.
 
@@ -43,7 +44,7 @@ func (mgr *ProviderConfigurationsManager) GetModels(
 		:param only_active: only active models
 		:return:
 	*/
-	all_models := []*coreentities.ModelWithProviderEntity{}
+	all_models := []*modelentities.ModelWithProviderEntity{}
 	for _, provider_configuration := range pcs.Configurations {
 		if provider != "" && provider_configuration.Provider.Provider != provider {
 			continue

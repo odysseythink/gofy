@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Plugins_FetchPreferences_FullMethodName = "/pbapi.plugins/FetchPreferences"
+	Plugins_FetchPreferences_FullMethodName  = "/pbapi.plugins/FetchPreferences"
+	Plugins_FetchInstallTasks_FullMethodName = "/pbapi.plugins/FetchInstallTasks"
 )
 
 // PluginsClient is the client API for Plugins service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PluginsClient interface {
 	FetchPreferences(ctx context.Context, in *FetchPreferencesRequest, opts ...grpc.CallOption) (*FetchPreferencesReply, error)
+	FetchInstallTasks(ctx context.Context, in *FetchInstallTasksRequest, opts ...grpc.CallOption) (*FetchInstallTasksReply, error)
 }
 
 type pluginsClient struct {
@@ -47,11 +49,22 @@ func (c *pluginsClient) FetchPreferences(ctx context.Context, in *FetchPreferenc
 	return out, nil
 }
 
+func (c *pluginsClient) FetchInstallTasks(ctx context.Context, in *FetchInstallTasksRequest, opts ...grpc.CallOption) (*FetchInstallTasksReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FetchInstallTasksReply)
+	err := c.cc.Invoke(ctx, Plugins_FetchInstallTasks_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PluginsServer is the server API for Plugins service.
 // All implementations must embed UnimplementedPluginsServer
 // for forward compatibility.
 type PluginsServer interface {
 	FetchPreferences(context.Context, *FetchPreferencesRequest) (*FetchPreferencesReply, error)
+	FetchInstallTasks(context.Context, *FetchInstallTasksRequest) (*FetchInstallTasksReply, error)
 	mustEmbedUnimplementedPluginsServer()
 }
 
@@ -64,6 +77,9 @@ type UnimplementedPluginsServer struct{}
 
 func (UnimplementedPluginsServer) FetchPreferences(context.Context, *FetchPreferencesRequest) (*FetchPreferencesReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FetchPreferences not implemented")
+}
+func (UnimplementedPluginsServer) FetchInstallTasks(context.Context, *FetchInstallTasksRequest) (*FetchInstallTasksReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FetchInstallTasks not implemented")
 }
 func (UnimplementedPluginsServer) mustEmbedUnimplementedPluginsServer() {}
 func (UnimplementedPluginsServer) testEmbeddedByValue()                 {}
@@ -107,6 +123,24 @@ func _Plugins_FetchPreferences_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Plugins_FetchInstallTasks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FetchInstallTasksRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PluginsServer).FetchInstallTasks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Plugins_FetchInstallTasks_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PluginsServer).FetchInstallTasks(ctx, req.(*FetchInstallTasksRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Plugins_ServiceDesc is the grpc.ServiceDesc for Plugins service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -117,6 +151,10 @@ var Plugins_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FetchPreferences",
 			Handler:    _Plugins_FetchPreferences_Handler,
+		},
+		{
+			MethodName: "FetchInstallTasks",
+			Handler:    _Plugins_FetchInstallTasks_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

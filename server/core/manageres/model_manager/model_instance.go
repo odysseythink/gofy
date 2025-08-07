@@ -10,7 +10,9 @@ import (
 	modelruntimeexceptions "mlib.com/gofy/server/core/exceptions/model_runtime"
 	coreentities "mlib.com/gofy/server/entities/core"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	"mlib.com/gofy/server/models"
+	providerentities "mlib.com/gofy/server/entities/provider"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
+	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
 	"mlib.com/mlog"
 )
 
@@ -58,7 +60,7 @@ func (mi *ModelInstance) _fetch_credentials_from_bundle(provider_model_bundle *c
 
 }
 func (mi *ModelInstance) _get_load_balancing_manager(
-	configuration *coreentities.ProviderConfiguration, model_type modelruntimeentities.ModelType, model string, credentials map[string]any,
+	configuration *coreentities.ProviderConfiguration, model_type modelruntimeenumtypes.ModelType, model string, credentials map[string]any,
 ) *LBModelManager {
 	/*
 		Get load balancing model credentials
@@ -68,8 +70,8 @@ func (mi *ModelInstance) _get_load_balancing_manager(
 		:param credentials: model credentials
 		:return:
 	*/
-	if len(configuration.ModelSettings) > 0 && configuration.UsingProviderType == models.Provider_CUSTOM {
-		var current_model_setting *coreentities.ModelSetting
+	if len(configuration.ModelSettings) > 0 && configuration.UsingProviderType == providerenumtypes.Provider_CUSTOM {
+		var current_model_setting *providerentities.ModelSetting
 		// check if model is disabled by admin
 		for _, model_setting := range configuration.ModelSettings {
 			if model_setting.ModelType == model_type && model_setting.Model == model {

@@ -10,6 +10,7 @@ import (
 	modelmanager "mlib.com/gofy/server/core/manageres/model_manager"
 	dbengine "mlib.com/gofy/server/db_engine"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/utils"
 	"mlib.com/mlog"
@@ -20,7 +21,7 @@ func GetMaxLLMContextTokens(
 ) int {
 	model_instance := (&modelmanager.ModelManager{}).GetDefaultModelInstance(
 		tenant_id,
-		modelruntimeentities.Model_LLM,
+		modelruntimeenumtypes.Model_LLM,
 	)
 
 	if model_instance == nil {
@@ -35,9 +36,9 @@ func GetMaxLLMContextTokens(
 	}
 
 	max_tokens := 0
-	if _, ok := schema.ModelProperties[modelruntimeentities.ModelPropertyKey_CONTEXT_SIZE]; ok {
-		if _, ok := schema.ModelProperties[modelruntimeentities.ModelPropertyKey_CONTEXT_SIZE].(int); ok {
-			max_tokens = schema.ModelProperties[modelruntimeentities.ModelPropertyKey_CONTEXT_SIZE].(int)
+	if _, ok := schema.ModelProperties[modelruntimeenumtypes.ModelPropertyKey_CONTEXT_SIZE]; ok {
+		if _, ok := schema.ModelProperties[modelruntimeenumtypes.ModelPropertyKey_CONTEXT_SIZE].(int); ok {
+			max_tokens = schema.ModelProperties[modelruntimeenumtypes.ModelPropertyKey_CONTEXT_SIZE].(int)
 		}
 	}
 	if max_tokens <= 0 {
@@ -49,7 +50,7 @@ func CalculateTokens(tenant_id string, prompt_messages []modelruntimeentities.Pr
 	// get model instance
 	model_instance := (&modelmanager.ModelManager{}).GetDefaultModelInstance(
 		tenant_id,
-		modelruntimeentities.Model_LLM,
+		modelruntimeenumtypes.Model_LLM,
 	)
 
 	if model_instance == nil {
@@ -66,7 +67,7 @@ func Invoke(
 	// get model manager
 	model_instance := (&modelmanager.ModelManager{}).GetDefaultModelInstance(
 		tenant_id,
-		modelruntimeentities.Model_LLM,
+		modelruntimeenumtypes.Model_LLM,
 	)
 	if model_instance == nil {
 		panic(toolsexceptions.NewInvokeModelError("Model not found"))

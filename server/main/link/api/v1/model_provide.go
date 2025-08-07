@@ -7,8 +7,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"mlib.com/gofy/server/cluster"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	servicesentities "mlib.com/gofy/server/entities/services"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/models/response"
 	"mlib.com/gofy/server/proto/pbapi"
@@ -5960,7 +5960,7 @@ func (api *ModelProvideApi) ProviderList(c *gin.Context) {
 	acc := rawuser.(*models.Account)
 	model_type := c.Query("model_type")
 	if model_type != "" {
-		if !modelruntimeentities.ModelType(model_type).Valid() {
+		if !modelruntimeenumtypes.ModelType(model_type).Valid() {
 			mlog.Errorf("model_type=%s is invalid", model_type)
 			response.InvalidArgErrorWithDetail(c, fmt.Sprintf("model_type=%s is invalid", model_type))
 			return

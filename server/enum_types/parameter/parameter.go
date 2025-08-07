@@ -37,6 +37,13 @@ const (
 	AppSelectorScope_COMPLETION AppSelectorScopeType = "completion"
 )
 
+func (scope AppSelectorScopeType) Valid() bool {
+	return scope == AppSelectorScope_ALL ||
+		scope == AppSelectorScope_CHAT ||
+		scope == AppSelectorScope_WORKFLOW ||
+		scope == AppSelectorScope_COMPLETION
+}
+
 type ModelSelectorScopeType string
 
 const (
@@ -49,6 +56,16 @@ const (
 	ModelSelectorScope_VISION         ModelSelectorScopeType = "vision"
 )
 
+func (scope ModelSelectorScopeType) Valid() bool {
+	return scope == ModelSelectorScope_LLM ||
+		scope == ModelSelectorScope_TEXT_EMBEDDING ||
+		scope == ModelSelectorScope_RERANK ||
+		scope == ModelSelectorScope_TTS ||
+		scope == ModelSelectorScope_SPEECH2TEXT ||
+		scope == ModelSelectorScope_MODERATION ||
+		scope == ModelSelectorScope_VISION
+}
+
 type ToolSelectorScopeType string
 
 const (
@@ -57,3 +74,10 @@ const (
 	ToolSelectorScope_BUILTIN  ToolSelectorScopeType = "builtin"
 	ToolSelectorScope_WORKFLOW ToolSelectorScopeType = "workflow"
 )
+
+func (scope ToolSelectorScopeType) Valid() bool {
+	return scope == ToolSelectorScope_ALL ||
+		scope == ToolSelectorScope_CUSTOM ||
+		scope == ToolSelectorScope_BUILTIN ||
+		scope == ToolSelectorScope_WORKFLOW
+}

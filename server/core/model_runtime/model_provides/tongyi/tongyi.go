@@ -4,6 +4,7 @@ import (
 	"mlib.com/gofy/server/core/model_runtime/model_provides/base"
 	"mlib.com/gofy/server/core/model_runtime/model_provides/tongyi/llm"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	"mlib.com/gofy/server/global"
 )
 
@@ -30,7 +31,7 @@ func (provider *TongyiProvide) ValidateProviderCredentials(credentials map[strin
 	   :param credentials: provider credentials, credentials form defined in `provider_credential_schema`.
 	*/
 	// try:
-	model_instance := provider.GetModelInstance(modelruntimeentities.Model_LLM)
+	model_instance := provider.GetModelInstance(modelruntimeenumtypes.Model_LLM)
 
 	// Use `qwen-turbo` model for validate,
 	model_instance.ValidateCredentials("qwen-turbo", credentials)
@@ -42,7 +43,7 @@ func (provider *TongyiProvide) ValidateProviderCredentials(credentials map[strin
 	//     raise ex
 }
 
-func (provider *TongyiProvide) GetModelInstance(model_type modelruntimeentities.ModelType) modelruntimeentities.AIModeler {
+func (provider *TongyiProvide) GetModelInstance(model_type modelruntimeenumtypes.ModelType) modelruntimeentities.AIModeler {
 	/*
 	   Get model instance
 	   :param model_type: model type defined in `ModelType`
@@ -51,11 +52,11 @@ func (provider *TongyiProvide) GetModelInstance(model_type modelruntimeentities.
 	// get dirname of the current path
 
 	switch model_type {
-	case modelruntimeentities.Model_LLM:
+	case modelruntimeenumtypes.Model_LLM:
 		return &llm.TongyiLargeLanguageModel{
 			LargeLanguageModel: &base.LargeLanguageModel{
 				BaseAIModel: &base.BaseAIModel{
-					ModeType: modelruntimeentities.Model_LLM,
+					ModeType: modelruntimeenumtypes.Model_LLM,
 				},
 			},
 		}

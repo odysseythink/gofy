@@ -15,7 +15,7 @@ import (
 	modelmanager "mlib.com/gofy/server/core/manageres/model_manager"
 	dbengine "mlib.com/gofy/server/db_engine"
 	agententities "mlib.com/gofy/server/entities/agent"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	"mlib.com/gofy/server/events"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/models/request"
@@ -367,7 +367,7 @@ func (s *AppService) CreateApp(tenant_id string, in *pbapi.CreateAppRequest, acc
 
 				}()
 				return manageres.Instance.Model.GetDefaultModelInstance(
-					tenant_id, modelruntimeentities.Model_LLM,
+					tenant_id, modelruntimeenumtypes.Model_LLM,
 				)
 			}(account.CurrentTenantID())
 			default_model_dict := map[string]any{}
@@ -405,13 +405,13 @@ func (s *AppService) CreateApp(tenant_id string, in *pbapi.CreateAppRequest, acc
 					default_model_dict = map[string]any{
 						"provider":          model_instance.Provider,
 						"name":              model_instance.Model,
-						"mode":              model_schema.ModelProperties[modelruntimeentities.ModelPropertyKey_MODE],
+						"mode":              model_schema.ModelProperties[modelruntimeenumtypes.ModelPropertyKey_MODE],
 						"completion_params": map[string]any{},
 					}
 				}
 			} else {
 				provider, model := manageres.Instance.Model.GetDefaultProviderModelName(
-					account.CurrentTenantID(), modelruntimeentities.Model_LLM,
+					account.CurrentTenantID(), modelruntimeenumtypes.Model_LLM,
 				)
 				if default_model_dict == nil {
 					default_model_dict = make(map[string]any)

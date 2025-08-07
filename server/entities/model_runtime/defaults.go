@@ -1,8 +1,12 @@
 package modelruntime
 
+import (
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
+)
+
 var (
-	PARAMETER_RULE_TEMPLATE = map[DefaultParameterName]map[string]any{
-		DefaultParameterName_TEMPERATURE: {
+	PARAMETER_RULE_TEMPLATE = map[modelruntimeenumtypes.DefaultParameterNameType]map[string]any{
+		modelruntimeenumtypes.DefaultParameterName_TEMPERATURE: {
 			"label": map[string]any{
 				"en_US":   "Temperature",
 				"zh_Hans": "温度",
@@ -20,7 +24,7 @@ var (
 			"max":       1.0,
 			"precision": 2,
 		},
-		DefaultParameterName_TOP_P: {
+		modelruntimeenumtypes.DefaultParameterName_TOP_P: {
 			"label": map[string]any{
 				"en_US":   "Top P",
 				"zh_Hans": "Top P",
@@ -36,7 +40,7 @@ var (
 			"max":       1.0,
 			"precision": 2,
 		},
-		DefaultParameterName_TOP_K: {
+		modelruntimeenumtypes.DefaultParameterName_TOP_K: {
 			"label": map[string]any{
 				"en_US":   "Top K",
 				"zh_Hans": "Top K",
@@ -52,7 +56,7 @@ var (
 			"max":       100,
 			"precision": 0,
 		},
-		DefaultParameterName_PRESENCE_PENALTY: {
+		modelruntimeenumtypes.DefaultParameterName_PRESENCE_PENALTY: {
 			"label": map[string]any{
 				"en_US":   "Presence Penalty",
 				"zh_Hans": "存在惩罚",
@@ -68,7 +72,7 @@ var (
 			"max":       1.0,
 			"precision": 2,
 		},
-		DefaultParameterName_FREQUENCY_PENALTY: {
+		modelruntimeenumtypes.DefaultParameterName_FREQUENCY_PENALTY: {
 			"label": map[string]any{
 				"en_US":   "Frequency Penalty",
 				"zh_Hans": "频率惩罚",
@@ -84,7 +88,7 @@ var (
 			"max":       1.0,
 			"precision": 2,
 		},
-		DefaultParameterName_MAX_TOKENS: {
+		modelruntimeenumtypes.DefaultParameterName_MAX_TOKENS: {
 			"label": map[string]any{
 				"en_US":   "Max Tokens",
 				"zh_Hans": "最大标记",
@@ -100,7 +104,7 @@ var (
 			"max":       2048,
 			"precision": 0,
 		},
-		DefaultParameterName_RESPONSE_FORMAT: {
+		modelruntimeenumtypes.DefaultParameterName_RESPONSE_FORMAT: {
 			"label": map[string]any{
 				"en_US":   "Response Format",
 				"zh_Hans": "回复格式",
@@ -113,7 +117,7 @@ var (
 			"required": false,
 			"options":  []string{"JSON", "XML"},
 		},
-		DefaultParameterName_JSON_SCHEMA: {
+		modelruntimeenumtypes.DefaultParameterName_JSON_SCHEMA: {
 			"label": map[string]any{
 				"en_US": "JSON Schema",
 			},

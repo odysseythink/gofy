@@ -1,9 +1,10 @@
-package tool
+package builtintool
 
 import (
 	"strings"
 
 	"mlib.com/gofy/server/core/exceptions"
+	"mlib.com/gofy/server/core/tools/base"
 	modelinvocationutils "mlib.com/gofy/server/core/tools/utils/model_invocation_utils"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	toolsenumtypes "mlib.com/gofy/server/enum_types/tools"
@@ -18,36 +19,47 @@ Please summarize the text you got.`
 )
 
 type BuiltinTool struct {
-	*Tool
+	*base.Tool
+	Provider string `json:"provider"`
 }
 
 func (t *BuiltinTool) ToolProviderType() toolsenumtypes.ToolProviderType {
 	return toolsenumtypes.ToolProvider_BUILT_IN
 }
+
+//	func (t *BuiltinTool) ForkToolRuntime(runtime *base.ToolRuntime) *base.Tooler {
+//		return &BuiltinTool{
+//			Tool: &base.Tool{
+//				Entity:  toolsentities.NewToolEntity(t.Tool.Entity),
+//				Runtime: base.NewToolRuntime(t.Tool.Runtime),
+//			},
+//			Provider: t.Provider,
+//		}
+//	}
 func (t *BuiltinTool) InvokeModel(user_id string, prompt_messages []modelruntimeentities.PromptMessager, stop []string) *modelruntimeentities.LLMResult {
 	// invoke model
-	if t.Runtime == nil || t.Identity == nil {
-		panic(exceptions.NewValueError("runtime and identity are required"))
+	if t.Tool == nil || t.Tool.Runtime == nil || t.Tool.Entity == nil {
+		panic(exceptions.NewValueError("runtime and Entity are required"))
 	}
 	return modelinvocationutils.Invoke(
 		user_id,
-		t.Runtime.TenantID,
+		t.Tool.Runtime.TenantID,
 		"builtin",
-		t.Identity.Name,
+		t.Entity.Identity.Name,
 		prompt_messages,
 	)
 }
 func (t *BuiltinTool) GetMaxTokens() int {
-	if t.Runtime == nil {
+	if t.Tool.Runtime == nil {
 		panic(exceptions.NewValueError("runtime is required"))
 	}
-	return modelinvocationutils.GetMaxLLMContextTokens(t.Runtime.TenantID)
+	return modelinvocationutils.GetMaxLLMContextTokens(t.Tool.Runtime.TenantID)
 }
 func (t *BuiltinTool) GetPromptTokens(prompt_messages []modelruntimeentities.PromptMessager) int {
-	if t.Runtime == nil {
+	if t.Tool.Runtime == nil {
 		panic(exceptions.NewValueError("runtime is required"))
 	}
-	return modelinvocationutils.CalculateTokens(t.Runtime.TenantID, prompt_messages)
+	return modelinvocationutils.CalculateTokens(t.Tool.Runtime.TenantID, prompt_messages)
 }
 
 func (t *BuiltinTool) _summary_get_prompt_tokens(content string) int {

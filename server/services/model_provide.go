@@ -6,10 +6,11 @@ import (
 
 	"mlib.com/gofy/server/core/exceptions"
 	providermanager "mlib.com/gofy/server/core/manageres/provider_manager"
-	coreentities "mlib.com/gofy/server/entities/core"
+	modelentities "mlib.com/gofy/server/entities/model"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	servicesentities "mlib.com/gofy/server/entities/services"
 	coreenumtypes "mlib.com/gofy/server/enum_types/core"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	"mlib.com/gofy/server/models"
 	"mlib.com/mlog"
 )
@@ -31,7 +32,7 @@ func (s *ModelProvideService) GetModelsByProvider(tenant_id, provider string) []
 	// Get all provider configurations of the current workspace
 	provider_configurations := (&providermanager.ProviderManager{}).GetConfigurations(tenant_id)
 	// get available models from provider_configurations
-	available_models := (&providermanager.ProviderConfigurationsManager{}).GetModels(provider_configurations, provider, modelruntimeentities.ModelType(""), false)
+	available_models := (&providermanager.ProviderConfigurationsManager{}).GetModels(provider_configurations, provider, modelruntimeenumtypes.ModelType(""), false)
 
 	res := []*servicesentities.ModelWithProviderEntityResponse{}
 	for _, model := range available_models {
@@ -44,7 +45,7 @@ func (s *ModelProvideService) GetModelsByProvider(tenant_id, provider string) []
 	return res
 }
 
-func (s *ModelProvideService) GetModelsByModelType(tenant_id string, model_type modelruntimeentities.ModelType) []*servicesentities.ProviderWithModelsResponse {
+func (s *ModelProvideService) GetModelsByModelType(tenant_id string, model_type modelruntimeenumtypes.ModelType) []*servicesentities.ProviderWithModelsResponse {
 	/*
 		get models by model type.
 
@@ -58,10 +59,10 @@ func (s *ModelProvideService) GetModelsByModelType(tenant_id string, model_type 
 	available_models := (&providermanager.ProviderConfigurationsManager{}).GetModels(provider_configurations, "", model_type, false)
 
 	// Group models by provider
-	provider_models := map[string][]*coreentities.ModelWithProviderEntity{}
+	provider_models := map[string][]*modelentities.ModelWithProviderEntity{}
 	for _, model := range available_models {
 		if _, ok := provider_models[model.Provider.Provider]; !ok {
-			provider_models[model.Provider.Provider] = make([]*coreentities.ModelWithProviderEntity, 0)
+			provider_models[model.Provider.Provider] = make([]*modelentities.ModelWithProviderEntity, 0)
 		}
 		if model.Deprecated {
 			continue
@@ -85,8 +86,8 @@ func (s *ModelProvideService) GetModelsByModelType(tenant_id string, model_type 
 			IconSmall: first_model.Provider.IconSmall,
 			IconLarge: first_model.Provider.IconLarge,
 			Status:    servicesentities.CustomConfigurationStatus_ACTIVE,
-			Models:    make([]*coreentities.ProviderModelWithStatusEntity, 0),
-			// Models:[]*coreentities.ProviderModelWithStatusEntity{
+			Models:    make([]*modelentities.ProviderModelWithStatusEntity, 0),
+			// Models:[]*modelentities.ProviderModelWithStatusEntity{
 			//
 			// 		ProviderModel: &modelruntimeentities.ProviderModel{
 
@@ -97,7 +98,7 @@ func (s *ModelProvideService) GetModelsByModelType(tenant_id string, model_type 
 			// 	},
 		}
 		for _, model := range models {
-			rsp.Models = append(rsp.Models, &coreentities.ProviderModelWithStatusEntity{
+			rsp.Models = append(rsp.Models, &modelentities.ProviderModelWithStatusEntity{
 				ProviderModel: &modelruntimeentities.ProviderModel{
 					Model:           model.Model,
 					Label:           model.Label,
@@ -122,7 +123,7 @@ get default model of model type.
 :param model_type: model type
 :return:
 */
-func (s *ModelProvideService) GetDefaultModelOfModelType(tenant_id string, model_type modelruntimeentities.ModelType) *servicesentities.DefaultModelResponse {
+func (s *ModelProvideService) GetDefaultModelOfModelType(tenant_id string, model_type modelruntimeenumtypes.ModelType) *servicesentities.DefaultModelResponse {
 	result := (&providermanager.ProviderManager{}).GetDefaultModel(tenant_id, model_type)
 	if result == nil {
 		return nil
@@ -142,7 +143,7 @@ func (s *ModelProvideService) GetDefaultModelOfModelType(tenant_id string, model
 	}
 }
 
-func (s *ModelProvideService) GetProviderList(tenant_id string, model_type modelruntimeentities.ModelType) []*servicesentities.ProviderResponse {
+func (s *ModelProvideService) GetProviderList(tenant_id string, model_type modelruntimeenumtypes.ModelType) []*servicesentities.ProviderResponse {
 	/*
 		get provider list.
 
@@ -156,7 +157,7 @@ func (s *ModelProvideService) GetProviderList(tenant_id string, model_type model
 	provider_responses := []*servicesentities.ProviderResponse{}
 	for _, provider_configuration := range provider_configurations.Configurations {
 		if model_type != "" {
-			model_type_entity := modelruntimeentities.ModelType(model_type)
+			model_type_entity := modelruntimeenumtypes.ModelType(model_type)
 			if !slices.Contains(provider_configuration.Provider.SupportedModelTypes, model_type_entity) {
 				continue
 			}
@@ -197,7 +198,7 @@ func (s *ModelProvideService) GetProviderList(tenant_id string, model_type model
 }
 
 func (s *ModelProvideService) SaveModelCredentials(
-	tenant_id string, provider string, model_type modelruntimeentities.ModelType, model string, credentials map[string]any,
+	tenant_id string, provider string, model_type modelruntimeenumtypes.ModelType, model string, credentials map[string]any,
 ) error {
 	/*
 	   save model credentials.
@@ -217,7 +218,7 @@ func (s *ModelProvideService) SaveModelCredentials(
 	)
 }
 
-func (s *ModelProvideService) RemoveModelCredentials(tenant_id string, provider string, model_type modelruntimeentities.ModelType, model string) error {
+func (s *ModelProvideService) RemoveModelCredentials(tenant_id string, provider string, model_type modelruntimeenumtypes.ModelType, model string) error {
 	/*
 	   remove model credentials.
 
@@ -283,7 +284,7 @@ func (s *ModelProvideService) RemoveProviderCredentials(tenant_id string, provid
 	return ServiceGroupApp.ProviderConfiguration.DeleteCustomCredentialsByTenantAndProvider(tenant_id, provider)
 }
 
-func (s *ModelProvideService) UpdateDefaultModelOfModelType(tenant_id string, provider string, model string, model_type modelruntimeentities.ModelType) *models.TenantDefaultModel {
+func (s *ModelProvideService) UpdateDefaultModelOfModelType(tenant_id string, provider string, model string, model_type modelruntimeenumtypes.ModelType) *models.TenantDefaultModel {
 	/*
 	   update default model of model type.
 
@@ -320,12 +321,12 @@ func (s *ModelProvideService) GetModelParameterRules(tenant_id string, provider 
 	provider_configuration := provider_configurations.Configurations[provider]
 
 	// Get model instance of LLM
-	tmp_model_type_instance := (&providermanager.ProviderConfigurationManager{}).GetModelTypeInstance(provider_configuration, modelruntimeentities.Model_LLM)
+	tmp_model_type_instance := (&providermanager.ProviderConfigurationManager{}).GetModelTypeInstance(provider_configuration, modelruntimeenumtypes.Model_LLM)
 
 	model_type_instance := tmp_model_type_instance.(modelruntimeentities.LargeLanguageModeler)
 
 	// fetch credentials
-	credentials := provider_configuration.GetCurrentCredentials(modelruntimeentities.Model_LLM, model)
+	credentials := provider_configuration.GetCurrentCredentials(modelruntimeenumtypes.Model_LLM, model)
 
 	if len(credentials) == 0 {
 		return nil
@@ -359,7 +360,7 @@ func (s *ModelProvideService) EnableModel(tenant_id string, provider string, mod
 
 	provider_configuration := provider_configurations.Configurations[provider]
 	// Enable model
-	provider_configuration.EnableModel(modelruntimeentities.ModelType(model_type), model)
+	provider_configuration.EnableModel(modelruntimeenumtypes.ModelType(model_type), model)
 }
 func (s *ModelProvideService) DisableModel(tenant_id string, provider string, model string, model_type string) {
 	/*
@@ -384,5 +385,5 @@ func (s *ModelProvideService) DisableModel(tenant_id string, provider string, mo
 	}
 	provider_configuration := provider_configurations.Configurations[provider]
 	// Enable model
-	provider_configuration.DisableModel(modelruntimeentities.ModelType(model_type), model)
+	provider_configuration.DisableModel(modelruntimeenumtypes.ModelType(model_type), model)
 }

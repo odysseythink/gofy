@@ -25,6 +25,7 @@ import (
 	qcfnodesentities "mlib.com/gofy/server/entities/nodes/question_classifier"
 	promptentities "mlib.com/gofy/server/entities/prompt"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 	workflowenumtypes "mlib.com/gofy/server/enum_types/workflow"
 	"mlib.com/gofy/server/models"
@@ -278,8 +279,8 @@ func (n *QuestionClassifierNode) _calculate_rest_token(
 
 	rest_tokens := 2000
 
-	if _, ok := model_config.ModelSchema.ModelProperties[modelruntimeentities.ModelPropertyKey_CONTEXT_SIZE]; ok {
-		if model_context_tokens, ok := model_config.ModelSchema.ModelProperties[modelruntimeentities.ModelPropertyKey_CONTEXT_SIZE].(int); ok {
+	if _, ok := model_config.ModelSchema.ModelProperties[modelruntimeenumtypes.ModelPropertyKey_CONTEXT_SIZE]; ok {
+		if model_context_tokens, ok := model_config.ModelSchema.ModelProperties[modelruntimeenumtypes.ModelPropertyKey_CONTEXT_SIZE].(int); ok {
 			model_instance := modelmanager.NewModelInstance(
 				model_config.ProviderModelBundle, model_config.Model,
 			)

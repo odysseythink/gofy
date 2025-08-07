@@ -1,6 +1,9 @@
 package provider
 
 import (
+	"encoding/json"
+	"errors"
+
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	parameterenumtypes "mlib.com/gofy/server/enum_types/parameter"
 	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
@@ -85,12 +88,12 @@ type BasicProviderConfig struct {
 	Type providerenumtypes.BasicProviderConfigType `json:"type"` //description="The type of the credentials")
 	Name string                                    `json:"name"` //description="The name of the credentials")
 }
-type ProviderConfig[T1 parameterenumtypes.AppSelectorScopeType | parameterenumtypes.ModelSelectorScopeType | parameterenumtypes.ToolSelectorScopeType, T2 int | string] struct {
+type ProviderConfig struct {
 	*BasicProviderConfig
 
-	Scope    T1   `json:"scope"`
-	Required bool `json:"required"`
-	Default  T2   `json:"default"`
+	Scope    string `json:"scope"` //parameterenumtypes.AppSelectorScopeType | parameterenumtypes.ModelSelectorScopeType | parameterenumtypes.ToolSelectorScopeType
+	Required bool   `json:"required"`
+	Default  any    `json:"default"` //int | string
 	Options  []struct {
 		Value string                 `json:"value"` //description="The value of the option")
 		Label commontypes.I18nObject `json:"label"` //description="The label of the option")
@@ -101,6 +104,33 @@ type ProviderConfig[T1 parameterenumtypes.AppSelectorScopeType | parameterenumty
 	Placeholder *commontypes.I18nObject `json:"placeholder"`
 }
 
-func (pc *ProviderConfig[T1, T2]) ToBasicProviderConfig() *BasicProviderConfig {
+func (pc *ProviderConfig) ToBasicProviderConfig() *BasicProviderConfig {
 	return &BasicProviderConfig{Type: pc.Type, Name: pc.Name}
+}
+
+func (cfg *ProviderConfig) UnmarshalJSON(data []byte) error {
+	type alias ProviderConfig
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(cfg), // 把原始对象嵌进去，避免递归
+	}
+
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return err
+	}
+
+	if !parameterenumtypes.AppSelectorScopeType(aux.alias.Scope).Valid() &&
+		parameterenumtypes.ModelSelectorScopeType(aux.alias.Scope).Valid() &&
+		parameterenumtypes.ToolSelectorScopeType(aux.alias.Scope).Valid() {
+		return errors.New("scope field must be parameterenumtypes.AppSelectorScopeType, parameterenumtypes.ModelSelectorScopeType or parameterenumtypes.ToolSelectorScopeType")
+	}
+	switch aux.alias.Default.(type) {
+	case int:
+	case string:
+	default:
+		return errors.New("type of default field must be string or int")
+	}
+
+	return nil
 }

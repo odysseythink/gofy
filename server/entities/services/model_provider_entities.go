@@ -5,9 +5,11 @@ import (
 	"fmt"
 
 	"github.com/spf13/viper"
-	coreentities "mlib.com/gofy/server/entities/core"
+	modelentities "mlib.com/gofy/server/entities/model"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	"mlib.com/gofy/server/models"
+	providerentities "mlib.com/gofy/server/entities/provider"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
+	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
 	commontypes "mlib.com/gofy/server/types/common"
 	"mlib.com/mlog"
 )
@@ -27,9 +29,9 @@ type CustomConfigurationResponse struct {
 
 // SystemConfigurationResponse represents the response for system configuration.
 type SystemConfigurationResponse struct {
-	Enabled             bool                               `json:"enabled" yaml:"enabled"`
-	CurrentQuotaType    models.ProviderQuotaType           `json:"current_quota_type" yaml:"current_quota_type"` // Assuming ProviderQuotaType is a string
-	QuotaConfigurations []*coreentities.QuotaConfiguration `json:"quota_configurations" yaml:"quota_configurations"`
+	Enabled             bool                                   `json:"enabled" yaml:"enabled"`
+	CurrentQuotaType    providerenumtypes.ProviderQuotaType    `json:"current_quota_type" yaml:"current_quota_type"` // Assuming ProviderQuotaType is a string
+	QuotaConfigurations []*providerentities.QuotaConfiguration `json:"quota_configurations" yaml:"quota_configurations"`
 }
 
 // ProviderResponse represents the response for a provider.
@@ -41,11 +43,11 @@ type ProviderResponse struct {
 	IconLarge                *commontypes.I18nObject                        `json:"icon_large" yaml:"icon_large"`
 	Background               string                                         `json:"background" yaml:"background"`
 	Help                     *modelruntimeentities.ProviderHelpEntity       `json:"help" yaml:"help"`
-	SupportedModelTypes      []modelruntimeentities.ModelType               `json:"supported_model_types" yaml:"supported_model_types"`           // Assuming ModelType is a string
+	SupportedModelTypes      []modelruntimeenumtypes.ModelType              `json:"supported_model_types" yaml:"supported_model_types"`           // Assuming ModelType is a string
 	ConfigurateMethods       []modelruntimeentities.ConfigurateMethod       `json:"configurate_methods" yaml:"configurate_methods"`               // Assuming ConfigurateMethod is a string
 	ProviderCredentialSchema *modelruntimeentities.ProviderCredentialSchema `json:"provider_credential_schema" yaml:"provider_credential_schema"` // Assuming ProviderCredentialSchema is a complex type
 	ModelCredentialSchema    *modelruntimeentities.ModelCredentialSchema    `json:"model_credential_schema" yaml:"model_credential_schema"`       // Assuming ModelCredentialSchema is a complex type
-	PreferredProviderType    models.ProviderType                            `json:"preferred_provider_type" yaml:"preferred_provider_type"`       // Assuming ProviderType is a string
+	PreferredProviderType    providerenumtypes.ProviderType                 `json:"preferred_provider_type" yaml:"preferred_provider_type"`       // Assuming ProviderType is a string
 	CustomConfiguration      *CustomConfigurationResponse                   `json:"custom_configuration" yaml:"custom_configuration"`
 	SystemConfiguration      *SystemConfigurationResponse                   `json:"system_configuration" yaml:"system_configuration"`
 }
@@ -76,12 +78,12 @@ func NewProviderResponse(args map[string]any) *ProviderResponse {
 
 // ProviderWithModelsResponse represents the response for a provider with models.
 type ProviderWithModelsResponse struct {
-	Provider  string                                        `json:"provider" yaml:"provider"`
-	Label     commontypes.I18nObject                        `json:"label" yaml:"label"`
-	IconSmall *commontypes.I18nObject                       `json:"icon_small" yaml:"icon_small"`
-	IconLarge *commontypes.I18nObject                       `json:"icon_large" yaml:"icon_large"`
-	Status    CustomConfigurationStatus                     `json:"status" yaml:"status"`
-	Models    []*coreentities.ProviderModelWithStatusEntity `json:"models" yaml:"models"`
+	Provider  string                                         `json:"provider" yaml:"provider"`
+	Label     commontypes.I18nObject                         `json:"label" yaml:"label"`
+	IconSmall *commontypes.I18nObject                        `json:"icon_small" yaml:"icon_small"`
+	IconLarge *commontypes.I18nObject                        `json:"icon_large" yaml:"icon_large"`
+	Status    CustomConfigurationStatus                      `json:"status" yaml:"status"`
+	Models    []*modelentities.ProviderModelWithStatusEntity `json:"models" yaml:"models"`
 }
 
 func NewProviderWithModelsResponse(args map[string]any) *ProviderWithModelsResponse {
@@ -169,11 +171,11 @@ func NewDefaultModelResponse(args any) *DefaultModelResponse {
 // ModelWithProviderEntityResponse represents a model with provider entity response.
 type ModelWithProviderEntityResponse struct {
 	// Assuming ModelWithProviderEntity is a complex type
-	*coreentities.ModelWithProviderEntity
+	*modelentities.ModelWithProviderEntity
 	Provider *SimpleProviderEntityResponse `json:"provider"`
 }
 
-func NewModelWithProviderEntityResponse(model *coreentities.ModelWithProviderEntity) *ModelWithProviderEntityResponse {
+func NewModelWithProviderEntityResponse(model *modelentities.ModelWithProviderEntity) *ModelWithProviderEntityResponse {
 
 	rsp := &ModelWithProviderEntityResponse{
 		ModelWithProviderEntity: model,

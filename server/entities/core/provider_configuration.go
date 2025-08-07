@@ -9,7 +9,9 @@ import (
 	"mlib.com/gofy/server/core/exceptions"
 	dbengine "mlib.com/gofy/server/db_engine"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	coreenumtypes "mlib.com/gofy/server/enum_types/core"
+	providerentities "mlib.com/gofy/server/entities/provider"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
+	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/utils/crypt"
 	"mlib.com/mlog"
@@ -24,13 +26,13 @@ type ProviderConfiguration struct {
 	   Model class for provider configuration.
 	*/
 
-	TenantID              string                               `json:"tenant_id"`
-	Provider              *modelruntimeentities.ProviderEntity `json:"provider"`
-	PreferredProviderType models.ProviderType                  `json:"preferred_provider_type"`
-	UsingProviderType     models.ProviderType                  `json:"using_provider_type"`
-	SystemConfiguration   *SystemConfiguration                 `json:"system_configuration"`
-	CustomConfiguration   *CustomConfiguration                 `json:"custom_configuration"`
-	ModelSettings         []*ModelSetting                      `json:"model_settings"`
+	TenantID              string                                `json:"tenant_id"`
+	Provider              *modelruntimeentities.ProviderEntity  `json:"provider"`
+	PreferredProviderType providerenumtypes.ProviderType        `json:"preferred_provider_type"`
+	UsingProviderType     providerenumtypes.ProviderType        `json:"using_provider_type"`
+	SystemConfiguration   *providerentities.SystemConfiguration `json:"system_configuration"`
+	CustomConfiguration   *providerentities.CustomConfiguration `json:"custom_configuration"`
+	ModelSettings         []*providerentities.ModelSetting      `json:"model_settings"`
 
 	// pydantic configs
 	ModelConfig map[string]any `json:"model_config"`
@@ -59,7 +61,7 @@ func NewProviderConfiguration() *ProviderConfiguration {
 	return pc
 }
 
-func (pc *ProviderConfiguration) GetCurrentCredentials(model_type modelruntimeentities.ModelType, model string) map[string]any {
+func (pc *ProviderConfiguration) GetCurrentCredentials(model_type modelruntimeenumtypes.ModelType, model string) map[string]any {
 	/*
 		Get current credentials.
 
@@ -77,8 +79,8 @@ func (pc *ProviderConfiguration) GetCurrentCredentials(model_type modelruntimeen
 			}
 		}
 	}
-	if pc.UsingProviderType == models.Provider_SYSTEM {
-		var restrict_models []*RestrictModel
+	if pc.UsingProviderType == providerenumtypes.Provider_SYSTEM {
+		var restrict_models []*providerentities.RestrictModel
 		for _, quota_configuration := range pc.SystemConfiguration.QuotaConfigurations {
 			if pc.SystemConfiguration.CurrentQuotaType != quota_configuration.QuotaType {
 				continue
@@ -118,16 +120,16 @@ func (pc *ProviderConfiguration) GetCurrentCredentials(model_type modelruntimeen
 	}
 }
 
-func (pc *ProviderConfiguration) GetSystemConfigurationStatus() coreenumtypes.SystemConfigurationStatus {
+func (pc *ProviderConfiguration) GetSystemConfigurationStatus() providerenumtypes.SystemConfigurationStatusType {
 	/*
 		Get system configuration status.
 		:return:
 	*/
 	if !pc.SystemConfiguration.Enabled {
-		return coreenumtypes.SystemConfigurationStatus_UNSUPPORTED
+		return providerenumtypes.SystemConfigurationStatus_UNSUPPORTED
 	}
 	current_quota_type := pc.SystemConfiguration.CurrentQuotaType
-	var current_quota_configuration *QuotaConfiguration
+	var current_quota_configuration *providerentities.QuotaConfiguration
 	for _, q := range pc.SystemConfiguration.QuotaConfigurations {
 		if q.QuotaType == current_quota_type {
 			current_quota_configuration = q
@@ -136,12 +138,12 @@ func (pc *ProviderConfiguration) GetSystemConfigurationStatus() coreenumtypes.Sy
 	}
 
 	if current_quota_configuration == nil {
-		return coreenumtypes.SystemConfigurationStatus("")
+		return providerenumtypes.SystemConfigurationStatusType("")
 	}
 	if current_quota_configuration.IsValid {
-		return coreenumtypes.SystemConfigurationStatus_ACTIVE
+		return providerenumtypes.SystemConfigurationStatus_ACTIVE
 	} else {
-		return coreenumtypes.SystemConfigurationStatus_QUOTA_EXCEEDED
+		return providerenumtypes.SystemConfigurationStatus_QUOTA_EXCEEDED
 	}
 
 }
@@ -224,7 +226,7 @@ func (pc *ProviderConfiguration) GetCustomCredentials(obfuscated bool) map[strin
 
 }
 
-func (pc *ProviderConfiguration) GetCustomModelCredentials(model_type modelruntimeentities.ModelType, model string, obfuscated bool) map[string]any {
+func (pc *ProviderConfiguration) GetCustomModelCredentials(model_type modelruntimeenumtypes.ModelType, model string, obfuscated bool) map[string]any {
 	/*
 		Get custom model credentials.
 
@@ -252,7 +254,7 @@ func (pc *ProviderConfiguration) GetCustomModelCredentials(model_type modelrunti
 	}
 	return nil
 }
-func (pc *ProviderConfiguration) EnableModel(model_type modelruntimeentities.ModelType, model string) *models.ProviderModelSetting {
+func (pc *ProviderConfiguration) EnableModel(model_type modelruntimeenumtypes.ModelType, model string) *models.ProviderModelSetting {
 	/*
 	   Enable model.
 	   :param model_type: model type
@@ -285,7 +287,7 @@ func (pc *ProviderConfiguration) EnableModel(model_type modelruntimeentities.Mod
 	return model_setting
 }
 
-func (pc *ProviderConfiguration) DisableModel(model_type modelruntimeentities.ModelType, model string) *models.ProviderModelSetting {
+func (pc *ProviderConfiguration) DisableModel(model_type modelruntimeenumtypes.ModelType, model string) *models.ProviderModelSetting {
 	/*
 	   Disable model.
 	   :param model_type: model type

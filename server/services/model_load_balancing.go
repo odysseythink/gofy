@@ -14,6 +14,7 @@ import (
 	dbengine "mlib.com/gofy/server/db_engine"
 	coreentities "mlib.com/gofy/server/entities/core"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	"mlib.com/gofy/server/models"
 	"mlib.com/mlog"
 )
@@ -21,7 +22,7 @@ import (
 type ModelLoadBalancingService struct {
 }
 
-func (service *ModelLoadBalancingService) EnableModelLoadBalancing(tenant_id string, provider string, model string, model_type modelruntimeentities.ModelType) error {
+func (service *ModelLoadBalancingService) EnableModelLoadBalancing(tenant_id string, provider string, model string, model_type modelruntimeenumtypes.ModelType) error {
 	/*
 	   enable model load balancing.
 
@@ -38,7 +39,7 @@ func (service *ModelLoadBalancingService) EnableModelLoadBalancing(tenant_id str
 	return err
 }
 
-func (service *ModelLoadBalancingService) DisableModelLoadBalancing(tenant_id string, provider string, model string, model_type modelruntimeentities.ModelType) error {
+func (service *ModelLoadBalancingService) DisableModelLoadBalancing(tenant_id string, provider string, model string, model_type modelruntimeenumtypes.ModelType) error {
 	/*
 	   disable model load balancing.
 
@@ -83,7 +84,7 @@ func (service *ModelLoadBalancingService) clear_credentials_cache(tenant_id stri
 func (service *ModelLoadBalancingService) custom_credentials_validate(
 	tenant_id string,
 	provider_configuration *coreentities.ProviderConfiguration,
-	model_type modelruntimeentities.ModelType,
+	model_type modelruntimeenumtypes.ModelType,
 	model string,
 	credentials map[string]any,
 	load_balancing_model_config *models.LoadBalancingModelConfig,
@@ -162,7 +163,7 @@ func (service *ModelLoadBalancingService) custom_credentials_validate(
 }
 
 func (service *ModelLoadBalancingService) UpdateLoadBalancingConfigs(
-	tenant_id string, provider string, model string, model_type modelruntimeentities.ModelType, configs []map[string]any,
+	tenant_id string, provider string, model string, model_type modelruntimeenumtypes.ModelType, configs []map[string]any,
 ) {
 	/*
 		Update load balancing configurations.

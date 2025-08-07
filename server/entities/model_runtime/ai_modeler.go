@@ -1,8 +1,12 @@
 package modelruntime
 
+import (
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
+)
+
 type AIModeler interface {
 	ProviderName() string
-	ModelType() ModelType
+	ModelType() modelruntimeenumtypes.ModelType
 	ValidateCredentials(string, map[string]any)
 	// InvokeErrorMapping() map[*modelruntimeexceptions.InvokeError][]error
 	GetCustomizableModelSchema(string, map[string]any) *AIModelEntity

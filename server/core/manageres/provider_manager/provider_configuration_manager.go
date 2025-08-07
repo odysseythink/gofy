@@ -15,8 +15,12 @@ import (
 	modelproviders "mlib.com/gofy/server/core/model_runtime/model_provides"
 	dbengine "mlib.com/gofy/server/db_engine"
 	coreentities "mlib.com/gofy/server/entities/core"
+	modelentities "mlib.com/gofy/server/entities/model"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	providerentities "mlib.com/gofy/server/entities/provider"
 	coreenumtypes "mlib.com/gofy/server/enum_types/core"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
+	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/utils"
 	"mlib.com/mlog"
@@ -33,7 +37,7 @@ func (mgr *ProviderConfigurationManager) CustomCredentialsValidate(pc *coreentit
 	*/
 	// get provider
 	provider_record := new(models.Provider)
-	err := dbengine.Instance().DB.Debug().Model(&models.Provider{}).Where("tenant_id = ? and provider_name = ? and provider_type = ?", pc.TenantID, pc.Provider.Provider, models.Provider_CUSTOM).First(provider_record).Error
+	err := dbengine.Instance().DB.Debug().Model(&models.Provider{}).Where("tenant_id = ? and provider_name = ? and provider_type = ?", pc.TenantID, pc.Provider.Provider, providerenumtypes.Provider_CUSTOM).First(provider_record).Error
 	if err != nil {
 		mlog.Warningf("get Provider failded:%v", err)
 		provider_record = nil
@@ -114,7 +118,7 @@ func (mgr *ProviderConfigurationManager) AddOrUpdateCustomCredentials(pc *coreen
 			ID:              uuid.NewV4().String(),
 			TenantID:        pc.TenantID,
 			ProviderName:    pc.Provider.Provider,
-			ProviderType:    models.Provider_CUSTOM,
+			ProviderType:    providerenumtypes.Provider_CUSTOM,
 			EncryptedConfig: string(bindata),
 			IsValid:         true,
 		}
@@ -129,11 +133,11 @@ func (mgr *ProviderConfigurationManager) AddOrUpdateCustomCredentials(pc *coreen
 
 	provider_model_credentials_cache.Delete()
 
-	mgr.switch_preferred_provider_type(pc, models.Provider_CUSTOM)
+	mgr.switch_preferred_provider_type(pc, providerenumtypes.Provider_CUSTOM)
 }
 
 func (mgr *ProviderConfigurationManager) CustomModelCredentialsValidate(
-	pc *coreentities.ProviderConfiguration, model_type modelruntimeentities.ModelType, model string, credentials map[string]any,
+	pc *coreentities.ProviderConfiguration, model_type modelruntimeenumtypes.ModelType, model string, credentials map[string]any,
 ) (*models.ProviderModel, map[string]any, error) {
 	/*
 		Validate custom model credentials.
@@ -191,7 +195,7 @@ func (mgr *ProviderConfigurationManager) CustomModelCredentialsValidate(
 	// }
 	return provider_model_record, credentials, nil
 }
-func (mgr *ProviderConfigurationManager) AddOrUpdateCustomModelCredentials(pc *coreentities.ProviderConfiguration, model_type modelruntimeentities.ModelType, model string, credentials map[string]any) error {
+func (mgr *ProviderConfigurationManager) AddOrUpdateCustomModelCredentials(pc *coreentities.ProviderConfiguration, model_type modelruntimeenumtypes.ModelType, model string, credentials map[string]any) error {
 	/*
 		Add or update custom model credentials.
 
@@ -238,7 +242,7 @@ func (mgr *ProviderConfigurationManager) AddOrUpdateCustomModelCredentials(pc *c
 	provider_model_credentials_cache.Delete()
 	return nil
 }
-func (mgr *ProviderConfigurationManager) DeleteCustomModelCredentials(pc *coreentities.ProviderConfiguration, model_type modelruntimeentities.ModelType, model string) {
+func (mgr *ProviderConfigurationManager) DeleteCustomModelCredentials(pc *coreentities.ProviderConfiguration, model_type modelruntimeenumtypes.ModelType, model string) {
 	/*
 		Delete custom model credentials.
 		:param model_type: model type
@@ -266,7 +270,7 @@ func (mgr *ProviderConfigurationManager) DeleteCustomModelCredentials(pc *coreen
 		provider_model_credentials_cache.Delete()
 	}
 }
-func (mgr *ProviderConfigurationManager) EnableModel(pc *coreentities.ProviderConfiguration, model_type modelruntimeentities.ModelType, model string) *models.ProviderModelSetting {
+func (mgr *ProviderConfigurationManager) EnableModel(pc *coreentities.ProviderConfiguration, model_type modelruntimeenumtypes.ModelType, model string) *models.ProviderModelSetting {
 	/*
 		Enable model.
 		:param model_type: model type
@@ -299,7 +303,7 @@ func (mgr *ProviderConfigurationManager) EnableModel(pc *coreentities.ProviderCo
 
 	return model_setting
 }
-func (mgr *ProviderConfigurationManager) DisableModel(pc *coreentities.ProviderConfiguration, model_type modelruntimeentities.ModelType, model string) *models.ProviderModelSetting {
+func (mgr *ProviderConfigurationManager) DisableModel(pc *coreentities.ProviderConfiguration, model_type modelruntimeenumtypes.ModelType, model string) *models.ProviderModelSetting {
 	/*
 		Disable model.
 		:param model_type: model type
@@ -332,7 +336,7 @@ func (mgr *ProviderConfigurationManager) DisableModel(pc *coreentities.ProviderC
 
 	return model_setting
 }
-func (mgr *ProviderConfigurationManager) GetProviderModelSetting(pc *coreentities.ProviderConfiguration, model_type modelruntimeentities.ModelType, model string) *models.ProviderModelSetting {
+func (mgr *ProviderConfigurationManager) GetProviderModelSetting(pc *coreentities.ProviderConfiguration, model_type modelruntimeenumtypes.ModelType, model string) *models.ProviderModelSetting {
 	/*
 		Get provider model setting.
 		:param model_type: model type
@@ -348,7 +352,7 @@ func (mgr *ProviderConfigurationManager) GetProviderModelSetting(pc *coreentitie
 
 	return model_setting
 }
-func (mgr *ProviderConfigurationManager) EnableModelLoadBalancing(pc *coreentities.ProviderConfiguration, model_type modelruntimeentities.ModelType, model string) (*models.ProviderModelSetting, error) {
+func (mgr *ProviderConfigurationManager) EnableModelLoadBalancing(pc *coreentities.ProviderConfiguration, model_type modelruntimeenumtypes.ModelType, model string) (*models.ProviderModelSetting, error) {
 	/*
 		Enable model load balancing.
 		:param model_type: model type
@@ -389,7 +393,7 @@ func (mgr *ProviderConfigurationManager) EnableModelLoadBalancing(pc *coreentiti
 	}
 	return model_setting, nil
 }
-func (mgr *ProviderConfigurationManager) DisableModelLoadBalancing(pc *coreentities.ProviderConfiguration, model_type modelruntimeentities.ModelType, model string) *models.ProviderModelSetting {
+func (mgr *ProviderConfigurationManager) DisableModelLoadBalancing(pc *coreentities.ProviderConfiguration, model_type modelruntimeenumtypes.ModelType, model string) *models.ProviderModelSetting {
 	/*
 		Disable model load balancing.
 		:param model_type: model type
@@ -430,7 +434,7 @@ func (mgr *ProviderConfigurationManager) GetProviderInstance(pc *coreentities.Pr
 	provider_instance := (&modelproviders.ModelProviderFactory{}).GetProviderInstance(pc.Provider.Provider)
 	return provider_instance
 }
-func (mgr *ProviderConfigurationManager) GetModelTypeInstance(pc *coreentities.ProviderConfiguration, model_type modelruntimeentities.ModelType) modelruntimeentities.AIModeler {
+func (mgr *ProviderConfigurationManager) GetModelTypeInstance(pc *coreentities.ProviderConfiguration, model_type modelruntimeenumtypes.ModelType) modelruntimeentities.AIModeler {
 	/*
 		Get current model type instance.
 
@@ -443,7 +447,7 @@ func (mgr *ProviderConfigurationManager) GetModelTypeInstance(pc *coreentities.P
 	// Get model instance of LLM
 	return provider_instance.GetModelInstance(model_type)
 }
-func (mgr *ProviderConfigurationManager) switch_preferred_provider_type(pc *coreentities.ProviderConfiguration, provider_type models.ProviderType) {
+func (mgr *ProviderConfigurationManager) switch_preferred_provider_type(pc *coreentities.ProviderConfiguration, provider_type providerenumtypes.ProviderType) {
 	/*
 		Switch preferred provider type.
 		:param provider_type:
@@ -452,7 +456,7 @@ func (mgr *ProviderConfigurationManager) switch_preferred_provider_type(pc *core
 	if provider_type == pc.PreferredProviderType {
 		return
 	}
-	if provider_type == models.Provider_SYSTEM && !pc.SystemConfiguration.Enabled {
+	if provider_type == providerenumtypes.Provider_SYSTEM && !pc.SystemConfiguration.Enabled {
 		return
 	}
 	// get preferred provider
@@ -478,8 +482,8 @@ func (mgr *ProviderConfigurationManager) switch_preferred_provider_type(pc *core
 }
 
 func (mgr *ProviderConfigurationManager) GetProviderModels(
-	pc *coreentities.ProviderConfiguration, model_type modelruntimeentities.ModelType, only_active bool,
-) []*coreentities.ModelWithProviderEntity {
+	pc *coreentities.ProviderConfiguration, model_type modelruntimeenumtypes.ModelType, only_active bool,
+) []*modelentities.ModelWithProviderEntity {
 	/*
 		Get provider models.
 		:param model_type: model type
@@ -488,7 +492,7 @@ func (mgr *ProviderConfigurationManager) GetProviderModels(
 	*/
 	provider_instance := mgr.GetProviderInstance(pc)
 
-	model_types := []modelruntimeentities.ModelType{}
+	model_types := []modelruntimeenumtypes.ModelType{}
 	if string(model_type) != "" {
 		model_types = append(model_types, model_type)
 	} else {
@@ -496,16 +500,16 @@ func (mgr *ProviderConfigurationManager) GetProviderModels(
 		model_types = provider_entity.SupportedModelTypes
 	}
 	// Group model settings by model type and model
-	model_setting_map := map[modelruntimeentities.ModelType]map[string]*coreentities.ModelSetting{}
+	model_setting_map := map[modelruntimeenumtypes.ModelType]map[string]*providerentities.ModelSetting{}
 	for _, model_setting := range pc.ModelSettings {
 		if _, ok := model_setting_map[model_setting.ModelType]; !ok {
-			model_setting_map[model_setting.ModelType] = make(map[string]*coreentities.ModelSetting)
+			model_setting_map[model_setting.ModelType] = make(map[string]*providerentities.ModelSetting)
 		}
 		model_setting_map[model_setting.ModelType][model_setting.Model] = model_setting
 	}
-	var provider_models []*coreentities.ModelWithProviderEntity
+	var provider_models []*modelentities.ModelWithProviderEntity
 	mlog.Debugf("------provider_configuration=%#v", pc)
-	if pc.UsingProviderType == models.Provider_SYSTEM {
+	if pc.UsingProviderType == providerenumtypes.Provider_SYSTEM {
 		provider_models = mgr._get_system_provider_models(
 			pc, model_types, provider_instance, model_setting_map,
 		)
@@ -516,7 +520,7 @@ func (mgr *ProviderConfigurationManager) GetProviderModels(
 	}
 	if only_active {
 		if only_active {
-			var new_provider_models []*coreentities.ModelWithProviderEntity
+			var new_provider_models []*modelentities.ModelWithProviderEntity
 			for _, m := range provider_models {
 				if m.Status == coreenumtypes.ModelStatus_ACTIVE {
 					new_provider_models = append(new_provider_models, m)
@@ -533,8 +537,8 @@ func (mgr *ProviderConfigurationManager) GetProviderModels(
 }
 
 func (mgr *ProviderConfigurationManager) GetProviderModel(
-	pc *coreentities.ProviderConfiguration, model_type modelruntimeentities.ModelType, model string, only_active bool,
-) *coreentities.ModelWithProviderEntity {
+	pc *coreentities.ProviderConfiguration, model_type modelruntimeenumtypes.ModelType, model string, only_active bool,
+) *modelentities.ModelWithProviderEntity {
 	/*
 		Get provider model.
 		:param model_type: model type
@@ -553,10 +557,10 @@ func (mgr *ProviderConfigurationManager) GetProviderModel(
 }
 func (mgr *ProviderConfigurationManager) _get_system_provider_models(
 	provider_configuration *coreentities.ProviderConfiguration,
-	model_types []modelruntimeentities.ModelType,
+	model_types []modelruntimeenumtypes.ModelType,
 	provider_instance modelruntimeentities.ModelProvider,
-	model_setting_map map[modelruntimeentities.ModelType]map[string]*coreentities.ModelSetting,
-) []*coreentities.ModelWithProviderEntity {
+	model_setting_map map[modelruntimeenumtypes.ModelType]map[string]*providerentities.ModelSetting,
+) []*modelentities.ModelWithProviderEntity {
 	/*
 		Get system provider models.
 
@@ -565,7 +569,7 @@ func (mgr *ProviderConfigurationManager) _get_system_provider_models(
 		:param model_setting_map: model setting map
 		:return:
 	*/
-	provider_models := []*coreentities.ModelWithProviderEntity{}
+	provider_models := []*modelentities.ModelWithProviderEntity{}
 	for _, model_type := range model_types {
 		for _, m := range provider_instance.Models(provider_instance, model_type) {
 			status := coreenumtypes.ModelStatus_ACTIVE
@@ -578,8 +582,8 @@ func (mgr *ProviderConfigurationManager) _get_system_provider_models(
 				}
 			}
 
-			provider_models = append(provider_models, &coreentities.ModelWithProviderEntity{
-				ProviderModelWithStatusEntity: &coreentities.ProviderModelWithStatusEntity{
+			provider_models = append(provider_models, &modelentities.ModelWithProviderEntity{
+				ProviderModelWithStatusEntity: &modelentities.ProviderModelWithStatusEntity{
 					ProviderModel: &modelruntimeentities.ProviderModel{
 						Model:           m.Model,
 						Label:           m.Label,
@@ -591,7 +595,7 @@ func (mgr *ProviderConfigurationManager) _get_system_provider_models(
 					},
 					Status: status,
 				},
-				Provider: coreentities.NewSimpleModelProviderEntity(provider_configuration.Provider),
+				Provider: modelentities.NewSimpleModelProviderEntity(provider_configuration.Provider),
 			})
 		}
 	}
@@ -647,20 +651,20 @@ func (mgr *ProviderConfigurationManager) _get_system_provider_models(
 								}
 							}
 						}
-						provider_models = append(provider_models, &coreentities.ModelWithProviderEntity{
-							ProviderModelWithStatusEntity: &coreentities.ProviderModelWithStatusEntity{
+						provider_models = append(provider_models, &modelentities.ModelWithProviderEntity{
+							ProviderModelWithStatusEntity: &modelentities.ProviderModelWithStatusEntity{
 								ProviderModel: &modelruntimeentities.ProviderModel{
 									Model:           custom_model_schema.Model,
 									Label:           custom_model_schema.Label,
 									ModelType:       custom_model_schema.ModelType,
 									Features:        custom_model_schema.Features,
-									FetchFrom:       modelruntimeentities.FetchFrom_PREDEFINED_MODEL,
+									FetchFrom:       modelruntimeenumtypes.FetchFrom_PREDEFINED_MODEL,
 									ModelProperties: custom_model_schema.ModelProperties,
 									Deprecated:      custom_model_schema.Deprecated,
 								},
 								Status: status,
 							},
-							Provider: coreentities.NewSimpleModelProviderEntity(provider_configuration.Provider),
+							Provider: modelentities.NewSimpleModelProviderEntity(provider_configuration.Provider),
 						})
 					}
 				}
@@ -673,7 +677,7 @@ func (mgr *ProviderConfigurationManager) _get_system_provider_models(
 			restrict_model_names = append(restrict_model_names, rm.Model)
 		}
 		for idx, model := range provider_models {
-			if model.ModelType == modelruntimeentities.Model_LLM && !slices.Contains(restrict_model_names, model.Model) {
+			if model.ModelType == modelruntimeenumtypes.Model_LLM && !slices.Contains(restrict_model_names, model.Model) {
 				model.Status = coreenumtypes.ModelStatus_NO_PERMISSION
 			} else if !quota_configuration.IsValid {
 				model.Status = coreenumtypes.ModelStatus_QUOTA_EXCEEDED
@@ -687,10 +691,10 @@ func (mgr *ProviderConfigurationManager) _get_system_provider_models(
 
 func (pm *ProviderConfigurationManager) _get_custom_provider_models(
 	provider_configuration *coreentities.ProviderConfiguration,
-	model_types []modelruntimeentities.ModelType,
+	model_types []modelruntimeenumtypes.ModelType,
 	provider_instance modelruntimeentities.ModelProvider,
-	model_setting_map map[modelruntimeentities.ModelType]map[string]*coreentities.ModelSetting,
-) []*coreentities.ModelWithProviderEntity {
+	model_setting_map map[modelruntimeenumtypes.ModelType]map[string]*providerentities.ModelSetting,
+) []*modelentities.ModelWithProviderEntity {
 	/*
 		Get custom provider models.
 
@@ -699,7 +703,7 @@ func (pm *ProviderConfigurationManager) _get_custom_provider_models(
 		:param model_setting_map: model setting map
 		:return:
 	*/
-	provider_models := []*coreentities.ModelWithProviderEntity{}
+	provider_models := []*modelentities.ModelWithProviderEntity{}
 
 	credentials := map[string]any{}
 	if provider_configuration.CustomConfiguration.Provider != nil {
@@ -727,8 +731,8 @@ func (pm *ProviderConfigurationManager) _get_custom_provider_models(
 					}
 				}
 			}
-			provider_models = append(provider_models, &coreentities.ModelWithProviderEntity{
-				ProviderModelWithStatusEntity: &coreentities.ProviderModelWithStatusEntity{
+			provider_models = append(provider_models, &modelentities.ModelWithProviderEntity{
+				ProviderModelWithStatusEntity: &modelentities.ProviderModelWithStatusEntity{
 					ProviderModel: &modelruntimeentities.ProviderModel{
 						Model:           m.Model,
 						Label:           m.Label,
@@ -741,7 +745,7 @@ func (pm *ProviderConfigurationManager) _get_custom_provider_models(
 					Status:               status,
 					LoadBalancingEnabled: load_balancing_enabled,
 				},
-				Provider: coreentities.NewSimpleModelProviderEntity(provider_configuration.Provider),
+				Provider: modelentities.NewSimpleModelProviderEntity(provider_configuration.Provider),
 			})
 		}
 	}
@@ -791,8 +795,8 @@ func (pm *ProviderConfigurationManager) _get_custom_provider_models(
 				}
 			}
 		}
-		provider_models = append(provider_models, &coreentities.ModelWithProviderEntity{
-			ProviderModelWithStatusEntity: &coreentities.ProviderModelWithStatusEntity{
+		provider_models = append(provider_models, &modelentities.ModelWithProviderEntity{
+			ProviderModelWithStatusEntity: &modelentities.ProviderModelWithStatusEntity{
 				ProviderModel: &modelruntimeentities.ProviderModel{
 					Model:           custom_model_schema.Model,
 					Label:           custom_model_schema.Label,
@@ -805,7 +809,7 @@ func (pm *ProviderConfigurationManager) _get_custom_provider_models(
 				Status:               status,
 				LoadBalancingEnabled: load_balancing_enabled,
 			},
-			Provider: coreentities.NewSimpleModelProviderEntity(provider_configuration.Provider),
+			Provider: modelentities.NewSimpleModelProviderEntity(provider_configuration.Provider),
 		})
 	}
 	return provider_models

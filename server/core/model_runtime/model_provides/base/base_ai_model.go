@@ -11,11 +11,12 @@ import (
 	"gopkg.in/yaml.v2"
 	"mlib.com/gofy/server/core/exceptions"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	"mlib.com/mlog"
 )
 
 type BaseAIModel struct {
-	ModeType     modelruntimeentities.ModelType
+	ModeType     modelruntimeenumtypes.ModelType
 	ModelSchemas []*modelruntimeentities.AIModelEntity
 	StartedAt    time.Time
 
@@ -47,7 +48,7 @@ func (m *BaseAIModel) getCustomizableModelSchema(modeler modelruntimeentities.AI
 	for _, parameter_rule := range schema.ParameterRules {
 		if parameter_rule.UseTemplate != "" {
 			// try:
-			default_parameter_name := modelruntimeentities.DefaultParameterName(parameter_rule.UseTemplate)
+			default_parameter_name := modelruntimeenumtypes.DefaultParameterNameType(parameter_rule.UseTemplate)
 			default_parameter_rule, err := m.GetDefaultParameterRuleVariableMap(default_parameter_name)
 			if err != nil {
 				mlog.Error("get default parameter rule variable map failed:", err)
@@ -121,7 +122,7 @@ func (m *BaseAIModel) getCustomizableModelSchema(modeler modelruntimeentities.AI
 	return schema
 }
 
-func (m *BaseAIModel) GetDefaultParameterRuleVariableMap(name modelruntimeentities.DefaultParameterName) (map[string]any, error) {
+func (m *BaseAIModel) GetDefaultParameterRuleVariableMap(name modelruntimeenumtypes.DefaultParameterNameType) (map[string]any, error) {
 	/*
 		Get default parameter rule for given name
 
@@ -220,7 +221,7 @@ func (m *BaseAIModel) PredefinedModels(modeler modelruntimeentities.AIModeler) [
 			parameter_rule_dict := parameter_rule.(map[string]any)
 			if _, ok := parameter_rule_dict["use_template"]; ok {
 				if _, ok := parameter_rule_dict["use_template"].(string); ok {
-					default_parameter_name := modelruntimeentities.DefaultParameterName(parameter_rule_dict["use_template"].(string))
+					default_parameter_name := modelruntimeenumtypes.DefaultParameterNameType(parameter_rule_dict["use_template"].(string))
 					default_parameter_rule, err := m.GetDefaultParameterRuleVariableMap(default_parameter_name)
 					if err != nil {
 						mlog.Error("get default parameter rule variable map failed:", err)
@@ -241,7 +242,7 @@ func (m *BaseAIModel) PredefinedModels(modeler modelruntimeentities.AIModeler) [
 		if _, ok := yaml_data["label"]; !ok {
 			yaml_data["label"] = map[string]any{"zh_Hans": yaml_data["model"], "en_US": yaml_data["model"]}
 		}
-		yaml_data["fetch_from"] = modelruntimeentities.FetchFrom_PREDEFINED_MODEL
+		yaml_data["fetch_from"] = modelruntimeenumtypes.FetchFrom_PREDEFINED_MODEL
 
 		// yaml_data to entity
 		model_schema := new(modelruntimeentities.AIModelEntity)

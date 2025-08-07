@@ -68,6 +68,13 @@ func (s *PluginsService) FetchPreferences(ctx context.Context, in *pbapi.FetchPr
 
 	return
 }
+func (s *PluginsService) FetchInstallTasks(ctx context.Context, in *pbapi.FetchInstallTasksRequest) (out *pbapi.FetchInstallTasksReply, err error) {
+	p, _ := peer.FromContext(ctx)
+	mlog.Infof("remote[%s] plugin.FetchInstallTasks call:%#v", p.Addr.String(), in)
+
+	out = &pbapi.FetchInstallTasksReply{}
+	return
+}
 
 // go build -o app.so -buildmode=plugin main.go
 func (s *PluginsService) Init(args ...any) error {

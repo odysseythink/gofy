@@ -10,6 +10,7 @@ import (
 
 	"mlib.com/gofy/server/core/exceptions"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	"mlib.com/mlog"
 )
 
@@ -22,8 +23,8 @@ type LargeLanguageModel struct {
 	*BaseAIModel
 }
 
-func (m *LargeLanguageModel) ModelType() modelruntimeentities.ModelType {
-	return modelruntimeentities.Model_LLM
+func (m *LargeLanguageModel) ModelType() modelruntimeenumtypes.ModelType {
+	return modelruntimeenumtypes.Model_LLM
 }
 
 // func (m *LargeLanguageModel) CodeBlockModeWrapper(
@@ -840,8 +841,8 @@ func (m *LargeLanguageModel) GetModelMode(modeler modelruntimeentities.LargeLang
 
 	mode := modelruntimeentities.LLMMode_CHAT
 	if model_schema != nil {
-		if _, ok := model_schema.ModelProperties[modelruntimeentities.ModelPropertyKey_MODE]; ok {
-			mode = modelruntimeentities.LLMMode(model_schema.ModelProperties[modelruntimeentities.ModelPropertyKey_MODE].(string))
+		if _, ok := model_schema.ModelProperties[modelruntimeenumtypes.ModelPropertyKey_MODE]; ok {
+			mode = modelruntimeentities.LLMMode(model_schema.ModelProperties[modelruntimeenumtypes.ModelPropertyKey_MODE].(string))
 		}
 	}
 	return mode
@@ -882,7 +883,7 @@ func (m *LargeLanguageModel) ValidateAndFilterModelParameters(modeler modelrunti
 			}
 		}
 		// validate parameter value type
-		if parameter_rule.Type == modelruntimeentities.ParameterType_INT {
+		if parameter_rule.Type == modelruntimeenumtypes.ParameterType_INT {
 			if _, ok := parameter_value.(int); !ok {
 				return nil, exceptions.NewValueError(fmt.Sprintf("Model Parameter %v should be int.", parameter_name))
 			}
@@ -893,7 +894,7 @@ func (m *LargeLanguageModel) ValidateAndFilterModelParameters(modeler modelrunti
 			if float64(parameter_value.(int)) > parameter_rule.Max {
 				return nil, exceptions.NewValueError(fmt.Sprintf("Model Parameter %v should be less than or equal to %v.", parameter_name, parameter_rule.Max))
 			}
-		} else if parameter_rule.Type == modelruntimeentities.ParameterType_FLOAT {
+		} else if parameter_rule.Type == modelruntimeenumtypes.ParameterType_FLOAT {
 			var real_parameter_value float64
 			if _, ok := parameter_value.(int); !ok {
 				if _, ok := parameter_value.(float64); !ok {
@@ -927,11 +928,11 @@ func (m *LargeLanguageModel) ValidateAndFilterModelParameters(modeler modelrunti
 			if real_parameter_value > parameter_rule.Max {
 				return nil, exceptions.NewValueError(fmt.Sprintf("Model Parameter %v should be less than or equal to %v.", parameter_name, parameter_rule.Max))
 			}
-		} else if parameter_rule.Type == modelruntimeentities.ParameterType_BOOLEAN {
+		} else if parameter_rule.Type == modelruntimeenumtypes.ParameterType_BOOLEAN {
 			if _, ok := parameter_value.(bool); !ok {
 				exceptions.NewValueError(fmt.Sprintf("Model Parameter %v should be bool.", parameter_name))
 			}
-		} else if parameter_rule.Type == modelruntimeentities.ParameterType_STRING {
+		} else if parameter_rule.Type == modelruntimeenumtypes.ParameterType_STRING {
 			if _, ok := parameter_value.(string); !ok {
 				exceptions.NewValueError(fmt.Sprintf("Model Parameter %v should be string.", parameter_name))
 			}
@@ -940,7 +941,7 @@ func (m *LargeLanguageModel) ValidateAndFilterModelParameters(modeler modelrunti
 			if len(parameter_rule.Options) > 0 && !slices.Contains(parameter_rule.Options, parameter_value.(string)) {
 				exceptions.NewValueError(fmt.Sprintf("Model Parameter %v should be one of %v.", parameter_name, parameter_rule.Options))
 			}
-		} else if parameter_rule.Type == modelruntimeentities.ParameterType_TEXT {
+		} else if parameter_rule.Type == modelruntimeenumtypes.ParameterType_TEXT {
 			if _, ok := parameter_value.(string); !ok {
 				exceptions.NewValueError(fmt.Sprintf("Model Parameter %v should be text.", parameter_name))
 			}

@@ -3,16 +3,17 @@ package schemavalidators
 import (
 	"mlib.com/gofy/server/core/exceptions"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	"mlib.com/mlog"
 )
 
 type ModelCredentialSchemaValidator struct {
 	*CommonValidator
-	modelruntimeentities.ModelType
+	modelruntimeenumtypes.ModelType
 	ModelCredentialSchema *modelruntimeentities.ModelCredentialSchema
 }
 
-func NewModelCredentialSchemaValidator(model_type modelruntimeentities.ModelType, model_credential_schema *modelruntimeentities.ModelCredentialSchema) *ModelCredentialSchemaValidator {
+func NewModelCredentialSchemaValidator(model_type modelruntimeenumtypes.ModelType, model_credential_schema *modelruntimeentities.ModelCredentialSchema) *ModelCredentialSchemaValidator {
 	return &ModelCredentialSchemaValidator{
 		ModelType:             model_type,
 		ModelCredentialSchema: model_credential_schema,

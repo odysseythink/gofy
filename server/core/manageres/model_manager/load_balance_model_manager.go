@@ -6,25 +6,25 @@ import (
 	"time"
 
 	"mlib.com/gofy/server/cache"
-	coreentities "mlib.com/gofy/server/entities/core"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	providerentities "mlib.com/gofy/server/entities/provider"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	"mlib.com/mlog"
 )
 
 type LBModelManager struct {
 	TenantID string
 	Provider string
-	modelruntimeentities.ModelType
+	modelruntimeenumtypes.ModelType
 	Model                string
-	LoadBalancingConfigs []*coreentities.ModelLoadBalancingConfiguration
+	LoadBalancingConfigs []*providerentities.ModelLoadBalancingConfiguration
 }
 
 func NewLBModelManager(
 	tenant_id string,
 	provider string,
-	model_type modelruntimeentities.ModelType,
+	model_type modelruntimeenumtypes.ModelType,
 	model string,
-	load_balancing_configs []*coreentities.ModelLoadBalancingConfiguration,
+	load_balancing_configs []*providerentities.ModelLoadBalancingConfiguration,
 	managed_credentials map[string]any,
 ) *LBModelManager {
 	/*
@@ -48,7 +48,7 @@ func NewLBModelManager(
 		if load_balancing_config.Name == "__inherit__" {
 			if len(managed_credentials) == 0 {
 				// remove __inherit__ if managed credentials is not provided
-				lmmm.LoadBalancingConfigs = slices.DeleteFunc(lmmm.LoadBalancingConfigs, func(val *coreentities.ModelLoadBalancingConfiguration) bool {
+				lmmm.LoadBalancingConfigs = slices.DeleteFunc(lmmm.LoadBalancingConfigs, func(val *providerentities.ModelLoadBalancingConfiguration) bool {
 					return val == load_balancing_config
 				})
 			} else {
@@ -60,7 +60,7 @@ func NewLBModelManager(
 	return lmmm
 }
 
-func (mgr *LBModelManager) fetch_next() *coreentities.ModelLoadBalancingConfiguration {
+func (mgr *LBModelManager) fetch_next() *providerentities.ModelLoadBalancingConfiguration {
 	/*
 	   Get next model load balancing config
 	   Strategy: Round Robin
@@ -68,7 +68,7 @@ func (mgr *LBModelManager) fetch_next() *coreentities.ModelLoadBalancingConfigur
 	*/
 	cache_key := fmt.Sprintf("model_lb_index:%s:%s:%s:%s", mgr.TenantID, mgr.Provider, mgr.ModelType, mgr.Model)
 
-	cooldown_load_balancing_configs := []*coreentities.ModelLoadBalancingConfiguration{}
+	cooldown_load_balancing_configs := []*providerentities.ModelLoadBalancingConfiguration{}
 	max_index := int64(len(mgr.LoadBalancingConfigs))
 
 	for {
@@ -101,7 +101,7 @@ func (mgr *LBModelManager) fetch_next() *coreentities.ModelLoadBalancingConfigur
 	}
 	// return nil
 }
-func (mgr *LBModelManager) cooldown(config *coreentities.ModelLoadBalancingConfiguration, expire int /* = 60*/) {
+func (mgr *LBModelManager) cooldown(config *providerentities.ModelLoadBalancingConfiguration, expire int /* = 60*/) {
 	/*
 	   Cooldown model load balancing config
 	   :param config: model load balancing config
@@ -111,7 +111,7 @@ func (mgr *LBModelManager) cooldown(config *coreentities.ModelLoadBalancingConfi
 	cooldown_cache_key := fmt.Sprintf("model_lb_index:cooldown:%s:%s:%s:%s:%s", mgr.TenantID, mgr.Provider, mgr.ModelType, mgr.Model, config.ID)
 	cache.Instance().SetExKey(cooldown_cache_key, "true", time.Duration(expire)*time.Second)
 }
-func (mgr *LBModelManager) in_cooldown(config *coreentities.ModelLoadBalancingConfiguration) bool {
+func (mgr *LBModelManager) in_cooldown(config *providerentities.ModelLoadBalancingConfiguration) bool {
 	/*
 	   Check if model load balancing config is in cooldown
 	   :param config: model load balancing config
@@ -122,7 +122,7 @@ func (mgr *LBModelManager) in_cooldown(config *coreentities.ModelLoadBalancingCo
 	return cache.Instance().ExistsKey(cooldown_cache_key)
 }
 func (mgr *LBModelManager) get_config_in_cooldown_and_ttl(
-	tenant_id string, provider string, model_type modelruntimeentities.ModelType, model string, config_id string,
+	tenant_id string, provider string, model_type modelruntimeenumtypes.ModelType, model string, config_id string,
 ) (bool, int) {
 	/*
 	   Get model load balancing config is in cooldown and ttl

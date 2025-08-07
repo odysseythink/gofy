@@ -28,7 +28,9 @@ import (
 	promptentities "mlib.com/gofy/server/entities/prompt"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
 	coreenumtypes "mlib.com/gofy/server/enum_types/core"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
+	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
 	variableenumtypes "mlib.com/gofy/server/enum_types/variable"
 	workflowenumtypes "mlib.com/gofy/server/enum_types/workflow"
 	"mlib.com/gofy/server/models"
@@ -48,12 +50,12 @@ func DeductLLMQuota(tenant_id string, model_instance *modelmanager.ModelInstance
 	provider_model_bundle := model_instance.ProviderModelBundle
 	provider_configuration := provider_model_bundle.Configuration
 
-	if provider_configuration.UsingProviderType != models.Provider_SYSTEM {
+	if provider_configuration.UsingProviderType != providerenumtypes.Provider_SYSTEM {
 		return
 	}
 	system_configuration := provider_configuration.SystemConfiguration
 
-	var quota_unit coreenumtypes.QuotaUnit
+	var quota_unit providerenumtypes.QuotaUnitType
 	for _, quota_configuration := range system_configuration.QuotaConfigurations {
 		if quota_configuration.QuotaType == system_configuration.CurrentQuotaType {
 			quota_unit = quota_configuration.QuotaUnit
@@ -66,16 +68,16 @@ func DeductLLMQuota(tenant_id string, model_instance *modelmanager.ModelInstance
 	}
 	var used_quota int
 	if string(quota_unit) != "" {
-		if quota_unit == coreenumtypes.QuotaUnit_TOKENS {
+		if quota_unit == providerenumtypes.QuotaUnit_TOKENS {
 			used_quota = usage.TotalTokens
-		} else if quota_unit == coreenumtypes.QuotaUnit_CREDITS {
+		} else if quota_unit == providerenumtypes.QuotaUnit_CREDITS {
 			used_quota = 1
 		} else {
 			used_quota = 1
 		}
 	}
 	if used_quota > 0 && string(system_configuration.CurrentQuotaType) != "" {
-		dbengine.Instance().DB.Debug().Model(&models.Provider{}).Update("quota_used", gorm.Expr("quota_used + ?", used_quota)).Where("tenant_id = ? and provider_name = ? and provider_type=? and quota_type = ? and quota_limit > quota_used", tenant_id, model_instance.Provider, models.Provider_SYSTEM, system_configuration.CurrentQuotaType)
+		dbengine.Instance().DB.Debug().Model(&models.Provider{}).Update("quota_used", gorm.Expr("quota_used + ?", used_quota)).Where("tenant_id = ? and provider_name = ? and provider_type=? and quota_type = ? and quota_limit > quota_used", tenant_id, model_instance.Provider, providerenumtypes.Provider_SYSTEM, system_configuration.CurrentQuotaType)
 	}
 }
 func (n *LLMNode) Run() (*workflowentities.NodeRunResult, iter.Seq[any]) {
@@ -583,7 +585,7 @@ func FetchModelConfig(tenant_id string, node_data_model *llmnodesentities.ModelC
 	provider_name := node_data_model.Provider
 
 	model_instance := (&modelmanager.ModelManager{}).GetModelInstance(
-		tenant_id, provider_name, modelruntimeentities.Model_LLM, model_name,
+		tenant_id, provider_name, modelruntimeenumtypes.Model_LLM, model_name,
 	)
 
 	provider_model_bundle := model_instance.ProviderModelBundle
@@ -593,7 +595,7 @@ func FetchModelConfig(tenant_id string, node_data_model *llmnodesentities.ModelC
 
 	// check model
 	provider_model := (&providermanager.ProviderConfigurationManager{}).GetProviderModel(
-		provider_model_bundle.Configuration, modelruntimeentities.Model_LLM, model_name, false,
+		provider_model_bundle.Configuration, modelruntimeenumtypes.Model_LLM, model_name, false,
 	)
 	if provider_model == nil {
 		panic(llmnodesexceptions.NewModelNotExistError(fmt.Sprintf("Model %s not exist.", model_name)))
@@ -853,13 +855,13 @@ func FetchPromptMessages[T []*llmnodesentities.LLMNodeChatModelMessage | *llmnod
 				// Skip content if corresponding feature is not supported
 
 				if ((content_item.Type() == modelruntimeentities.PromptMessageContent_IMAGE &&
-					!slices.Contains(model_config.ModelSchema.Features, modelruntimeentities.ModelFeature_VISION)) ||
+					!slices.Contains(model_config.ModelSchema.Features, modelruntimeenumtypes.ModelFeature_VISION)) ||
 					(content_item.Type() == modelruntimeentities.PromptMessageContent_DOCUMENT &&
-						!slices.Contains(model_config.ModelSchema.Features, modelruntimeentities.ModelFeature_DOCUMENT))) ||
+						!slices.Contains(model_config.ModelSchema.Features, modelruntimeenumtypes.ModelFeature_DOCUMENT))) ||
 					(content_item.Type() == modelruntimeentities.PromptMessageContent_VIDEO &&
-						!slices.Contains(model_config.ModelSchema.Features, modelruntimeentities.ModelFeature_VIDEO)) ||
+						!slices.Contains(model_config.ModelSchema.Features, modelruntimeenumtypes.ModelFeature_VIDEO)) ||
 					(content_item.Type() == modelruntimeentities.PromptMessageContent_AUDIO &&
-						!slices.Contains(model_config.ModelSchema.Features, modelruntimeentities.ModelFeature_AUDIO)) {
+						!slices.Contains(model_config.ModelSchema.Features, modelruntimeenumtypes.ModelFeature_AUDIO)) {
 					continue
 				}
 				prompt_message_content = append(prompt_message_content, content_item)
@@ -915,12 +917,12 @@ func _calculate_rest_token(
 ) int {
 	rest_tokens := 2000
 
-	if _, ok := model_config.ModelSchema.ModelProperties[modelruntimeentities.ModelPropertyKey_CONTEXT_SIZE]; ok {
-		if _, ok := model_config.ModelSchema.ModelProperties[modelruntimeentities.ModelPropertyKey_CONTEXT_SIZE].(int); !ok {
-			mlog.Errorf("ModelProperties[%s]=%#v must be int", modelruntimeentities.ModelPropertyKey_CONTEXT_SIZE, model_config.ModelSchema.ModelProperties[modelruntimeentities.ModelPropertyKey_CONTEXT_SIZE])
-			panic(exceptions.NewValueError(fmt.Sprintf("modelProperties[%s]=%#v must be int", modelruntimeentities.ModelPropertyKey_CONTEXT_SIZE, model_config.ModelSchema.ModelProperties[modelruntimeentities.ModelPropertyKey_CONTEXT_SIZE])))
+	if _, ok := model_config.ModelSchema.ModelProperties[modelruntimeenumtypes.ModelPropertyKey_CONTEXT_SIZE]; ok {
+		if _, ok := model_config.ModelSchema.ModelProperties[modelruntimeenumtypes.ModelPropertyKey_CONTEXT_SIZE].(int); !ok {
+			mlog.Errorf("ModelProperties[%s]=%#v must be int", modelruntimeenumtypes.ModelPropertyKey_CONTEXT_SIZE, model_config.ModelSchema.ModelProperties[modelruntimeenumtypes.ModelPropertyKey_CONTEXT_SIZE])
+			panic(exceptions.NewValueError(fmt.Sprintf("modelProperties[%s]=%#v must be int", modelruntimeenumtypes.ModelPropertyKey_CONTEXT_SIZE, model_config.ModelSchema.ModelProperties[modelruntimeenumtypes.ModelPropertyKey_CONTEXT_SIZE])))
 		}
-		model_context_tokens := model_config.ModelSchema.ModelProperties[modelruntimeentities.ModelPropertyKey_CONTEXT_SIZE].(int)
+		model_context_tokens := model_config.ModelSchema.ModelProperties[modelruntimeenumtypes.ModelPropertyKey_CONTEXT_SIZE].(int)
 		model_instance := modelmanager.NewModelInstance(
 			model_config.ProviderModelBundle, model_config.Model,
 		)

@@ -1,18 +1,19 @@
-package core
+package model
 
 import (
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	coreenumtypes "mlib.com/gofy/server/enum_types/core"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	commontypes "mlib.com/gofy/server/types/common"
 )
 
 // SimpleModelProviderEntity represents a simple provider entity
 type SimpleModelProviderEntity struct {
-	Provider            string                           `json:"provider" yaml:"provider"`
-	Label               commontypes.I18nObject           `json:"label" yaml:"label"`
-	IconSmall           *commontypes.I18nObject          `json:"icon_small,omitempty" yaml:"icon_small"`
-	IconLarge           *commontypes.I18nObject          `json:"icon_large,omitempty" yaml:"icon_large"`
-	SupportedModelTypes []modelruntimeentities.ModelType `json:"supported_model_types" yaml:"supported_model_types"`
+	Provider            string                            `json:"provider" yaml:"provider"`
+	Label               commontypes.I18nObject            `json:"label" yaml:"label"`
+	IconSmall           *commontypes.I18nObject           `json:"icon_small,omitempty" yaml:"icon_small"`
+	IconLarge           *commontypes.I18nObject           `json:"icon_large,omitempty" yaml:"icon_large"`
+	SupportedModelTypes []modelruntimeenumtypes.ModelType `json:"supported_model_types" yaml:"supported_model_types"`
 }
 
 // NewSimpleModelProviderEntity creates a new instance of SimpleModelProviderEntity
@@ -41,11 +42,11 @@ type ModelWithProviderEntity struct {
 
 // DefaultModelProviderEntity represents a default model provider entity
 type DefaultModelProviderEntity struct {
-	Provider            string                           `json:"provider" yaml:"provider"`
-	Label               commontypes.I18nObject           `json:"label" yaml:"label"`
-	IconSmall           *commontypes.I18nObject          `json:"icon_small,omitempty" yaml:"icon_small"`
-	IconLarge           *commontypes.I18nObject          `json:"icon_large,omitempty" yaml:"icon_large"`
-	SupportedModelTypes []modelruntimeentities.ModelType `json:"supported_model_types" yaml:"supported_model_types"`
+	Provider            string                            `json:"provider" yaml:"provider"`
+	Label               commontypes.I18nObject            `json:"label" yaml:"label"`
+	IconSmall           *commontypes.I18nObject           `json:"icon_small,omitempty" yaml:"icon_small"`
+	IconLarge           *commontypes.I18nObject           `json:"icon_large,omitempty" yaml:"icon_large"`
+	SupportedModelTypes []modelruntimeenumtypes.ModelType `json:"supported_model_types" yaml:"supported_model_types"`
 }
 
 // DefaultModelEntity represents a default model entity

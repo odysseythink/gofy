@@ -101,20 +101,20 @@ const (
 	ModelFeature_AUDIO            ModelFeature = "audio"
 )
 
-type DefaultParameterName string
+type DefaultParameterNameType string
 
 /*
 Enum class for parameter template variable.
 */
 const (
-	DefaultParameterName_TEMPERATURE       DefaultParameterName = "temperature"
-	DefaultParameterName_TOP_P             DefaultParameterName = "top_p"
-	DefaultParameterName_TOP_K             DefaultParameterName = "top_k"
-	DefaultParameterName_PRESENCE_PENALTY  DefaultParameterName = "presence_penalty"
-	DefaultParameterName_FREQUENCY_PENALTY DefaultParameterName = "frequency_penalty"
-	DefaultParameterName_MAX_TOKENS        DefaultParameterName = "max_tokens"
-	DefaultParameterName_RESPONSE_FORMAT   DefaultParameterName = "response_format"
-	DefaultParameterName_JSON_SCHEMA       DefaultParameterName = "json_schema"
+	DefaultParameterName_TEMPERATURE       DefaultParameterNameType = "temperature"
+	DefaultParameterName_TOP_P             DefaultParameterNameType = "top_p"
+	DefaultParameterName_TOP_K             DefaultParameterNameType = "top_k"
+	DefaultParameterName_PRESENCE_PENALTY  DefaultParameterNameType = "presence_penalty"
+	DefaultParameterName_FREQUENCY_PENALTY DefaultParameterNameType = "frequency_penalty"
+	DefaultParameterName_MAX_TOKENS        DefaultParameterNameType = "max_tokens"
+	DefaultParameterName_RESPONSE_FORMAT   DefaultParameterNameType = "response_format"
+	DefaultParameterName_JSON_SCHEMA       DefaultParameterNameType = "json_schema"
 )
 
 type ParameterType string

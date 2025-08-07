@@ -48,3 +48,10 @@ const (
 	BasicProviderConfig_MODEL_SELECTOR = BasicProviderConfigType(parameterenumtypes.CommonParameter_MODEL_SELECTOR)
 	BasicProviderConfig_TOOLS_SELECTOR = BasicProviderConfigType(parameterenumtypes.CommonParameter_TOOLS_SELECTOR)
 )
+
+type ProviderType string
+
+const (
+	Provider_CUSTOM ProviderType = "custom"
+	Provider_SYSTEM ProviderType = "system"
+)

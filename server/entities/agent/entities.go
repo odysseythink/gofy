@@ -1,6 +1,10 @@
 package agent
 
-import "strings"
+import (
+	"strings"
+
+	toolsentities "mlib.com/gofy/server/entities/tools"
+)
 
 type AgentToolEntity struct {
 	/*
@@ -88,4 +92,8 @@ func NewAgentEntity() *AgentEntity {
 	return &AgentEntity{
 		MaxIteration: 5,
 	}
+}
+
+type AgentInvokeMessage struct {
+	*toolsentities.ToolInvokeMessage
 }

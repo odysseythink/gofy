@@ -7,21 +7,21 @@ import (
 	commontypes "mlib.com/gofy/server/types/common"
 )
 
-type ToolApiEntity[T1 float64 | int | string, T2 float64 | int] struct {
-	Author       string                   `json:"author"`
-	Name         string                   `json:"name"`  // identifier
-	Label        commontypes.I18nObject   `json:"label"` // label
-	Description  commontypes.I18nObject   `json:"description"`
-	Parameters   []*ToolParameter[T1, T2] `json:"parameters"`
-	Labels       []string                 `json:"labels"`
-	OutputSchema map[string]any           `json:"output_schema"`
+type ToolApiEntity struct {
+	Author       string                 `json:"author"`
+	Name         string                 `json:"name"`  // identifier
+	Label        commontypes.I18nObject `json:"label"` // label
+	Description  commontypes.I18nObject `json:"description"`
+	Parameters   []*ToolParameter       `json:"parameters"`
+	Labels       []string               `json:"labels"`
+	OutputSchema map[string]any         `json:"output_schema"`
 }
 
 var (
 	ToolProviderTypeApiLiteral = []string{"builtin", "api", "workflow", "mcp"}
 )
 
-type ToolProviderApiEntity[T1 string | map[string]any, T2 float64 | int | string, T3 float64 | int] struct {
+type ToolProviderApiEntity[T1 string | map[string]any] struct {
 	ID                     string                          `json:"id"`
 	Author                 string                          `json:"author"`
 	Name                   string                          `json:"name"` // identifier
@@ -36,7 +36,7 @@ type ToolProviderApiEntity[T1 string | map[string]any, T2 float64 | int | string
 	AllowDelete            bool                            `json:"allow_delete"`             //default true
 	PluginID               *string                         `json:"plugin_id"`                //description="The plugin id of the tool"
 	PluginUniqueIdentifier *string                         `json:"plugin_unique_identifier"` //description="The unique identifier of the tool"
-	Tools                  []*ToolApiEntity[T2, T3]        `json:"tools"`
+	Tools                  []*ToolApiEntity                `json:"tools"`
 	Labels                 []string                        `json:"labels"`
 	// MCP
 	ServerURL        *string `json:"server_url"`        //description="The server url of the tool"
@@ -44,7 +44,7 @@ type ToolProviderApiEntity[T1 string | map[string]any, T2 float64 | int | string
 	ServerIdentifier *string `json:"server_identifier"` //description="The server identifier of the MCP tool"
 }
 
-func (entity *ToolProviderApiEntity[T1, T2, T3]) ToDict() map[string]any {
+func (entity *ToolProviderApiEntity[T1]) ToDict() map[string]any {
 	// -------------
 	// overwrite tool parameter types for temp fix
 	for idx1, tool := range entity.Tools {

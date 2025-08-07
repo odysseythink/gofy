@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/peer"
 	"mlib.com/gofy/server/core/exceptions"
 	httpexceptions "mlib.com/gofy/server/core/exceptions/http"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	pbexceptions "mlib.com/gofy/server/proto/exceptions"
 	"mlib.com/gofy/server/proto/pbapi"
 	"mlib.com/gofy/server/services"
@@ -39,7 +39,7 @@ func (s *AdminService) SetDefaultModel(ctx context.Context, in *pbapi.SetDefault
 			}
 		}()
 		for _, model_setting := range in.ModelSettings {
-			if !modelruntimeentities.ModelType(model_setting.ModelType).Valid() {
+			if !modelruntimeenumtypes.ModelType(model_setting.ModelType).Valid() {
 				panic(exceptions.NewValueError("invalid model type"))
 			}
 			if model_setting.Provider == "" || model_setting.Model == "" {
@@ -50,7 +50,7 @@ func (s *AdminService) SetDefaultModel(ctx context.Context, in *pbapi.SetDefault
 				in.TenantId,
 				model_setting.Provider,
 				model_setting.Model,
-				modelruntimeentities.ModelType(model_setting.ModelType),
+				modelruntimeenumtypes.ModelType(model_setting.ModelType),
 			)
 		}
 	}()
@@ -62,7 +62,7 @@ func (s *AdminService) GetDefaultModel(ctx context.Context, in *pbapi.GetDefault
 	mlog.Infof("remote[%s] admin.GetDefaultModel call:%#v", p.Addr.String(), in)
 
 	out = &pbapi.GetDefaultModelReply{}
-	if !modelruntimeentities.ModelType(in.ModelType).Valid() {
+	if !modelruntimeenumtypes.ModelType(in.ModelType).Valid() {
 		mlog.Errorf("invalid model type=%s", in.ModelType)
 		out.Exp = exceptions.NewInvalidArgsPbHttpExp(fmt.Sprintf("invalid model type=%s", in.ModelType))
 		return
@@ -84,7 +84,7 @@ func (s *AdminService) GetDefaultModel(ctx context.Context, in *pbapi.GetDefault
 				}
 			}
 		}()
-		default_model_entity := services.ServiceGroupApp.ModelProvide.GetDefaultModelOfModelType(in.TenantId, modelruntimeentities.ModelType(in.ModelType))
+		default_model_entity := services.ServiceGroupApp.ModelProvide.GetDefaultModelOfModelType(in.TenantId, modelruntimeenumtypes.ModelType(in.ModelType))
 		bindata, _ := json.Marshal(default_model_entity)
 		out.DefaultModelResponseStr = string(bindata)
 	}()
@@ -100,7 +100,7 @@ func (s *AdminService) GetAvailableModelProvider(ctx context.Context, in *pbapi.
 		out.Exp = exceptions.NewUnauthorizedPbHttpExp("TenantId not provide")
 		return
 	}
-	if !modelruntimeentities.ModelType(in.ModelType).Valid() {
+	if !modelruntimeenumtypes.ModelType(in.ModelType).Valid() {
 		mlog.Errorf("model_type=%s is invalid", in.ModelType)
 		out.Exp = exceptions.NewUnauthorizedPbHttpExp(fmt.Sprintf("model_type=%s is invalid", in.ModelType))
 		return
@@ -117,7 +117,7 @@ func (s *AdminService) GetAvailableModelProvider(ctx context.Context, in *pbapi.
 				}
 			}
 		}()
-		models := services.ServiceGroupApp.ModelProvide.GetModelsByModelType(in.TenantId, modelruntimeentities.ModelType(in.ModelType))
+		models := services.ServiceGroupApp.ModelProvide.GetModelsByModelType(in.TenantId, modelruntimeenumtypes.ModelType(in.ModelType))
 		bindata, _ := json.Marshal(models)
 		out.ModelsStr = string(bindata)
 	}()
@@ -174,7 +174,7 @@ func (s *AdminService) SetModelProviderModel(ctx context.Context, in *pbapi.SetM
 		out.Exp = exceptions.NewInvalidArgsPbHttpExp("missing provider")
 		return
 	}
-	if !modelruntimeentities.ModelType(in.ModelType).Valid() {
+	if !modelruntimeenumtypes.ModelType(in.ModelType).Valid() {
 		mlog.Errorf("invalid model type=%s", in.ModelType)
 		out.Exp = exceptions.NewInvalidArgsPbHttpExp(fmt.Sprintf("invalid model type=%s", in.ModelType))
 		return
@@ -243,13 +243,13 @@ func (s *AdminService) SetModelProviderModel(ctx context.Context, in *pbapi.SetM
 				in.TenantId,
 				in.Provider,
 				in.Model,
-				modelruntimeentities.ModelType(in.ModelType),
+				modelruntimeenumtypes.ModelType(in.ModelType),
 				configs,
 			)
 
 			// enable load balancing
 			if err1 := services.ServiceGroupApp.ModelLoadBalancing.EnableModelLoadBalancing(
-				in.TenantId, in.Provider, in.Model, modelruntimeentities.ModelType(in.ModelType),
+				in.TenantId, in.Provider, in.Model, modelruntimeenumtypes.ModelType(in.ModelType),
 			); err1 != nil {
 				mlog.Error("EnableModelLoadBalancing failed:", err1)
 				out.Exp = &pbexceptions.HTTPException{
@@ -261,7 +261,7 @@ func (s *AdminService) SetModelProviderModel(ctx context.Context, in *pbapi.SetM
 		} else {
 			// disable load balancing
 			if err1 := services.ServiceGroupApp.ModelLoadBalancing.DisableModelLoadBalancing(
-				in.TenantId, in.Provider, in.Model, modelruntimeentities.ModelType(in.ModelType),
+				in.TenantId, in.Provider, in.Model, modelruntimeenumtypes.ModelType(in.ModelType),
 			); err1 != nil {
 				mlog.Error("DisableModelLoadBalancing failed:", err1)
 				out.Exp = &pbexceptions.HTTPException{
@@ -271,7 +271,7 @@ func (s *AdminService) SetModelProviderModel(ctx context.Context, in *pbapi.SetM
 				return
 			}
 			if in.ConfigFrom != "predefined-model" {
-				if err1 := services.ServiceGroupApp.ModelProvide.SaveModelCredentials(in.TenantId, in.Provider, modelruntimeentities.ModelType(in.ModelType), in.Model, credentials); err1 != nil {
+				if err1 := services.ServiceGroupApp.ModelProvide.SaveModelCredentials(in.TenantId, in.Provider, modelruntimeenumtypes.ModelType(in.ModelType), in.Model, credentials); err1 != nil {
 					mlog.Error("SaveModelCredentials failed:", err1)
 					out.Exp = &pbexceptions.HTTPException{
 						Status:  http.StatusBadRequest,
@@ -301,7 +301,7 @@ func (s *AdminService) EnableModelProviderModel(ctx context.Context, in *pbapi.E
 		out.Exp = exceptions.NewInvalidArgsPbHttpExp("missing provider")
 		return
 	}
-	if !modelruntimeentities.ModelType(in.ModelType).Valid() {
+	if !modelruntimeenumtypes.ModelType(in.ModelType).Valid() {
 		mlog.Errorf("invalid model type=%s", in.ModelType)
 		out.Exp = exceptions.NewInvalidArgsPbHttpExp(fmt.Sprintf("invalid model type=%s", in.ModelType))
 		return

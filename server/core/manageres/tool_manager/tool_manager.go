@@ -7,8 +7,8 @@ import (
 
 	"github.com/spf13/viper"
 	"mlib.com/gofy/server/core/exceptions"
-	"mlib.com/gofy/server/core/tools/provider"
-	"mlib.com/gofy/server/core/tools/tool"
+	"mlib.com/gofy/server/core/tools/base"
+	builtintool "mlib.com/gofy/server/core/tools/builtin_tool"
 	dbengine "mlib.com/gofy/server/db_engine"
 	agententities "mlib.com/gofy/server/entities/agent"
 	appenumtypes "mlib.com/gofy/server/enum_types/app"
@@ -20,19 +20,19 @@ import (
 
 type ToolManager struct {
 	builtin_provider_lock    sync.Mutex
-	builtin_providers        map[string]*provider.BuiltinToolProviderController
+	builtin_providers        map[string]*builtintool.BuiltinToolProviderController
 	builtin_providers_loaded bool
 	builtin_tools_labels     map[string]*commontypes.I18nObject
 }
 
 func NewToolManager() *ToolManager {
 	return &ToolManager{
-		builtin_providers:    make(map[string]*provider.BuiltinToolProviderController),
+		builtin_providers:    make(map[string]*builtintool.BuiltinToolProviderController),
 		builtin_tools_labels: make(map[string]*commontypes.I18nObject),
 	}
 }
 
-func (tm *ToolManager) GetBuiltinProvider(provider string) (*provider.BuiltinToolProviderController, error) {
+func (tm *ToolManager) GetBuiltinProvider(provider string) (*builtintool.BuiltinToolProviderController, error) {
 	/*
 		get the builtin provider
 
@@ -72,7 +72,7 @@ func (tm *ToolManager) GetToolRuntime(
 	tool_name string,
 	tenant_id string,
 	invoke_from appenumtypes.InvokeFrom, /* = InvokeFrom.DEBUGGER*/
-	tool_invoke_from toolsenumtypes.ToolInvokeFrom, /* = ToolInvokeFrom.AGENT*/
+	tool_invoke_from toolsenumtypes.ToolInvokeFromType, /* = ToolInvokeFrom.AGENT*/
 ) /*-> Union[BuiltinTool, ApiTool, Tool]*/ (any, error) {
 	/*
 		get the tool runtime
@@ -180,7 +180,7 @@ func (tm *ToolManager) GetToolRuntime(
 	// }
 }
 
-func (tm *ToolManager) GetAgentToolRuntime(tenant_id, app_id string, agent_tool agententities.AgentToolEntity, invoke_from appenumtypes.InvokeFrom /* = InvokeFrom.DEBUGGER*/) *tool.Tool {
+func (tm *ToolManager) GetAgentToolRuntime(tenant_id, app_id string, agent_tool agententities.AgentToolEntity, invoke_from appenumtypes.InvokeFrom /* = InvokeFrom.DEBUGGER*/) *base.Tool {
 	/*
 		get the agent tool runtime
 	*/

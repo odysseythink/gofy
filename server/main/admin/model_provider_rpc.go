@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/peer"
 	"mlib.com/gofy/server/core/exceptions"
 	httpexceptions "mlib.com/gofy/server/core/exceptions/http"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	pbexceptions "mlib.com/gofy/server/proto/exceptions"
 	"mlib.com/gofy/server/proto/pbapi"
 	"mlib.com/gofy/server/services"
@@ -27,7 +27,7 @@ func (s *AdminService) GetModelProviderList(ctx context.Context, in *pbapi.GetMo
 		return
 	}
 	if in.ModelType != "" {
-		if !modelruntimeentities.ModelType(in.ModelType).Valid() {
+		if !modelruntimeenumtypes.ModelType(in.ModelType).Valid() {
 			mlog.Errorf("model_type=%s is invalid", in.ModelType)
 			out.Exp = exceptions.NewUnauthorizedPbHttpExp(fmt.Sprintf("model_type=%s is invalid", in.ModelType))
 			return
@@ -45,7 +45,7 @@ func (s *AdminService) GetModelProviderList(ctx context.Context, in *pbapi.GetMo
 				}
 			}
 		}()
-		provider_list := services.ServiceGroupApp.ModelProvide.GetProviderList(in.TenantId, modelruntimeentities.ModelType(in.ModelType))
+		provider_list := services.ServiceGroupApp.ModelProvide.GetProviderList(in.TenantId, modelruntimeenumtypes.ModelType(in.ModelType))
 		bindata, _ := json.Marshal(provider_list)
 		out.ProviderListStr = string(bindata)
 	}()

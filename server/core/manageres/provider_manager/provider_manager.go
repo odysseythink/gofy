@@ -13,8 +13,11 @@ import (
 	modelproviders "mlib.com/gofy/server/core/model_runtime/model_provides"
 	dbengine "mlib.com/gofy/server/db_engine"
 	coreentities "mlib.com/gofy/server/entities/core"
+	modelentities "mlib.com/gofy/server/entities/model"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	coreenumtypes "mlib.com/gofy/server/enum_types/core"
+	providerentities "mlib.com/gofy/server/entities/provider"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
+	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
 	"mlib.com/gofy/server/models"
 	"mlib.com/mlog"
 )
@@ -32,7 +35,7 @@ func (pm *ProviderManager) to_model_settings(
 	provider_entity *modelruntimeentities.ProviderEntity,
 	provider_model_settings []*models.ProviderModelSetting,
 	load_balancing_model_configs []*models.LoadBalancingModelConfig,
-) []*coreentities.ModelSetting {
+) []*providerentities.ModelSetting {
 	/*
 		Convert to model settings.
 		:param provider_entity: provider entity
@@ -55,12 +58,12 @@ func (pm *ProviderManager) to_model_settings(
 	// 	}
 	// 	model_credential_secret_variables = pm.extract_secret_variables(credential_form_schemas)
 	// }
-	model_settings := []*coreentities.ModelSetting{}
+	model_settings := []*providerentities.ModelSetting{}
 	if len(provider_model_settings) == 0 {
 		return model_settings
 	}
 	for _, provider_model_setting := range provider_model_settings {
-		load_balancing_configs := []*coreentities.ModelLoadBalancingConfiguration{}
+		load_balancing_configs := []*providerentities.ModelLoadBalancingConfiguration{}
 		if provider_model_setting.LoadBalancingEnabled && len(load_balancing_model_configs) > 0 {
 			for _, load_balancing_model_config := range load_balancing_model_configs {
 				if load_balancing_model_config.ModelName == provider_model_setting.ModelName && load_balancing_model_config.ModelType == provider_model_setting.ModelType {
@@ -69,7 +72,7 @@ func (pm *ProviderManager) to_model_settings(
 					}
 					if load_balancing_model_config.EncryptedConfig == "" {
 						if load_balancing_model_config.Name == "__inherit__" {
-							load_balancing_configs = append(load_balancing_configs, &coreentities.ModelLoadBalancingConfiguration{
+							load_balancing_configs = append(load_balancing_configs, &providerentities.ModelLoadBalancingConfiguration{
 								ID:          load_balancing_model_config.ID,
 								Name:        load_balancing_model_config.Name,
 								Credentials: map[string]any{},
@@ -120,7 +123,7 @@ func (pm *ProviderManager) to_model_settings(
 					} else {
 						provider_model_credentials = cached_provider_model_credentials
 					}
-					load_balancing_configs = append(load_balancing_configs, &coreentities.ModelLoadBalancingConfiguration{
+					load_balancing_configs = append(load_balancing_configs, &providerentities.ModelLoadBalancingConfiguration{
 						ID:          load_balancing_model_config.ID,
 						Name:        load_balancing_model_config.Name,
 						Credentials: provider_model_credentials,
@@ -128,9 +131,9 @@ func (pm *ProviderManager) to_model_settings(
 				}
 			}
 		}
-		model_settings = append(model_settings, &coreentities.ModelSetting{
+		model_settings = append(model_settings, &providerentities.ModelSetting{
 			Model:                provider_model_setting.ModelName,
-			ModelType:            modelruntimeentities.ModelType(provider_model_setting.ModelType),
+			ModelType:            modelruntimeenumtypes.ModelType(provider_model_setting.ModelType),
 			Enabled:              provider_model_setting.Enabled,
 			LoadBalancingConfigs: load_balancing_configs,
 		})
@@ -181,17 +184,17 @@ func (pm *ProviderManager) init_trial_provider_records(
 		if !ok || provider_records == nil {
 			provider_records = []*models.Provider{}
 		}
-		provider_quota_to_provider_record_dict := map[models.ProviderQuotaType]*models.Provider{}
+		provider_quota_to_provider_record_dict := map[providerenumtypes.ProviderQuotaType]*models.Provider{}
 		for _, provider_record := range provider_records {
-			if provider_record.ProviderType != models.Provider_SYSTEM {
+			if provider_record.ProviderType != providerenumtypes.Provider_SYSTEM {
 				continue
 			}
-			provider_quota_to_provider_record_dict[models.ProviderQuotaType(provider_record.QuotaType)] = provider_record
+			provider_quota_to_provider_record_dict[providerenumtypes.ProviderQuotaType(provider_record.QuotaType)] = provider_record
 		}
 		for _, quota := range configuration.Quotas {
-			if quota.Type() == models.ProviderQuota_TRIAL {
+			if quota.Type() == providerenumtypes.ProviderQuota_TRIAL {
 				// Init trial provider records if not exists
-				if _, ok := provider_quota_to_provider_record_dict[models.ProviderQuota_TRIAL]; !ok {
+				if _, ok := provider_quota_to_provider_record_dict[providerenumtypes.ProviderQuota_TRIAL]; !ok {
 					realquota := any(quota).(*hostingconfiguration.TrialHostingQuota)
 					// try{
 					// FIXME ignore the type errork, onyl TrialHostingQuota has limit need to change the logic
@@ -199,8 +202,8 @@ func (pm *ProviderManager) init_trial_provider_records(
 						ID:           uuid.NewV4().String(),
 						TenantID:     tenant_id,
 						ProviderName: provider_name,
-						ProviderType: models.Provider_SYSTEM,
-						QuotaType:    string(models.ProviderQuota_TRIAL),
+						ProviderType: providerenumtypes.Provider_SYSTEM,
+						QuotaType:    string(providerenumtypes.ProviderQuota_TRIAL),
 						QuotaLimit:   int64(realquota.QuotaLimit), // type: ignore
 						QuotaUsed:    0,
 						IsValid:      true,
@@ -331,7 +334,7 @@ func (pm *ProviderManager) to_custom_configuration(
 	provider_entity *modelruntimeentities.ProviderEntity,
 	provider_records []*models.Provider,
 	provider_model_records []*models.ProviderModel,
-) *coreentities.CustomConfiguration {
+) *providerentities.CustomConfiguration {
 	/*
 		Convert to custom configuration.
 
@@ -354,7 +357,7 @@ func (pm *ProviderManager) to_custom_configuration(
 	var custom_provider_record *models.Provider
 	for _, provider_record := range provider_records {
 		mlog.Debugf("------provider_record=%#v", provider_record)
-		if provider_record.ProviderType == models.Provider_SYSTEM {
+		if provider_record.ProviderType == providerenumtypes.Provider_SYSTEM {
 			continue
 		}
 		if provider_record.EncryptedConfig == "" {
@@ -363,7 +366,7 @@ func (pm *ProviderManager) to_custom_configuration(
 		custom_provider_record = provider_record
 	}
 	// Get custom provider credentials
-	var custom_provider_configuration *coreentities.CustomProviderConfiguration
+	var custom_provider_configuration *providerentities.CustomProviderConfiguration
 	mlog.Debugf("------custom_provider_record=%#v", custom_provider_record)
 	if custom_provider_record != nil {
 		provider_credentials_cache := datamanager.NewProviderCredentialsCache(
@@ -409,7 +412,7 @@ func (pm *ProviderManager) to_custom_configuration(
 		} else {
 			provider_credentials = cached_provider_credentials
 		}
-		custom_provider_configuration = &coreentities.CustomProviderConfiguration{Credentials: provider_credentials}
+		custom_provider_configuration = &providerentities.CustomProviderConfiguration{Credentials: provider_credentials}
 	}
 	// if provider_entity.ModelCredentialSchema != nil {
 	// 	credential_form_schemas = provider_entity.ModelCredentialSchema.CredentialFormSchemas
@@ -418,7 +421,7 @@ func (pm *ProviderManager) to_custom_configuration(
 	// model_credential_secret_variables := pm.extract_secret_variables(credential_form_schemas)
 
 	// Get custom provider model credentials
-	custom_model_configurations := []*coreentities.CustomModelConfiguration{}
+	custom_model_configurations := []*providerentities.CustomModelConfiguration{}
 	for _, provider_model_record := range provider_model_records {
 		if provider_model_record.EncryptedConfig == "" {
 			continue
@@ -461,15 +464,15 @@ func (pm *ProviderManager) to_custom_configuration(
 		} else {
 			provider_model_credentials = cached_provider_model_credentials
 		}
-		custom_model_configurations = append(custom_model_configurations, &coreentities.CustomModelConfiguration{
+		custom_model_configurations = append(custom_model_configurations, &providerentities.CustomModelConfiguration{
 			Model:       provider_model_record.ModelName,
-			ModelType:   modelruntimeentities.ModelType(provider_model_record.ModelType),
+			ModelType:   modelruntimeenumtypes.ModelType(provider_model_record.ModelType),
 			Credentials: provider_model_credentials,
 		})
 	}
-	return &coreentities.CustomConfiguration{Provider: custom_provider_configuration, Models: custom_model_configurations}
+	return &providerentities.CustomConfiguration{Provider: custom_provider_configuration, Models: custom_model_configurations}
 }
-func (pm *ProviderManager) choice_current_using_quota_type(quota_configurations []*coreentities.QuotaConfiguration) (models.ProviderQuotaType, error) {
+func (pm *ProviderManager) choice_current_using_quota_type(quota_configurations []*providerentities.QuotaConfiguration) (providerenumtypes.ProviderQuotaType, error) {
 	/*
 	   Choice current using quota type.
 	   paid quotas > provider free quotas > hosting trial quotas
@@ -479,13 +482,13 @@ func (pm *ProviderManager) choice_current_using_quota_type(quota_configurations 
 	   :return:
 	*/
 	// convert to dict
-	quota_type_to_quota_configuration_dict := map[models.ProviderQuotaType]*coreentities.QuotaConfiguration{}
+	quota_type_to_quota_configuration_dict := map[providerenumtypes.ProviderQuotaType]*providerentities.QuotaConfiguration{}
 	for _, quota_configuration := range quota_configurations {
 		quota_type_to_quota_configuration_dict[quota_configuration.QuotaType] = quota_configuration
 	}
 
-	var last_quota_configuration *coreentities.QuotaConfiguration
-	for _, quota_type := range []models.ProviderQuotaType{models.ProviderQuota_PAID, models.ProviderQuota_FREE, models.ProviderQuota_TRIAL} {
+	var last_quota_configuration *providerentities.QuotaConfiguration
+	for _, quota_type := range []providerenumtypes.ProviderQuotaType{providerenumtypes.ProviderQuota_PAID, providerenumtypes.ProviderQuota_FREE, providerenumtypes.ProviderQuota_TRIAL} {
 		if _, ok := quota_type_to_quota_configuration_dict[quota_type]; ok {
 			last_quota_configuration = quota_type_to_quota_configuration_dict[quota_type]
 			if last_quota_configuration.IsValid {
@@ -497,12 +500,12 @@ func (pm *ProviderManager) choice_current_using_quota_type(quota_configurations 
 	if last_quota_configuration != nil {
 		return last_quota_configuration.QuotaType, nil
 	}
-	return models.ProviderQuotaType(""), exceptions.NewValueError("No quota type available")
+	return providerenumtypes.ProviderQuotaType(""), exceptions.NewValueError("No quota type available")
 }
 
 func (pm *ProviderManager) to_system_configuration(
 	tenant_id string, provider_entity *modelruntimeentities.ProviderEntity, provider_records []*models.Provider,
-) *coreentities.SystemConfiguration {
+) *providerentities.SystemConfiguration {
 	/*
 		Convert to system configuration.
 
@@ -514,26 +517,26 @@ func (pm *ProviderManager) to_system_configuration(
 	// Get hosting configuration
 	provider_hosting_configuration := hostingconfiguration.Instance().ProviderMap[provider_entity.Provider]
 	if provider_hosting_configuration == nil || !provider_hosting_configuration.Enabled {
-		return &coreentities.SystemConfiguration{Enabled: false}
+		return &providerentities.SystemConfiguration{Enabled: false}
 	}
 	// Convert provider_records to dict
-	quota_type_to_provider_records_dict := map[models.ProviderQuotaType]*models.Provider{}
+	quota_type_to_provider_records_dict := map[providerenumtypes.ProviderQuotaType]*models.Provider{}
 	for _, provider_record := range provider_records {
-		if provider_record.ProviderType != models.Provider_SYSTEM {
+		if provider_record.ProviderType != providerenumtypes.Provider_SYSTEM {
 			continue
 		}
-		quota_type_to_provider_records_dict[models.ProviderQuotaType(provider_record.QuotaType)] = provider_record
+		quota_type_to_provider_records_dict[providerenumtypes.ProviderQuotaType(provider_record.QuotaType)] = provider_record
 	}
-	quota_configurations := []*coreentities.QuotaConfiguration{}
+	quota_configurations := []*providerentities.QuotaConfiguration{}
 	for _, provider_quota := range provider_hosting_configuration.Quotas {
-		var quota_configuration *coreentities.QuotaConfiguration
+		var quota_configuration *providerentities.QuotaConfiguration
 		if _, ok := quota_type_to_provider_records_dict[provider_quota.Type()]; !ok {
-			if provider_quota.Type() == models.ProviderQuota_FREE {
-				quota_unit := coreenumtypes.QuotaUnit_TOKENS
+			if provider_quota.Type() == providerenumtypes.ProviderQuota_FREE {
+				quota_unit := providerenumtypes.QuotaUnit_TOKENS
 				if string(provider_hosting_configuration.QuotaUnit) != "" {
 					quota_unit = provider_hosting_configuration.QuotaUnit
 				}
-				quota_configuration = &coreentities.QuotaConfiguration{
+				quota_configuration = &providerentities.QuotaConfiguration{
 					QuotaType:      provider_quota.Type(),
 					QuotaUnit:      quota_unit,
 					QuotaUsed:      0,
@@ -546,11 +549,11 @@ func (pm *ProviderManager) to_system_configuration(
 			}
 		} else {
 			provider_record := quota_type_to_provider_records_dict[provider_quota.Type()]
-			quota_unit := coreenumtypes.QuotaUnit_TOKENS
+			quota_unit := providerenumtypes.QuotaUnit_TOKENS
 			if string(provider_hosting_configuration.QuotaUnit) != "" {
 				quota_unit = provider_hosting_configuration.QuotaUnit
 			}
-			quota_configuration = &coreentities.QuotaConfiguration{
+			quota_configuration = &providerentities.QuotaConfiguration{
 				QuotaType:  provider_quota.Type(),
 				QuotaUnit:  quota_unit,
 				QuotaUsed:  int(provider_record.QuotaUsed),
@@ -562,12 +565,12 @@ func (pm *ProviderManager) to_system_configuration(
 		quota_configurations = append(quota_configurations, quota_configuration)
 	}
 	if len(quota_configurations) == 0 {
-		return &coreentities.SystemConfiguration{Enabled: false}
+		return &providerentities.SystemConfiguration{Enabled: false}
 	}
 	current_quota_type, _ := pm.choice_current_using_quota_type(quota_configurations)
 
 	current_using_credentials := provider_hosting_configuration.Credentials
-	if current_quota_type == models.ProviderQuota_FREE {
+	if current_quota_type == providerenumtypes.ProviderQuota_FREE {
 		provider_record_quota_free := quota_type_to_provider_records_dict[current_quota_type]
 
 		if provider_record_quota_free != nil {
@@ -620,10 +623,10 @@ func (pm *ProviderManager) to_system_configuration(
 			}
 		} else {
 			current_using_credentials = map[string]any{}
-			quota_configurations = []*coreentities.QuotaConfiguration{}
+			quota_configurations = []*providerentities.QuotaConfiguration{}
 		}
 	}
-	return &coreentities.SystemConfiguration{
+	return &providerentities.SystemConfiguration{
 		Enabled:             true,
 		CurrentQuotaType:    current_quota_type,
 		QuotaConfigurations: quota_configurations,
@@ -744,15 +747,15 @@ func (pm *ProviderManager) GetConfigurations(tenant_id string) *coreentities.Pro
 		system_configuration := pm.to_system_configuration(tenant_id, provider_entity, provider_records)
 		// Get preferred provider type
 		preferred_provider_type_record := provider_name_to_preferred_model_provider_records_dict[provider_name]
-		var preferred_provider_type models.ProviderType
+		var preferred_provider_type providerenumtypes.ProviderType
 		if preferred_provider_type_record != nil {
 			preferred_provider_type = preferred_provider_type_record.PreferredProviderType
 		} else if custom_configuration.Provider != nil || len(custom_configuration.Models) > 0 {
-			preferred_provider_type = models.Provider_CUSTOM
+			preferred_provider_type = providerenumtypes.Provider_CUSTOM
 		} else if system_configuration.Enabled {
-			preferred_provider_type = models.Provider_SYSTEM
+			preferred_provider_type = providerenumtypes.Provider_SYSTEM
 		} else {
-			preferred_provider_type = models.Provider_CUSTOM
+			preferred_provider_type = providerenumtypes.Provider_CUSTOM
 		}
 		using_provider_type := preferred_provider_type
 		has_valid_quota := true
@@ -763,14 +766,14 @@ func (pm *ProviderManager) GetConfigurations(tenant_id string) *coreentities.Pro
 			}
 		}
 
-		if preferred_provider_type == models.Provider_SYSTEM {
+		if preferred_provider_type == providerenumtypes.Provider_SYSTEM {
 			if !system_configuration.Enabled || !has_valid_quota {
-				using_provider_type = models.Provider_CUSTOM
+				using_provider_type = providerenumtypes.Provider_CUSTOM
 			}
 		} else {
 			if custom_configuration.Provider == nil && len(custom_configuration.Models) == 0 {
 				if system_configuration.Enabled && has_valid_quota {
-					using_provider_type = models.Provider_SYSTEM
+					using_provider_type = providerenumtypes.Provider_SYSTEM
 				}
 			}
 		}
@@ -800,7 +803,7 @@ func (pm *ProviderManager) GetConfigurations(tenant_id string) *coreentities.Pro
 }
 
 func (pm *ProviderManager) UpdateDefaultModelRecord(
-	tenant_id string, provider string, model string, model_type modelruntimeentities.ModelType,
+	tenant_id string, provider string, model string, model_type modelruntimeenumtypes.ModelType,
 ) *models.TenantDefaultModel {
 	/*
 		Update default model record.
@@ -858,7 +861,7 @@ func (pm *ProviderManager) UpdateDefaultModelRecord(
 	return default_model
 }
 
-func (pm *ProviderManager) GetFirstProviderFirstModel(tenant_id string, model_type modelruntimeentities.ModelType) (string, string) {
+func (pm *ProviderManager) GetFirstProviderFirstModel(tenant_id string, model_type modelruntimeenumtypes.ModelType) (string, string) {
 	/*
 	   Get names of first model and its provider
 
@@ -874,7 +877,7 @@ func (pm *ProviderManager) GetFirstProviderFirstModel(tenant_id string, model_ty
 	return mods[0].Provider.Provider, mods[0].Model
 }
 
-func (pm *ProviderManager) GetDefaultModel(tenant_id string, model_type modelruntimeentities.ModelType) *coreentities.DefaultModelEntity {
+func (pm *ProviderManager) GetDefaultModel(tenant_id string, model_type modelruntimeenumtypes.ModelType) *modelentities.DefaultModelEntity {
 	/*
 	   Get default model.
 
@@ -900,7 +903,7 @@ func (pm *ProviderManager) GetDefaultModel(tenant_id string, model_type modelrun
 		available_models := (&ProviderConfigurationsManager{}).GetModels(provider_configurations, "", model_type, true)
 
 		if len(available_models) > 0 {
-			var available_model *coreentities.ModelWithProviderEntity = available_models[0]
+			var available_model *modelentities.ModelWithProviderEntity = available_models[0]
 			for _, model := range available_models {
 				if model.Model == "gpt-4" {
 					available_model = model
@@ -925,10 +928,10 @@ func (pm *ProviderManager) GetDefaultModel(tenant_id string, model_type modelrun
 
 	provider_schema := provider_instance.GetProviderSchema(provider_instance.ProviderName())
 
-	return &coreentities.DefaultModelEntity{
+	return &modelentities.DefaultModelEntity{
 		Model:     default_model.ModelName,
 		ModelType: string(model_type),
-		Provider: &coreentities.DefaultModelProviderEntity{
+		Provider: &modelentities.DefaultModelProviderEntity{
 			Provider:            provider_schema.Provider,
 			Label:               provider_schema.Label,
 			IconSmall:           provider_schema.IconSmall,
@@ -938,7 +941,7 @@ func (pm *ProviderManager) GetDefaultModel(tenant_id string, model_type modelrun
 	}
 }
 
-func (pm *ProviderManager) GetProviderModelBundle(tenant_id string, provider string, model_type modelruntimeentities.ModelType) *coreentities.ProviderModelBundle {
+func (pm *ProviderManager) GetProviderModelBundle(tenant_id string, provider string, model_type modelruntimeenumtypes.ModelType) *coreentities.ProviderModelBundle {
 	/*
 	   Get provider model bundle.
 	   :param tenant_id: workspace id

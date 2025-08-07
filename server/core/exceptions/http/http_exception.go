@@ -493,3 +493,14 @@ func NewAppSuggestedQuestionsAfterAnswerDisabledError() *BaseHTTPException {
 		status: 403,
 	}
 }
+
+func NewPluginDaemonInnerError(desc string) *BaseHTTPException {
+	desc = `plugin daemon inner error:` + desc
+	return &BaseHTTPException{
+		code: "plugin_daemon_inner_error",
+		ValueError: exceptions.NewValueError(
+			desc,
+		),
+		status: 403,
+	}
+}

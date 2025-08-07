@@ -26,6 +26,7 @@ import (
 	penodesentities "mlib.com/gofy/server/entities/nodes/parameter_extractor"
 	promptentities "mlib.com/gofy/server/entities/prompt"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 	workflowenumtypes "mlib.com/gofy/server/enum_types/workflow"
 	"mlib.com/gofy/server/models"
@@ -76,8 +77,8 @@ func (n *ParameterExtractorNode) Run() (*workflowentities.NodeRunResult, iter.Se
 	mem := llm.FetchMemory(n.GetGraphRuntimeState(), n.GetAppID(), node_data.Memory, model_instance)
 	var prompt_messages []modelruntimeentities.PromptMessager
 	var prompt_message_tools []*modelruntimeentities.PromptMessageTool
-	if (slices.Contains(model_schema.Features, modelruntimeentities.ModelFeature_MULTI_TOOL_CALL) ||
-		slices.Contains(model_schema.Features, modelruntimeentities.ModelFeature_TOOL_CALL)) &&
+	if (slices.Contains(model_schema.Features, modelruntimeenumtypes.ModelFeature_MULTI_TOOL_CALL) ||
+		slices.Contains(model_schema.Features, modelruntimeenumtypes.ModelFeature_TOOL_CALL)) &&
 		node_data.ReasoningMode == "function_call" {
 		// use function call
 		prompt_messages, prompt_message_tools = n._generate_function_call_prompt(
@@ -350,7 +351,7 @@ func (n *ParameterExtractorNode) _calculate_rest_token(
 		panic(penodesexceptions.NewModelSchemaNotFoundError("Model schema not found"))
 	}
 	var prompt_template any
-	if slices.Contains(model_schema.Features, modelruntimeentities.ModelFeature_MULTI_TOOL_CALL) {
+	if slices.Contains(model_schema.Features, modelruntimeenumtypes.ModelFeature_MULTI_TOOL_CALL) {
 		prompt_template = n._get_function_calling_prompt_template(node_data, query, variable_pool, nil, 2000)
 	} else {
 		prompt_template = n._get_prompt_engineering_prompt_template(node_data, query, variable_pool, nil, 2000)
@@ -386,9 +387,9 @@ func (n *ParameterExtractorNode) _calculate_rest_token(
 
 	rest_tokens := 2000
 
-	if _, ok := model_config.ModelSchema.ModelProperties[modelruntimeentities.ModelPropertyKey_CONTEXT_SIZE]; ok {
+	if _, ok := model_config.ModelSchema.ModelProperties[modelruntimeenumtypes.ModelPropertyKey_CONTEXT_SIZE]; ok {
 
-		if model_context_tokens, ok := model_config.ModelSchema.ModelProperties[modelruntimeentities.ModelPropertyKey_CONTEXT_SIZE].(int); ok {
+		if model_context_tokens, ok := model_config.ModelSchema.ModelProperties[modelruntimeenumtypes.ModelPropertyKey_CONTEXT_SIZE].(int); ok {
 			model_type_instance := model_config.ProviderModelBundle.ModelTypeInstance.(modelruntimeentities.LargeLanguageModeler)
 
 			curr_message_tokens := model_type_instance.GetNumTokens(model_config.Model, model_config.Credentials, prompt_messages, nil) + 1000 // add 1000 to ensure tool call messages

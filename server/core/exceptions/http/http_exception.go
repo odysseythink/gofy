@@ -501,6 +501,6 @@ func NewPluginDaemonInnerError(desc string) *BaseHTTPException {
 		ValueError: exceptions.NewValueError(
 			desc,
 		),
-		status: 403,
+		status: 500,
 	}
 }

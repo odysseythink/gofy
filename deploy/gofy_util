@@ -1,0 +1,42 @@
+#!/bin/bash
+
+if [ $# != 1 ]; then
+	echo "param count["$#"] err 1, format as ./gofy_util.sh type[start | stop | restart]"
+	exit
+fi
+
+
+service_array=( link admin app tools plugins sandbox )
+
+if [ $1 = "start" ]; then
+	for exename in ${service_array[*]}
+	do
+		./fys ${exename} &	
+	done
+
+elif [ $1 = "restart" ]; then
+	for exename in ${service_array[*]}
+	do
+		Pid=`ps -ef | grep ./${exename} | grep -v "grep" | awk -F ' ' '{print $2}'`
+        if [ -n ${Pid} ]; then
+		    kill -15 ${Pid}	
+        fi
+		./fys ${exename} &	
+	done	
+
+elif [ $1 = "stop" ]; then
+	Pid=`ps -ef | grep ./fys | grep -v "grep" | awk -F ' ' '{print $2}'`
+	kill -15 ${Pid}
+	for exename in ${service_array[*]}
+	do
+		Pid=`ps -ef | grep -w ./${exename} | grep -v "grep" | awk -F ' ' '{print $2}'`
+        if [ -n ${Pid} ]; then
+		    kill -15 ${Pid}	
+        fi
+	done
+
+else
+	echo "param err, format as ./gofy_util.sh type[start | stop | restart]"
+	exit
+fi	
+

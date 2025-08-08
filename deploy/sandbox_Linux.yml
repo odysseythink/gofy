@@ -1,0 +1,57 @@
+ServerCom:
+    # 业务模块名称
+    ModuleName: sandbox
+cluster:    
+    port: 11005
+    req_modules: "sandbox"
+    service_discovery_provide: "etcd"
+etcd:
+    ROOTKEY: 
+    user_name: 
+    password: 
+    endpoints: 
+ZooKeeper:
+    HOST: 
+    ROOTKEY: 
+    CLUSTER: "/HDDC"
+    TIMEOUT: 3000
+mysql:
+    path: 
+    port: "3306"
+    config: charset=utf8mb4&parseTime=True&loc=Local
+    db-name: 
+    username: 
+    password: ""
+    prefix: ""
+    singular: false
+    engine: ""
+    max-idle-conns: 10
+    max-open-conns: 100
+    log-mode: info
+    log-zap: false
+redis:
+    db: 0
+    addr: 
+    password: 
+    is_cluster: true
+max_workers: 4
+max_requests: 50
+worker_timeout: 5
+python_path: /home/rw/miniconda3/envs/dify-sandbox/bin/python3
+python_lib_path:
+  - "/home/rw/miniconda3/envs/dify-sandbox/lib"
+  - "/etc/nsswitch.conf"
+  - "/etc/hosts"
+  - "/etc/resolv.conf"
+  - "/run/systemd/resolve/stub-resolv.conf"
+  - "/run/resolvconf/resolv.conf"
+  - "/etc/localtime"
+  - "/usr/share/zoneinfo"
+  - "/etc/timezone"
+enable_network: True # please make sure there is no network risk in your environment
+enable_preload: False # please keep it as False for security purposes
+allowed_syscalls: # please leave it empty if you have no idea how seccomp works
+proxy:
+  socks5: ''
+  http: ''
+  https: ''    

@@ -27,6 +27,5 @@ message FetchInstallTasksRequest {
 }
 message FetchInstallTasksReply{
   exceptions.HTTPException exp = 1;
-  map<string, string> permission_dict = 2;
-  string auto_upgrade_dict_str = 3;
+  string tasks_str = 2;
 }

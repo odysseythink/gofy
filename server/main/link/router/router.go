@@ -234,6 +234,7 @@ func InitRouters() *gin.Engine {
 		authapiRouter.GET("workspaces/current/tools/:tool_type", v1.ApiGroupApp.ToolsApi.GetToolList)
 
 		authapiRouter.GET("workspaces/current/plugin/preferences/fetch", v1.ApiGroupApp.PluginApi.PluginFetchPreferences)
+		authapiRouter.GET("workspaces/current/plugin/tasks", v1.ApiGroupApp.PluginApi.PluginFetchInstallTasks)
 	}
 	{
 		noauthapiRouter := r.Group("v1")

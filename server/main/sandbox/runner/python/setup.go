@@ -1,0 +1,209 @@
+package python
+
+import (
+	_ "embed"
+	"fmt"
+	"os"
+	"os/exec"
+	"path"
+	"path/filepath"
+	"regexp"
+	"strings"
+
+	"github.com/spf13/viper"
+
+	"mlib.com/gofy/server/main/sandbox/global"
+	"mlib.com/gofy/server/main/sandbox/runner"
+	python_dependencies "mlib.com/gofy/server/main/sandbox/runner/python/dependencies"
+	"mlib.com/gofy/server/proto/pbapi"
+	"mlib.com/mlog"
+)
+
+//go:embed python.so
+var python_lib []byte
+
+const (
+	LIB_NAME = "python.so"
+)
+
+var (
+	LIB_PATH = "/home/sandbox-runtime/sandbox-python"
+)
+
+func Setup() error {
+	return releaseLibBinary(true)
+}
+
+func releaseLibBinary(force_remove_old_lib bool) error {
+	mlog.Infof("initializing python runner environment...")
+	dir, err := os.Getwd()
+	if err != nil {
+		mlog.Errorf("failed to get current path %s", err)
+		return fmt.Errorf("failed to get current path %s", err)
+	}
+	// remove the old lib
+	if _, err := os.Stat(path.Join(LIB_PATH, LIB_NAME)); err == nil {
+		if force_remove_old_lib {
+			err := os.Remove(path.Join(LIB_PATH, LIB_NAME))
+			if err != nil {
+				mlog.Errorf("failed to remove %s", path.Join(LIB_PATH, LIB_NAME))
+				return fmt.Errorf("failed to remove %s", path.Join(LIB_PATH, LIB_NAME))
+			}
+
+			// write the new lib
+			err = os.MkdirAll(LIB_PATH, 0755)
+			if err != nil {
+				mlog.Warningf("failed to create %s, try current path", LIB_PATH)
+				LIB_PATH = filepath.Join(dir, "sandbox-runtime", "sandbox-python")
+				err = os.MkdirAll(LIB_PATH, 0755)
+				if err != nil {
+					mlog.Errorf("create %s failed:%v", LIB_PATH, err)
+					return fmt.Errorf("create %s failed:%v", LIB_PATH, err)
+				}
+			}
+			err = os.WriteFile(path.Join(LIB_PATH, LIB_NAME), python_lib, 0755)
+			if err != nil {
+				mlog.Errorf("failed to write %s", path.Join(LIB_PATH, LIB_NAME))
+				return fmt.Errorf("failed to write %s", path.Join(LIB_PATH, LIB_NAME))
+			}
+		}
+	} else {
+		err = os.MkdirAll(LIB_PATH, 0755)
+		if err != nil {
+			mlog.Warningf("failed to create %s, try current path", LIB_PATH)
+			LIB_PATH = filepath.Join(dir, "sandbox-runtime", "sandbox-python")
+			err = os.MkdirAll(LIB_PATH, 0755)
+			if err != nil {
+				mlog.Errorf("create %s failed:%v", LIB_PATH, err)
+				return fmt.Errorf("create %s failed:%v", LIB_PATH, err)
+			}
+		}
+		err = os.WriteFile(path.Join(LIB_PATH, LIB_NAME), python_lib, 0755)
+		if err != nil {
+			mlog.Errorf("failed to write %s", path.Join(LIB_PATH, LIB_NAME))
+			return fmt.Errorf("failed to write %s", path.Join(LIB_PATH, LIB_NAME))
+		}
+		mlog.Info("python runner environment initialized")
+	}
+	return nil
+}
+
+func checkLibAvaliable() bool {
+	if _, err := os.Stat(path.Join(LIB_PATH, LIB_NAME)); err != nil {
+		return false
+	}
+
+	return true
+}
+
+func ExtractOnelineDepency(dependency string) (string, string) {
+	delimiters := []string{"==", ">=", "<=", "~="}
+	for _, delimiter := range delimiters {
+		if strings.Contains(dependency, delimiter) {
+			parts := strings.Split(dependency, delimiter)
+			if len(parts) >= 2 {
+				return parts[0], parts[1]
+			} else if len(parts) == 1 {
+				return parts[0], ""
+			} else if len(parts) == 0 {
+				return "", ""
+			}
+		}
+	}
+
+	preg := regexp.MustCompile(`([a-zA-Z0-9_-]+)`)
+	if preg.MatchString(dependency) {
+		return dependency, ""
+	}
+
+	return "", ""
+}
+
+func InstallDependencies(requirements string) error {
+	if requirements == "" {
+		return nil
+	}
+
+	runner := runner.TempDirRunner{}
+	return runner.WithTempDir("/", []string{}, func(root_path string) error {
+		defer os.RemoveAll(root_path)
+		// create a requirements file
+		err := os.WriteFile(path.Join(root_path, "requirements.txt"), []byte(requirements), 0644)
+		if err != nil {
+			mlog.Errorf("failed to create requirements.txt")
+			return nil
+		}
+
+		// install dependencies
+		pipMirrorURL := viper.GetString("python_pip_mirror_url")
+
+		// Create the base command
+		args := []string{"install", "-r", "requirements.txt"}
+		if pipMirrorURL != "" {
+			// If a mirror URL is provided, include it in the command arguments
+			args = append(args, "-i", pipMirrorURL)
+		}
+		cmd := exec.Command("pip3", args...)
+		reader, err := cmd.StdoutPipe()
+		if err != nil {
+			mlog.Errorf("failed to get stdout pipe of pip3")
+			return err
+		}
+		defer reader.Close()
+
+		err = cmd.Start()
+		if err != nil {
+			mlog.Errorf("failed to start pip3")
+			return err
+		}
+
+		for {
+			buf := make([]byte, 1024)
+			n, err := reader.Read(buf)
+			if err != nil {
+				break
+			}
+			mlog.Info(string(buf[:n]))
+		}
+
+		err = cmd.Wait()
+
+		if err != nil {
+			mlog.Errorf("failed to wait for the command to complete")
+			return err
+		}
+
+		// split the requirements
+		requirements = strings.ReplaceAll(requirements, "\r\n", "\n")
+		requirements = strings.ReplaceAll(requirements, "\r", "\n")
+		lines := strings.Split(requirements, "\n")
+		for _, line := range lines {
+			packageName, version := ExtractOnelineDepency(line)
+			if packageName == "" {
+				continue
+			}
+
+			python_dependencies.SetupDependency(packageName, version)
+			mlog.Infof("Python dependency installed: %s %s", packageName, version)
+		}
+
+		return nil
+	})
+}
+
+func ListDependencies() []*pbapi.Dependency {
+	return python_dependencies.ListDependencies()
+}
+
+func RefreshDependencies() []*pbapi.Dependency {
+	mlog.Info("updating python dependencies...")
+
+	dependencies := global.GetRunnerDependencies()
+	err := InstallDependencies(dependencies.PythonRequirements)
+	if err != nil {
+		mlog.Errorf("failed to install python dependencies: %v", err)
+		return nil
+	}
+	mlog.Info("python dependencies updated")
+	return python_dependencies.ListDependencies()
+}

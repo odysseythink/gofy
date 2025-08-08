@@ -1,6 +1,12 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	pluginidentityentities "mlib.com/gofy/server/entities/plugin/identity"
+	pluginenumtypes "mlib.com/gofy/server/enum_types/plugin"
+	commontypes "mlib.com/gofy/server/types/common"
+)
 
 // CeleryTask [...]
 type CeleryTask struct {
@@ -34,4 +40,29 @@ type CeleryTaskSet struct {
 // TableName get sql table name.获取数据库表名
 func (CeleryTaskSet) TableName() string {
 	return "celery_tasksetmeta"
+}
+
+type InstallTaskPluginStatus struct {
+	PluginUniqueIdentifier pluginidentityentities.PluginUniqueIdentifier `json:"plugin_unique_identifier"`
+	Labels                 commontypes.I18nObject                        `json:"labels"`
+	Icon                   string                                        `json:"icon"`
+	IconDark               string                                        `json:"icon_dark"`
+	PluginID               string                                        `json:"plugin_id"`
+	Status                 pluginenumtypes.PluginInstallTaskStatusType   `json:"status"`
+	Message                string                                        `json:"message"`
+}
+
+type PluginInstallTask struct {
+	ID               string                                      `gorm:"column:id;primaryKey;type:uuid;default:uuid_generate_v4()" json:"id"`
+	CreatedAt        time.Time                                   `json:"created_at" gorm:"column:created_at;not null"`
+	UpdatedAt        time.Time                                   `json:"updated_at" gorm:"column:updated_at;not null"`
+	Status           pluginenumtypes.PluginInstallTaskStatusType `json:"status" gorm:"column:status;not null"`
+	TenantID         string                                      `json:"tenant_id" gorm:"column:tenant_id;type:uuid;not null"`
+	TotalPlugins     int                                         `json:"total_plugins" gorm:"column:total_plugins;not null"`
+	CompletedPlugins int                                         `json:"completed_plugins" gorm:"column:completed_plugins;not null"`
+	Plugins          []InstallTaskPluginStatus                   `json:"plugins" gorm:"column:plugins;serializer:json"`
+}
+
+func (PluginInstallTask) TableName() string {
+	return "plugin_install_tasks"
 }

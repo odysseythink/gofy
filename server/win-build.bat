@@ -15,3 +15,6 @@ cd ..\..\
 cd main\plugins 
 go build -o ..\..\..\deploy\plugins.exe 
 cd ..\..\
+cd main\sandbox 
+go build -o ..\..\..\deploy\sandbox.exe 
+cd ..\..\

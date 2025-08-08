@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package pbapi;
+
+option go_package="mlib.com/gofy/server/proto/pbapi";
+
+import "exceptions/exceptions.proto";
+
+service sandbox {
+    rpc Health (HealthRequest) returns (HealthReply) {}
+    rpc Run (RunRequest) returns (RunReply) {}
+    rpc GetDependencies (DependenciesRequest) returns (DependenciesReply) {}
+    rpc UpdateDependencies (DependenciesRequest) returns (DependenciesReply) {}
+    rpc RefreshDependencies (DependenciesRequest) returns (DependenciesReply) {}
+}
+
+message HealthRequest {
+}
+message HealthReply{
+  string msg = 3;
+}
+
+message RunRequest {
+  string language = 1;
+  string code = 2;
+  string preload = 3;
+  bool enable_network = 4;
+}
+message RunReply{
+  exceptions.HTTPException exp = 1;
+  int32 code = 2;
+  string message = 3;
+  string error = 4;
+  string stdout = 5;
+}
+
+message DependenciesRequest {
+  string language = 1;
+}
+message Dependency {
+  string name = 1;
+  string version = 2;
+}
+message DependenciesReply{
+  exceptions.HTTPException exp = 1;
+  int32 code = 2;
+  string message = 3;
+  repeated Dependency dependencies = 4;
+}

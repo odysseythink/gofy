@@ -73,6 +73,13 @@ func (s *PluginsService) FetchInstallTasks(ctx context.Context, in *pbapi.FetchI
 	mlog.Infof("remote[%s] plugin.FetchInstallTasks call:%#v", p.Addr.String(), in)
 
 	out = &pbapi.FetchInstallTasksReply{}
+	tasks := services.ServiceGroupApp.Plugin.FetchInstallTasks(in.TenantId, int(in.Page), int(in.PageSize))
+	if len(tasks) > 0 {
+		bindata, _ := json.Marshal(tasks)
+		out.TasksStr = string(bindata)
+	} else {
+		out.TasksStr = "{}"
+	}
 	return
 }
 

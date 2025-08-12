@@ -2,6 +2,7 @@ package codeexecutor
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -11,11 +12,13 @@ import (
 	"time"
 
 	"github.com/spf13/viper"
+	"mlib.com/gofy/server/cluster"
 	codenodesexceptions "mlib.com/gofy/server/core/exceptions/nodes/code"
 	"mlib.com/gofy/server/core/helper/code_executor/template_transformer/base"
 	"mlib.com/gofy/server/core/helper/code_executor/template_transformer/jinja2"
 	"mlib.com/gofy/server/core/helper/code_executor/template_transformer/python3"
 	codeexecutorenumtypes "mlib.com/gofy/server/enum_types/code_executor"
+	"mlib.com/gofy/server/proto/pbapi"
 	"mlib.com/mlog"
 )
 
@@ -39,6 +42,43 @@ type CodeExecutionResponse struct {
 	Message string `json:"message"`
 }
 
+func ExecuteCode1(language codeexecutorenumtypes.CodeLanguage, preload string, code string) string {
+	if _, ok := code_language_to_running_language[language]; !ok {
+		mlog.Errorf("language(%s) is not surpported", language)
+		panic(codenodesexceptions.NewCodeExecutionError(fmt.Sprintf("language(%s) is not surpported", language)))
+	}
+	conn := cluster.Instance().GetRpcClientByModule("sandbox")
+	if conn != nil {
+		pbrsp, err := pbapi.NewSandboxClient(conn).Run(context.Background(), &pbapi.RunRequest{
+			Language:      string(code_language_to_running_language[language]),
+			Code:          code,
+			Preload:       preload,
+			EnableNetwork: true,
+		})
+		if err != nil {
+			mlog.Errorf("remote call Run failed:%v", err)
+			panic(codenodesexceptions.NewCodeExecutionError("remote call Run failed:" + err.Error()))
+		} else {
+			mlog.Infof("remote call Run return:%#v", pbrsp)
+			if pbrsp.Exp != nil {
+				panic(pbrsp.Exp)
+			} else {
+				if pbrsp.Code != 0 {
+					panic(codenodesexceptions.NewCodeExecutionError(fmt.Sprintf("Got error code: %d. Got error msg: %s", pbrsp.Code, pbrsp.Message)))
+				}
+
+				if pbrsp.Error != "" {
+					panic(codenodesexceptions.NewCodeExecutionError(pbrsp.Error))
+				}
+
+				return pbrsp.Stdout
+			}
+		}
+	} else {
+		mlog.Errorf("get rpc client failed")
+		panic(codenodesexceptions.NewCodeExecutionError("get rpc client failed"))
+	}
+}
 func ExecuteCode(language codeexecutorenumtypes.CodeLanguage, preload string, code string) string {
 	/*
 		Execute code
@@ -146,7 +186,7 @@ func ExecuteWorkflowCodeTemplate(language codeexecutorenumtypes.CodeLanguage, co
 
 	runner, preload := template_transformer.TransformCaller(template_transformer, code, inputs)
 
-	response := ExecuteCode(language, preload, runner)
+	response := ExecuteCode1(language, preload, runner)
 
 	return template_transformer.TransformResponse(template_transformer, response)
 }

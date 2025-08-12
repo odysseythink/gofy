@@ -190,6 +190,10 @@ func (id *GenericProviderID) PluginID() string {
 	return fmt.Sprintf("%s/%s", id.Organization, id.PluginName)
 }
 
+func (id *GenericProviderID) String() string {
+	return fmt.Sprintf("%s/%s/%s", id.Organization, id.PluginName, id.PluginName)
+}
+
 type ModelProviderID struct {
 	*GenericProviderID
 }

@@ -17,3 +17,4 @@ protoc -I=proto --go_out=proto --go_opt=paths=source_relative   --go-grpc_out=pr
 protoc -I=proto --go_out=proto --go_opt=paths=source_relative   --go-grpc_out=proto --go-grpc_opt=paths=source_relative pbapi/tools.proto
 protoc -I=proto --go_out=proto --go_opt=paths=source_relative   --go-grpc_out=proto --go-grpc_opt=paths=source_relative pbapi/plugins.proto
 protoc -I=proto --go_out=proto --go_opt=paths=source_relative   --go-grpc_out=proto --go-grpc_opt=paths=source_relative pbapi/sandbox.proto
+protoc -I=proto --go_out=proto --go_opt=paths=source_relative   --go-grpc_out=proto --go-grpc_opt=paths=source_relative pbapi/datasets.proto

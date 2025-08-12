@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	dbengine "mlib.com/gofy/server/db_engine"
+	enumtypes "mlib.com/gofy/server/enum_types"
 	"mlib.com/gofy/server/models"
 	"mlib.com/mlog"
 )
@@ -96,7 +97,7 @@ func (s *DatasetService) DocForm(ds *models.Dataset) string {
 	return doc.DocForm
 
 	// document = db.session.query(Document).filter(Document.dataset_id == self.id).first()
-	// if document:
+	// if document{
 	//     return document.doc_form
 	// return None
 
@@ -144,7 +145,7 @@ func (s *DatasetService) ExternalKnowledgeInfo(ds *models.Dataset) map[string]an
 	// external_knowledge_binding = (
 	//     db.session.query(ExternalKnowledgeBindings).filter(ExternalKnowledgeBindings.dataset_id == self.id).first()
 	// )
-	// if not external_knowledge_binding:
+	// if not external_knowledge_binding{
 	//     return None
 
 	// external_knowledge_api = (
@@ -187,4 +188,91 @@ func (s *DatasetService) GetByIDAndTenantID(id, tenant_id string) (*models.Datas
 		return nil, err
 	}
 	return ds, nil
+}
+func (s *DatasetService) GetDatasetsByIDs(ids []string, tenant_id string) ([]*models.Dataset, int64) {
+	var datas []*models.Dataset
+	err := dbengine.Instance().DB.Where("id in ? and tenant_id = ?", ids, tenant_id).Find(&datas).Error
+	if err != nil {
+		mlog.Errorf("get Dataset failed:%v", err)
+		return nil, 0
+	}
+
+	return datas, int64(len(datas))
+}
+func (s *DatasetService) GetDatasets(page int32, per_page int32, tenant_id string, user *models.Account, search string, tag_ids []string, include_all bool) ([]*models.Dataset, int64) {
+	db := dbengine.Instance().DB.Model(&models.Dataset{}).Where("tenant_id = ?", tenant_id).Order("created_at DESC")
+
+	if user != nil {
+		// get permitted dataset ids
+		var dataset_permissions []*models.DatasetPermission
+		err := dbengine.Instance().DB.Where("account_id = ? and tenant_id = ?", user.ID, tenant_id).Find(&dataset_permissions).Error
+		if err != nil {
+			mlog.Errorf("get DatasetPermission failed:%v", err)
+		}
+		permitted_dataset_ids := []string{}
+		if len(dataset_permissions) > 0 {
+			for _, v := range dataset_permissions {
+				permitted_dataset_ids = append(permitted_dataset_ids, v.DatasetID)
+			}
+		}
+
+		if enumtypes.TenantAccountRole(user.CurrentRole()) == enumtypes.TenantAccountRole_DATASET_OPERATOR {
+			// only show datasets that the user has permission to access
+			if len(permitted_dataset_ids) > 0 {
+				db = db.Where("id in ?", permitted_dataset_ids)
+			} else {
+				return []*models.Dataset{}, 0
+			}
+		} else {
+			if enumtypes.TenantAccountRole(user.CurrentRole()) == enumtypes.TenantAccountRole_OWNER || !include_all {
+				// show all datasets that the user has permission to access
+				if len(permitted_dataset_ids) > 0 {
+					db = db.Where("permission = ? or (permission = ? and created_by = ?) or (permission = ? and id in ?)", enumtypes.DatasetPermission_ALL_TEAM, enumtypes.DatasetPermission_ONLY_ME, user.ID, enumtypes.DatasetPermission_PARTIAL_TEAM, permitted_dataset_ids)
+				} else {
+					db = db.Where("permission = ? or (permission = ? and created_by = ?)", enumtypes.DatasetPermission_ALL_TEAM, enumtypes.DatasetPermission_ONLY_ME, user.ID)
+				}
+			}
+		}
+	} else {
+		// if no user, only show datasets that are shared with all team members
+		db = db.Where("permission = ?", enumtypes.DatasetPermission_ALL_TEAM)
+	}
+	if search != "" {
+		db = db.Where("name LIKE ?", "%"+search+"%")
+	}
+	if len(tag_ids) > 0 {
+		target_ids := ServiceGroupApp.Tag.GetTargetIDsByIDs("knowledge", tenant_id, tag_ids)
+		if len(target_ids) > 0 {
+			db = db.Where("id in ?", target_ids)
+		} else {
+			return []*models.Dataset{}, 0
+		}
+	}
+	var total int64
+
+	err := db.Count(&total).Error
+	if err != nil {
+		mlog.Errorf("count dataset failed:%v", err)
+		return []*models.Dataset{}, 0
+	}
+	offset := int(per_page * (page - 1))
+	var datas []*models.Dataset
+	err = db.Limit(int(per_page)).Offset(offset).Scan(&datas).Error
+	if err != nil {
+		mlog.Errorf("get dataset failed:%v", err)
+		return []*models.Dataset{}, 0
+	}
+
+	return datas, total
+}
+
+func (s *DatasetService) GetDatasetPartialMemberList(dataset_id string) []string {
+	var datas []string
+	err := dbengine.Instance().DB.Model(&models.DatasetPermission{}).Select("account_id").Where("dataset_id = ?", dataset_id).Find(&datas).Error
+	if err != nil {
+		mlog.Errorf("get DatasetPermission failed:%v", err)
+		return nil
+	}
+
+	return datas
 }

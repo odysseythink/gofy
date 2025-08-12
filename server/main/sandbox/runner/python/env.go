@@ -7,6 +7,7 @@ import (
 	"path"
 
 	"github.com/spf13/viper"
+	"mlib.com/gofy/server/main/sandbox/global"
 	"mlib.com/gofy/server/main/sandbox/runner"
 	"mlib.com/mlog"
 )
@@ -16,6 +17,9 @@ var env_script string
 
 func PreparePythonDependenciesEnv() error {
 	python_lib_paths := viper.GetStringSlice("python_lib_path")
+	if len(python_lib_paths) == 0 {
+		python_lib_paths = global.DEFAULT_PYTHON_LIB_REQUIREMENTS
+	}
 
 	runner := runner.TempDirRunner{}
 	err := runner.WithTempDir("/", []string{}, func(root_path string) error {

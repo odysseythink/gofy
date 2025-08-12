@@ -6,9 +6,10 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/langgenius/dify-sandbox/internal/core/lib"
-	"github.com/langgenius/dify-sandbox/internal/static/python_syscall"
-	"github.com/langgenius/dify-sandbox/internal/utils/log"
+	"mlib.com/mlog"
+
+	"mlib.com/gofy/server/main/sandbox/global"
+	"mlib.com/gofy/server/main/sandbox/lib"
 )
 
 //var allow_syscalls = []int{}
@@ -16,12 +17,12 @@ import (
 func InitSeccomp(uid int, gid int, enable_network bool) error {
 	err := syscall.Chroot(".")
 	if err != nil {
-		log.Error("Chroot failed:%v", err)
+		mlog.Errorf("Chroot failed:%v", err)
 		return err
 	}
 	err = syscall.Chdir("/")
 	if err != nil {
-		log.Error("Chdir failed:%v", err)
+		mlog.Errorf("Chdir failed:%v", err)
 		return err
 	}
 
@@ -29,7 +30,7 @@ func InitSeccomp(uid int, gid int, enable_network bool) error {
 
 	allowed_syscalls := []int{}
 	allowed_not_kill_syscalls := []int{}
-	allowed_not_kill_syscalls = append(allowed_not_kill_syscalls, python_syscall.ALLOW_ERROR_SYSCALLS...)
+	allowed_not_kill_syscalls = append(allowed_not_kill_syscalls, global.ALLOW_ERROR_SYSCALLS...)
 
 	allowed_syscall := os.Getenv("ALLOWED_SYSCALLS")
 	if allowed_syscall != "" {
@@ -42,13 +43,13 @@ func InitSeccomp(uid int, gid int, enable_network bool) error {
 			allowed_syscalls = append(allowed_syscalls, syscall)
 		}
 	} else {
-		allowed_syscalls = append(allowed_syscalls, python_syscall.ALLOW_SYSCALLS...)
-		allowed_syscalls = append(allowed_syscalls, python_syscall.ALLOW_ERROR_SYSCALLS...)
+		allowed_syscalls = append(allowed_syscalls, global.ALLOW_SYSCALLS...)
+		allowed_syscalls = append(allowed_syscalls, global.ALLOW_ERROR_SYSCALLS...)
 		if enable_network {
-			allowed_syscalls = append(allowed_syscalls, python_syscall.ALLOW_NETWORK_SYSCALLS...)
+			allowed_syscalls = append(allowed_syscalls, global.ALLOW_NETWORK_SYSCALLS...)
 		}
 	}
-	log.Info("---------allowed_syscalls=%#v", allowed_syscalls)
+	mlog.Infof("---------allowed_syscalls=%#v", allowed_syscalls)
 
 	err = lib.Seccomp(allowed_syscalls, allowed_not_kill_syscalls)
 	if err != nil {

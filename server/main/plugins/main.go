@@ -78,7 +78,7 @@ func (s *PluginsService) FetchInstallTasks(ctx context.Context, in *pbapi.FetchI
 		bindata, _ := json.Marshal(tasks)
 		out.TasksStr = string(bindata)
 	} else {
-		out.TasksStr = "{}"
+		out.TasksStr = "[]"
 	}
 	return
 }

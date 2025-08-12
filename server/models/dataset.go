@@ -7,9 +7,11 @@ import (
 	"strings"
 	"time"
 
+	"github.com/spf13/viper"
 	"gorm.io/datatypes"
 	dbengine "mlib.com/gofy/server/db_engine"
 	enumtypes "mlib.com/gofy/server/enum_types"
+	ragindexprocessorenumtypes "mlib.com/gofy/server/enum_types/rag/index_processor"
 	"mlib.com/mlog"
 )
 
@@ -26,7 +28,6 @@ type Dataset struct {
 	IndexingTechnique      string         `gorm:"column:indexing_technique;type:varchar(255)" json:"indexing_technique"`
 	IndexStruct            string         `gorm:"column:index_struct;type:text" json:"index_struct"`
 	CreatedBy              string         `gorm:"column:created_by;type:varchar(36);not null" json:"created_by"`
-	CreatedByAccount       *Account       `json:"created_by_account" form:"created_by_account" gorm:"foreignKey:CreatedBy;references:ID;"`
 	CreatedAt              *time.Time     `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedBy              string         `gorm:"column:updated_by;type:varchar(36)" json:"updated_by"`
 	UpdatedAt              *time.Time     `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
@@ -34,11 +35,24 @@ type Dataset struct {
 	EmbeddingModelProvider string         `gorm:"column:embedding_model_provider;type:varchar(255);default:openai" json:"embedding_model_provider"`
 	CollectionBindingID    string         `gorm:"column:collection_binding_id;type:varchar(36)" json:"collection_binding_id"`
 	RetrievalModel         datatypes.JSON `gorm:"column:retrieval_model;type:json" json:"retrieval_model"`
+	BuiltInFieldEnabled    bool           `gorm:"column:built_in_field_enabled;" json:"built_in_field_enabled"`
 }
 
 // TableName get sql table name.获取数据库表名
 func (Dataset) TableName() string {
 	return "datasets"
+}
+
+func (ds *Dataset) DatasetKeywordTable() *DatasetKeywordTable {
+	dataset_keyword_table := new(DatasetKeywordTable)
+	err := dbengine.Instance().DB.Model(&DatasetKeywordTable{}).Where("dataset_id = ?", ds.ID).First(dataset_keyword_table).Error
+	if err != nil {
+		mlog.Errorf("Get DatasetKeywordTable failed:%v", err)
+		dataset_keyword_table = nil
+	}
+
+	return dataset_keyword_table
+
 }
 func (ds *Dataset) IndexStructDict() map[any]any {
 	if ds.IndexStruct == "" {
@@ -52,6 +66,7 @@ func (ds *Dataset) IndexStructDict() map[any]any {
 	}
 	return dict
 }
+
 func (ds *Dataset) ExternalRetrievalModel() map[string]any {
 	default_retrieval_model := map[string]any{
 		"top_k":           2,
@@ -67,7 +82,74 @@ func (ds *Dataset) ExternalRetrievalModel() map[string]any {
 		return default_retrieval_model
 	}
 	return retrieval_model
+}
+func (ds *Dataset) CreatedByAccount() *Account {
+	acc := new(Account)
+	err := dbengine.Instance().DB.Model(&Account{}).Where("id = ?", ds.CreatedBy).First(acc).Error
+	if err != nil {
+		mlog.Errorf("Get Account failed:%v", err)
+		acc = nil
+	}
 
+	return acc
+}
+func (ds *Dataset) LatestProcessRule() *DatasetProcessRule {
+	data := new(DatasetProcessRule)
+	err := dbengine.Instance().DB.Model(&DatasetProcessRule{}).Where("dataset_id = ?", ds.ID).Order("created_at DESC").First(data).Error
+	if err != nil {
+		mlog.Errorf("Get DatasetProcessRule failed:%v", err)
+		data = nil
+	}
+	return data
+}
+func (ds *Dataset) AppCount() int64 {
+	var count int64
+	err := dbengine.Instance().DB.Raw("SELECT COUNT(adj.id) FROM app_dataset_joins adj join apps ON apps.id = adj.app_id AND adj.dataset_id = ? ", ds.ID).Scan(&count).Error
+	if err != nil {
+		mlog.Errorf("count AppDatasetJoin failed:%v", err)
+	}
+	return count
+}
+func (ds *Dataset) DocumentCount() int64 {
+	var count int64
+	err := dbengine.Instance().DB.Model(&Document{}).Where("dataset_id = ?", ds.ID).Count(&count).Error
+	if err != nil {
+		mlog.Errorf("count Document failed:%v", err)
+	}
+	return count
+}
+func (ds *Dataset) AvailableDocumentCount() int64 {
+	var count int64
+	err := dbengine.Instance().DB.Model(&Document{}).Where("dataset_id = ? and indexing_status = ? and enabled = ? and archived = ?", ds.ID, "completed", true, false).Count(&count).Error
+	if err != nil {
+		mlog.Errorf("count Document failed:%v", err)
+	}
+	return count
+}
+func (ds *Dataset) AvailableSegmentCount() int64 {
+	var count int64
+	err := dbengine.Instance().DB.Model(&DocumentSegment{}).Where("dataset_id = ? and status = ? and enabled = ?", ds.ID, "completed", true).Count(&count).Error
+	if err != nil {
+		mlog.Errorf("count Document failed:%v", err)
+	}
+	return count
+}
+func (ds *Dataset) WordCount() int64 {
+	var count int64
+	err := dbengine.Instance().DB.Raw("SELECT SUM(word_count) FROM documents WHERE dataset_id = ?", ds.ID).Scan(&count).Error
+	if err != nil {
+		mlog.Errorf("sum Document word_count failed:%v", err)
+	}
+	return count
+}
+func (ds *Dataset) DocForm() string {
+	data := new(Document)
+	err := dbengine.Instance().DB.Model(&Document{}).Where("dataset_id = ?", ds.ID).First(data).Error
+	if err != nil {
+		mlog.Errorf("Get Document failed:%v", err)
+		return ""
+	}
+	return data.DocForm
 }
 
 func (ds *Dataset) RetrievalModelDict() map[string]any {
@@ -86,9 +168,113 @@ func (ds *Dataset) RetrievalModelDict() map[string]any {
 		return default_retrieval_model
 	}
 	return retrieval_model
-	// return self.retrieval_model or default_retrieval_model
+}
+func (ds *Dataset) Tags() []*Tag {
+	var tags []*Tag
+	err := dbengine.Instance().DB.Raw("select tags.* from tags join tag_bindings on tag_bindings.tag_id=tags.id and tag_bindings.target_id = ? and tag_bindings.tenant_id = ? and tags.tenant_id =? and tags.type = ?", ds.ID, ds.TenantID, ds.TenantID, "knowledge").Scan(&tags).Error
+	if err != nil {
+		mlog.Errorf("Get tags failed:%v", err)
+	}
+
+	return tags
+}
+func (ds *Dataset) ExternalKnowledgeInfo() map[string]any {
+	if ds.Provider != "external" {
+		return nil
+	}
+	external_knowledge_binding := new(ExternalKnowledgeBinding)
+	err := dbengine.Instance().DB.Model(&ExternalKnowledgeBinding{}).Where("dataset_id = ?", ds.ID).First(external_knowledge_binding).Error
+	if err != nil {
+		mlog.Errorf("Get ExternalKnowledgeBinding failed:%v", err)
+		external_knowledge_binding = nil
+	}
+
+	if external_knowledge_binding == nil {
+		return nil
+	}
+	external_knowledge_api := new(ExternalKnowledgeApi)
+	err = dbengine.Instance().DB.Model(&ExternalKnowledgeApi{}).Where("id = ?", external_knowledge_binding.ExternalKnowledgeApiID).First(external_knowledge_api).Error
+	if err != nil {
+		mlog.Errorf("Get ExternalKnowledgeApis failed:%v", err)
+		external_knowledge_api = nil
+	}
+
+	if external_knowledge_api == nil {
+		return nil
+	}
+	endpoint := ""
+	settings_dict := external_knowledge_api.SettingsDict()
+	if len(settings_dict) > 0 {
+		if _, ok := settings_dict["endpoint"]; ok {
+			if _, ok := settings_dict["endpoint"].(string); ok {
+				endpoint = settings_dict["endpoint"].(string)
+			}
+		}
+	}
+	return map[string]any{
+		"external_knowledge_id":           external_knowledge_binding.ExternalKnowledgeID,
+		"external_knowledge_api_id":       external_knowledge_api.ID,
+		"external_knowledge_api_name":     external_knowledge_api.Name,
+		"external_knowledge_api_endpoint": endpoint,
+	}
 
 }
+func (ds *Dataset) DocMetadata() []map[string]any {
+	var dataset_metadatas []*DatasetMetadata
+	err := dbengine.Instance().DB.Model(&DatasetMetadata{}).Where("dataset_id = ?", ds.ID).Find(&dataset_metadatas).Error
+	if err != nil {
+		mlog.Errorf("Get DatasetMetadata failed:%v", err)
+	}
+
+	var doc_metadata []map[string]any
+	for _, dataset_metadata := range dataset_metadatas {
+		if doc_metadata == nil {
+			doc_metadata = make([]map[string]any, 0)
+		}
+		doc_metadata = append(doc_metadata, map[string]any{
+			"id":   dataset_metadata.ID,
+			"name": dataset_metadata.Name,
+			"type": dataset_metadata.Type,
+		})
+	}
+
+	if ds.BuiltInFieldEnabled {
+		if doc_metadata == nil {
+			doc_metadata = make([]map[string]any, 0)
+		}
+		doc_metadata = append(doc_metadata, map[string]any{
+			"id":   "built-in",
+			"name": ragindexprocessorenumtypes.BuiltInField_document_name,
+			"type": "string",
+		})
+		doc_metadata = append(doc_metadata, map[string]any{
+			"id":   "built-in",
+			"name": ragindexprocessorenumtypes.BuiltInField_uploader,
+			"type": "string",
+		})
+		doc_metadata = append(doc_metadata, map[string]any{
+			"id":   "built-in",
+			"name": ragindexprocessorenumtypes.BuiltInField_upload_date,
+			"type": "time",
+		})
+		doc_metadata = append(doc_metadata, map[string]any{
+			"id":   "built-in",
+			"name": ragindexprocessorenumtypes.BuiltInField_last_update_date,
+			"type": "time",
+		})
+		doc_metadata = append(doc_metadata, map[string]any{
+			"id":   "built-in",
+			"name": ragindexprocessorenumtypes.BuiltInField_source,
+			"type": "string",
+		})
+	}
+	return doc_metadata
+}
+func GenDatasetCollectionNameByID(dataset_id string) string {
+	normalized_dataset_id := strings.ReplaceAll(dataset_id, "-", "_")
+	return fmt.Sprintf("%s_%s_Node", viper.GetStringWithDefault("vector.index-name-prefix", "Vector_index"), normalized_dataset_id)
+}
+
 func (ds *Dataset) GenCollectionNameByID(dataset_id string) string {
 	normalized_dataset_id := strings.ReplaceAll(dataset_id, "-", "_")
 	return fmt.Sprintf("Vector_index_%s_Node", normalized_dataset_id)
@@ -102,6 +288,311 @@ func (ds *Dataset) ToDict() map[string]any {
 		mlog.Errorf("json unmarshal=%s to dict failed:%v", string(bindata), err)
 	}
 	return tmp_dict
+}
+
+type RerankingModelFields struct {
+	RerankingProviderName string `json:"reranking_provider_name"`
+	RerankingModelName    string `json:"reranking_model_name"`
+}
+type DatasetFields struct {
+	ID                string `json:"id"`
+	Name              string `json:"name"`
+	Description       string `json:"description"`
+	Permission        string `json:"permission"`
+	DataSourceType    string `json:"data_source_type"`
+	IndexingTechnique string `json:"indexing_technique"`
+	CreatedBy         string `json:"created_by"`
+	CreatedAt         int64  `json:"created_at"`
+}
+type KeywordSettingFields struct {
+	KeywordWeight float64 `json:"keyword_weight"`
+}
+
+type VectorSettingFields struct {
+	VectorWeight          float64 `json:"vector_weight"`
+	EmbeddingModelName    string  `json:"embedding_model_name"`
+	EmbeddingProviderName string  `json:"embedding_provider_name"`
+}
+
+type WeightedScoreFields struct {
+	WeightType     string                `json:"weight_type"`
+	KeywordSetting *KeywordSettingFields `json:"keyword_setting"`
+	VectorSetting  *VectorSettingFields  `json:"vector_setting"`
+}
+type DatasetRetrievalModelFields struct {
+	SearchMethod          string                `json:"search_method"`
+	RerankingEnable       bool                  `json:"reranking_enable"`
+	RerankingMode         string                `json:"reranking_mode"`
+	RerankingModel        *RerankingModelFields `json:"reranking_model"`
+	Weights               *WeightedScoreFields  `json:"weights"`
+	TopK                  int                   `json:"top_k"`
+	ScoreThresholdEnabled bool                  `json:"score_threshold_enabled"`
+	ScoreThreshold        float64               `json:"score_threshold"`
+}
+
+func NewDatasetRetrievalModelFields(args any) *DatasetRetrievalModelFields {
+	if args != nil {
+		if str, ok := args.(string); ok {
+			dsdf := &DatasetRetrievalModelFields{}
+			err := json.Unmarshal([]byte(str), dsdf)
+			if err != nil {
+				mlog.Errorf("json unmarshal %s to DatasetRetrievalModelFields failed:%v", str, err)
+				return nil
+			}
+			return dsdf
+		} else if dict, ok := args.(map[string]any); ok {
+			bindata, _ := json.Marshal(dict)
+			dsdf := &DatasetRetrievalModelFields{}
+			err := json.Unmarshal(bindata, dsdf)
+			if err != nil {
+				mlog.Errorf("json unmarshal %#v to DatasetRetrievalModelFields failed:%v", dict, err)
+				return nil
+			}
+			return dsdf
+		} else {
+			mlog.Errorf("unsupported args=%#v", args)
+			return nil
+		}
+	} else {
+		return &DatasetRetrievalModelFields{}
+	}
+}
+
+type ExternalRetrievalModelFields struct {
+	TopK                  int     `json:"top_k"`
+	ScoreThresholdEnabled bool    `json:"score_threshold_enabled"`
+	ScoreThreshold        float64 `json:"score_threshold"`
+}
+
+func NewExternalRetrievalModelFields(args any) *ExternalRetrievalModelFields {
+	if args != nil {
+		if str, ok := args.(string); ok {
+			ermf := &ExternalRetrievalModelFields{}
+			err := json.Unmarshal([]byte(str), ermf)
+			if err != nil {
+				mlog.Errorf("json unmarshal %s to ExternalRetrievalModelFields failed:%v", str, err)
+				return nil
+			}
+			return ermf
+		} else if dict, ok := args.(map[string]any); ok {
+			bindata, _ := json.Marshal(dict)
+			ermf := &ExternalRetrievalModelFields{}
+			err := json.Unmarshal(bindata, ermf)
+			if err != nil {
+				mlog.Errorf("json unmarshal %#v to ExternalRetrievalModelFields failed:%v", dict, err)
+				return nil
+			}
+			return ermf
+		} else {
+			mlog.Errorf("unsupported args=%#v", args)
+			return nil
+		}
+	} else {
+		return &ExternalRetrievalModelFields{}
+	}
+}
+
+type TagFields struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+	Type string `json:"type"`
+}
+
+func NewTagFields(args any) *TagFields {
+	if args != nil {
+		if tag, ok := args.(*Tag); ok {
+			tf := &TagFields{
+				ID:   tag.ID,
+				Name: tag.Name,
+				Type: tag.Type,
+			}
+			return tf
+		} else if str, ok := args.(string); ok {
+			tf := &TagFields{}
+			err := json.Unmarshal([]byte(str), tf)
+			if err != nil {
+				mlog.Errorf("json unmarshal %s to TagFields failed:%v", str, err)
+				return nil
+			}
+			return tf
+		} else if dict, ok := args.(map[string]any); ok {
+			bindata, _ := json.Marshal(dict)
+			tf := &TagFields{}
+			err := json.Unmarshal(bindata, tf)
+			if err != nil {
+				mlog.Errorf("json unmarshal %#v to TagFields failed:%v", dict, err)
+				return nil
+			}
+			return tf
+		} else {
+			mlog.Errorf("unsupported args=%#v", args)
+			return nil
+		}
+	} else {
+		return &TagFields{}
+	}
+}
+
+type ExternalKnowledgeInfoFields struct {
+	ExternalKnowledgeID          string `json:"external_knowledge_id"`
+	ExternalKnowledgeApiID       string `json:"external_knowledge_api_id"`
+	ExternalKnowledgeApiName     string `json:"external_knowledge_api_name"`
+	ExternalKnowledgeApiEndpoint string `json:"external_knowledge_api_endpoint"`
+}
+
+func NewExternalKnowledgeInfoFields(args any) *ExternalKnowledgeInfoFields {
+	if args != nil {
+		if str, ok := args.(string); ok {
+			ekif := &ExternalKnowledgeInfoFields{}
+			err := json.Unmarshal([]byte(str), ekif)
+			if err != nil {
+				mlog.Errorf("json unmarshal %s to ExternalKnowledgeInfoFields failed:%v", str, err)
+				return nil
+			}
+			return ekif
+		} else if dict, ok := args.(map[string]any); ok {
+			bindata, _ := json.Marshal(dict)
+			ekif := &ExternalKnowledgeInfoFields{}
+			err := json.Unmarshal(bindata, ekif)
+			if err != nil {
+				mlog.Errorf("json unmarshal %#v to ExternalKnowledgeInfoFields failed:%v", dict, err)
+				return nil
+			}
+			return ekif
+		} else {
+			mlog.Errorf("unsupported args=%#v", args)
+			return nil
+		}
+	} else {
+		return &ExternalKnowledgeInfoFields{}
+	}
+}
+
+type DocMetadataFields struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+	Type string `json:"type"`
+}
+
+func NewDocMetadataFields(args any) *DocMetadataFields {
+	if args != nil {
+		if str, ok := args.(string); ok {
+			dmf := &DocMetadataFields{}
+			err := json.Unmarshal([]byte(str), dmf)
+			if err != nil {
+				mlog.Errorf("json unmarshal %s to DocMetadataFields failed:%v", str, err)
+				return nil
+			}
+			return dmf
+		} else if dict, ok := args.(map[string]any); ok {
+			bindata, _ := json.Marshal(dict)
+			dmf := &DocMetadataFields{}
+			err := json.Unmarshal(bindata, dmf)
+			if err != nil {
+				mlog.Errorf("json unmarshal %#v to DocMetadataFields failed:%v", dict, err)
+				return nil
+			}
+			return dmf
+		} else {
+			mlog.Errorf("unsupported args=%#v", args)
+			return nil
+		}
+	} else {
+		return &DocMetadataFields{}
+	}
+}
+
+type DatasetDetailFields struct {
+	ID                     string                        `json:"id"`
+	Name                   string                        `json:"name"`
+	Description            string                        `json:"description"`
+	Provider               string                        `json:"provider"`
+	Permission             string                        `json:"permission"`
+	DataSourceType         string                        `json:"data_source_type"`
+	IndexingTechnique      string                        `json:"indexing_technique"`
+	AppCount               int64                         `json:"app_count"`
+	DocumentCount          int64                         `json:"idocument_countd"`
+	WordCount              int64                         `json:"word_count"`
+	CreatedBy              string                        `json:"created_by"`
+	CreatedAt              int64                         `json:"created_at"`
+	UpdatedBy              string                        `json:"updated_by"`
+	UpdatedAt              int64                         `json:"updated_at"`
+	EmbeddingModel         string                        `json:"embedding_model"`
+	EmbeddingModelProvider string                        `json:"embedding_model_provider"`
+	EmbeddingAvailable     bool                          `json:"embedding_available"`
+	RetrievalModelDict     *DatasetRetrievalModelFields  `json:"retrieval_model_dict"`
+	Tags                   []*TagFields                  `json:"tags"`
+	DocForm                string                        `json:"doc_form"`
+	ExternalKnowledgeInfo  *ExternalKnowledgeInfoFields  `json:"external_knowledge_info"`
+	ExternalRetrievalModel *ExternalRetrievalModelFields `json:"external_retrieval_model"`
+	DocMetadata            []*DocMetadataFields          `json:"doc_metadata"`
+	BuiltInFieldEnabled    bool                          `json:"built_in_field_enabled"`
+	PartialMemberList      []string                      `json:"partial_member_list"`
+}
+
+func NewDatasetDetailFields(args any) *DatasetDetailFields {
+	if args != nil {
+		if ds, ok := args.(*Dataset); ok {
+			dsdf := &DatasetDetailFields{
+				ID:                     ds.ID,
+				Name:                   ds.Name,
+				Description:            ds.Description,
+				Provider:               ds.Provider,
+				Permission:             ds.Permission,
+				DataSourceType:         ds.DataSourceType,
+				IndexingTechnique:      ds.IndexingTechnique,
+				AppCount:               ds.AppCount(),
+				DocumentCount:          ds.DocumentCount(),
+				WordCount:              ds.WordCount(),
+				CreatedBy:              ds.CreatedBy,
+				UpdatedBy:              ds.UpdatedBy,
+				EmbeddingModel:         ds.EmbeddingModel,
+				EmbeddingModelProvider: ds.EmbeddingModelProvider,
+				RetrievalModelDict:     NewDatasetRetrievalModelFields(ds.RetrievalModelDict()),
+				Tags:                   []*TagFields{},
+				DocForm:                ds.DocForm(),
+				ExternalKnowledgeInfo:  NewExternalKnowledgeInfoFields(ds.ExternalKnowledgeInfo()),
+				ExternalRetrievalModel: NewExternalRetrievalModelFields(ds.ExternalRetrievalModel()),
+				DocMetadata:            []*DocMetadataFields{},
+				BuiltInFieldEnabled:    ds.BuiltInFieldEnabled,
+			}
+			if ds.CreatedAt != nil {
+				dsdf.CreatedAt = ds.CreatedAt.Unix()
+			}
+			if ds.UpdatedAt != nil {
+				dsdf.UpdatedAt = ds.UpdatedAt.Unix()
+			}
+			for _, tag := range ds.Tags() {
+				dsdf.Tags = append(dsdf.Tags, NewTagFields(tag))
+			}
+			for _, data := range ds.DocMetadata() {
+				dsdf.DocMetadata = append(dsdf.DocMetadata, NewDocMetadataFields(data))
+			}
+			return dsdf
+		} else if str, ok := args.(string); ok {
+			dsdf := &DatasetDetailFields{}
+			err := json.Unmarshal([]byte(str), dsdf)
+			if err != nil {
+				mlog.Errorf("json unmarshal %s to DatasetDetailFields failed:%v", str, err)
+				return nil
+			}
+			return dsdf
+		} else if dict, ok := args.(map[string]any); ok {
+			bindata, _ := json.Marshal(dict)
+			dsdf := &DatasetDetailFields{}
+			err := json.Unmarshal(bindata, dsdf)
+			if err != nil {
+				mlog.Errorf("json unmarshal %#v to DatasetDetailFields failed:%v", dict, err)
+				return nil
+			}
+			return dsdf
+		} else {
+			mlog.Errorf("unsupported args=%#v", args)
+			return nil
+		}
+	} else {
+		return &DatasetDetailFields{}
+	}
 }
 
 var (
@@ -644,6 +1135,73 @@ func (DatasetPermission) TableName() string {
 	return "dataset_permissions"
 }
 
+// ExternalKnowledgeApi [...]
+type ExternalKnowledgeApi struct {
+	ID          string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	Name        string     `gorm:"column:name;type:varchar(255);not null" json:"name"`
+	Description string     `gorm:"column:description;type:varchar(255);not null" json:"description"`
+	TenantID    string     `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
+	Settings    string     `gorm:"column:settings;type:text" json:"settings"`
+	CreatedBy   string     `gorm:"column:created_by;type:varchar(36);not null" json:"created_by"`
+	CreatedAt   *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedBy   string     `gorm:"column:updated_by;type:varchar(36)" json:"updated_by"`
+	UpdatedAt   *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+}
+
+// TableName get sql table name.获取数据库表名
+func (ExternalKnowledgeApi) TableName() string {
+	return "external_knowledge_apis"
+}
+
+func (eka *ExternalKnowledgeApi) ToDict() map[string]any {
+	return map[string]any{
+		"id":               eka.ID,
+		"tenant_id":        eka.TenantID,
+		"name":             eka.Name,
+		"description":      eka.Description,
+		"settings":         eka.SettingsDict(),
+		"dataset_bindings": eka.DatasetBindings(),
+		"created_by":       eka.CreatedBy,
+		// "created_at": eka.CreatedAt.io,
+	}
+}
+
+func (eka *ExternalKnowledgeApi) SettingsDict() map[string]any {
+	if eka.Settings != "" {
+		var dict map[string]any
+		err := json.Unmarshal([]byte(eka.Settings), &dict)
+		if err != nil {
+			mlog.Errorf("json unmarshal %s to dict failed:%v", eka.Settings, err)
+			return nil
+		}
+		return dict
+	}
+	return nil
+}
+
+func (eka *ExternalKnowledgeApi) DatasetBindings() []map[string]any {
+	var external_knowledge_bindings []*ExternalKnowledgeBinding
+	err := dbengine.Instance().DB.Model(&ExternalKnowledgeBinding{}).Where("external_knowledge_api_id = ?", eka.ID).Find(&external_knowledge_bindings).Error
+	if err != nil {
+		mlog.Errorf("Get ExternalKnowledgeBinding failed:%v", err)
+	}
+	dataset_ids := []string{}
+	for _, binding := range external_knowledge_bindings {
+		dataset_ids = append(dataset_ids, binding.DatasetID)
+	}
+	var datasets []*Dataset
+	err = dbengine.Instance().DB.Model(&Dataset{}).Where("id in ?", dataset_ids).Find(&datasets).Error
+	if err != nil {
+		mlog.Errorf("Get Dataset failed:%v", err)
+	}
+
+	dataset_bindings := []map[string]any{}
+	for _, dataset := range datasets {
+		dataset_bindings = append(dataset_bindings, map[string]any{"id": dataset.ID, "name": dataset.Name})
+	}
+	return dataset_bindings
+}
+
 // ExternalKnowledgeBinding [...]
 type ExternalKnowledgeBinding struct {
 	ID                     string                `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
@@ -664,58 +1222,6 @@ func (ExternalKnowledgeBinding) TableName() string {
 	return "external_knowledge_bindings"
 }
 
-// ExternalKnowledgeApi [...]
-type ExternalKnowledgeApi struct {
-	ID          string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
-	Name        string     `gorm:"column:name;type:varchar(255);not null" json:"name"`
-	Description string     `gorm:"column:description;type:varchar(255);not null" json:"description"`
-	TenantID    string     `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
-	Settings    string     `gorm:"column:settings;type:text" json:"settings"`
-	CreatedBy   string     `gorm:"column:created_by;type:varchar(36);not null" json:"created_by"`
-	CreatedAt   *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedBy   string     `gorm:"column:updated_by;type:varchar(36)" json:"updated_by"`
-	UpdatedAt   *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
-
-	//     def to_dict(self):
-	//         return {
-	//             "id": self.ID,
-	//             "tenant_id": self.tenant_id,
-	//             "name": self.name,
-	//             "description": self.description,
-	//             "settings": self.settings_dict,
-	//             "dataset_bindings": self.dataset_bindings,
-	//             "created_by": self.created_by,
-	//             "created_at": self.created_at.isoformat(),
-	//         }
-
-	//     @property
-	//     def settings_dict(self):
-	//         try:
-	//             return json.loads(self.settings) if self.settings else None
-	//         except JSONDecodeError:
-	//             return None
-
-	//     @property
-	//     def dataset_bindings(self):
-	//         external_knowledge_bindings = (
-	//             db.session.query(ExternalKnowledgeBindings)
-	//             .filter(ExternalKnowledgeBindings.external_knowledge_api_id == self.id)
-	//             .all()
-	//         )
-	//         dataset_ids = [binding.DatasetID for binding in external_knowledge_bindings]
-	//         datasets = db.session.query(Dataset).filter(Dataset.id.in_(dataset_ids)).all()
-	//         dataset_bindings = []
-	//         for dataset in datasets:
-	//             dataset_bindings.append({"id": dataset.id, "name": dataset.name})
-
-	// return dataset_bindings
-}
-
-// TableName get sql table name.获取数据库表名
-func (ExternalKnowledgeApi) TableName() string {
-	return "external_knowledge_apis"
-}
-
 // DatasetAutoDisableLog [...]
 type DatasetAutoDisableLog struct {
 	ID         string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
@@ -729,4 +1235,46 @@ type DatasetAutoDisableLog struct {
 // TableName get sql table name.获取数据库表名
 func (DatasetAutoDisableLog) TableName() string {
 	return "dataset_auto_disable_logs"
+}
+
+type RateLimitLog struct {
+	ID               string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	TenantID         string     `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
+	SubscriptionPlan string     `gorm:"column:subscription_plan;type:varchar(255);not null" json:"subscription_plan"`
+	Operation        string     `gorm:"column:operation;type:varchar(255);not null" json:"operation"`
+	CreatedAt        *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+}
+
+func (RateLimitLog) TableName() string {
+	return "rate_limit_logs"
+}
+
+type DatasetMetadata struct {
+	ID        string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	TenantID  string     `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
+	DatasetID string     `gorm:"column:dataset_id;type:varchar(36);not null" json:"dataset_id"`
+	Type      string     `gorm:"column:type;type:varchar(255);not null" json:"type"`
+	Name      string     `gorm:"column:name;type:varchar(255);not null" json:"name"`
+	CreatedAt *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+	CreatedBy string     `gorm:"column:created_by;type:varchar(36);not null" json:"created_by"`
+	UpdatedBy string     `gorm:"column:updated_by;type:varchar(36)" json:"updated_by"`
+}
+
+func (DatasetMetadata) TableName() string {
+	return "dataset_metadatas"
+}
+
+type DatasetMetadataBinding struct {
+	ID         string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	TenantID   string     `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
+	DatasetID  string     `gorm:"column:dataset_id;type:varchar(36);not null" json:"dataset_id"`
+	MetadataID string     `gorm:"column:metadata_id;type:varchar(36);not null" json:"metadata_id"`
+	DocumentID string     `gorm:"column:document_id;type:varchar(36);not null" json:"document_id"`
+	CreatedAt  *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+	CreatedBy  string     `gorm:"column:created_by;type:varchar(36);not null" json:"created_by"`
+}
+
+func (DatasetMetadataBinding) TableName() string {
+	return "dataset_metadata_bindings"
 }

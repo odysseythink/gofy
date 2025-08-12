@@ -1,9 +1,9 @@
 package enumtypes
 
-type DatasetPermissionEnum string
+type DatasetPermissionType string
 
 const (
-	DatasetPermission_ONLY_ME      DatasetPermissionEnum = "only_me"
-	DatasetPermission_ALL_TEAM     DatasetPermissionEnum = "all_team_members"
-	DatasetPermission_PARTIAL_TEAM DatasetPermissionEnum = "partial_members"
+	DatasetPermission_ONLY_ME      DatasetPermissionType = "only_me"
+	DatasetPermission_ALL_TEAM     DatasetPermissionType = "all_team_members"
+	DatasetPermission_PARTIAL_TEAM DatasetPermissionType = "partial_members"
 )

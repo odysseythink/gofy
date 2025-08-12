@@ -42,3 +42,40 @@ func (api *DatasetApi) RetrievalSetting(c *gin.Context) {
 		return
 	}
 }
+func (api *DatasetApi) DatasetList(c *gin.Context) {
+	in := &pbapi.DatasetListRequest{
+		Page:  1,
+		Limit: 20,
+	}
+	if err := c.ShouldBindQuery(in); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+	conn := cluster.Instance().GetRpcClientByModule("datasets")
+	if conn != nil {
+		pbrsp, err := pbapi.NewDatasetsClient(conn).DatasetList(c, in)
+		if err != nil {
+			mlog.Errorf("remote call DatasetList failed:%v", err)
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"result": "fail",
+				"data":   "remote call DatasetList failed",
+			})
+			return
+		} else {
+			mlog.Infof("remote call DatasetList return:%#v", pbrsp)
+			if pbrsp.Exp != nil {
+				response.PbHttpException(c, pbrsp.Exp)
+			} else {
+				c.JSON(http.StatusOK, pbrsp.RetrievalMethod)
+			}
+			return
+		}
+	} else {
+		mlog.Errorf("get rpc client failed")
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"result": "fail",
+			"data":   "internal server error",
+		})
+		return
+	}
+}

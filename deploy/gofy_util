@@ -6,7 +6,7 @@ if [ $# != 1 ]; then
 fi
 
 
-service_array=( link admin app tools plugins sandbox )
+service_array=( link admin app tools plugins sandbox datasets )
 
 if [ $1 = "start" ]; then
 	for exename in ${service_array[*]}

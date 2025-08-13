@@ -219,6 +219,8 @@ func InitRouters() *gin.Engine {
 		authapiRouter.GET("workspaces/current/members", v1.ApiGroupApp.MemberApi.List)
 
 		authapiRouter.GET("datasets/retrieval-setting", v1.ApiGroupApp.DatasetApi.RetrievalSetting)
+		authapiRouter.GET("datasets", v1.ApiGroupApp.DatasetApi.DatasetList)
+		authapiRouter.GET("datasets/external-knowledge-api", v1.ApiGroupApp.DatasetApi.ExternalKnowledgeApiList)
 
 		authapiRouter.GET("tags", v1.ApiGroupApp.TagApi.List)
 		authapiRouter.POST("tags", v1.ApiGroupApp.TagApi.Add)

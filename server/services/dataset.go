@@ -276,3 +276,27 @@ func (s *DatasetService) GetDatasetPartialMemberList(dataset_id string) []string
 
 	return datas
 }
+func (s *DatasetService) GetExternalKnowledgeAPIs(
+	page int32, per_page int32, tenant_id string, search string,
+) ([]*models.ExternalKnowledgeApi, int64) {
+	db := dbengine.Instance().DB.Model(&models.ExternalKnowledgeApi{}).Where("tenant_id = ?", tenant_id).Order("created_at DESC")
+	if search != "" {
+		db = db.Where("name like ?", "%"+search+"%")
+	}
+	var total int64
+
+	err := db.Count(&total).Error
+	if err != nil {
+		mlog.Errorf("count ExternalKnowledgeApi failed:%v", err)
+		return []*models.ExternalKnowledgeApi{}, 0
+	}
+	offset := int(per_page * (page - 1))
+	var datas []*models.ExternalKnowledgeApi
+	err = db.Limit(int(per_page)).Offset(offset).Scan(&datas).Error
+	if err != nil {
+		mlog.Errorf("get ExternalKnowledgeApi failed:%v", err)
+		return []*models.ExternalKnowledgeApi{}, 0
+	}
+
+	return datas, total
+}

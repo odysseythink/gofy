@@ -18,3 +18,6 @@ cd ..\..\
 cd main\sandbox 
 go build -o ..\..\..\deploy\sandbox.exe 
 cd ..\..\
+cd main\datasets 
+go build -o ..\..\..\deploy\datasets.exe 
+cd ..\..\

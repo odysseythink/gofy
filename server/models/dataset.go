@@ -1154,6 +1154,10 @@ func (ExternalKnowledgeApi) TableName() string {
 }
 
 func (eka *ExternalKnowledgeApi) ToDict() map[string]any {
+	var created_at int64
+	if eka.CreatedAt != nil {
+		created_at = eka.CreatedAt.Unix()
+	}
 	return map[string]any{
 		"id":               eka.ID,
 		"tenant_id":        eka.TenantID,
@@ -1162,7 +1166,7 @@ func (eka *ExternalKnowledgeApi) ToDict() map[string]any {
 		"settings":         eka.SettingsDict(),
 		"dataset_bindings": eka.DatasetBindings(),
 		"created_by":       eka.CreatedBy,
-		// "created_at": eka.CreatedAt.io,
+		"created_at":       created_at,
 	}
 }
 

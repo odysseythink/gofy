@@ -98,6 +98,33 @@ func (s *DatasetsService) DatasetList(ctx context.Context, in *pbapi.DatasetList
 	out.Total = total
 	return
 }
+func (s *DatasetsService) ExternalKnowledgeApiList(ctx context.Context, in *pbapi.ExternalKnowledgeApiListRequest) (out *pbapi.ExternalKnowledgeApiListReply, err error) {
+	p, _ := peer.FromContext(ctx)
+	mlog.Infof("remote[%s] datasets.ExternalKnowledgeApiList call:%#v", p.Addr.String(), in)
+	if in.Page <= 0 {
+		in.Page = 1
+	}
+	if in.Limit <= 0 {
+		in.Limit = 20
+	}
+
+	out = &pbapi.ExternalKnowledgeApiListReply{Limit: in.Limit, Page: in.Page}
+	if in.CurrentTenantId == "" {
+		mlog.Errorf("CurrentTenantId not provide")
+		out.Exp = exceptions.NewUnauthorizedPbHttpExp("CurrentTenantId not provide")
+		return
+	}
+	external_knowledge_apis, total := services.ServiceGroupApp.Dataset.GetExternalKnowledgeAPIs(in.Page, in.Limit, in.CurrentTenantId, in.Keyword)
+	datas := []map[string]any{}
+	for _, item := range external_knowledge_apis {
+		datas = append(datas, item.ToDict())
+	}
+	bindata, _ := json.Marshal(datas)
+	out.DatasStr = string(bindata)
+	out.HasMore = len(external_knowledge_apis) == int(in.Limit)
+	out.Total = total
+	return
+}
 
 // go build -o app.so -buildmode=plugin main.go
 func (s *DatasetsService) Init(args ...any) error {

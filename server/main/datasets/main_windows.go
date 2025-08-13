@@ -44,8 +44,8 @@ func main() {
 	defer mlog.Flush()
 	viper.WatchConfig()
 
-	mrun.Register(cluster.Instance(), []mrun.ModuleMgrOption{mrun.NewPriorityModuleMgrOption(0)}, []any{&Plugins})
+	mrun.Register(cluster.Instance(), []mrun.ModuleMgrOption{mrun.NewPriorityModuleMgrOption(0)}, []any{&Datasets})
 
-	err = mrun.Run(&Plugins)
+	err = mrun.Run(&Datasets)
 	mlog.Infof("%s Server End!:%v", os.Args[0], err)
 }

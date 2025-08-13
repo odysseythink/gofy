@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Datasets_DatasetList_FullMethodName = "/pbapi.datasets/DatasetList"
+	Datasets_DatasetList_FullMethodName              = "/pbapi.datasets/DatasetList"
+	Datasets_ExternalKnowledgeApiList_FullMethodName = "/pbapi.datasets/ExternalKnowledgeApiList"
 )
 
 // DatasetsClient is the client API for Datasets service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DatasetsClient interface {
 	DatasetList(ctx context.Context, in *DatasetListRequest, opts ...grpc.CallOption) (*DatasetListReply, error)
+	ExternalKnowledgeApiList(ctx context.Context, in *ExternalKnowledgeApiListRequest, opts ...grpc.CallOption) (*ExternalKnowledgeApiListReply, error)
 }
 
 type datasetsClient struct {
@@ -47,11 +49,22 @@ func (c *datasetsClient) DatasetList(ctx context.Context, in *DatasetListRequest
 	return out, nil
 }
 
+func (c *datasetsClient) ExternalKnowledgeApiList(ctx context.Context, in *ExternalKnowledgeApiListRequest, opts ...grpc.CallOption) (*ExternalKnowledgeApiListReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ExternalKnowledgeApiListReply)
+	err := c.cc.Invoke(ctx, Datasets_ExternalKnowledgeApiList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DatasetsServer is the server API for Datasets service.
 // All implementations must embed UnimplementedDatasetsServer
 // for forward compatibility.
 type DatasetsServer interface {
 	DatasetList(context.Context, *DatasetListRequest) (*DatasetListReply, error)
+	ExternalKnowledgeApiList(context.Context, *ExternalKnowledgeApiListRequest) (*ExternalKnowledgeApiListReply, error)
 	mustEmbedUnimplementedDatasetsServer()
 }
 
@@ -64,6 +77,9 @@ type UnimplementedDatasetsServer struct{}
 
 func (UnimplementedDatasetsServer) DatasetList(context.Context, *DatasetListRequest) (*DatasetListReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DatasetList not implemented")
+}
+func (UnimplementedDatasetsServer) ExternalKnowledgeApiList(context.Context, *ExternalKnowledgeApiListRequest) (*ExternalKnowledgeApiListReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExternalKnowledgeApiList not implemented")
 }
 func (UnimplementedDatasetsServer) mustEmbedUnimplementedDatasetsServer() {}
 func (UnimplementedDatasetsServer) testEmbeddedByValue()                  {}
@@ -107,6 +123,24 @@ func _Datasets_DatasetList_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Datasets_ExternalKnowledgeApiList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExternalKnowledgeApiListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DatasetsServer).ExternalKnowledgeApiList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Datasets_ExternalKnowledgeApiList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DatasetsServer).ExternalKnowledgeApiList(ctx, req.(*ExternalKnowledgeApiListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Datasets_ServiceDesc is the grpc.ServiceDesc for Datasets service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -117,6 +151,10 @@ var Datasets_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DatasetList",
 			Handler:    _Datasets_DatasetList_Handler,
+		},
+		{
+			MethodName: "ExternalKnowledgeApiList",
+			Handler:    _Datasets_ExternalKnowledgeApiList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

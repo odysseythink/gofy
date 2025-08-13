@@ -7,3 +7,4 @@ go build -buildmode=plugin -o ../deploy/app.so main/app/*.go
 go build -buildmode=plugin -o ../deploy/tools.so main/tools/*.go
 go build -buildmode=plugin -o ../deploy/plugins.so main/plugins/*.go
 go build -buildmode=plugin -o ../deploy/sandbox.so main/sandbox/*.go
+go build -buildmode=plugin -o ../deploy/datasets.so main/datasets/*.go

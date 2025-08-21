@@ -83,6 +83,15 @@ func (s *PluginsService) FetchInstallTasks(ctx context.Context, in *pbapi.FetchI
 	return
 }
 
+func (s *PluginsService) DispatchTextEmbeddingInvoke(ctx context.Context, in *pbapi.DispatchTextEmbeddingInvokeRequest) (out *pbapi.DispatchTextEmbeddingInvokeReply, err error) {
+	p, _ := peer.FromContext(ctx)
+	mlog.Infof("remote[%s] plugin.DispatchTextEmbeddingInvoke call:%#v", p.Addr.String(), in)
+
+	out = &pbapi.DispatchTextEmbeddingInvokeReply{}
+
+	return
+}
+
 // go build -o app.so -buildmode=plugin main.go
 func (s *PluginsService) Init(args ...any) error {
 	mlog.Info("plugin init......")

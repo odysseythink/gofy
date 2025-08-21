@@ -1,12 +1,13 @@
 package base
 
 import (
-	modelruntimeentities"mlib.com/gofy/server/entities/model_runtime"
+	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 )
 
 type TextEmbeddingModel struct {
 	*BaseAIModel
 }
+
 func (m *TextEmbeddingModel) ModelType() modelruntimeenumtypes.ModelType {
 	return modelruntimeenumtypes.Model_TEXT_EMBEDDING
 }
@@ -21,82 +22,85 @@ Invoke text embedding model
 :param input_type: input type
 :return: embeddings result
 */
-func (m *TextEmbeddingModel) invoke(
-        self,
-        model: str,
-        credentials: dict,
-        texts: list[str],
-        user: Optional[str] = None,
-        input_type: EmbeddingInputType = EmbeddingInputType.DOCUMENT,
-    ) *modelruntimeentities.TextEmbeddingResult:
+// func (m *TextEmbeddingModel) invoke(
+//         self,
+//         model: str,
+//         credentials: dict,
+//         texts: list[str],
+//         user: Optional[str] = None,
+//         input_type: EmbeddingInputType = EmbeddingInputType.DOCUMENT,
+//     ) *modelruntimeentities.TextEmbeddingResult:
 
-        try:
-            plugin_model_manager = PluginModelClient()
-            return plugin_model_manager.invoke_text_embedding(
-                tenant_id=self.tenant_id,
-                user_id=user or "unknown",
-                plugin_id=self.plugin_id,
-                provider=self.provider_name,
-                model=model,
-                credentials=credentials,
-                texts=texts,
-                input_type=input_type.value,
-            )
-        except Exception as e:
-            raise self._transform_invoke_error(e)
+//         try:
+//             plugin_model_manager = PluginModelClient()
+//             return plugin_model_manager.invoke_text_embedding(
+//                 tenant_id=self.tenant_id,
+//                 user_id=user or "unknown",
+//                 plugin_id=self.plugin_id,
+//                 provider=self.provider_name,
+//                 model=model,
+//                 credentials=credentials,
+//                 texts=texts,
+//                 input_type=input_type.value,
+//             )
+//         except Exception as e:
+//             raise self._transform_invoke_error(e)
 
-}
-func (m *TextEmbeddingModel) get_num_tokens(self, model: str, credentials: dict, texts: list[str]) -> list[int]:
-        """
-        Get number of tokens for given prompt messages
+// }
+/*
+   Get number of tokens for given prompt messages
 
-        :param model: model name
-        :param credentials: model credentials
-        :param texts: texts to embed
-        :return:
-        """
-        plugin_model_manager = PluginModelClient()
-        return plugin_model_manager.get_text_embedding_num_tokens(
-            tenant_id=self.tenant_id,
-            user_id="unknown",
-            plugin_id=self.plugin_id,
-            provider=self.provider_name,
-            model=model,
-            credentials=credentials,
-            texts=texts,
-        )
+   :param model: model name
+   :param credentials: model credentials
+   :param texts: texts to embed
+   :return:
+*/
+// func (m *TextEmbeddingModel) get_num_tokens(self, model: str, credentials: dict, texts: list[str]) -> list[int]:
 
-}
-func (m *TextEmbeddingModel) _get_context_size(self, model: str, credentials: dict) -> int:
-        """
-        Get context size for given embedding model
+//         plugin_model_manager = PluginModelClient()
+//         return plugin_model_manager.get_text_embedding_num_tokens(
+//             tenant_id=self.tenant_id,
+//             user_id="unknown",
+//             plugin_id=self.plugin_id,
+//             provider=self.provider_name,
+//             model=model,
+//             credentials=credentials,
+//             texts=texts,
+//         )
 
-        :param model: model name
-        :param credentials: model credentials
-        :return: context size
-        """
-        model_schema = self.get_model_schema(model, credentials)
+// }
+/*
+   Get context size for given embedding model
 
-        if model_schema and ModelPropertyKey.CONTEXT_SIZE in model_schema.model_properties:
-            content_size: int = model_schema.model_properties[ModelPropertyKey.CONTEXT_SIZE]
-            return content_size
+   :param model: model name
+   :param credentials: model credentials
+   :return: context size
+*/
+// func (m *TextEmbeddingModel) _get_context_size(self, model: str, credentials: dict) -> int:
 
-        return 1000
+//         model_schema = self.get_model_schema(model, credentials)
 
-}
-func (m *TextEmbeddingModel) _get_max_chunks(self, model: str, credentials: dict) -> int:
-        """
-        Get max chunks for given embedding model
+//         if model_schema and ModelPropertyKey.CONTEXT_SIZE in model_schema.model_properties:
+//             content_size: int = model_schema.model_properties[ModelPropertyKey.CONTEXT_SIZE]
+//             return content_size
 
-        :param model: model name
-        :param credentials: model credentials
-        :return: max chunks
-        """
-        model_schema = self.get_model_schema(model, credentials)
+//         return 1000
 
-        if model_schema and ModelPropertyKey.MAX_CHUNKS in model_schema.model_properties:
-            max_chunks: int = model_schema.model_properties[ModelPropertyKey.MAX_CHUNKS]
-            return max_chunks
+// }
+/*
+   Get max chunks for given embedding model
 
-        return 1
-		}
+   :param model: model name
+   :param credentials: model credentials
+   :return: max chunks
+*/
+// func (m *TextEmbeddingModel) _get_max_chunks(self, model: str, credentials: dict) -> int:
+
+//         model_schema = self.get_model_schema(model, credentials)
+
+//         if model_schema and ModelPropertyKey.MAX_CHUNKS in model_schema.model_properties:
+//             max_chunks: int = model_schema.model_properties[ModelPropertyKey.MAX_CHUNKS]
+//             return max_chunks
+
+//         return 1
+// 		}

@@ -19,8 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Plugins_FetchPreferences_FullMethodName  = "/pbapi.plugins/FetchPreferences"
-	Plugins_FetchInstallTasks_FullMethodName = "/pbapi.plugins/FetchInstallTasks"
+	Plugins_FetchPreferences_FullMethodName            = "/pbapi.plugins/FetchPreferences"
+	Plugins_FetchInstallTasks_FullMethodName           = "/pbapi.plugins/FetchInstallTasks"
+	Plugins_DispatchTextEmbeddingInvoke_FullMethodName = "/pbapi.plugins/DispatchTextEmbeddingInvoke"
 )
 
 // PluginsClient is the client API for Plugins service.
@@ -29,6 +30,7 @@ const (
 type PluginsClient interface {
 	FetchPreferences(ctx context.Context, in *FetchPreferencesRequest, opts ...grpc.CallOption) (*FetchPreferencesReply, error)
 	FetchInstallTasks(ctx context.Context, in *FetchInstallTasksRequest, opts ...grpc.CallOption) (*FetchInstallTasksReply, error)
+	DispatchTextEmbeddingInvoke(ctx context.Context, in *DispatchTextEmbeddingInvokeRequest, opts ...grpc.CallOption) (*DispatchTextEmbeddingInvokeReply, error)
 }
 
 type pluginsClient struct {
@@ -59,12 +61,23 @@ func (c *pluginsClient) FetchInstallTasks(ctx context.Context, in *FetchInstallT
 	return out, nil
 }
 
+func (c *pluginsClient) DispatchTextEmbeddingInvoke(ctx context.Context, in *DispatchTextEmbeddingInvokeRequest, opts ...grpc.CallOption) (*DispatchTextEmbeddingInvokeReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DispatchTextEmbeddingInvokeReply)
+	err := c.cc.Invoke(ctx, Plugins_DispatchTextEmbeddingInvoke_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PluginsServer is the server API for Plugins service.
 // All implementations must embed UnimplementedPluginsServer
 // for forward compatibility.
 type PluginsServer interface {
 	FetchPreferences(context.Context, *FetchPreferencesRequest) (*FetchPreferencesReply, error)
 	FetchInstallTasks(context.Context, *FetchInstallTasksRequest) (*FetchInstallTasksReply, error)
+	DispatchTextEmbeddingInvoke(context.Context, *DispatchTextEmbeddingInvokeRequest) (*DispatchTextEmbeddingInvokeReply, error)
 	mustEmbedUnimplementedPluginsServer()
 }
 
@@ -80,6 +93,9 @@ func (UnimplementedPluginsServer) FetchPreferences(context.Context, *FetchPrefer
 }
 func (UnimplementedPluginsServer) FetchInstallTasks(context.Context, *FetchInstallTasksRequest) (*FetchInstallTasksReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FetchInstallTasks not implemented")
+}
+func (UnimplementedPluginsServer) DispatchTextEmbeddingInvoke(context.Context, *DispatchTextEmbeddingInvokeRequest) (*DispatchTextEmbeddingInvokeReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DispatchTextEmbeddingInvoke not implemented")
 }
 func (UnimplementedPluginsServer) mustEmbedUnimplementedPluginsServer() {}
 func (UnimplementedPluginsServer) testEmbeddedByValue()                 {}
@@ -141,6 +157,24 @@ func _Plugins_FetchInstallTasks_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Plugins_DispatchTextEmbeddingInvoke_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DispatchTextEmbeddingInvokeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PluginsServer).DispatchTextEmbeddingInvoke(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Plugins_DispatchTextEmbeddingInvoke_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PluginsServer).DispatchTextEmbeddingInvoke(ctx, req.(*DispatchTextEmbeddingInvokeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Plugins_ServiceDesc is the grpc.ServiceDesc for Plugins service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -155,6 +189,10 @@ var Plugins_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FetchInstallTasks",
 			Handler:    _Plugins_FetchInstallTasks_Handler,
+		},
+		{
+			MethodName: "DispatchTextEmbeddingInvoke",
+			Handler:    _Plugins_DispatchTextEmbeddingInvoke_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

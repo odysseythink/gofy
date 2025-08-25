@@ -47,3 +47,8 @@
 server/*.json
 server/*.txt
 deploy/
+web/node_modules
+web/.vscode
+web/.next
+web/.stfolder
+web/.stignore

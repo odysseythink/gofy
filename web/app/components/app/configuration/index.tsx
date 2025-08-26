@@ -199,6 +199,7 @@ const Configuration: FC = () => {
     dataSets: [],
     agentConfig: DEFAULT_AGENT_SETTING,
   })
+  console.info('---Configuration---first, modelConfig=', modelConfig)
   const isAgent = mode === 'agent-chat'
 
   const isOpenAI = modelConfig.provider === 'langgenius/openai/openai'
@@ -224,6 +225,7 @@ const Configuration: FC = () => {
   }, [])
 
   const setModelConfig = (newModelConfig: ModelConfig) => {
+    console.info('---Configuration---setModelConfig, modelConfig=', modelConfig)
     doSetModelConfig(newModelConfig)
   }
 
@@ -317,6 +319,7 @@ const Configuration: FC = () => {
 
   const syncToPublishedConfig = (_publishedConfig: PublishConfig) => {
     const modelConfig = _publishedConfig.modelConfig
+    console.info('---Configuration---syncToPublishedConfig, modelConfig=', modelConfig)
     setModelConfig(_publishedConfig.modelConfig)
     setCompletionParams(_publishedConfig.completionParams)
     setDataSets(modelConfig.dataSets || [])
@@ -362,6 +365,7 @@ const Configuration: FC = () => {
         const newModelConfig = produce(modelConfig, (draft: ModelConfig) => {
           draft.mode = mode
         })
+        console.info('---Configuration---useEffect, modelConfig=', modelConfig)
         setModelConfig(newModelConfig)
       }
     }
@@ -450,7 +454,7 @@ const Configuration: FC = () => {
       draft.model_id = modelId
       draft.mode = modeMode as ModelModeType
     })
-
+    console.info('---Configuration---setModel, modelConfig=', modelConfig)
     setModelConfig(newModelConfig)
     const supportVision = features && features.includes(ModelFeatureEnum.vision)
 
@@ -519,6 +523,7 @@ const Configuration: FC = () => {
     const newModelConfig = produce(modelConfig, (draft: ModelConfig) => {
       draft.configs.prompt_variables = [...draft.configs.prompt_variables, ...variable]
     })
+    console.info('---Configuration---handleAddPromptVariable, modelConfig=', modelConfig)
     setModelConfig(newModelConfig)
   }, [modelConfig])
 
@@ -850,7 +855,7 @@ const Configuration: FC = () => {
       <Loading type='area' />
     </div>
   }
-
+console.info('---Configuration---modelConfig=', modelConfig)
   return (
     <ConfigContext.Provider value={{
       appId,

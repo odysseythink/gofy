@@ -22,6 +22,7 @@ const (
 	Tools_GetToolLabelsList_FullMethodName   = "/pbapi.tools/GetToolLabelsList"
 	Tools_GetToolProviderList_FullMethodName = "/pbapi.tools/GetToolProviderList"
 	Tools_GetToolList_FullMethodName         = "/pbapi.tools/GetToolList"
+	Tools_GetMCPToolList_FullMethodName      = "/pbapi.tools/GetMCPToolList"
 )
 
 // ToolsClient is the client API for Tools service.
@@ -31,6 +32,7 @@ type ToolsClient interface {
 	GetToolLabelsList(ctx context.Context, in *GetToolLabelsListRequest, opts ...grpc.CallOption) (*GetToolLabelsListReply, error)
 	GetToolProviderList(ctx context.Context, in *GetToolProviderListRequest, opts ...grpc.CallOption) (*GetToolProviderListReply, error)
 	GetToolList(ctx context.Context, in *GetToolListRequest, opts ...grpc.CallOption) (*GetToolListReply, error)
+	GetMCPToolList(ctx context.Context, in *GetMCPToolListRequest, opts ...grpc.CallOption) (*GetMCPToolListReply, error)
 }
 
 type toolsClient struct {
@@ -71,6 +73,16 @@ func (c *toolsClient) GetToolList(ctx context.Context, in *GetToolListRequest, o
 	return out, nil
 }
 
+func (c *toolsClient) GetMCPToolList(ctx context.Context, in *GetMCPToolListRequest, opts ...grpc.CallOption) (*GetMCPToolListReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetMCPToolListReply)
+	err := c.cc.Invoke(ctx, Tools_GetMCPToolList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ToolsServer is the server API for Tools service.
 // All implementations must embed UnimplementedToolsServer
 // for forward compatibility.
@@ -78,6 +90,7 @@ type ToolsServer interface {
 	GetToolLabelsList(context.Context, *GetToolLabelsListRequest) (*GetToolLabelsListReply, error)
 	GetToolProviderList(context.Context, *GetToolProviderListRequest) (*GetToolProviderListReply, error)
 	GetToolList(context.Context, *GetToolListRequest) (*GetToolListReply, error)
+	GetMCPToolList(context.Context, *GetMCPToolListRequest) (*GetMCPToolListReply, error)
 	mustEmbedUnimplementedToolsServer()
 }
 
@@ -96,6 +109,9 @@ func (UnimplementedToolsServer) GetToolProviderList(context.Context, *GetToolPro
 }
 func (UnimplementedToolsServer) GetToolList(context.Context, *GetToolListRequest) (*GetToolListReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetToolList not implemented")
+}
+func (UnimplementedToolsServer) GetMCPToolList(context.Context, *GetMCPToolListRequest) (*GetMCPToolListReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMCPToolList not implemented")
 }
 func (UnimplementedToolsServer) mustEmbedUnimplementedToolsServer() {}
 func (UnimplementedToolsServer) testEmbeddedByValue()               {}
@@ -175,6 +191,24 @@ func _Tools_GetToolList_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Tools_GetMCPToolList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMCPToolListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ToolsServer).GetMCPToolList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Tools_GetMCPToolList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ToolsServer).GetMCPToolList(ctx, req.(*GetMCPToolListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Tools_ServiceDesc is the grpc.ServiceDesc for Tools service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -193,6 +227,10 @@ var Tools_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetToolList",
 			Handler:    _Tools_GetToolList_Handler,
+		},
+		{
+			MethodName: "GetMCPToolList",
+			Handler:    _Tools_GetMCPToolList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

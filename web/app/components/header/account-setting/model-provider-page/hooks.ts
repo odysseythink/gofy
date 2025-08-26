@@ -181,9 +181,17 @@ export const useModelListAndDefaultModel = (type: ModelTypeEnum) => {
 
 export const useModelListAndDefaultModelAndCurrentProviderAndModel = (type: ModelTypeEnum) => {
   const { modelList, defaultModel } = useModelListAndDefaultModel(type)
+  var provider = ''
+  var model = ''
+  if (defaultModel){
+    if (defaultModel.provider){
+      provider = defaultModel.provider.provider
+    }
+    model = defaultModel.model
+  } 
   const { currentProvider, currentModel } = useCurrentProviderAndModel(
     modelList,
-    { provider: defaultModel?.provider.provider || '', model: defaultModel?.model || '' },
+    { provider: provider, model: model },
   )
 
   return {

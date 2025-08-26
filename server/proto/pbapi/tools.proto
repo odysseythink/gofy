@@ -11,6 +11,7 @@ service tools {
   rpc GetToolLabelsList(GetToolLabelsListRequest) returns (GetToolLabelsListReply) {}
   rpc GetToolProviderList(GetToolProviderListRequest) returns (GetToolProviderListReply) {}
   rpc GetToolList(GetToolListRequest) returns (GetToolListReply) {}	  
+  rpc GetMCPToolList(GetMCPToolListRequest) returns (GetMCPToolListReply) {}	  
 }
 
 message GetToolLabelsListRequest {
@@ -35,6 +36,13 @@ message GetToolListRequest {
   string tenant_id = 3;  
 }
 message GetToolListReply {
+	exceptions.HTTPException exp = 1;
+  string tools_str = 2;
+}
+message GetMCPToolListRequest {
+  string tenant_id = 1;  
+}
+message GetMCPToolListReply {
 	exceptions.HTTPException exp = 1;
   string tools_str = 2;
 }

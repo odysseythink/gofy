@@ -57,6 +57,7 @@ export async function fetchWithRetry<T = any>(fn: Promise<T>, retries = 3): Prom
 }
 
 export const correctModelProvider = (provider: string) => {
+   console.info('---Configuration---utils, correctModelProvider=', provider)
   if (!provider)
     return ''
 
@@ -66,7 +67,7 @@ export const correctModelProvider = (provider: string) => {
   if (['google'].includes(provider))
     return 'langgenius/gemini/google'
 
-  return `langgenius/${provider}/${provider}`
+  return `${provider}`
 }
 
 export const correctToolProvider = (provider: string, toolInCollectionList?: boolean) => {

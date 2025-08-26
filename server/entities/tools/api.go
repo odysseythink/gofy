@@ -21,13 +21,13 @@ var (
 	ToolProviderTypeApiLiteral = []string{"builtin", "api", "workflow", "mcp"}
 )
 
-type ToolProviderApiEntity[T1 string | map[string]any] struct {
+type ToolProviderApiEntity /*[T1 string | map[string]any]*/ struct {
 	ID                     string                          `json:"id"`
 	Author                 string                          `json:"author"`
 	Name                   string                          `json:"name"` // identifier
 	Description            commontypes.I18nObject          `json:"description"`
-	Icon                   T1                              `json:"icon"`
-	IconDark               T1                              `json:"icon_dark"` //description="The dark icon of the tool"
+	Icon                   any                             `json:"icon"`
+	IconDark               any                             `json:"icon_dark"` //description="The dark icon of the tool"
 	Label                  commontypes.I18nObject          `json:"label"`     // label
 	Type                   toolsenumtypes.ToolProviderType `json:"type"`
 	MaskedCredentials      map[string]any                  `json:"masked_credentials"`
@@ -44,7 +44,7 @@ type ToolProviderApiEntity[T1 string | map[string]any] struct {
 	ServerIdentifier *string `json:"server_identifier"` //description="The server identifier of the MCP tool"
 }
 
-func (entity *ToolProviderApiEntity[T1]) ToDict() map[string]any {
+func (entity *ToolProviderApiEntity) ToDict() map[string]any {
 	// -------------
 	// overwrite tool parameter types for temp fix
 	for idx1, tool := range entity.Tools {

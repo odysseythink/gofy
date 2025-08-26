@@ -4,10 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-httpexceptions "mlib.com/gofy/server/core/exceptions/http"
+
 	"google.golang.org/grpc/peer"
 	"mlib.com/gofy/server/cache"
 	"mlib.com/gofy/server/core/exceptions"
+	httpexceptions "mlib.com/gofy/server/core/exceptions/http"
 	_ "mlib.com/gofy/server/core/model_runtime/model_provides"
 	dbengine "mlib.com/gofy/server/db_engine"
 	_ "mlib.com/gofy/server/events"
@@ -61,6 +62,14 @@ func (s *ToolsService) GetToolList(ctx context.Context, in *pbapi.GetToolListReq
 	mlog.Infof("remote[%s] admin.GetToolList call:%#v", p.Addr.String(), in)
 
 	out = &pbapi.GetToolListReply{}
+
+	return
+}
+func (s *ToolsService) GetMCPToolList(ctx context.Context, in *pbapi.GetMCPToolListRequest) (out *pbapi.GetMCPToolListReply, err error) {
+	p, _ := peer.FromContext(ctx)
+	mlog.Infof("remote[%s] admin.GetMCPToolList call:%#v", p.Addr.String(), in)
+
+	out = &pbapi.GetMCPToolListReply{}
 
 	return
 }

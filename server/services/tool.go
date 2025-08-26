@@ -100,3 +100,15 @@ func (api *ToolService) ListToolProviders(user_id string, tenant_id string, typ 
 
 	return nil
 }
+    func (api *ToolService) RetrieveMCPTools(tenant_id string, for_list bool) []*toolsentities.ToolProviderApiEntity{
+        mcp_providers = (
+            db.session.query(MCPToolProvider)
+            .where(MCPToolProvider.tenant_id == tenant_id)
+            .order_by(MCPToolProvider.name)
+            .all()
+        )
+        return [
+            ToolTransformService.mcp_provider_to_user_provider(mcp_provider, for_list=for_list)
+            for mcp_provider in mcp_providers
+        ]
+		}

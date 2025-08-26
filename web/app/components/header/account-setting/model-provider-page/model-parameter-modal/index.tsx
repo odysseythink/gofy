@@ -86,6 +86,7 @@ const ModelParameterModal: FC<ModelParameterModalProps> = ({
   readonly,
   isInWorkflow,
 }) => {
+  console.info('---ModelParameterModal---provider=', provider)
   const { t } = useTranslation()
   const { isAPIKeySet } = useProviderContext()
   const [open, setOpen] = useState(false)

@@ -60,7 +60,7 @@ func (*HealthRequest) Descriptor() ([]byte, []int) {
 
 type HealthReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Msg           string                 `protobuf:"bytes,3,opt,name=msg,proto3" json:"msg"`
+	Msg           string                 `protobuf:"bytes,3,opt,name=msg,proto3" json:"msg" form:"msg"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -104,10 +104,10 @@ func (x *HealthReply) GetMsg() string {
 
 type RunRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Language      string                 `protobuf:"bytes,1,opt,name=language,proto3" json:"language"`
-	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code"`
-	Preload       string                 `protobuf:"bytes,3,opt,name=preload,proto3" json:"preload"`
-	EnableNetwork bool                   `protobuf:"varint,4,opt,name=enable_network,json=enableNetwork,proto3" json:"enable_network"`
+	Language      string                 `protobuf:"bytes,1,opt,name=language,proto3" json:"language" form:"language"`
+	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code" form:"code"`
+	Preload       string                 `protobuf:"bytes,3,opt,name=preload,proto3" json:"preload" form:"preload"`
+	EnableNetwork bool                   `protobuf:"varint,4,opt,name=enable_network,json=enableNetwork,proto3" json:"enable_network" form:"enable_network"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -172,11 +172,11 @@ func (x *RunRequest) GetEnableNetwork() bool {
 
 type RunReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	Code          int32                     `protobuf:"varint,2,opt,name=code,proto3" json:"code"`
-	Message       string                    `protobuf:"bytes,3,opt,name=message,proto3" json:"message"`
-	Error         string                    `protobuf:"bytes,4,opt,name=error,proto3" json:"error"`
-	Stdout        string                    `protobuf:"bytes,5,opt,name=stdout,proto3" json:"stdout"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	Code          int32                     `protobuf:"varint,2,opt,name=code,proto3" json:"code" form:"code"`
+	Message       string                    `protobuf:"bytes,3,opt,name=message,proto3" json:"message" form:"message"`
+	Error         string                    `protobuf:"bytes,4,opt,name=error,proto3" json:"error" form:"error"`
+	Stdout        string                    `protobuf:"bytes,5,opt,name=stdout,proto3" json:"stdout" form:"stdout"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -248,7 +248,7 @@ func (x *RunReply) GetStdout() string {
 
 type DependenciesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Language      string                 `protobuf:"bytes,1,opt,name=language,proto3" json:"language"`
+	Language      string                 `protobuf:"bytes,1,opt,name=language,proto3" json:"language" form:"language"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -292,8 +292,8 @@ func (x *DependenciesRequest) GetLanguage() string {
 
 type Dependency struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name"`
-	Version       string                 `protobuf:"bytes,2,opt,name=version,proto3" json:"version"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name" form:"name"`
+	Version       string                 `protobuf:"bytes,2,opt,name=version,proto3" json:"version" form:"version"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -344,10 +344,10 @@ func (x *Dependency) GetVersion() string {
 
 type DependenciesReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	Code          int32                     `protobuf:"varint,2,opt,name=code,proto3" json:"code"`
-	Message       string                    `protobuf:"bytes,3,opt,name=message,proto3" json:"message"`
-	Dependencies  []*Dependency             `protobuf:"bytes,4,rep,name=dependencies,proto3" json:"dependencies"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	Code          int32                     `protobuf:"varint,2,opt,name=code,proto3" json:"code" form:"code"`
+	Message       string                    `protobuf:"bytes,3,opt,name=message,proto3" json:"message" form:"message"`
+	Dependencies  []*Dependency             `protobuf:"bytes,4,rep,name=dependencies,proto3" json:"dependencies" form:"dependencies"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }

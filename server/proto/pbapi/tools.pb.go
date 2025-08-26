@@ -60,8 +60,8 @@ func (*GetToolLabelsListRequest) Descriptor() ([]byte, []int) {
 
 type GetToolLabelsListReply struct {
 	state             protoimpl.MessageState    `protogen:"open.v1"`
-	Exp               *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	ToolLabelsListStr string                    `protobuf:"bytes,2,opt,name=tool_labels_list_str,json=toolLabelsListStr,proto3" json:"tool_labels_list_str"`
+	Exp               *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	ToolLabelsListStr string                    `protobuf:"bytes,2,opt,name=tool_labels_list_str,json=toolLabelsListStr,proto3" json:"tool_labels_list_str" form:"tool_labels_list_str"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -112,9 +112,9 @@ func (x *GetToolLabelsListReply) GetToolLabelsListStr() string {
 
 type GetToolProviderListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Type          string                 `protobuf:"bytes,1,opt,name=type,proto3" json:"type"`
-	AccountId     string                 `protobuf:"bytes,2,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	TenantId      string                 `protobuf:"bytes,3,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id"`
+	Type          string                 `protobuf:"bytes,1,opt,name=type,proto3" json:"type" form:"type"`
+	AccountId     string                 `protobuf:"bytes,2,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	TenantId      string                 `protobuf:"bytes,3,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id" form:"tenant_id"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -172,8 +172,8 @@ func (x *GetToolProviderListRequest) GetTenantId() string {
 
 type GetToolProviderListReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	ProvidersStr  string                    `protobuf:"bytes,2,opt,name=providers_str,json=providersStr,proto3" json:"providers_str"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	ProvidersStr  string                    `protobuf:"bytes,2,opt,name=providers_str,json=providersStr,proto3" json:"providers_str" form:"providers_str"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -224,9 +224,9 @@ func (x *GetToolProviderListReply) GetProvidersStr() string {
 
 type GetToolListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Type          string                 `protobuf:"bytes,1,opt,name=type,proto3" json:"type"`
-	AccountId     string                 `protobuf:"bytes,2,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	TenantId      string                 `protobuf:"bytes,3,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id"`
+	Type          string                 `protobuf:"bytes,1,opt,name=type,proto3" json:"type" form:"type"`
+	AccountId     string                 `protobuf:"bytes,2,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	TenantId      string                 `protobuf:"bytes,3,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id" form:"tenant_id"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -284,8 +284,8 @@ func (x *GetToolListRequest) GetTenantId() string {
 
 type GetToolListReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	ToolsStr      string                    `protobuf:"bytes,2,opt,name=tools_str,json=toolsStr,proto3" json:"tools_str"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	ToolsStr      string                    `protobuf:"bytes,2,opt,name=tools_str,json=toolsStr,proto3" json:"tools_str" form:"tools_str"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }

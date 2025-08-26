@@ -23,9 +23,9 @@ const (
 
 type HTTPException struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code"`
-	Status        int32                  `protobuf:"varint,2,opt,name=status,proto3" json:"status"`
-	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message"`
+	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code" form:"code"`
+	Status        int32                  `protobuf:"varint,2,opt,name=status,proto3" json:"status" form:"status"`
+	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message" form:"message"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }

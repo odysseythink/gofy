@@ -23,7 +23,7 @@ const (
 
 type LinkStatusRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name" form:"name"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -67,7 +67,7 @@ func (x *LinkStatusRequest) GetName() string {
 
 type LinkStatusReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message"`
+	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message" form:"message"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }

@@ -23,8 +23,8 @@ const (
 
 type SubscriptionModel struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Plan          string                 `protobuf:"bytes,1,opt,name=plan,proto3" json:"plan"`
-	Interval      string                 `protobuf:"bytes,2,opt,name=interval,proto3" json:"interval"`
+	Plan          string                 `protobuf:"bytes,1,opt,name=plan,proto3" json:"plan" form:"plan"`
+	Interval      string                 `protobuf:"bytes,2,opt,name=interval,proto3" json:"interval" form:"interval"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -75,8 +75,8 @@ func (x *SubscriptionModel) GetInterval() string {
 
 type BillingModel struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Enabled       bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled"`
-	Subscription  *SubscriptionModel     `protobuf:"bytes,2,opt,name=subscription,proto3" json:"subscription"`
+	Enabled       bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled" form:"enabled"`
+	Subscription  *SubscriptionModel     `protobuf:"bytes,2,opt,name=subscription,proto3" json:"subscription" form:"subscription"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -127,8 +127,8 @@ func (x *BillingModel) GetSubscription() *SubscriptionModel {
 
 type LimitationModel struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Size          int64                  `protobuf:"varint,1,opt,name=size,proto3" json:"size"`
-	Limit         int64                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit"`
+	Size          int64                  `protobuf:"varint,1,opt,name=size,proto3" json:"size" form:"size"`
+	Limit         int64                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit" form:"limit"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -179,17 +179,17 @@ func (x *LimitationModel) GetLimit() int64 {
 
 type FeatureModel struct {
 	state                     protoimpl.MessageState `protogen:"open.v1"`
-	Billing                   *BillingModel          `protobuf:"bytes,1,opt,name=billing,proto3" json:"billing"`
-	Members                   *LimitationModel       `protobuf:"bytes,2,opt,name=members,proto3" json:"members"`
-	Apps                      *LimitationModel       `protobuf:"bytes,3,opt,name=apps,proto3" json:"apps"`
-	VectorSpace               *LimitationModel       `protobuf:"bytes,4,opt,name=vector_space,json=vectorSpace,proto3" json:"vector_space"`
-	AnnotationQuotaLimit      *LimitationModel       `protobuf:"bytes,5,opt,name=annotation_quota_limit,json=annotationQuotaLimit,proto3" json:"annotation_quota_limit"`
-	DocumentsUploadQuota      *LimitationModel       `protobuf:"bytes,6,opt,name=documents_upload_quota,json=documentsUploadQuota,proto3" json:"documents_upload_quota"`
-	DocsProcessing            string                 `protobuf:"bytes,7,opt,name=docs_processing,json=docsProcessing,proto3" json:"docs_processing"`
-	CanReplaceLogo            bool                   `protobuf:"varint,8,opt,name=can_replace_logo,json=canReplaceLogo,proto3" json:"can_replace_logo"`
-	ModelLoadBalancingEnabled bool                   `protobuf:"varint,9,opt,name=model_load_balancing_enabled,json=modelLoadBalancingEnabled,proto3" json:"model_load_balancing_enabled"`
-	DatasetOperatorEnabled    bool                   `protobuf:"varint,10,opt,name=dataset_operator_enabled,json=datasetOperatorEnabled,proto3" json:"dataset_operator_enabled"`
-	ModelConfig               string                 `protobuf:"bytes,11,opt,name=model_config,json=modelConfig,proto3" json:"model_config"`
+	Billing                   *BillingModel          `protobuf:"bytes,1,opt,name=billing,proto3" json:"billing" form:"billing"`
+	Members                   *LimitationModel       `protobuf:"bytes,2,opt,name=members,proto3" json:"members" form:"members"`
+	Apps                      *LimitationModel       `protobuf:"bytes,3,opt,name=apps,proto3" json:"apps" form:"apps"`
+	VectorSpace               *LimitationModel       `protobuf:"bytes,4,opt,name=vector_space,json=vectorSpace,proto3" json:"vector_space" form:"vector_space"`
+	AnnotationQuotaLimit      *LimitationModel       `protobuf:"bytes,5,opt,name=annotation_quota_limit,json=annotationQuotaLimit,proto3" json:"annotation_quota_limit" form:"annotation_quota_limit"`
+	DocumentsUploadQuota      *LimitationModel       `protobuf:"bytes,6,opt,name=documents_upload_quota,json=documentsUploadQuota,proto3" json:"documents_upload_quota" form:"documents_upload_quota"`
+	DocsProcessing            string                 `protobuf:"bytes,7,opt,name=docs_processing,json=docsProcessing,proto3" json:"docs_processing" form:"docs_processing"`
+	CanReplaceLogo            bool                   `protobuf:"varint,8,opt,name=can_replace_logo,json=canReplaceLogo,proto3" json:"can_replace_logo" form:"can_replace_logo"`
+	ModelLoadBalancingEnabled bool                   `protobuf:"varint,9,opt,name=model_load_balancing_enabled,json=modelLoadBalancingEnabled,proto3" json:"model_load_balancing_enabled" form:"model_load_balancing_enabled"`
+	DatasetOperatorEnabled    bool                   `protobuf:"varint,10,opt,name=dataset_operator_enabled,json=datasetOperatorEnabled,proto3" json:"dataset_operator_enabled" form:"dataset_operator_enabled"`
+	ModelConfig               string                 `protobuf:"bytes,11,opt,name=model_config,json=modelConfig,proto3" json:"model_config" form:"model_config"`
 	unknownFields             protoimpl.UnknownFields
 	sizeCache                 protoimpl.SizeCache
 }
@@ -303,8 +303,8 @@ func (x *FeatureModel) GetModelConfig() string {
 
 type LicenseModel struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Status        string                 `protobuf:"bytes,1,opt,name=status,proto3" json:"status"`
-	ExpiredAt     string                 `protobuf:"bytes,2,opt,name=expired_at,json=expiredAt,proto3" json:"expired_at"`
+	Status        string                 `protobuf:"bytes,1,opt,name=status,proto3" json:"status" form:"status"`
+	ExpiredAt     string                 `protobuf:"bytes,2,opt,name=expired_at,json=expiredAt,proto3" json:"expired_at" form:"expired_at"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -355,18 +355,18 @@ func (x *LicenseModel) GetExpiredAt() string {
 
 type SystemFeature struct {
 	state                        protoimpl.MessageState `protogen:"open.v1"`
-	SsoEnforcedForSignin         bool                   `protobuf:"varint,1,opt,name=sso_enforced_for_signin,json=ssoEnforcedForSignin,proto3" json:"sso_enforced_for_signin"`
-	SsoEnforcedForSigninProtocol string                 `protobuf:"bytes,2,opt,name=sso_enforced_for_signin_protocol,json=ssoEnforcedForSigninProtocol,proto3" json:"sso_enforced_for_signin_protocol"`
-	SsoEnforcedForWeb            bool                   `protobuf:"varint,3,opt,name=sso_enforced_for_web,json=ssoEnforcedForWeb,proto3" json:"sso_enforced_for_web"`
-	SsoEnforcedForWebProtocol    string                 `protobuf:"bytes,4,opt,name=sso_enforced_for_web_protocol,json=ssoEnforcedForWebProtocol,proto3" json:"sso_enforced_for_web_protocol"`
-	EnableWebSsoSwitchComponent  bool                   `protobuf:"varint,5,opt,name=enable_web_sso_switch_component,json=enableWebSsoSwitchComponent,proto3" json:"enable_web_sso_switch_component"`
-	EnableEmailCodeLogin         bool                   `protobuf:"varint,6,opt,name=enable_email_code_login,json=enableEmailCodeLogin,proto3" json:"enable_email_code_login"`
-	EnableEmailPasswordLogin     bool                   `protobuf:"varint,7,opt,name=enable_email_password_login,json=enableEmailPasswordLogin,proto3" json:"enable_email_password_login"`
-	EnableSocialOauthLogin       bool                   `protobuf:"varint,8,opt,name=enable_social_oauth_login,json=enableSocialOauthLogin,proto3" json:"enable_social_oauth_login"`
-	IsAllowRegister              bool                   `protobuf:"varint,9,opt,name=is_allow_register,json=isAllowRegister,proto3" json:"is_allow_register"`
-	IsAllowCreateWorkspace       bool                   `protobuf:"varint,10,opt,name=is_allow_create_workspace,json=isAllowCreateWorkspace,proto3" json:"is_allow_create_workspace"`
-	IsEmailSetup                 bool                   `protobuf:"varint,11,opt,name=is_email_setup,json=isEmailSetup,proto3" json:"is_email_setup"`
-	License                      *LicenseModel          `protobuf:"bytes,12,opt,name=license,proto3" json:"license"`
+	SsoEnforcedForSignin         bool                   `protobuf:"varint,1,opt,name=sso_enforced_for_signin,json=ssoEnforcedForSignin,proto3" json:"sso_enforced_for_signin" form:"sso_enforced_for_signin"`
+	SsoEnforcedForSigninProtocol string                 `protobuf:"bytes,2,opt,name=sso_enforced_for_signin_protocol,json=ssoEnforcedForSigninProtocol,proto3" json:"sso_enforced_for_signin_protocol" form:"sso_enforced_for_signin_protocol"`
+	SsoEnforcedForWeb            bool                   `protobuf:"varint,3,opt,name=sso_enforced_for_web,json=ssoEnforcedForWeb,proto3" json:"sso_enforced_for_web" form:"sso_enforced_for_web"`
+	SsoEnforcedForWebProtocol    string                 `protobuf:"bytes,4,opt,name=sso_enforced_for_web_protocol,json=ssoEnforcedForWebProtocol,proto3" json:"sso_enforced_for_web_protocol" form:"sso_enforced_for_web_protocol"`
+	EnableWebSsoSwitchComponent  bool                   `protobuf:"varint,5,opt,name=enable_web_sso_switch_component,json=enableWebSsoSwitchComponent,proto3" json:"enable_web_sso_switch_component" form:"enable_web_sso_switch_component"`
+	EnableEmailCodeLogin         bool                   `protobuf:"varint,6,opt,name=enable_email_code_login,json=enableEmailCodeLogin,proto3" json:"enable_email_code_login" form:"enable_email_code_login"`
+	EnableEmailPasswordLogin     bool                   `protobuf:"varint,7,opt,name=enable_email_password_login,json=enableEmailPasswordLogin,proto3" json:"enable_email_password_login" form:"enable_email_password_login"`
+	EnableSocialOauthLogin       bool                   `protobuf:"varint,8,opt,name=enable_social_oauth_login,json=enableSocialOauthLogin,proto3" json:"enable_social_oauth_login" form:"enable_social_oauth_login"`
+	IsAllowRegister              bool                   `protobuf:"varint,9,opt,name=is_allow_register,json=isAllowRegister,proto3" json:"is_allow_register" form:"is_allow_register"`
+	IsAllowCreateWorkspace       bool                   `protobuf:"varint,10,opt,name=is_allow_create_workspace,json=isAllowCreateWorkspace,proto3" json:"is_allow_create_workspace" form:"is_allow_create_workspace"`
+	IsEmailSetup                 bool                   `protobuf:"varint,11,opt,name=is_email_setup,json=isEmailSetup,proto3" json:"is_email_setup" form:"is_email_setup"`
+	License                      *LicenseModel          `protobuf:"bytes,12,opt,name=license,proto3" json:"license" form:"license"`
 	unknownFields                protoimpl.UnknownFields
 	sizeCache                    protoimpl.SizeCache
 }

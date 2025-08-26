@@ -24,7 +24,7 @@ const (
 
 type FetchPreferencesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id" form:"tenant_id"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -68,9 +68,9 @@ func (x *FetchPreferencesRequest) GetTenantId() string {
 
 type FetchPreferencesReply struct {
 	state              protoimpl.MessageState    `protogen:"open.v1"`
-	Exp                *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	PermissionDict     map[string]string         `protobuf:"bytes,2,rep,name=permission_dict,json=permissionDict,proto3" json:"permission_dict" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	AutoUpgradeDictStr string                    `protobuf:"bytes,3,opt,name=auto_upgrade_dict_str,json=autoUpgradeDictStr,proto3" json:"auto_upgrade_dict_str"`
+	Exp                *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	PermissionDict     map[string]string         `protobuf:"bytes,2,rep,name=permission_dict,json=permissionDict,proto3" json:"permission_dict" form:"permission_dict" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	AutoUpgradeDictStr string                    `protobuf:"bytes,3,opt,name=auto_upgrade_dict_str,json=autoUpgradeDictStr,proto3" json:"auto_upgrade_dict_str" form:"auto_upgrade_dict_str"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -128,9 +128,9 @@ func (x *FetchPreferencesReply) GetAutoUpgradeDictStr() string {
 
 type FetchInstallTasksRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id"`
-	Page          int64                  `protobuf:"varint,2,opt,name=page,proto3" json:"page"`
-	PageSize      int64                  `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id" form:"tenant_id"`
+	Page          int64                  `protobuf:"varint,2,opt,name=page,proto3" json:"page" form:"page"`
+	PageSize      int64                  `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size" form:"page_size"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -188,8 +188,8 @@ func (x *FetchInstallTasksRequest) GetPageSize() int64 {
 
 type FetchInstallTasksReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	TasksStr      string                    `protobuf:"bytes,2,opt,name=tasks_str,json=tasksStr,proto3" json:"tasks_str"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	TasksStr      string                    `protobuf:"bytes,2,opt,name=tasks_str,json=tasksStr,proto3" json:"tasks_str" form:"tasks_str"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -240,9 +240,9 @@ func (x *FetchInstallTasksReply) GetTasksStr() string {
 
 type DispatchTextEmbeddingInvokeRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id"`
-	Page          int64                  `protobuf:"varint,2,opt,name=page,proto3" json:"page"`
-	PageSize      int64                  `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id" form:"tenant_id"`
+	Page          int64                  `protobuf:"varint,2,opt,name=page,proto3" json:"page" form:"page"`
+	PageSize      int64                  `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size" form:"page_size"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -300,8 +300,8 @@ func (x *DispatchTextEmbeddingInvokeRequest) GetPageSize() int64 {
 
 type DispatchTextEmbeddingInvokeReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	TasksStr      string                    `protobuf:"bytes,2,opt,name=tasks_str,json=tasksStr,proto3" json:"tasks_str"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	TasksStr      string                    `protobuf:"bytes,2,opt,name=tasks_str,json=tasksStr,proto3" json:"tasks_str" form:"tasks_str"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }

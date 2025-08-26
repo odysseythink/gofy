@@ -24,13 +24,13 @@ const (
 
 type DatasetListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	Page          int32                  `protobuf:"varint,2,opt,name=page,proto3" json:"page"`
-	Limit         int32                  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit"`
-	Ids           []string               `protobuf:"bytes,4,rep,name=ids,proto3" json:"ids"`
-	Keyword       string                 `protobuf:"bytes,5,opt,name=keyword,proto3" json:"keyword"`
-	TagIds        []string               `protobuf:"bytes,6,rep,name=tag_ids,json=tagIds,proto3" json:"tag_ids"`
-	IncludeAll    bool                   `protobuf:"varint,7,opt,name=include_all,json=includeAll,proto3" json:"include_all"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	Page          int32                  `protobuf:"varint,2,opt,name=page,proto3" json:"page" form:"page"`
+	Limit         int32                  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit" form:"limit"`
+	Ids           []string               `protobuf:"bytes,4,rep,name=ids,proto3" json:"ids" form:"ids"`
+	Keyword       string                 `protobuf:"bytes,5,opt,name=keyword,proto3" json:"keyword" form:"keyword"`
+	TagIds        []string               `protobuf:"bytes,6,rep,name=tag_ids,json=tagIds,proto3" json:"tag_ids" form:"tag_ids"`
+	IncludeAll    bool                   `protobuf:"varint,7,opt,name=include_all,json=includeAll,proto3" json:"include_all" form:"include_all"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -116,12 +116,12 @@ func (x *DatasetListRequest) GetIncludeAll() bool {
 
 type DatasetListReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	DatasetsStr   string                    `protobuf:"bytes,2,opt,name=datasets_str,json=datasetsStr,proto3" json:"datasets_str"`
-	HasMore       bool                      `protobuf:"varint,3,opt,name=has_more,json=hasMore,proto3" json:"has_more"`
-	Limit         int32                     `protobuf:"varint,4,opt,name=limit,proto3" json:"limit"`
-	Page          int32                     `protobuf:"varint,5,opt,name=page,proto3" json:"page"`
-	Total         int64                     `protobuf:"varint,6,opt,name=total,proto3" json:"total"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	DatasetsStr   string                    `protobuf:"bytes,2,opt,name=datasets_str,json=datasetsStr,proto3" json:"datasets_str" form:"datasets_str"`
+	HasMore       bool                      `protobuf:"varint,3,opt,name=has_more,json=hasMore,proto3" json:"has_more" form:"has_more"`
+	Limit         int32                     `protobuf:"varint,4,opt,name=limit,proto3" json:"limit" form:"limit"`
+	Page          int32                     `protobuf:"varint,5,opt,name=page,proto3" json:"page" form:"page"`
+	Total         int64                     `protobuf:"varint,6,opt,name=total,proto3" json:"total" form:"total"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -200,10 +200,10 @@ func (x *DatasetListReply) GetTotal() int64 {
 
 type ExternalKnowledgeApiListRequest struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
-	CurrentTenantId string                 `protobuf:"bytes,1,opt,name=current_tenant_id,json=currentTenantId,proto3" json:"current_tenant_id"`
-	Page            int32                  `protobuf:"varint,2,opt,name=page,proto3" json:"page"`
-	Limit           int32                  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit"`
-	Keyword         string                 `protobuf:"bytes,4,opt,name=keyword,proto3" json:"keyword"`
+	CurrentTenantId string                 `protobuf:"bytes,1,opt,name=current_tenant_id,json=currentTenantId,proto3" json:"current_tenant_id" form:"current_tenant_id"`
+	Page            int32                  `protobuf:"varint,2,opt,name=page,proto3" json:"page" form:"page"`
+	Limit           int32                  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit" form:"limit"`
+	Keyword         string                 `protobuf:"bytes,4,opt,name=keyword,proto3" json:"keyword" form:"keyword"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -268,12 +268,12 @@ func (x *ExternalKnowledgeApiListRequest) GetKeyword() string {
 
 type ExternalKnowledgeApiListReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	DatasStr      string                    `protobuf:"bytes,2,opt,name=datas_str,json=datasStr,proto3" json:"datas_str"`
-	HasMore       bool                      `protobuf:"varint,3,opt,name=has_more,json=hasMore,proto3" json:"has_more"`
-	Limit         int32                     `protobuf:"varint,4,opt,name=limit,proto3" json:"limit"`
-	Page          int32                     `protobuf:"varint,5,opt,name=page,proto3" json:"page"`
-	Total         int64                     `protobuf:"varint,6,opt,name=total,proto3" json:"total"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	DatasStr      string                    `protobuf:"bytes,2,opt,name=datas_str,json=datasStr,proto3" json:"datas_str" form:"datas_str"`
+	HasMore       bool                      `protobuf:"varint,3,opt,name=has_more,json=hasMore,proto3" json:"has_more" form:"has_more"`
+	Limit         int32                     `protobuf:"varint,4,opt,name=limit,proto3" json:"limit" form:"limit"`
+	Page          int32                     `protobuf:"varint,5,opt,name=page,proto3" json:"page" form:"page"`
+	Total         int64                     `protobuf:"varint,6,opt,name=total,proto3" json:"total" form:"total"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }

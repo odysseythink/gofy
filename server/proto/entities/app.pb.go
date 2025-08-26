@@ -23,12 +23,12 @@ const (
 
 type Import struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
-	Id                 string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id"`
-	Status             string                 `protobuf:"bytes,2,opt,name=status,proto3" json:"status"`
-	AppId              string                 `protobuf:"bytes,3,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	CurrentDslVersion  string                 `protobuf:"bytes,4,opt,name=current_dsl_version,json=currentDslVersion,proto3" json:"current_dsl_version"`
-	ImportedDslVersion string                 `protobuf:"bytes,5,opt,name=imported_dsl_version,json=importedDslVersion,proto3" json:"imported_dsl_version"`
-	Error              string                 `protobuf:"bytes,6,opt,name=error,proto3" json:"error"`
+	Id                 string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id" form:"id"`
+	Status             string                 `protobuf:"bytes,2,opt,name=status,proto3" json:"status" form:"status"`
+	AppId              string                 `protobuf:"bytes,3,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	CurrentDslVersion  string                 `protobuf:"bytes,4,opt,name=current_dsl_version,json=currentDslVersion,proto3" json:"current_dsl_version" form:"current_dsl_version"`
+	ImportedDslVersion string                 `protobuf:"bytes,5,opt,name=imported_dsl_version,json=importedDslVersion,proto3" json:"imported_dsl_version" form:"imported_dsl_version"`
+	Error              string                 `protobuf:"bytes,6,opt,name=error,proto3" json:"error" form:"error"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -107,14 +107,14 @@ func (x *Import) GetError() string {
 
 type PendingData struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	ImportMode     string                 `protobuf:"bytes,1,opt,name=import_mode,json=importMode,proto3" json:"import_mode"`
-	YamlContent    string                 `protobuf:"bytes,2,opt,name=yaml_content,json=yamlContent,proto3" json:"yaml_content"`
-	Name           string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name"`
-	Description    string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description"`
-	IconType       string                 `protobuf:"bytes,5,opt,name=icon_type,json=iconType,proto3" json:"icon_type"`
-	Icon           string                 `protobuf:"bytes,6,opt,name=icon,proto3" json:"icon"`
-	IconBackground string                 `protobuf:"bytes,7,opt,name=icon_background,json=iconBackground,proto3" json:"icon_background"`
-	AppId          string                 `protobuf:"bytes,8,opt,name=app_id,json=appId,proto3" json:"app_id"`
+	ImportMode     string                 `protobuf:"bytes,1,opt,name=import_mode,json=importMode,proto3" json:"import_mode" form:"import_mode"`
+	YamlContent    string                 `protobuf:"bytes,2,opt,name=yaml_content,json=yamlContent,proto3" json:"yaml_content" form:"yaml_content"`
+	Name           string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name" form:"name"`
+	Description    string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description" form:"description"`
+	IconType       string                 `protobuf:"bytes,5,opt,name=icon_type,json=iconType,proto3" json:"icon_type" form:"icon_type"`
+	Icon           string                 `protobuf:"bytes,6,opt,name=icon,proto3" json:"icon" form:"icon"`
+	IconBackground string                 `protobuf:"bytes,7,opt,name=icon_background,json=iconBackground,proto3" json:"icon_background" form:"icon_background"`
+	AppId          string                 `protobuf:"bytes,8,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }

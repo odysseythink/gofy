@@ -25,12 +25,12 @@ const (
 
 type LoginRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email"`
-	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password"`
-	RememberMe    bool                   `protobuf:"varint,3,opt,name=remember_me,json=rememberMe,proto3" json:"remember_me"`
-	InviteToken   string                 `protobuf:"bytes,4,opt,name=invite_token,json=inviteToken,proto3" json:"invite_token"`
-	Language      string                 `protobuf:"bytes,5,opt,name=language,proto3" json:"language"`
-	ClientIp      string                 `protobuf:"bytes,6,opt,name=client_ip,json=clientIp,proto3" json:"client_ip"`
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email" form:"email"`
+	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password" form:"password"`
+	RememberMe    bool                   `protobuf:"varint,3,opt,name=remember_me,json=rememberMe,proto3" json:"remember_me" form:"remember_me"`
+	InviteToken   string                 `protobuf:"bytes,4,opt,name=invite_token,json=inviteToken,proto3" json:"invite_token" form:"invite_token"`
+	Language      string                 `protobuf:"bytes,5,opt,name=language,proto3" json:"language" form:"language"`
+	ClientIp      string                 `protobuf:"bytes,6,opt,name=client_ip,json=clientIp,proto3" json:"client_ip" form:"client_ip"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -109,11 +109,11 @@ func (x *LoginRequest) GetClientIp() string {
 
 type LoginReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Result        string                    `protobuf:"bytes,1,opt,name=result,proto3" json:"result"`
-	Errmsg        string                    `protobuf:"bytes,2,opt,name=errmsg,proto3" json:"errmsg"`
-	AccessToken   string                    `protobuf:"bytes,3,opt,name=access_token,json=accessToken,proto3" json:"access_token"`
-	RefreshToken  string                    `protobuf:"bytes,4,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,5,opt,name=exp,proto3" json:"exp"`
+	Result        string                    `protobuf:"bytes,1,opt,name=result,proto3" json:"result" form:"result"`
+	Errmsg        string                    `protobuf:"bytes,2,opt,name=errmsg,proto3" json:"errmsg" form:"errmsg"`
+	AccessToken   string                    `protobuf:"bytes,3,opt,name=access_token,json=accessToken,proto3" json:"access_token" form:"access_token"`
+	RefreshToken  string                    `protobuf:"bytes,4,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token" form:"refresh_token"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,5,opt,name=exp,proto3" json:"exp" form:"exp"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -185,7 +185,7 @@ func (x *LoginReply) GetExp() *exceptions.HTTPException {
 
 type LogoutRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -229,7 +229,7 @@ func (x *LogoutRequest) GetAccountId() string {
 
 type LogoutReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -309,9 +309,9 @@ func (*GetSetupStatusRequest) Descriptor() ([]byte, []int) {
 
 type GetSetupStatusReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Step          string                    `protobuf:"bytes,1,opt,name=step,proto3" json:"step"`
-	SetupAt       string                    `protobuf:"bytes,2,opt,name=setup_at,json=setupAt,proto3" json:"setup_at"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,3,opt,name=exp,proto3" json:"exp"`
+	Step          string                    `protobuf:"bytes,1,opt,name=step,proto3" json:"step" form:"step"`
+	SetupAt       string                    `protobuf:"bytes,2,opt,name=setup_at,json=setupAt,proto3" json:"setup_at" form:"setup_at"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,3,opt,name=exp,proto3" json:"exp" form:"exp"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -369,10 +369,10 @@ func (x *GetSetupStatusReply) GetExp() *exceptions.HTTPException {
 
 type SetupRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name"`
-	Password      string                 `protobuf:"bytes,3,opt,name=password,proto3" json:"password"`
-	ClientIp      string                 `protobuf:"bytes,4,opt,name=client_ip,json=clientIp,proto3" json:"client_ip"`
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email" form:"email"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name" form:"name"`
+	Password      string                 `protobuf:"bytes,3,opt,name=password,proto3" json:"password" form:"password"`
+	ClientIp      string                 `protobuf:"bytes,4,opt,name=client_ip,json=clientIp,proto3" json:"client_ip" form:"client_ip"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -437,7 +437,7 @@ func (x *SetupRequest) GetClientIp() string {
 
 type SetupReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -517,8 +517,8 @@ func (*GetSystemFeaturesRequest) Descriptor() ([]byte, []int) {
 
 type GetSystemFeaturesReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	Feature       *entities.SystemFeature   `protobuf:"bytes,2,opt,name=feature,proto3" json:"feature"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	Feature       *entities.SystemFeature   `protobuf:"bytes,2,opt,name=feature,proto3" json:"feature" form:"feature"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -569,7 +569,7 @@ func (x *GetSystemFeaturesReply) GetFeature() *entities.SystemFeature {
 
 type GetFeaturesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id" form:"tenant_id"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -613,8 +613,8 @@ func (x *GetFeaturesRequest) GetTenantId() string {
 
 type GetFeaturesReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	Feature       *entities.FeatureModel    `protobuf:"bytes,2,opt,name=feature,proto3" json:"feature"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	Feature       *entities.FeatureModel    `protobuf:"bytes,2,opt,name=feature,proto3" json:"feature" form:"feature"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -665,7 +665,7 @@ func (x *GetFeaturesReply) GetFeature() *entities.FeatureModel {
 
 type GetVersionRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	CurrentVersion string                 `protobuf:"bytes,1,opt,name=current_version,json=currentVersion,proto3" json:"current_version"`
+	CurrentVersion string                 `protobuf:"bytes,1,opt,name=current_version,json=currentVersion,proto3" json:"current_version" form:"current_version"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -709,8 +709,8 @@ func (x *GetVersionRequest) GetCurrentVersion() string {
 
 type VersionFeatures struct {
 	state                     protoimpl.MessageState `protogen:"open.v1"`
-	CanReplaceLogo            bool                   `protobuf:"varint,1,opt,name=can_replace_logo,json=canReplaceLogo,proto3" json:"can_replace_logo"`
-	ModelLoadBalancingEnabled bool                   `protobuf:"varint,2,opt,name=model_load_balancing_enabled,json=modelLoadBalancingEnabled,proto3" json:"model_load_balancing_enabled"`
+	CanReplaceLogo            bool                   `protobuf:"varint,1,opt,name=can_replace_logo,json=canReplaceLogo,proto3" json:"can_replace_logo" form:"can_replace_logo"`
+	ModelLoadBalancingEnabled bool                   `protobuf:"varint,2,opt,name=model_load_balancing_enabled,json=modelLoadBalancingEnabled,proto3" json:"model_load_balancing_enabled" form:"model_load_balancing_enabled"`
 	unknownFields             protoimpl.UnknownFields
 	sizeCache                 protoimpl.SizeCache
 }
@@ -761,12 +761,12 @@ func (x *VersionFeatures) GetModelLoadBalancingEnabled() bool {
 
 type GetVersionReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	Version       string                    `protobuf:"bytes,2,opt,name=version,proto3" json:"version"`
-	ReleaseDate   string                    `protobuf:"bytes,3,opt,name=release_date,json=releaseDate,proto3" json:"release_date"`
-	ReleaseNotes  string                    `protobuf:"bytes,4,opt,name=release_notes,json=releaseNotes,proto3" json:"release_notes"`
-	CanAutoUpdate bool                      `protobuf:"varint,5,opt,name=can_auto_update,json=canAutoUpdate,proto3" json:"can_auto_update"`
-	Features      *VersionFeatures          `protobuf:"bytes,6,opt,name=features,proto3" json:"features"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	Version       string                    `protobuf:"bytes,2,opt,name=version,proto3" json:"version" form:"version"`
+	ReleaseDate   string                    `protobuf:"bytes,3,opt,name=release_date,json=releaseDate,proto3" json:"release_date" form:"release_date"`
+	ReleaseNotes  string                    `protobuf:"bytes,4,opt,name=release_notes,json=releaseNotes,proto3" json:"release_notes" form:"release_notes"`
+	CanAutoUpdate bool                      `protobuf:"varint,5,opt,name=can_auto_update,json=canAutoUpdate,proto3" json:"can_auto_update" form:"can_auto_update"`
+	Features      *VersionFeatures          `protobuf:"bytes,6,opt,name=features,proto3" json:"features" form:"features"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -881,13 +881,13 @@ func (*GetFileUploadConfigRequest) Descriptor() ([]byte, []int) {
 
 type GetFileUploadConfigReply struct {
 	state                   protoimpl.MessageState    `protogen:"open.v1"`
-	Exp                     *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	FileSizeLimit           int64                     `protobuf:"varint,2,opt,name=file_size_limit,json=fileSizeLimit,proto3" json:"file_size_limit"`
-	BatchCountLimit         int64                     `protobuf:"varint,3,opt,name=batch_count_limit,json=batchCountLimit,proto3" json:"batch_count_limit"`
-	ImageFileSizeLimit      int64                     `protobuf:"varint,4,opt,name=image_file_size_limit,json=imageFileSizeLimit,proto3" json:"image_file_size_limit"`
-	VideoFileSizeLimit      int64                     `protobuf:"varint,5,opt,name=video_file_size_limit,json=videoFileSizeLimit,proto3" json:"video_file_size_limit"`
-	AudioFileSizeLimit      int64                     `protobuf:"varint,6,opt,name=audio_file_size_limit,json=audioFileSizeLimit,proto3" json:"audio_file_size_limit"`
-	WorkflowFileUploadLimit int64                     `protobuf:"varint,7,opt,name=workflow_file_upload_limit,json=workflowFileUploadLimit,proto3" json:"workflow_file_upload_limit"`
+	Exp                     *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	FileSizeLimit           int64                     `protobuf:"varint,2,opt,name=file_size_limit,json=fileSizeLimit,proto3" json:"file_size_limit" form:"file_size_limit"`
+	BatchCountLimit         int64                     `protobuf:"varint,3,opt,name=batch_count_limit,json=batchCountLimit,proto3" json:"batch_count_limit" form:"batch_count_limit"`
+	ImageFileSizeLimit      int64                     `protobuf:"varint,4,opt,name=image_file_size_limit,json=imageFileSizeLimit,proto3" json:"image_file_size_limit" form:"image_file_size_limit"`
+	VideoFileSizeLimit      int64                     `protobuf:"varint,5,opt,name=video_file_size_limit,json=videoFileSizeLimit,proto3" json:"video_file_size_limit" form:"video_file_size_limit"`
+	AudioFileSizeLimit      int64                     `protobuf:"varint,6,opt,name=audio_file_size_limit,json=audioFileSizeLimit,proto3" json:"audio_file_size_limit" form:"audio_file_size_limit"`
+	WorkflowFileUploadLimit int64                     `protobuf:"varint,7,opt,name=workflow_file_upload_limit,json=workflowFileUploadLimit,proto3" json:"workflow_file_upload_limit" form:"workflow_file_upload_limit"`
 	unknownFields           protoimpl.UnknownFields
 	sizeCache               protoimpl.SizeCache
 }
@@ -973,13 +973,13 @@ func (x *GetFileUploadConfigReply) GetWorkflowFileUploadLimit() int64 {
 
 type ListAppsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	Page          int32                  `protobuf:"varint,2,opt,name=page,proto3" json:"page"`   // 页码
-	Limit         int32                  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit"` // 每页大小
-	Mode          string                 `protobuf:"bytes,4,opt,name=mode,proto3" json:"mode"`    // "chat", "workflow", "agent-chat", "channel", "all"
-	Name          string                 `protobuf:"bytes,5,opt,name=name,proto3" json:"name"`
-	TagIds        []string               `protobuf:"bytes,6,rep,name=tag_ids,json=tagIds,proto3" json:"tag_ids"`
-	IsCreatedByMe bool                   `protobuf:"varint,7,opt,name=is_created_by_me,json=isCreatedByMe,proto3" json:"is_created_by_me"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	Page          int32                  `protobuf:"varint,2,opt,name=page,proto3" json:"page" form:"page"`    // 页码
+	Limit         int32                  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit" form:"limit"` // 每页大小
+	Mode          string                 `protobuf:"bytes,4,opt,name=mode,proto3" json:"mode" form:"mode"`     // "chat", "workflow", "agent-chat", "channel", "all"
+	Name          string                 `protobuf:"bytes,5,opt,name=name,proto3" json:"name" form:"name"`
+	TagIds        []string               `protobuf:"bytes,6,rep,name=tag_ids,json=tagIds,proto3" json:"tag_ids" form:"tag_ids"`
+	IsCreatedByMe bool                   `protobuf:"varint,7,opt,name=is_created_by_me,json=isCreatedByMe,proto3" json:"is_created_by_me" form:"is_created_by_me"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1065,8 +1065,8 @@ func (x *ListAppsRequest) GetIsCreatedByMe() bool {
 
 type ListAppsReply struct {
 	state           protoimpl.MessageState    `protogen:"open.v1"`
-	Exp             *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	PaginateAppsStr string                    `protobuf:"bytes,2,opt,name=paginate_apps_str,json=paginateAppsStr,proto3" json:"paginate_apps_str"`
+	Exp             *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	PaginateAppsStr string                    `protobuf:"bytes,2,opt,name=paginate_apps_str,json=paginateAppsStr,proto3" json:"paginate_apps_str" form:"paginate_apps_str"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -1117,15 +1117,15 @@ func (x *ListAppsReply) GetPaginateAppsStr() string {
 
 type CreateAppRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	AccountId      string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	Name           string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name"`
-	Description    string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description"`
-	Mode           string                 `protobuf:"bytes,4,opt,name=mode,proto3" json:"mode"`
-	IconType       string                 `protobuf:"bytes,5,opt,name=icon_type,json=iconType,proto3" json:"icon_type"`
-	Icon           string                 `protobuf:"bytes,6,opt,name=icon,proto3" json:"icon"`
-	IconBackground string                 `protobuf:"bytes,7,opt,name=icon_background,json=iconBackground,proto3" json:"icon_background"`
-	ApiRph         int64                  `protobuf:"varint,8,opt,name=api_rph,json=apiRph,proto3" json:"api_rph"`
-	ApiRpm         int64                  `protobuf:"varint,9,opt,name=api_rpm,json=apiRpm,proto3" json:"api_rpm"`
+	AccountId      string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	Name           string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name" form:"name"`
+	Description    string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description" form:"description"`
+	Mode           string                 `protobuf:"bytes,4,opt,name=mode,proto3" json:"mode" form:"mode"`
+	IconType       string                 `protobuf:"bytes,5,opt,name=icon_type,json=iconType,proto3" json:"icon_type" form:"icon_type"`
+	Icon           string                 `protobuf:"bytes,6,opt,name=icon,proto3" json:"icon" form:"icon"`
+	IconBackground string                 `protobuf:"bytes,7,opt,name=icon_background,json=iconBackground,proto3" json:"icon_background" form:"icon_background"`
+	ApiRph         int64                  `protobuf:"varint,8,opt,name=api_rph,json=apiRph,proto3" json:"api_rph" form:"api_rph"`
+	ApiRpm         int64                  `protobuf:"varint,9,opt,name=api_rpm,json=apiRpm,proto3" json:"api_rpm" form:"api_rpm"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1225,8 +1225,8 @@ func (x *CreateAppRequest) GetApiRpm() int64 {
 
 type CreateAppReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	AppDetailStr  string                    `protobuf:"bytes,2,opt,name=app_detail_str,json=appDetailStr,proto3" json:"app_detail_str"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	AppDetailStr  string                    `protobuf:"bytes,2,opt,name=app_detail_str,json=appDetailStr,proto3" json:"app_detail_str" form:"app_detail_str"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1277,8 +1277,8 @@ func (x *CreateAppReply) GetAppDetailStr() string {
 
 type FindAppRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1329,8 +1329,8 @@ func (x *FindAppRequest) GetAppId() string {
 
 type FindAppReply struct {
 	state                protoimpl.MessageState    `protogen:"open.v1"`
-	Exp                  *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	AppDetailWithSiteStr string                    `protobuf:"bytes,2,opt,name=app_detail_with_site_str,json=appDetailWithSiteStr,proto3" json:"app_detail_with_site_str"`
+	Exp                  *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	AppDetailWithSiteStr string                    `protobuf:"bytes,2,opt,name=app_detail_with_site_str,json=appDetailWithSiteStr,proto3" json:"app_detail_with_site_str" form:"app_detail_with_site_str"`
 	unknownFields        protoimpl.UnknownFields
 	sizeCache            protoimpl.SizeCache
 }
@@ -1381,15 +1381,15 @@ func (x *FindAppReply) GetAppDetailWithSiteStr() string {
 
 type UpdateAppRequest struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
-	AccountId           string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	Name                string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name"`
-	Description         string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description"`
-	IconType            string                 `protobuf:"bytes,4,opt,name=icon_type,json=iconType,proto3" json:"icon_type"`
-	Icon                string                 `protobuf:"bytes,5,opt,name=icon,proto3" json:"icon"`
-	IconBackground      string                 `protobuf:"bytes,6,opt,name=icon_background,json=iconBackground,proto3" json:"icon_background"`
-	MaxActiveRequests   int64                  `protobuf:"varint,7,opt,name=max_active_requests,json=maxActiveRequests,proto3" json:"max_active_requests"`
-	UseIconAsAnswerIcon bool                   `protobuf:"varint,8,opt,name=use_icon_as_answer_icon,json=useIconAsAnswerIcon,proto3" json:"use_icon_as_answer_icon"`
-	AppId               string                 `protobuf:"bytes,9,opt,name=app_id,json=appId,proto3" json:"app_id"`
+	AccountId           string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	Name                string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name" form:"name"`
+	Description         string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description" form:"description"`
+	IconType            string                 `protobuf:"bytes,4,opt,name=icon_type,json=iconType,proto3" json:"icon_type" form:"icon_type"`
+	Icon                string                 `protobuf:"bytes,5,opt,name=icon,proto3" json:"icon" form:"icon"`
+	IconBackground      string                 `protobuf:"bytes,6,opt,name=icon_background,json=iconBackground,proto3" json:"icon_background" form:"icon_background"`
+	MaxActiveRequests   int64                  `protobuf:"varint,7,opt,name=max_active_requests,json=maxActiveRequests,proto3" json:"max_active_requests" form:"max_active_requests"`
+	UseIconAsAnswerIcon bool                   `protobuf:"varint,8,opt,name=use_icon_as_answer_icon,json=useIconAsAnswerIcon,proto3" json:"use_icon_as_answer_icon" form:"use_icon_as_answer_icon"`
+	AppId               string                 `protobuf:"bytes,9,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -1489,8 +1489,8 @@ func (x *UpdateAppRequest) GetAppId() string {
 
 type UpdateAppReply struct {
 	state                protoimpl.MessageState    `protogen:"open.v1"`
-	Exp                  *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	AppDetailWithSiteStr string                    `protobuf:"bytes,2,opt,name=app_detail_with_site_str,json=appDetailWithSiteStr,proto3" json:"app_detail_with_site_str"`
+	Exp                  *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	AppDetailWithSiteStr string                    `protobuf:"bytes,2,opt,name=app_detail_with_site_str,json=appDetailWithSiteStr,proto3" json:"app_detail_with_site_str" form:"app_detail_with_site_str"`
 	unknownFields        protoimpl.UnknownFields
 	sizeCache            protoimpl.SizeCache
 }
@@ -1541,8 +1541,8 @@ func (x *UpdateAppReply) GetAppDetailWithSiteStr() string {
 
 type DeleteAppRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1593,8 +1593,8 @@ func (x *DeleteAppRequest) GetAppId() string {
 
 type DeleteAppReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	Result        string                    `protobuf:"bytes,2,opt,name=result,proto3" json:"result"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	Result        string                    `protobuf:"bytes,2,opt,name=result,proto3" json:"result" form:"result"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1645,9 +1645,9 @@ func (x *DeleteAppReply) GetResult() string {
 
 type SetAppNameRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name" form:"name"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1705,8 +1705,8 @@ func (x *SetAppNameRequest) GetName() string {
 
 type SetAppNameReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	AppDetailStr  string                    `protobuf:"bytes,2,opt,name=app_detail_str,json=appDetailStr,proto3" json:"app_detail_str"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	AppDetailStr  string                    `protobuf:"bytes,2,opt,name=app_detail_str,json=appDetailStr,proto3" json:"app_detail_str" form:"app_detail_str"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1757,16 +1757,16 @@ func (x *SetAppNameReply) GetAppDetailStr() string {
 
 type ImportAppRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	AccountId      string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	Mode           string                 `protobuf:"bytes,2,opt,name=mode,proto3" json:"mode"`
-	YamlContent    string                 `protobuf:"bytes,3,opt,name=yaml_content,json=yamlContent,proto3" json:"yaml_content"`
-	YamlUrl        string                 `protobuf:"bytes,4,opt,name=yaml_url,json=yamlUrl,proto3" json:"yaml_url"`
-	Name           string                 `protobuf:"bytes,5,opt,name=name,proto3" json:"name"`
-	Description    string                 `protobuf:"bytes,6,opt,name=description,proto3" json:"description"`
-	IconType       string                 `protobuf:"bytes,7,opt,name=icon_type,json=iconType,proto3" json:"icon_type"`
-	Icon           string                 `protobuf:"bytes,8,opt,name=icon,proto3" json:"icon"`
-	IconBackground string                 `protobuf:"bytes,9,opt,name=icon_background,json=iconBackground,proto3" json:"icon_background"`
-	AppId          string                 `protobuf:"bytes,10,opt,name=app_id,json=appId,proto3" json:"app_id"`
+	AccountId      string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	Mode           string                 `protobuf:"bytes,2,opt,name=mode,proto3" json:"mode" form:"mode"`
+	YamlContent    string                 `protobuf:"bytes,3,opt,name=yaml_content,json=yamlContent,proto3" json:"yaml_content" form:"yaml_content"`
+	YamlUrl        string                 `protobuf:"bytes,4,opt,name=yaml_url,json=yamlUrl,proto3" json:"yaml_url" form:"yaml_url"`
+	Name           string                 `protobuf:"bytes,5,opt,name=name,proto3" json:"name" form:"name"`
+	Description    string                 `protobuf:"bytes,6,opt,name=description,proto3" json:"description" form:"description"`
+	IconType       string                 `protobuf:"bytes,7,opt,name=icon_type,json=iconType,proto3" json:"icon_type" form:"icon_type"`
+	Icon           string                 `protobuf:"bytes,8,opt,name=icon,proto3" json:"icon" form:"icon"`
+	IconBackground string                 `protobuf:"bytes,9,opt,name=icon_background,json=iconBackground,proto3" json:"icon_background" form:"icon_background"`
+	AppId          string                 `protobuf:"bytes,10,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1873,9 +1873,9 @@ func (x *ImportAppRequest) GetAppId() string {
 
 type ImportAppReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	Import        *entities.Import          `protobuf:"bytes,2,opt,name=import,proto3" json:"import"`
-	HttpStatus    int32                     `protobuf:"varint,3,opt,name=http_status,json=httpStatus,proto3" json:"http_status"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	Import        *entities.Import          `protobuf:"bytes,2,opt,name=import,proto3" json:"import" form:"import"`
+	HttpStatus    int32                     `protobuf:"varint,3,opt,name=http_status,json=httpStatus,proto3" json:"http_status" form:"http_status"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1933,12 +1933,12 @@ func (x *ImportAppReply) GetHttpStatus() int32 {
 
 type GetWorkflowAppLogListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	Keyword       string                 `protobuf:"bytes,2,opt,name=keyword,proto3" json:"keyword"`
-	Status        string                 `protobuf:"bytes,3,opt,name=status,proto3" json:"status"`
-	Page          int32                  `protobuf:"varint,4,opt,name=page,proto3" json:"page"`
-	Limit         int32                  `protobuf:"varint,5,opt,name=limit,proto3" json:"limit"`
-	AppId         string                 `protobuf:"bytes,6,opt,name=app_id,json=appId,proto3" json:"app_id"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	Keyword       string                 `protobuf:"bytes,2,opt,name=keyword,proto3" json:"keyword" form:"keyword"`
+	Status        string                 `protobuf:"bytes,3,opt,name=status,proto3" json:"status" form:"status"`
+	Page          int32                  `protobuf:"varint,4,opt,name=page,proto3" json:"page" form:"page"`
+	Limit         int32                  `protobuf:"varint,5,opt,name=limit,proto3" json:"limit" form:"limit"`
+	AppId         string                 `protobuf:"bytes,6,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2017,8 +2017,8 @@ func (x *GetWorkflowAppLogListRequest) GetAppId() string {
 
 type GetWorkflowAppLogListReply struct {
 	state                       protoimpl.MessageState    `protogen:"open.v1"`
-	Exp                         *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	WorkflowAppLogPaginationStr string                    `protobuf:"bytes,2,opt,name=workflow_app_log_pagination_str,json=workflowAppLogPaginationStr,proto3" json:"workflow_app_log_pagination_str"`
+	Exp                         *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	WorkflowAppLogPaginationStr string                    `protobuf:"bytes,2,opt,name=workflow_app_log_pagination_str,json=workflowAppLogPaginationStr,proto3" json:"workflow_app_log_pagination_str" form:"workflow_app_log_pagination_str"`
 	unknownFields               protoimpl.UnknownFields
 	sizeCache                   protoimpl.SizeCache
 }
@@ -2069,10 +2069,10 @@ func (x *GetWorkflowAppLogListReply) GetWorkflowAppLogPaginationStr() string {
 
 type SetAppIconRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	AccountId      string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId          string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	Icon           string                 `protobuf:"bytes,3,opt,name=icon,proto3" json:"icon"`
-	IconBackground string                 `protobuf:"bytes,4,opt,name=icon_background,json=iconBackground,proto3" json:"icon_background"`
+	AccountId      string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId          string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	Icon           string                 `protobuf:"bytes,3,opt,name=icon,proto3" json:"icon" form:"icon"`
+	IconBackground string                 `protobuf:"bytes,4,opt,name=icon_background,json=iconBackground,proto3" json:"icon_background" form:"icon_background"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -2137,8 +2137,8 @@ func (x *SetAppIconRequest) GetIconBackground() string {
 
 type SetAppIconReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	AppDetailStr  string                    `protobuf:"bytes,2,opt,name=app_detail_str,json=appDetailStr,proto3" json:"app_detail_str"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	AppDetailStr  string                    `protobuf:"bytes,2,opt,name=app_detail_str,json=appDetailStr,proto3" json:"app_detail_str" form:"app_detail_str"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2189,13 +2189,13 @@ func (x *SetAppIconReply) GetAppDetailStr() string {
 
 type CopyAppRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	AccountId      string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId          string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	Name           string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name"`
-	Description    string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description"`
-	IconType       string                 `protobuf:"bytes,5,opt,name=icon_type,json=iconType,proto3" json:"icon_type"`
-	Icon           string                 `protobuf:"bytes,6,opt,name=icon,proto3" json:"icon"`
-	IconBackground string                 `protobuf:"bytes,7,opt,name=icon_background,json=iconBackground,proto3" json:"icon_background"`
+	AccountId      string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId          string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	Name           string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name" form:"name"`
+	Description    string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description" form:"description"`
+	IconType       string                 `protobuf:"bytes,5,opt,name=icon_type,json=iconType,proto3" json:"icon_type" form:"icon_type"`
+	Icon           string                 `protobuf:"bytes,6,opt,name=icon,proto3" json:"icon" form:"icon"`
+	IconBackground string                 `protobuf:"bytes,7,opt,name=icon_background,json=iconBackground,proto3" json:"icon_background" form:"icon_background"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -2281,8 +2281,8 @@ func (x *CopyAppRequest) GetIconBackground() string {
 
 type CopyAppReply struct {
 	state                protoimpl.MessageState    `protogen:"open.v1"`
-	Exp                  *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	AppDetailWithSiteStr string                    `protobuf:"bytes,3,opt,name=app_detail_with_site_str,json=appDetailWithSiteStr,proto3" json:"app_detail_with_site_str"`
+	Exp                  *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	AppDetailWithSiteStr string                    `protobuf:"bytes,3,opt,name=app_detail_with_site_str,json=appDetailWithSiteStr,proto3" json:"app_detail_with_site_str" form:"app_detail_with_site_str"`
 	unknownFields        protoimpl.UnknownFields
 	sizeCache            protoimpl.SizeCache
 }
@@ -2333,9 +2333,9 @@ func (x *CopyAppReply) GetAppDetailWithSiteStr() string {
 
 type ExportAppRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	IncludeSecret bool                   `protobuf:"varint,3,opt,name=include_secret,json=includeSecret,proto3" json:"include_secret"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	IncludeSecret bool                   `protobuf:"varint,3,opt,name=include_secret,json=includeSecret,proto3" json:"include_secret" form:"include_secret"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2393,8 +2393,8 @@ func (x *ExportAppRequest) GetIncludeSecret() bool {
 
 type ExportAppReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	Dsl           string                    `protobuf:"bytes,2,opt,name=dsl,proto3" json:"dsl"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	Dsl           string                    `protobuf:"bytes,2,opt,name=dsl,proto3" json:"dsl" form:"dsl"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2445,9 +2445,9 @@ func (x *ExportAppReply) GetDsl() string {
 
 type AppUpdateSiteStatusRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	EnableSite    bool                   `protobuf:"varint,3,opt,name=enable_site,json=enableSite,proto3" json:"enable_site"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	EnableSite    bool                   `protobuf:"varint,3,opt,name=enable_site,json=enableSite,proto3" json:"enable_site" form:"enable_site"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2505,8 +2505,8 @@ func (x *AppUpdateSiteStatusRequest) GetEnableSite() bool {
 
 type AppUpdateSiteStatusReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	AppDetailStr  string                    `protobuf:"bytes,2,opt,name=app_detail_str,json=appDetailStr,proto3" json:"app_detail_str"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	AppDetailStr  string                    `protobuf:"bytes,2,opt,name=app_detail_str,json=appDetailStr,proto3" json:"app_detail_str" form:"app_detail_str"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2557,9 +2557,9 @@ func (x *AppUpdateSiteStatusReply) GetAppDetailStr() string {
 
 type AppUpdateApiStatusRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	EnableApi     bool                   `protobuf:"varint,3,opt,name=enable_api,json=enableApi,proto3" json:"enable_api"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	EnableApi     bool                   `protobuf:"varint,3,opt,name=enable_api,json=enableApi,proto3" json:"enable_api" form:"enable_api"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2617,8 +2617,8 @@ func (x *AppUpdateApiStatusRequest) GetEnableApi() bool {
 
 type AppUpdateApiStatusReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	AppDetailStr  string                    `protobuf:"bytes,2,opt,name=app_detail_str,json=appDetailStr,proto3" json:"app_detail_str"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	AppDetailStr  string                    `protobuf:"bytes,2,opt,name=app_detail_str,json=appDetailStr,proto3" json:"app_detail_str" form:"app_detail_str"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2669,8 +2669,8 @@ func (x *AppUpdateApiStatusReply) GetAppDetailStr() string {
 
 type AppGetTraceRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2721,8 +2721,8 @@ func (x *AppGetTraceRequest) GetAppId() string {
 
 type AppGetTraceReply struct {
 	state             protoimpl.MessageState    `protogen:"open.v1"`
-	Exp               *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	AppTraceConfigStr string                    `protobuf:"bytes,2,opt,name=app_trace_config_str,json=appTraceConfigStr,proto3" json:"app_trace_config_str"`
+	Exp               *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	AppTraceConfigStr string                    `protobuf:"bytes,2,opt,name=app_trace_config_str,json=appTraceConfigStr,proto3" json:"app_trace_config_str" form:"app_trace_config_str"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -2773,10 +2773,10 @@ func (x *AppGetTraceReply) GetAppTraceConfigStr() string {
 
 type AppSetTraceRequest struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
-	AccountId       string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId           string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	Enabled         bool                   `protobuf:"varint,3,opt,name=enabled,proto3" json:"enabled"`
-	TracingProvider string                 `protobuf:"bytes,4,opt,name=tracing_provider,json=tracingProvider,proto3" json:"tracing_provider"`
+	AccountId       string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId           string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	Enabled         bool                   `protobuf:"varint,3,opt,name=enabled,proto3" json:"enabled" form:"enabled"`
+	TracingProvider string                 `protobuf:"bytes,4,opt,name=tracing_provider,json=tracingProvider,proto3" json:"tracing_provider" form:"tracing_provider"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -2841,7 +2841,7 @@ func (x *AppSetTraceRequest) GetTracingProvider() string {
 
 type AppSetTraceReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2885,9 +2885,9 @@ func (x *AppSetTraceReply) GetExp() *exceptions.HTTPException {
 
 type GetTraceAppConfigRequest struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
-	AccountId       string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId           string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	TracingProvider string                 `protobuf:"bytes,3,opt,name=tracing_provider,json=tracingProvider,proto3" json:"tracing_provider"`
+	AccountId       string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId           string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	TracingProvider string                 `protobuf:"bytes,3,opt,name=tracing_provider,json=tracingProvider,proto3" json:"tracing_provider" form:"tracing_provider"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -2945,8 +2945,8 @@ func (x *GetTraceAppConfigRequest) GetTracingProvider() string {
 
 type GetTraceAppConfigReply struct {
 	state          protoimpl.MessageState    `protogen:"open.v1"`
-	Exp            *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	TraceConfigStr string                    `protobuf:"bytes,2,opt,name=trace_config_str,json=traceConfigStr,proto3" json:"trace_config_str"`
+	Exp            *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	TraceConfigStr string                    `protobuf:"bytes,2,opt,name=trace_config_str,json=traceConfigStr,proto3" json:"trace_config_str" form:"trace_config_str"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -2997,16 +2997,16 @@ func (x *GetTraceAppConfigReply) GetTraceConfigStr() string {
 
 type GetChatConversationPaginationRequest struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
-	AccountId        string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId            string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	Keyword          string                 `protobuf:"bytes,3,opt,name=keyword,proto3" json:"keyword"`
-	Start            string                 `protobuf:"bytes,4,opt,name=start,proto3" json:"start"`
-	End              string                 `protobuf:"bytes,5,opt,name=end,proto3" json:"end"`
-	AnnotationStatus string                 `protobuf:"bytes,6,opt,name=annotation_status,json=annotationStatus,proto3" json:"annotation_status"`
-	MessageCountGte  int32                  `protobuf:"varint,7,opt,name=message_count_gte,json=messageCountGte,proto3" json:"message_count_gte"`
-	Page             int32                  `protobuf:"varint,8,opt,name=page,proto3" json:"page"`
-	Limit            int32                  `protobuf:"varint,9,opt,name=limit,proto3" json:"limit"`
-	SortBy           string                 `protobuf:"bytes,10,opt,name=sort_by,json=sortBy,proto3" json:"sort_by"`
+	AccountId        string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId            string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	Keyword          string                 `protobuf:"bytes,3,opt,name=keyword,proto3" json:"keyword" form:"keyword"`
+	Start            string                 `protobuf:"bytes,4,opt,name=start,proto3" json:"start" form:"start"`
+	End              string                 `protobuf:"bytes,5,opt,name=end,proto3" json:"end" form:"end"`
+	AnnotationStatus string                 `protobuf:"bytes,6,opt,name=annotation_status,json=annotationStatus,proto3" json:"annotation_status" form:"annotation_status"`
+	MessageCountGte  int32                  `protobuf:"varint,7,opt,name=message_count_gte,json=messageCountGte,proto3" json:"message_count_gte" form:"message_count_gte"`
+	Page             int32                  `protobuf:"varint,8,opt,name=page,proto3" json:"page" form:"page"`
+	Limit            int32                  `protobuf:"varint,9,opt,name=limit,proto3" json:"limit" form:"limit"`
+	SortBy           string                 `protobuf:"bytes,10,opt,name=sort_by,json=sortBy,proto3" json:"sort_by" form:"sort_by"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -3113,8 +3113,8 @@ func (x *GetChatConversationPaginationRequest) GetSortBy() string {
 
 type GetChatConversationPaginationReply struct {
 	state                                protoimpl.MessageState    `protogen:"open.v1"`
-	Exp                                  *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	ConversationWithSummaryPaginationStr string                    `protobuf:"bytes,2,opt,name=conversation_with_summary_pagination_str,json=conversationWithSummaryPaginationStr,proto3" json:"conversation_with_summary_pagination_str"`
+	Exp                                  *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	ConversationWithSummaryPaginationStr string                    `protobuf:"bytes,2,opt,name=conversation_with_summary_pagination_str,json=conversationWithSummaryPaginationStr,proto3" json:"conversation_with_summary_pagination_str" form:"conversation_with_summary_pagination_str"`
 	unknownFields                        protoimpl.UnknownFields
 	sizeCache                            protoimpl.SizeCache
 }
@@ -3165,9 +3165,9 @@ func (x *GetChatConversationPaginationReply) GetConversationWithSummaryPaginatio
 
 type ChatConversationDetailRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	AccountId      string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId          string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	ConversationId string                 `protobuf:"bytes,3,opt,name=conversation_id,json=conversationId,proto3" json:"conversation_id"`
+	AccountId      string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId          string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	ConversationId string                 `protobuf:"bytes,3,opt,name=conversation_id,json=conversationId,proto3" json:"conversation_id" form:"conversation_id"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -3225,8 +3225,8 @@ func (x *ChatConversationDetailRequest) GetConversationId() string {
 
 type ChatConversationDetailReply struct {
 	state                 protoimpl.MessageState    `protogen:"open.v1"`
-	Exp                   *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	ConversationDetailStr string                    `protobuf:"bytes,4,opt,name=conversation_detail_str,json=conversationDetailStr,proto3" json:"conversation_detail_str"`
+	Exp                   *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	ConversationDetailStr string                    `protobuf:"bytes,4,opt,name=conversation_detail_str,json=conversationDetailStr,proto3" json:"conversation_detail_str" form:"conversation_detail_str"`
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
@@ -3277,9 +3277,9 @@ func (x *ChatConversationDetailReply) GetConversationDetailStr() string {
 
 type DelChatConversationRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	AccountId      string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId          string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	ConversationId string                 `protobuf:"bytes,3,opt,name=conversation_id,json=conversationId,proto3" json:"conversation_id"`
+	AccountId      string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId          string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	ConversationId string                 `protobuf:"bytes,3,opt,name=conversation_id,json=conversationId,proto3" json:"conversation_id" form:"conversation_id"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -3337,7 +3337,7 @@ func (x *DelChatConversationRequest) GetConversationId() string {
 
 type DelChatConversationReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3381,11 +3381,11 @@ func (x *DelChatConversationReply) GetExp() *exceptions.HTTPException {
 
 type StatisticRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	Start         string                 `protobuf:"bytes,3,opt,name=start,proto3" json:"start"`
-	End           string                 `protobuf:"bytes,4,opt,name=end,proto3" json:"end"`
-	Method        string                 `protobuf:"bytes,5,opt,name=method,proto3" json:"method"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	Start         string                 `protobuf:"bytes,3,opt,name=start,proto3" json:"start" form:"start"`
+	End           string                 `protobuf:"bytes,4,opt,name=end,proto3" json:"end" form:"end"`
+	Method        string                 `protobuf:"bytes,5,opt,name=method,proto3" json:"method" form:"method"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3457,8 +3457,8 @@ func (x *StatisticRequest) GetMethod() string {
 
 type StatisticReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	ResultStr     string                    `protobuf:"bytes,2,opt,name=result_str,json=resultStr,proto3" json:"result_str"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	ResultStr     string                    `protobuf:"bytes,2,opt,name=result_str,json=resultStr,proto3" json:"result_str" form:"result_str"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3509,9 +3509,9 @@ func (x *StatisticReply) GetResultStr() string {
 
 type GetSuggestedQuestionMessageRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	MessageId     string                 `protobuf:"bytes,3,opt,name=message_id,json=messageId,proto3" json:"message_id"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	MessageId     string                 `protobuf:"bytes,3,opt,name=message_id,json=messageId,proto3" json:"message_id" form:"message_id"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3569,8 +3569,8 @@ func (x *GetSuggestedQuestionMessageRequest) GetMessageId() string {
 
 type GetSuggestedQuestionMessageReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	Questions     []string                  `protobuf:"bytes,2,rep,name=questions,proto3" json:"questions"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	Questions     []string                  `protobuf:"bytes,2,rep,name=questions,proto3" json:"questions" form:"questions"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3621,11 +3621,11 @@ func (x *GetSuggestedQuestionMessageReply) GetQuestions() []string {
 
 type ChatMessageListRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	AccountId      string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId          string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	ConversationId string                 `protobuf:"bytes,3,opt,name=conversation_id,json=conversationId,proto3" json:"conversation_id"`
-	FirstId        string                 `protobuf:"bytes,4,opt,name=first_id,json=firstId,proto3" json:"first_id"`
-	Limit          int32                  `protobuf:"varint,5,opt,name=limit,proto3" json:"limit"`
+	AccountId      string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId          string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	ConversationId string                 `protobuf:"bytes,3,opt,name=conversation_id,json=conversationId,proto3" json:"conversation_id" form:"conversation_id"`
+	FirstId        string                 `protobuf:"bytes,4,opt,name=first_id,json=firstId,proto3" json:"first_id" form:"first_id"`
+	Limit          int32                  `protobuf:"varint,5,opt,name=limit,proto3" json:"limit" form:"limit"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -3697,8 +3697,8 @@ func (x *ChatMessageListRequest) GetLimit() int32 {
 
 type ChatMessageListReply struct {
 	state                              protoimpl.MessageState    `protogen:"open.v1"`
-	Exp                                *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	MessageInfiniteScrollPaginationStr string                    `protobuf:"bytes,2,opt,name=message_infinite_scroll_pagination_str,json=messageInfiniteScrollPaginationStr,proto3" json:"message_infinite_scroll_pagination_str"`
+	Exp                                *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	MessageInfiniteScrollPaginationStr string                    `protobuf:"bytes,2,opt,name=message_infinite_scroll_pagination_str,json=messageInfiniteScrollPaginationStr,proto3" json:"message_infinite_scroll_pagination_str" form:"message_infinite_scroll_pagination_str"`
 	unknownFields                      protoimpl.UnknownFields
 	sizeCache                          protoimpl.SizeCache
 }
@@ -3749,10 +3749,10 @@ func (x *ChatMessageListReply) GetMessageInfiniteScrollPaginationStr() string {
 
 type MessageFeedbackRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	MessageId     string                 `protobuf:"bytes,3,opt,name=message_id,json=messageId,proto3" json:"message_id"`
-	Rating        string                 `protobuf:"bytes,4,opt,name=rating,proto3" json:"rating"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	MessageId     string                 `protobuf:"bytes,3,opt,name=message_id,json=messageId,proto3" json:"message_id" form:"message_id"`
+	Rating        string                 `protobuf:"bytes,4,opt,name=rating,proto3" json:"rating" form:"rating"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3817,7 +3817,7 @@ func (x *MessageFeedbackRequest) GetRating() string {
 
 type MessageFeedbackReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3861,12 +3861,12 @@ func (x *MessageFeedbackReply) GetExp() *exceptions.HTTPException {
 
 type SetMessageAnnotationRequest struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
-	AccountId          string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId              string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	MessageId          string                 `protobuf:"bytes,3,opt,name=message_id,json=messageId,proto3" json:"message_id"`
-	Question           string                 `protobuf:"bytes,4,opt,name=question,proto3" json:"question"`
-	Answer             string                 `protobuf:"bytes,5,opt,name=answer,proto3" json:"answer"`
-	AnnotationReplyStr string                 `protobuf:"bytes,6,opt,name=annotation_reply_str,json=annotationReplyStr,proto3" json:"annotation_reply_str"`
+	AccountId          string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId              string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	MessageId          string                 `protobuf:"bytes,3,opt,name=message_id,json=messageId,proto3" json:"message_id" form:"message_id"`
+	Question           string                 `protobuf:"bytes,4,opt,name=question,proto3" json:"question" form:"question"`
+	Answer             string                 `protobuf:"bytes,5,opt,name=answer,proto3" json:"answer" form:"answer"`
+	AnnotationReplyStr string                 `protobuf:"bytes,6,opt,name=annotation_reply_str,json=annotationReplyStr,proto3" json:"annotation_reply_str" form:"annotation_reply_str"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -3945,8 +3945,8 @@ func (x *SetMessageAnnotationRequest) GetAnnotationReplyStr() string {
 
 type SetMessageAnnotationReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	AnnotationStr string                    `protobuf:"bytes,2,opt,name=annotation_str,json=annotationStr,proto3" json:"annotation_str"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	AnnotationStr string                    `protobuf:"bytes,2,opt,name=annotation_str,json=annotationStr,proto3" json:"annotation_str" form:"annotation_str"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3997,8 +3997,8 @@ func (x *SetMessageAnnotationReply) GetAnnotationStr() string {
 
 type MessageAnnotationCountRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -4049,8 +4049,8 @@ func (x *MessageAnnotationCountRequest) GetAppId() string {
 
 type MessageAnnotationCountReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	Count         int64                     `protobuf:"varint,2,opt,name=count,proto3" json:"count"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	Count         int64                     `protobuf:"varint,2,opt,name=count,proto3" json:"count" form:"count"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -4101,9 +4101,9 @@ func (x *MessageAnnotationCountReply) GetCount() int64 {
 
 type GetMessageRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	MessageId     string                 `protobuf:"bytes,3,opt,name=message_id,json=messageId,proto3" json:"message_id"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	MessageId     string                 `protobuf:"bytes,3,opt,name=message_id,json=messageId,proto3" json:"message_id" form:"message_id"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -4161,8 +4161,8 @@ func (x *GetMessageRequest) GetMessageId() string {
 
 type GetMessageReply struct {
 	state            protoimpl.MessageState    `protogen:"open.v1"`
-	Exp              *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	MessageDetailStr string                    `protobuf:"bytes,2,opt,name=message_detail_str,json=messageDetailStr,proto3" json:"message_detail_str"`
+	Exp              *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	MessageDetailStr string                    `protobuf:"bytes,2,opt,name=message_detail_str,json=messageDetailStr,proto3" json:"message_detail_str" form:"message_detail_str"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -4213,8 +4213,8 @@ func (x *GetMessageReply) GetMessageDetailStr() string {
 
 type GetWorkflowDraftRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -4265,8 +4265,8 @@ func (x *GetWorkflowDraftRequest) GetAppId() string {
 
 type GetWorkflowDraftReply struct {
 	state               protoimpl.MessageState    `protogen:"open.v1"`
-	Exp                 *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	WorkflowResponseStr string                    `protobuf:"bytes,2,opt,name=workflow_response_str,json=workflowResponseStr,proto3" json:"workflow_response_str"`
+	Exp                 *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	WorkflowResponseStr string                    `protobuf:"bytes,2,opt,name=workflow_response_str,json=workflowResponseStr,proto3" json:"workflow_response_str" form:"workflow_response_str"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -4317,13 +4317,13 @@ func (x *GetWorkflowDraftReply) GetWorkflowResponseStr() string {
 
 type WorkflowSyncDraftRequest struct {
 	state                    protoimpl.MessageState `protogen:"open.v1"`
-	AccountId                string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId                    string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	GraphStr                 string                 `protobuf:"bytes,3,opt,name=graph_str,json=graphStr,proto3" json:"graph_str"`
-	FeaturesStr              string                 `protobuf:"bytes,4,opt,name=features_str,json=featuresStr,proto3" json:"features_str"`
-	Hash                     string                 `protobuf:"bytes,5,opt,name=hash,proto3" json:"hash"`
-	EnvironmentVariablesStr  string                 `protobuf:"bytes,6,opt,name=environment_variables_str,json=environmentVariablesStr,proto3" json:"environment_variables_str"`
-	ConversationVariablesStr string                 `protobuf:"bytes,7,opt,name=conversation_variables_str,json=conversationVariablesStr,proto3" json:"conversation_variables_str"`
+	AccountId                string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId                    string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	GraphStr                 string                 `protobuf:"bytes,3,opt,name=graph_str,json=graphStr,proto3" json:"graph_str" form:"graph_str"`
+	FeaturesStr              string                 `protobuf:"bytes,4,opt,name=features_str,json=featuresStr,proto3" json:"features_str" form:"features_str"`
+	Hash                     string                 `protobuf:"bytes,5,opt,name=hash,proto3" json:"hash" form:"hash"`
+	EnvironmentVariablesStr  string                 `protobuf:"bytes,6,opt,name=environment_variables_str,json=environmentVariablesStr,proto3" json:"environment_variables_str" form:"environment_variables_str"`
+	ConversationVariablesStr string                 `protobuf:"bytes,7,opt,name=conversation_variables_str,json=conversationVariablesStr,proto3" json:"conversation_variables_str" form:"conversation_variables_str"`
 	unknownFields            protoimpl.UnknownFields
 	sizeCache                protoimpl.SizeCache
 }
@@ -4409,9 +4409,9 @@ func (x *WorkflowSyncDraftRequest) GetConversationVariablesStr() string {
 
 type WorkflowSyncDraftReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	UniqueHash    string                    `protobuf:"bytes,2,opt,name=unique_hash,json=uniqueHash,proto3" json:"unique_hash"`
-	UpdatedAt     int64                     `protobuf:"varint,3,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	UniqueHash    string                    `protobuf:"bytes,2,opt,name=unique_hash,json=uniqueHash,proto3" json:"unique_hash" form:"unique_hash"`
+	UpdatedAt     int64                     `protobuf:"varint,3,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at" form:"updated_at"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -4469,10 +4469,10 @@ func (x *WorkflowSyncDraftReply) GetUpdatedAt() int64 {
 
 type WorkflowNodeRunRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	NodeId        string                 `protobuf:"bytes,3,opt,name=node_id,json=nodeId,proto3" json:"node_id"`
-	InputsDictStr string                 `protobuf:"bytes,4,opt,name=inputs_dict_str,json=inputsDictStr,proto3" json:"inputs_dict_str"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	NodeId        string                 `protobuf:"bytes,3,opt,name=node_id,json=nodeId,proto3" json:"node_id" form:"node_id"`
+	InputsDictStr string                 `protobuf:"bytes,4,opt,name=inputs_dict_str,json=inputsDictStr,proto3" json:"inputs_dict_str" form:"inputs_dict_str"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -4537,8 +4537,8 @@ func (x *WorkflowNodeRunRequest) GetInputsDictStr() string {
 
 type WorkflowNodeRunReply struct {
 	state                               protoimpl.MessageState    `protogen:"open.v1"`
-	Exp                                 *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	WorkflowRunNodeExecutionResponseStr string                    `protobuf:"bytes,2,opt,name=workflow_run_node_execution_response_str,json=workflowRunNodeExecutionResponseStr,proto3" json:"workflow_run_node_execution_response_str"`
+	Exp                                 *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	WorkflowRunNodeExecutionResponseStr string                    `protobuf:"bytes,2,opt,name=workflow_run_node_execution_response_str,json=workflowRunNodeExecutionResponseStr,proto3" json:"workflow_run_node_execution_response_str" form:"workflow_run_node_execution_response_str"`
 	unknownFields                       protoimpl.UnknownFields
 	sizeCache                           protoimpl.SizeCache
 }
@@ -4589,8 +4589,8 @@ func (x *WorkflowNodeRunReply) GetWorkflowRunNodeExecutionResponseStr() string {
 
 type GetWorkflowConfigRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -4641,8 +4641,8 @@ func (x *GetWorkflowConfigRequest) GetAppId() string {
 
 type GetWorkflowConfigReply struct {
 	state              protoimpl.MessageState    `protogen:"open.v1"`
-	Exp                *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	ParallelDepthLimit int32                     `protobuf:"varint,2,opt,name=parallel_depth_limit,json=parallelDepthLimit,proto3" json:"parallel_depth_limit"`
+	Exp                *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	ParallelDepthLimit int32                     `protobuf:"varint,2,opt,name=parallel_depth_limit,json=parallelDepthLimit,proto3" json:"parallel_depth_limit" form:"parallel_depth_limit"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -4693,7 +4693,7 @@ func (x *GetWorkflowConfigReply) GetParallelDepthLimit() int32 {
 
 type GetWorkflowDefaultBlockConfigsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -4737,8 +4737,8 @@ func (x *GetWorkflowDefaultBlockConfigsRequest) GetAccountId() string {
 
 type GetWorkflowDefaultBlockConfigsReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	CfgsStr       string                    `protobuf:"bytes,2,opt,name=cfgs_str,json=cfgsStr,proto3" json:"cfgs_str"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	CfgsStr       string                    `protobuf:"bytes,2,opt,name=cfgs_str,json=cfgsStr,proto3" json:"cfgs_str" form:"cfgs_str"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -4789,10 +4789,10 @@ func (x *GetWorkflowDefaultBlockConfigsReply) GetCfgsStr() string {
 
 type GetWorkflowDefaultBlockConfigRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	BlockType     string                 `protobuf:"bytes,3,opt,name=block_type,json=blockType,proto3" json:"block_type"`
-	FilterDictStr string                 `protobuf:"bytes,4,opt,name=filter_dict_str,json=filterDictStr,proto3" json:"filter_dict_str"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	BlockType     string                 `protobuf:"bytes,3,opt,name=block_type,json=blockType,proto3" json:"block_type" form:"block_type"`
+	FilterDictStr string                 `protobuf:"bytes,4,opt,name=filter_dict_str,json=filterDictStr,proto3" json:"filter_dict_str" form:"filter_dict_str"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -4857,8 +4857,8 @@ func (x *GetWorkflowDefaultBlockConfigRequest) GetFilterDictStr() string {
 
 type GetWorkflowDefaultBlockConfigReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	CfgStr        string                    `protobuf:"bytes,2,opt,name=cfg_str,json=cfgStr,proto3" json:"cfg_str"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	CfgStr        string                    `protobuf:"bytes,2,opt,name=cfg_str,json=cfgStr,proto3" json:"cfg_str" form:"cfg_str"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -4909,8 +4909,8 @@ func (x *GetWorkflowDefaultBlockConfigReply) GetCfgStr() string {
 
 type GetWorkflowPublishedRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -4961,8 +4961,8 @@ func (x *GetWorkflowPublishedRequest) GetAppId() string {
 
 type GetWorkflowPublishedReply struct {
 	state               protoimpl.MessageState    `protogen:"open.v1"`
-	Exp                 *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	WorkflowResponseStr string                    `protobuf:"bytes,2,opt,name=workflow_response_str,json=workflowResponseStr,proto3" json:"workflow_response_str"`
+	Exp                 *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	WorkflowResponseStr string                    `protobuf:"bytes,2,opt,name=workflow_response_str,json=workflowResponseStr,proto3" json:"workflow_response_str" form:"workflow_response_str"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -5013,8 +5013,8 @@ func (x *GetWorkflowPublishedReply) GetWorkflowResponseStr() string {
 
 type WorkflowPublishedRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -5065,8 +5065,8 @@ func (x *WorkflowPublishedRequest) GetAppId() string {
 
 type WorkflowPublishedReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	CreatedAt     int64                     `protobuf:"varint,2,opt,name=created_at,json=createdAt,proto3" json:"created_at"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	CreatedAt     int64                     `protobuf:"varint,2,opt,name=created_at,json=createdAt,proto3" json:"created_at" form:"created_at"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -5117,7 +5117,7 @@ func (x *WorkflowPublishedReply) GetCreatedAt() int64 {
 
 type GetAccountProfileRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -5161,19 +5161,19 @@ func (x *GetAccountProfileRequest) GetAccountId() string {
 
 type GetAccountProfileReply struct {
 	state             protoimpl.MessageState    `protogen:"open.v1"`
-	Exp               *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	Name              string                    `protobuf:"bytes,2,opt,name=name,proto3" json:"name"`
-	Avatar            string                    `protobuf:"bytes,3,opt,name=avatar,proto3" json:"avatar"`
-	AvatarUrl         string                    `protobuf:"bytes,4,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url"`
-	Email             string                    `protobuf:"bytes,5,opt,name=email,proto3" json:"email"`
-	IsPasswordSet     bool                      `protobuf:"varint,6,opt,name=is_password_set,json=isPasswordSet,proto3" json:"is_password_set"`
-	InterfaceLanguage string                    `protobuf:"bytes,7,opt,name=interface_language,json=interfaceLanguage,proto3" json:"interface_language"`
-	InterfaceTheme    string                    `protobuf:"bytes,8,opt,name=interface_theme,json=interfaceTheme,proto3" json:"interface_theme"`
-	Timezone          string                    `protobuf:"bytes,9,opt,name=timezone,proto3" json:"timezone"`
-	LastLoginAt       int64                     `protobuf:"varint,10,opt,name=last_login_at,json=lastLoginAt,proto3" json:"last_login_at"`
-	LastLoginIp       string                    `protobuf:"bytes,11,opt,name=last_login_ip,json=lastLoginIp,proto3" json:"last_login_ip"`
-	CreatedAt         int64                     `protobuf:"varint,12,opt,name=created_at,json=createdAt,proto3" json:"created_at"`
-	Id                string                    `protobuf:"bytes,13,opt,name=id,proto3" json:"id"`
+	Exp               *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	Name              string                    `protobuf:"bytes,2,opt,name=name,proto3" json:"name" form:"name"`
+	Avatar            string                    `protobuf:"bytes,3,opt,name=avatar,proto3" json:"avatar" form:"avatar"`
+	AvatarUrl         string                    `protobuf:"bytes,4,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url" form:"avatar_url"`
+	Email             string                    `protobuf:"bytes,5,opt,name=email,proto3" json:"email" form:"email"`
+	IsPasswordSet     bool                      `protobuf:"varint,6,opt,name=is_password_set,json=isPasswordSet,proto3" json:"is_password_set" form:"is_password_set"`
+	InterfaceLanguage string                    `protobuf:"bytes,7,opt,name=interface_language,json=interfaceLanguage,proto3" json:"interface_language" form:"interface_language"`
+	InterfaceTheme    string                    `protobuf:"bytes,8,opt,name=interface_theme,json=interfaceTheme,proto3" json:"interface_theme" form:"interface_theme"`
+	Timezone          string                    `protobuf:"bytes,9,opt,name=timezone,proto3" json:"timezone" form:"timezone"`
+	LastLoginAt       int64                     `protobuf:"varint,10,opt,name=last_login_at,json=lastLoginAt,proto3" json:"last_login_at" form:"last_login_at"`
+	LastLoginIp       string                    `protobuf:"bytes,11,opt,name=last_login_ip,json=lastLoginIp,proto3" json:"last_login_ip" form:"last_login_ip"`
+	CreatedAt         int64                     `protobuf:"varint,12,opt,name=created_at,json=createdAt,proto3" json:"created_at" form:"created_at"`
+	Id                string                    `protobuf:"bytes,13,opt,name=id,proto3" json:"id" form:"id"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -5301,8 +5301,8 @@ func (x *GetAccountProfileReply) GetId() string {
 
 type UpdateAccountRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	Infos         map[string]string      `protobuf:"bytes,2,rep,name=infos,proto3" json:"infos" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	Infos         map[string]string      `protobuf:"bytes,2,rep,name=infos,proto3" json:"infos" form:"infos" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -5353,8 +5353,8 @@ func (x *UpdateAccountRequest) GetInfos() map[string]string {
 
 type UpdateAccountReply struct {
 	state              protoimpl.MessageState    `protogen:"open.v1"`
-	Exp                *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	AccountResponseStr string                    `protobuf:"bytes,2,opt,name=account_response_str,json=accountResponseStr,proto3" json:"account_response_str"`
+	Exp                *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	AccountResponseStr string                    `protobuf:"bytes,2,opt,name=account_response_str,json=accountResponseStr,proto3" json:"account_response_str" form:"account_response_str"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -5405,11 +5405,11 @@ func (x *UpdateAccountReply) GetAccountResponseStr() string {
 
 type GetApiKeyListRequest struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
-	AccountId       string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	ResourceId      string                 `protobuf:"bytes,2,opt,name=resource_id,json=resourceId,proto3" json:"resource_id"`
-	ResourceType    string                 `protobuf:"bytes,3,opt,name=resource_type,json=resourceType,proto3" json:"resource_type"`
-	ResourceIdField string                 `protobuf:"bytes,4,opt,name=resource_id_field,json=resourceIdField,proto3" json:"resource_id_field"`
-	TokenPrefix     string                 `protobuf:"bytes,5,opt,name=token_prefix,json=tokenPrefix,proto3" json:"token_prefix"`
+	AccountId       string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	ResourceId      string                 `protobuf:"bytes,2,opt,name=resource_id,json=resourceId,proto3" json:"resource_id" form:"resource_id"`
+	ResourceType    string                 `protobuf:"bytes,3,opt,name=resource_type,json=resourceType,proto3" json:"resource_type" form:"resource_type"`
+	ResourceIdField string                 `protobuf:"bytes,4,opt,name=resource_id_field,json=resourceIdField,proto3" json:"resource_id_field" form:"resource_id_field"`
+	TokenPrefix     string                 `protobuf:"bytes,5,opt,name=token_prefix,json=tokenPrefix,proto3" json:"token_prefix" form:"token_prefix"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -5481,11 +5481,11 @@ func (x *GetApiKeyListRequest) GetTokenPrefix() string {
 
 type ApiKeyResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id"`
-	Type          string                 `protobuf:"bytes,2,opt,name=type,proto3" json:"type"`
-	Token         string                 `protobuf:"bytes,3,opt,name=token,proto3" json:"token"`
-	LastUsedAt    int64                  `protobuf:"varint,4,opt,name=last_used_at,json=lastUsedAt,proto3" json:"last_used_at"`
-	CreatedAt     int64                  `protobuf:"varint,5,opt,name=created_at,json=createdAt,proto3" json:"created_at"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id" form:"id"`
+	Type          string                 `protobuf:"bytes,2,opt,name=type,proto3" json:"type" form:"type"`
+	Token         string                 `protobuf:"bytes,3,opt,name=token,proto3" json:"token" form:"token"`
+	LastUsedAt    int64                  `protobuf:"varint,4,opt,name=last_used_at,json=lastUsedAt,proto3" json:"last_used_at" form:"last_used_at"`
+	CreatedAt     int64                  `protobuf:"varint,5,opt,name=created_at,json=createdAt,proto3" json:"created_at" form:"created_at"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -5557,8 +5557,8 @@ func (x *ApiKeyResponse) GetCreatedAt() int64 {
 
 type GetApiKeyListReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	Items         []*ApiKeyResponse         `protobuf:"bytes,2,rep,name=items,proto3" json:"items"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	Items         []*ApiKeyResponse         `protobuf:"bytes,2,rep,name=items,proto3" json:"items" form:"items"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -5609,11 +5609,11 @@ func (x *GetApiKeyListReply) GetItems() []*ApiKeyResponse {
 
 type GenerateApiKeyRequest struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
-	AccountId       string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	ResourceId      string                 `protobuf:"bytes,2,opt,name=resource_id,json=resourceId,proto3" json:"resource_id"`
-	ResourceType    string                 `protobuf:"bytes,3,opt,name=resource_type,json=resourceType,proto3" json:"resource_type"`
-	ResourceIdField string                 `protobuf:"bytes,4,opt,name=resource_id_field,json=resourceIdField,proto3" json:"resource_id_field"`
-	TokenPrefix     string                 `protobuf:"bytes,5,opt,name=token_prefix,json=tokenPrefix,proto3" json:"token_prefix"`
+	AccountId       string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	ResourceId      string                 `protobuf:"bytes,2,opt,name=resource_id,json=resourceId,proto3" json:"resource_id" form:"resource_id"`
+	ResourceType    string                 `protobuf:"bytes,3,opt,name=resource_type,json=resourceType,proto3" json:"resource_type" form:"resource_type"`
+	ResourceIdField string                 `protobuf:"bytes,4,opt,name=resource_id_field,json=resourceIdField,proto3" json:"resource_id_field" form:"resource_id_field"`
+	TokenPrefix     string                 `protobuf:"bytes,5,opt,name=token_prefix,json=tokenPrefix,proto3" json:"token_prefix" form:"token_prefix"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -5685,8 +5685,8 @@ func (x *GenerateApiKeyRequest) GetTokenPrefix() string {
 
 type GenerateApiKeyReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	Item          *ApiKeyResponse           `protobuf:"bytes,2,opt,name=item,proto3" json:"item"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	Item          *ApiKeyResponse           `protobuf:"bytes,2,opt,name=item,proto3" json:"item" form:"item"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -5737,12 +5737,12 @@ func (x *GenerateApiKeyReply) GetItem() *ApiKeyResponse {
 
 type DelApiKeyRequest struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
-	AccountId       string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	ResourceId      string                 `protobuf:"bytes,2,opt,name=resource_id,json=resourceId,proto3" json:"resource_id"`
-	ResourceType    string                 `protobuf:"bytes,3,opt,name=resource_type,json=resourceType,proto3" json:"resource_type"`
-	ResourceIdField string                 `protobuf:"bytes,4,opt,name=resource_id_field,json=resourceIdField,proto3" json:"resource_id_field"`
-	TokenPrefix     string                 `protobuf:"bytes,5,opt,name=token_prefix,json=tokenPrefix,proto3" json:"token_prefix"`
-	ApiKeyId        string                 `protobuf:"bytes,6,opt,name=api_key_id,json=apiKeyId,proto3" json:"api_key_id"`
+	AccountId       string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	ResourceId      string                 `protobuf:"bytes,2,opt,name=resource_id,json=resourceId,proto3" json:"resource_id" form:"resource_id"`
+	ResourceType    string                 `protobuf:"bytes,3,opt,name=resource_type,json=resourceType,proto3" json:"resource_type" form:"resource_type"`
+	ResourceIdField string                 `protobuf:"bytes,4,opt,name=resource_id_field,json=resourceIdField,proto3" json:"resource_id_field" form:"resource_id_field"`
+	TokenPrefix     string                 `protobuf:"bytes,5,opt,name=token_prefix,json=tokenPrefix,proto3" json:"token_prefix" form:"token_prefix"`
+	ApiKeyId        string                 `protobuf:"bytes,6,opt,name=api_key_id,json=apiKeyId,proto3" json:"api_key_id" form:"api_key_id"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -5821,7 +5821,7 @@ func (x *DelApiKeyRequest) GetApiKeyId() string {
 
 type DelApiKeyReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -5865,11 +5865,11 @@ func (x *DelApiKeyReply) GetExp() *exceptions.HTTPException {
 
 type AppWorkflowRunListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	LastId        string                 `protobuf:"bytes,3,opt,name=last_id,json=lastId,proto3" json:"last_id"`
-	Limit         int32                  `protobuf:"varint,4,opt,name=limit,proto3" json:"limit"`
-	AppMode       string                 `protobuf:"bytes,5,opt,name=app_mode,json=appMode,proto3" json:"app_mode"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	LastId        string                 `protobuf:"bytes,3,opt,name=last_id,json=lastId,proto3" json:"last_id" form:"last_id"`
+	Limit         int32                  `protobuf:"varint,4,opt,name=limit,proto3" json:"limit" form:"limit"`
+	AppMode       string                 `protobuf:"bytes,5,opt,name=app_mode,json=appMode,proto3" json:"app_mode" form:"app_mode"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -5941,8 +5941,8 @@ func (x *AppWorkflowRunListRequest) GetAppMode() string {
 
 type AppWorkflowRunListReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	ResponseStr   string                    `protobuf:"bytes,2,opt,name=response_str,json=responseStr,proto3" json:"response_str"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	ResponseStr   string                    `protobuf:"bytes,2,opt,name=response_str,json=responseStr,proto3" json:"response_str" form:"response_str"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -5993,8 +5993,8 @@ func (x *AppWorkflowRunListReply) GetResponseStr() string {
 
 type GetWorkspaceListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Page          int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page"`
-	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit"`
+	Page          int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page" form:"page"`
+	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit" form:"limit"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -6045,10 +6045,10 @@ func (x *GetWorkspaceListRequest) GetLimit() int32 {
 
 type WorkspaceResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name"`
-	Status        string                 `protobuf:"bytes,3,opt,name=status,proto3" json:"status"`
-	CreatedAt     int64                  `protobuf:"varint,4,opt,name=created_at,json=createdAt,proto3" json:"created_at"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id" form:"id"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name" form:"name"`
+	Status        string                 `protobuf:"bytes,3,opt,name=status,proto3" json:"status" form:"status"`
+	CreatedAt     int64                  `protobuf:"varint,4,opt,name=created_at,json=createdAt,proto3" json:"created_at" form:"created_at"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -6113,14 +6113,14 @@ func (x *WorkspaceResponse) GetCreatedAt() int64 {
 
 type GetWorkspaceListReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	Data          []*WorkspaceResponse      `protobuf:"bytes,2,rep,name=data,proto3" json:"data"`
-	HasMore       bool                      `protobuf:"varint,3,opt,name=has_more,json=hasMore,proto3" json:"has_more"`
-	Page          int32                     `protobuf:"varint,4,opt,name=page,proto3" json:"page"`
-	Limit         int32                     `protobuf:"varint,5,opt,name=limit,proto3" json:"limit"`
-	Total         int64                     `protobuf:"varint,6,opt,name=total,proto3" json:"total"`
-	Result        string                    `protobuf:"bytes,7,opt,name=result,proto3" json:"result"`
-	Code          int32                     `protobuf:"varint,8,opt,name=code,proto3" json:"code"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	Data          []*WorkspaceResponse      `protobuf:"bytes,2,rep,name=data,proto3" json:"data" form:"data"`
+	HasMore       bool                      `protobuf:"varint,3,opt,name=has_more,json=hasMore,proto3" json:"has_more" form:"has_more"`
+	Page          int32                     `protobuf:"varint,4,opt,name=page,proto3" json:"page" form:"page"`
+	Limit         int32                     `protobuf:"varint,5,opt,name=limit,proto3" json:"limit" form:"limit"`
+	Total         int64                     `protobuf:"varint,6,opt,name=total,proto3" json:"total" form:"total"`
+	Result        string                    `protobuf:"bytes,7,opt,name=result,proto3" json:"result" form:"result"`
+	Code          int32                     `protobuf:"varint,8,opt,name=code,proto3" json:"code" form:"code"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -6213,9 +6213,9 @@ func (x *GetWorkspaceListReply) GetCode() int32 {
 
 type ModelSetting struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Model         string                 `protobuf:"bytes,1,opt,name=model,proto3" json:"model"`
-	ModelType     string                 `protobuf:"bytes,2,opt,name=model_type,json=modelType,proto3" json:"model_type"`
-	Provider      string                 `protobuf:"bytes,3,opt,name=provider,proto3" json:"provider"`
+	Model         string                 `protobuf:"bytes,1,opt,name=model,proto3" json:"model" form:"model"`
+	ModelType     string                 `protobuf:"bytes,2,opt,name=model_type,json=modelType,proto3" json:"model_type" form:"model_type"`
+	Provider      string                 `protobuf:"bytes,3,opt,name=provider,proto3" json:"provider" form:"provider"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -6273,8 +6273,8 @@ func (x *ModelSetting) GetProvider() string {
 
 type SetDefaultModelRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id"`
-	ModelSettings []*ModelSetting        `protobuf:"bytes,2,rep,name=model_settings,json=modelSettings,proto3" json:"model_settings"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id" form:"tenant_id"`
+	ModelSettings []*ModelSetting        `protobuf:"bytes,2,rep,name=model_settings,json=modelSettings,proto3" json:"model_settings" form:"model_settings"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -6325,7 +6325,7 @@ func (x *SetDefaultModelRequest) GetModelSettings() []*ModelSetting {
 
 type SetDefaultModelReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -6369,8 +6369,8 @@ func (x *SetDefaultModelReply) GetExp() *exceptions.HTTPException {
 
 type GetDefaultModelRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id"`
-	ModelType     string                 `protobuf:"bytes,2,opt,name=model_type,json=modelType,proto3" json:"model_type"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id" form:"tenant_id"`
+	ModelType     string                 `protobuf:"bytes,2,opt,name=model_type,json=modelType,proto3" json:"model_type" form:"model_type"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -6421,8 +6421,8 @@ func (x *GetDefaultModelRequest) GetModelType() string {
 
 type GetDefaultModelReply struct {
 	state                   protoimpl.MessageState    `protogen:"open.v1"`
-	Exp                     *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	DefaultModelResponseStr string                    `protobuf:"bytes,2,opt,name=default_model_response_str,json=defaultModelResponseStr,proto3" json:"default_model_response_str"`
+	Exp                     *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	DefaultModelResponseStr string                    `protobuf:"bytes,2,opt,name=default_model_response_str,json=defaultModelResponseStr,proto3" json:"default_model_response_str" form:"default_model_response_str"`
 	unknownFields           protoimpl.UnknownFields
 	sizeCache               protoimpl.SizeCache
 }
@@ -6473,7 +6473,7 @@ func (x *GetDefaultModelReply) GetDefaultModelResponseStr() string {
 
 type GetTenantListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -6517,12 +6517,12 @@ func (x *GetTenantListRequest) GetAccountId() string {
 
 type TenantResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name"`
-	Plan          string                 `protobuf:"bytes,3,opt,name=plan,proto3" json:"plan"`
-	Status        string                 `protobuf:"bytes,4,opt,name=status,proto3" json:"status"`
-	CreatedAt     int64                  `protobuf:"varint,5,opt,name=created_at,json=createdAt,proto3" json:"created_at"`
-	Current       bool                   `protobuf:"varint,6,opt,name=current,proto3" json:"current"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id" form:"id"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name" form:"name"`
+	Plan          string                 `protobuf:"bytes,3,opt,name=plan,proto3" json:"plan" form:"plan"`
+	Status        string                 `protobuf:"bytes,4,opt,name=status,proto3" json:"status" form:"status"`
+	CreatedAt     int64                  `protobuf:"varint,5,opt,name=created_at,json=createdAt,proto3" json:"created_at" form:"created_at"`
+	Current       bool                   `protobuf:"varint,6,opt,name=current,proto3" json:"current" form:"current"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -6601,8 +6601,8 @@ func (x *TenantResponse) GetCurrent() bool {
 
 type GetTenantListReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	Workspaces    []*TenantResponse         `protobuf:"bytes,2,rep,name=workspaces,proto3" json:"workspaces"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	Workspaces    []*TenantResponse         `protobuf:"bytes,2,rep,name=workspaces,proto3" json:"workspaces" form:"workspaces"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -6653,7 +6653,7 @@ func (x *GetTenantListReply) GetWorkspaces() []*TenantResponse {
 
 type GetCurrentTenantRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -6697,8 +6697,8 @@ func (x *GetCurrentTenantRequest) GetAccountId() string {
 
 type GetCurrentTenantReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	ResultDictStr string                    `protobuf:"bytes,2,opt,name=result_dict_str,json=resultDictStr,proto3" json:"result_dict_str"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	ResultDictStr string                    `protobuf:"bytes,2,opt,name=result_dict_str,json=resultDictStr,proto3" json:"result_dict_str" form:"result_dict_str"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -6749,8 +6749,8 @@ func (x *GetCurrentTenantReply) GetResultDictStr() string {
 
 type GetModelProviderListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id"`
-	ModelType     string                 `protobuf:"bytes,2,opt,name=model_type,json=modelType,proto3" json:"model_type"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id" form:"tenant_id"`
+	ModelType     string                 `protobuf:"bytes,2,opt,name=model_type,json=modelType,proto3" json:"model_type" form:"model_type"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -6801,8 +6801,8 @@ func (x *GetModelProviderListRequest) GetModelType() string {
 
 type GetModelProviderListReply struct {
 	state           protoimpl.MessageState    `protogen:"open.v1"`
-	Exp             *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	ProviderListStr string                    `protobuf:"bytes,2,opt,name=provider_list_str,json=providerListStr,proto3" json:"provider_list_str"`
+	Exp             *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	ProviderListStr string                    `protobuf:"bytes,2,opt,name=provider_list_str,json=providerListStr,proto3" json:"provider_list_str" form:"provider_list_str"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -6853,9 +6853,9 @@ func (x *GetModelProviderListReply) GetProviderListStr() string {
 
 type UpdateModelProviderRequest struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
-	TenantId           string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id"`
-	Provider           string                 `protobuf:"bytes,2,opt,name=provider,proto3" json:"provider"`
-	CredentialsDictStr string                 `protobuf:"bytes,3,opt,name=credentials_dict_str,json=credentialsDictStr,proto3" json:"credentials_dict_str"`
+	TenantId           string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id" form:"tenant_id"`
+	Provider           string                 `protobuf:"bytes,2,opt,name=provider,proto3" json:"provider" form:"provider"`
+	CredentialsDictStr string                 `protobuf:"bytes,3,opt,name=credentials_dict_str,json=credentialsDictStr,proto3" json:"credentials_dict_str" form:"credentials_dict_str"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -6913,7 +6913,7 @@ func (x *UpdateModelProviderRequest) GetCredentialsDictStr() string {
 
 type UpdateModelProviderReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -6957,8 +6957,8 @@ func (x *UpdateModelProviderReply) GetExp() *exceptions.HTTPException {
 
 type DelModelProviderRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id"`
-	Provider      string                 `protobuf:"bytes,2,opt,name=provider,proto3" json:"provider"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id" form:"tenant_id"`
+	Provider      string                 `protobuf:"bytes,2,opt,name=provider,proto3" json:"provider" form:"provider"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -7009,7 +7009,7 @@ func (x *DelModelProviderRequest) GetProvider() string {
 
 type DelModelProviderReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -7053,8 +7053,8 @@ func (x *DelModelProviderReply) GetExp() *exceptions.HTTPException {
 
 type GetAvailableModelProviderRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id"`
-	ModelType     string                 `protobuf:"bytes,2,opt,name=model_type,json=modelType,proto3" json:"model_type"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id" form:"tenant_id"`
+	ModelType     string                 `protobuf:"bytes,2,opt,name=model_type,json=modelType,proto3" json:"model_type" form:"model_type"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -7105,8 +7105,8 @@ func (x *GetAvailableModelProviderRequest) GetModelType() string {
 
 type GetAvailableModelProviderReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	ModelsStr     string                    `protobuf:"bytes,2,opt,name=models_str,json=modelsStr,proto3" json:"models_str"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	ModelsStr     string                    `protobuf:"bytes,2,opt,name=models_str,json=modelsStr,proto3" json:"models_str" form:"models_str"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -7157,8 +7157,8 @@ func (x *GetAvailableModelProviderReply) GetModelsStr() string {
 
 type GetModelProviderModelRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id"`
-	Provider      string                 `protobuf:"bytes,2,opt,name=provider,proto3" json:"provider"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id" form:"tenant_id"`
+	Provider      string                 `protobuf:"bytes,2,opt,name=provider,proto3" json:"provider" form:"provider"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -7209,8 +7209,8 @@ func (x *GetModelProviderModelRequest) GetProvider() string {
 
 type GetModelProviderModelReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	ModelsStr     string                    `protobuf:"bytes,2,opt,name=models_str,json=modelsStr,proto3" json:"models_str"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	ModelsStr     string                    `protobuf:"bytes,2,opt,name=models_str,json=modelsStr,proto3" json:"models_str" form:"models_str"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -7261,13 +7261,13 @@ func (x *GetModelProviderModelReply) GetModelsStr() string {
 
 type SetModelProviderModelRequest struct {
 	state                protoimpl.MessageState `protogen:"open.v1"`
-	TenantId             string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id"`
-	Provider             string                 `protobuf:"bytes,2,opt,name=provider,proto3" json:"provider"`
-	Model                string                 `protobuf:"bytes,3,opt,name=model,proto3" json:"model"`
-	ModelType            string                 `protobuf:"bytes,4,opt,name=model_type,json=modelType,proto3" json:"model_type"`
-	CredentialsDictStr   string                 `protobuf:"bytes,5,opt,name=credentials_dict_str,json=credentialsDictStr,proto3" json:"credentials_dict_str"`
-	LoadBalancingDictStr string                 `protobuf:"bytes,6,opt,name=load_balancing_dict_str,json=loadBalancingDictStr,proto3" json:"load_balancing_dict_str"`
-	ConfigFrom           string                 `protobuf:"bytes,7,opt,name=config_from,json=configFrom,proto3" json:"config_from"`
+	TenantId             string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id" form:"tenant_id"`
+	Provider             string                 `protobuf:"bytes,2,opt,name=provider,proto3" json:"provider" form:"provider"`
+	Model                string                 `protobuf:"bytes,3,opt,name=model,proto3" json:"model" form:"model"`
+	ModelType            string                 `protobuf:"bytes,4,opt,name=model_type,json=modelType,proto3" json:"model_type" form:"model_type"`
+	CredentialsDictStr   string                 `protobuf:"bytes,5,opt,name=credentials_dict_str,json=credentialsDictStr,proto3" json:"credentials_dict_str" form:"credentials_dict_str"`
+	LoadBalancingDictStr string                 `protobuf:"bytes,6,opt,name=load_balancing_dict_str,json=loadBalancingDictStr,proto3" json:"load_balancing_dict_str" form:"load_balancing_dict_str"`
+	ConfigFrom           string                 `protobuf:"bytes,7,opt,name=config_from,json=configFrom,proto3" json:"config_from" form:"config_from"`
 	unknownFields        protoimpl.UnknownFields
 	sizeCache            protoimpl.SizeCache
 }
@@ -7353,7 +7353,7 @@ func (x *SetModelProviderModelRequest) GetConfigFrom() string {
 
 type SetModelProviderModelReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -7397,11 +7397,11 @@ func (x *SetModelProviderModelReply) GetExp() *exceptions.HTTPException {
 
 type EnableModelProviderModelRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id"`
-	Provider      string                 `protobuf:"bytes,2,opt,name=provider,proto3" json:"provider"`
-	Model         string                 `protobuf:"bytes,3,opt,name=model,proto3" json:"model"`
-	ModelType     string                 `protobuf:"bytes,4,opt,name=model_type,json=modelType,proto3" json:"model_type"`
-	Enable        bool                   `protobuf:"varint,5,opt,name=enable,proto3" json:"enable"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id" form:"tenant_id"`
+	Provider      string                 `protobuf:"bytes,2,opt,name=provider,proto3" json:"provider" form:"provider"`
+	Model         string                 `protobuf:"bytes,3,opt,name=model,proto3" json:"model" form:"model"`
+	ModelType     string                 `protobuf:"bytes,4,opt,name=model_type,json=modelType,proto3" json:"model_type" form:"model_type"`
+	Enable        bool                   `protobuf:"varint,5,opt,name=enable,proto3" json:"enable" form:"enable"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -7473,7 +7473,7 @@ func (x *EnableModelProviderModelRequest) GetEnable() bool {
 
 type EnableModelProviderModelReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -7517,8 +7517,8 @@ func (x *EnableModelProviderModelReply) GetExp() *exceptions.HTTPException {
 
 type GetModelProviderCredentialsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id"`
-	Provider      string                 `protobuf:"bytes,2,opt,name=provider,proto3" json:"provider"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id" form:"tenant_id"`
+	Provider      string                 `protobuf:"bytes,2,opt,name=provider,proto3" json:"provider" form:"provider"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -7569,8 +7569,8 @@ func (x *GetModelProviderCredentialsRequest) GetProvider() string {
 
 type GetModelProviderCredentialsReply struct {
 	state              protoimpl.MessageState    `protogen:"open.v1"`
-	Exp                *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	CredentialsDictStr string                    `protobuf:"bytes,2,opt,name=credentials_dict_str,json=credentialsDictStr,proto3" json:"credentials_dict_str"`
+	Exp                *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	CredentialsDictStr string                    `protobuf:"bytes,2,opt,name=credentials_dict_str,json=credentialsDictStr,proto3" json:"credentials_dict_str" form:"credentials_dict_str"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -7621,9 +7621,9 @@ func (x *GetModelProviderCredentialsReply) GetCredentialsDictStr() string {
 
 type GetModelParameterRulesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id"`
-	Provider      string                 `protobuf:"bytes,2,opt,name=provider,proto3" json:"provider"`
-	Model         string                 `protobuf:"bytes,3,opt,name=model,proto3" json:"model"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id" form:"tenant_id"`
+	Provider      string                 `protobuf:"bytes,2,opt,name=provider,proto3" json:"provider" form:"provider"`
+	Model         string                 `protobuf:"bytes,3,opt,name=model,proto3" json:"model" form:"model"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -7681,8 +7681,8 @@ func (x *GetModelParameterRulesRequest) GetModel() string {
 
 type GetModelParameterRulesReply struct {
 	state             protoimpl.MessageState    `protogen:"open.v1"`
-	Exp               *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	ParameterRulesStr string                    `protobuf:"bytes,2,opt,name=parameter_rules_str,json=parameterRulesStr,proto3" json:"parameter_rules_str"`
+	Exp               *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	ParameterRulesStr string                    `protobuf:"bytes,2,opt,name=parameter_rules_str,json=parameterRulesStr,proto3" json:"parameter_rules_str" form:"parameter_rules_str"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -7733,7 +7733,7 @@ func (x *GetModelParameterRulesReply) GetParameterRulesStr() string {
 
 type GetMemberListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id" form:"tenant_id"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -7777,8 +7777,8 @@ func (x *GetMemberListRequest) GetTenantId() string {
 
 type GetMemberListReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	MembersStr    string                    `protobuf:"bytes,2,opt,name=members_str,json=membersStr,proto3" json:"members_str"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	MembersStr    string                    `protobuf:"bytes,2,opt,name=members_str,json=membersStr,proto3" json:"members_str" form:"members_str"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -7865,8 +7865,8 @@ func (*GetDatasetRetrievalSettingRequest) Descriptor() ([]byte, []int) {
 
 type GetDatasetRetrievalSettingReply struct {
 	state           protoimpl.MessageState    `protogen:"open.v1"`
-	Exp             *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	RetrievalMethod []string                  `protobuf:"bytes,2,rep,name=retrieval_method,json=retrievalMethod,proto3" json:"retrieval_method"`
+	Exp             *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	RetrievalMethod []string                  `protobuf:"bytes,2,rep,name=retrieval_method,json=retrievalMethod,proto3" json:"retrieval_method" form:"retrieval_method"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -7917,9 +7917,9 @@ func (x *GetDatasetRetrievalSettingReply) GetRetrievalMethod() []string {
 
 type GetTagListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id"`
-	Type          string                 `protobuf:"bytes,2,opt,name=type,proto3" json:"type"`
-	Keyword       string                 `protobuf:"bytes,3,opt,name=keyword,proto3" json:"keyword"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id" form:"tenant_id"`
+	Type          string                 `protobuf:"bytes,2,opt,name=type,proto3" json:"type" form:"type"`
+	Keyword       string                 `protobuf:"bytes,3,opt,name=keyword,proto3" json:"keyword" form:"keyword"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -7977,10 +7977,10 @@ func (x *GetTagListRequest) GetKeyword() string {
 
 type TagField struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name"`
-	Type          string                 `protobuf:"bytes,3,opt,name=type,proto3" json:"type"`
-	BindingCount  int64                  `protobuf:"varint,4,opt,name=binding_count,json=bindingCount,proto3" json:"binding_count"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id" form:"id"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name" form:"name"`
+	Type          string                 `protobuf:"bytes,3,opt,name=type,proto3" json:"type" form:"type"`
+	BindingCount  int64                  `protobuf:"varint,4,opt,name=binding_count,json=bindingCount,proto3" json:"binding_count" form:"binding_count"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -8045,8 +8045,8 @@ func (x *TagField) GetBindingCount() int64 {
 
 type GetTagListReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	Tags          []*TagField               `protobuf:"bytes,2,rep,name=tags,proto3" json:"tags"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	Tags          []*TagField               `protobuf:"bytes,2,rep,name=tags,proto3" json:"tags" form:"tags"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -8097,9 +8097,9 @@ func (x *GetTagListReply) GetTags() []*TagField {
 
 type AddTagRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name"`
-	Type          string                 `protobuf:"bytes,3,opt,name=type,proto3" json:"type"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name" form:"name"`
+	Type          string                 `protobuf:"bytes,3,opt,name=type,proto3" json:"type" form:"type"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -8157,11 +8157,11 @@ func (x *AddTagRequest) GetType() string {
 
 type AddTagReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	Id            string                    `protobuf:"bytes,2,opt,name=id,proto3" json:"id"`
-	Name          string                    `protobuf:"bytes,3,opt,name=name,proto3" json:"name"`
-	Type          string                    `protobuf:"bytes,4,opt,name=type,proto3" json:"type"`
-	BindingCount  int64                     `protobuf:"varint,5,opt,name=binding_count,json=bindingCount,proto3" json:"binding_count"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	Id            string                    `protobuf:"bytes,2,opt,name=id,proto3" json:"id" form:"id"`
+	Name          string                    `protobuf:"bytes,3,opt,name=name,proto3" json:"name" form:"name"`
+	Type          string                    `protobuf:"bytes,4,opt,name=type,proto3" json:"type" form:"type"`
+	BindingCount  int64                     `protobuf:"varint,5,opt,name=binding_count,json=bindingCount,proto3" json:"binding_count" form:"binding_count"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -8233,9 +8233,9 @@ func (x *AddTagReply) GetBindingCount() int64 {
 
 type UpdateTagRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name"`
-	TagId         string                 `protobuf:"bytes,3,opt,name=tag_id,json=tagId,proto3" json:"tag_id"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name" form:"name"`
+	TagId         string                 `protobuf:"bytes,3,opt,name=tag_id,json=tagId,proto3" json:"tag_id" form:"tag_id"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -8293,11 +8293,11 @@ func (x *UpdateTagRequest) GetTagId() string {
 
 type UpdateTagReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	Id            string                    `protobuf:"bytes,2,opt,name=id,proto3" json:"id"`
-	Name          string                    `protobuf:"bytes,3,opt,name=name,proto3" json:"name"`
-	Type          string                    `protobuf:"bytes,4,opt,name=type,proto3" json:"type"`
-	BindingCount  int64                     `protobuf:"varint,5,opt,name=binding_count,json=bindingCount,proto3" json:"binding_count"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	Id            string                    `protobuf:"bytes,2,opt,name=id,proto3" json:"id" form:"id"`
+	Name          string                    `protobuf:"bytes,3,opt,name=name,proto3" json:"name" form:"name"`
+	Type          string                    `protobuf:"bytes,4,opt,name=type,proto3" json:"type" form:"type"`
+	BindingCount  int64                     `protobuf:"varint,5,opt,name=binding_count,json=bindingCount,proto3" json:"binding_count" form:"binding_count"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -8369,8 +8369,8 @@ func (x *UpdateTagReply) GetBindingCount() int64 {
 
 type DelTagRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	TagId         string                 `protobuf:"bytes,2,opt,name=tag_id,json=tagId,proto3" json:"tag_id"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	TagId         string                 `protobuf:"bytes,2,opt,name=tag_id,json=tagId,proto3" json:"tag_id" form:"tag_id"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -8421,7 +8421,7 @@ func (x *DelTagRequest) GetTagId() string {
 
 type DelTagReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -8465,10 +8465,10 @@ func (x *DelTagReply) GetExp() *exceptions.HTTPException {
 
 type AddTagBindingRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	TagIds        []string               `protobuf:"bytes,2,rep,name=tag_ids,json=tagIds,proto3" json:"tag_ids"`
-	TargetId      string                 `protobuf:"bytes,3,opt,name=target_id,json=targetId,proto3" json:"target_id"`
-	Type          string                 `protobuf:"bytes,4,opt,name=type,proto3" json:"type"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	TagIds        []string               `protobuf:"bytes,2,rep,name=tag_ids,json=tagIds,proto3" json:"tag_ids" form:"tag_ids"`
+	TargetId      string                 `protobuf:"bytes,3,opt,name=target_id,json=targetId,proto3" json:"target_id" form:"target_id"`
+	Type          string                 `protobuf:"bytes,4,opt,name=type,proto3" json:"type" form:"type"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -8533,7 +8533,7 @@ func (x *AddTagBindingRequest) GetType() string {
 
 type AddTagBindingReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -8577,10 +8577,10 @@ func (x *AddTagBindingReply) GetExp() *exceptions.HTTPException {
 
 type DelTagBindingRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id"`
-	TagId         string                 `protobuf:"bytes,2,opt,name=tag_id,json=tagId,proto3" json:"tag_id"`
-	TargetId      string                 `protobuf:"bytes,3,opt,name=target_id,json=targetId,proto3" json:"target_id"`
-	Type          string                 `protobuf:"bytes,4,opt,name=type,proto3" json:"type"`
+	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id" form:"account_id"`
+	TagId         string                 `protobuf:"bytes,2,opt,name=tag_id,json=tagId,proto3" json:"tag_id" form:"tag_id"`
+	TargetId      string                 `protobuf:"bytes,3,opt,name=target_id,json=targetId,proto3" json:"target_id" form:"target_id"`
+	Type          string                 `protobuf:"bytes,4,opt,name=type,proto3" json:"type" form:"type"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -8645,7 +8645,7 @@ func (x *DelTagBindingRequest) GetType() string {
 
 type DelTagBindingReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -8689,7 +8689,7 @@ func (x *DelTagBindingReply) GetExp() *exceptions.HTTPException {
 
 type GetCodeBasedExtensionRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Module        string                 `protobuf:"bytes,1,opt,name=module,proto3" json:"module"`
+	Module        string                 `protobuf:"bytes,1,opt,name=module,proto3" json:"module" form:"module"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -8733,9 +8733,9 @@ func (x *GetCodeBasedExtensionRequest) GetModule() string {
 
 type ModuleExtension struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name"`
-	Label         string                 `protobuf:"bytes,2,opt,name=label,proto3" json:"label"`
-	FormSchema    string                 `protobuf:"bytes,3,opt,name=form_schema,json=formSchema,proto3" json:"form_schema"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name" form:"name"`
+	Label         string                 `protobuf:"bytes,2,opt,name=label,proto3" json:"label" form:"label"`
+	FormSchema    string                 `protobuf:"bytes,3,opt,name=form_schema,json=formSchema,proto3" json:"form_schema" form:"form_schema"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -8793,9 +8793,9 @@ func (x *ModuleExtension) GetFormSchema() string {
 
 type GetCodeBasedExtensionReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	Module        string                    `protobuf:"bytes,2,opt,name=module,proto3" json:"module"`
-	Data          []*ModuleExtension        `protobuf:"bytes,3,rep,name=data,proto3" json:"data"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	Module        string                    `protobuf:"bytes,2,opt,name=module,proto3" json:"module" form:"module"`
+	Data          []*ModuleExtension        `protobuf:"bytes,3,rep,name=data,proto3" json:"data" form:"data"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -8853,10 +8853,10 @@ func (x *GetCodeBasedExtensionReply) GetData() []*ModuleExtension {
 
 type GetWorkflowRunDetailRequest struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
-	UserId          string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id"`
-	AppId           string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	WorkflowRunId   string                 `protobuf:"bytes,3,opt,name=workflow_run_id,json=workflowRunId,proto3" json:"workflow_run_id"`
-	IsNodeExecution bool                   `protobuf:"varint,4,opt,name=is_node_execution,json=isNodeExecution,proto3" json:"is_node_execution"`
+	UserId          string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id" form:"user_id"`
+	AppId           string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	WorkflowRunId   string                 `protobuf:"bytes,3,opt,name=workflow_run_id,json=workflowRunId,proto3" json:"workflow_run_id" form:"workflow_run_id"`
+	IsNodeExecution bool                   `protobuf:"varint,4,opt,name=is_node_execution,json=isNodeExecution,proto3" json:"is_node_execution" form:"is_node_execution"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -8921,8 +8921,8 @@ func (x *GetWorkflowRunDetailRequest) GetIsNodeExecution() bool {
 
 type GetWorkflowRunDetailReply struct {
 	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	ResponseStr   string                    `protobuf:"bytes,2,opt,name=response_str,json=responseStr,proto3" json:"response_str"`
+	Exp           *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	ResponseStr   string                    `protobuf:"bytes,2,opt,name=response_str,json=responseStr,proto3" json:"response_str" form:"response_str"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }

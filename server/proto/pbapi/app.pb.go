@@ -24,11 +24,11 @@ const (
 
 type AppRunRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id"`
-	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id"`
-	ArgsStr       string                 `protobuf:"bytes,3,opt,name=args_str,json=argsStr,proto3" json:"args_str"`
-	ResponseMode  string                 `protobuf:"bytes,4,opt,name=response_mode,json=responseMode,proto3" json:"response_mode"`
-	IsDraft       bool                   `protobuf:"varint,5,opt,name=is_draft,json=isDraft,proto3" json:"is_draft"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id" form:"user_id"`
+	AppId         string                 `protobuf:"bytes,2,opt,name=app_id,json=appId,proto3" json:"app_id" form:"app_id"`
+	ArgsStr       string                 `protobuf:"bytes,3,opt,name=args_str,json=argsStr,proto3" json:"args_str" form:"args_str"`
+	ResponseMode  string                 `protobuf:"bytes,4,opt,name=response_mode,json=responseMode,proto3" json:"response_mode" form:"response_mode"`
+	IsDraft       bool                   `protobuf:"varint,5,opt,name=is_draft,json=isDraft,proto3" json:"is_draft" form:"is_draft"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -100,9 +100,9 @@ func (x *AppRunRequest) GetIsDraft() bool {
 
 type AppRunReply struct {
 	state              protoimpl.MessageState    `protogen:"open.v1"`
-	Exp                *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp"`
-	DirectReplyDictStr string                    `protobuf:"bytes,2,opt,name=direct_reply_dict_str,json=directReplyDictStr,proto3" json:"direct_reply_dict_str"`
-	StreamReplyStr     string                    `protobuf:"bytes,3,opt,name=stream_reply_str,json=streamReplyStr,proto3" json:"stream_reply_str"`
+	Exp                *exceptions.HTTPException `protobuf:"bytes,1,opt,name=exp,proto3" json:"exp" form:"exp"`
+	DirectReplyDictStr string                    `protobuf:"bytes,2,opt,name=direct_reply_dict_str,json=directReplyDictStr,proto3" json:"direct_reply_dict_str" form:"direct_reply_dict_str"`
+	StreamReplyStr     string                    `protobuf:"bytes,3,opt,name=stream_reply_str,json=streamReplyStr,proto3" json:"stream_reply_str" form:"stream_reply_str"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }

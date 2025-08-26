@@ -23,9 +23,9 @@ const (
 
 type PageInfo struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Page          int64                  `protobuf:"varint,1,opt,name=page,proto3" json:"page"`                         // 页码
-	PageSize      int64                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size"` // 每页大小
-	Keyword       string                 `protobuf:"bytes,3,opt,name=keyword,proto3" json:"keyword"`                    //关键字
+	Page          int64                  `protobuf:"varint,1,opt,name=page,proto3" json:"page" form:"page"`                              // 页码
+	PageSize      int64                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size" form:"page_size"` // 每页大小
+	Keyword       string                 `protobuf:"bytes,3,opt,name=keyword,proto3" json:"keyword" form:"keyword"`                      //关键字
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -83,8 +83,8 @@ func (x *PageInfo) GetKeyword() string {
 
 type BasePageReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Page          int64                  `protobuf:"varint,1,opt,name=page,proto3" json:"page"`   // 页码
-	Limit         int64                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit"` // 每页大小
+	Page          int64                  `protobuf:"varint,1,opt,name=page,proto3" json:"page" form:"page"`    // 页码
+	Limit         int64                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit" form:"limit"` // 每页大小
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }

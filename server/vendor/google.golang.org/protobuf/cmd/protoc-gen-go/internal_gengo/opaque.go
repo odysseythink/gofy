@@ -84,6 +84,7 @@ func opaqueGenMessageField(g *protogen.GeneratedFile, f *fileInfo, message *mess
 	}
 	protobufTagValue := fieldProtobufTagValue(field)
 	jsonTagValue := fieldJSONTagValue(field)
+	formTagValue := fieldFormTagValue(field)
 	if g.InternalStripForEditionsDiff() {
 		if field.Desc.ContainingOneof() != nil && field.Desc.ContainingOneof().IsSynthetic() {
 			protobufTagValue = strings.ReplaceAll(protobufTagValue, ",oneof", "")
@@ -95,6 +96,7 @@ func opaqueGenMessageField(g *protogen.GeneratedFile, f *fileInfo, message *mess
 	}
 	if !message.isOpaque() {
 		tags = append(tags, structTags{{"json", jsonTagValue}}...)
+		tags = append(tags, structTags{{"form", formTagValue}}...)
 	}
 	if field.Desc.IsMap() {
 		keyTagValue := fieldProtobufTagValue(field.Message.Fields[0])

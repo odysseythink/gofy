@@ -1,5 +1,11 @@
 package mcp
 
+import (
+	"errors"
+
+	"mlib.com/mlog"
+)
+
 const (
 	// Client support both version, not support 2025-06-18 yet.
 	LATEST_PROTOCOL_VERSION = "2025-03-26"
@@ -357,6 +363,13 @@ type Annotations  struct {
     Priority float64 `json:"priority"`//Annotated[float, Field(ge=0.0, le=1.0)] | None = None
     ModelConfig map[string]any `json:"model_config"`
 }
+func (a *Annotations) ToDict() map[string]any {
+	return map[string]any{
+        "audience": a.Audience,
+        "priority":a.Priority,
+        "model_config": a.ModelConfig,
+    }
+}
 
 type Resource  struct {
     /*A known resource that the server is capable of reading.*/
@@ -444,45 +457,16 @@ type ReadResourceRequest struct{
     Params ReadResourceRequestParams`json:"params"`
  }
 
-type ResourceContents  struct {
-    /*The contents of a specific resource or sub-resource.*/
-
-    URI string `json:"uri"`//[AnyUrl, UrlConstraints(host_required=False)]
-    /*The URI of this resource.*/
-    MimeType string `json:"mimeType"`
-    /*The MIME type of this resource, if known.*/
-    ModelConfig map[string]any `json:"model_config"`
-}
-
-type TextResourceContents struct{
-*ResourceContents
-    /*Text contents of a resource.*/
-
-    Text string `json:"text"`
-    /*
-    The text of the item. This must only be set if the item can actually be represented
-    as text (not binary data).
-    */
-}
-
-type BlobResourceContents struct{
-*ResourceContents
-    /*Binary contents of a resource.*/
-
-    Blob string `json:"blob"`
-    /*A base64-encoded string representing the binary data of the item.*/
-}
 
 type ReadResourceResult struct{
  *Result
     /*The server's response to a resources/read request from the client.*/
 
-    contents: list[TextResourceContents | BlobResourceContents]
+    Contents []ResourceContenter `json:"contents"`//list[TextResourceContents | BlobResourceContents]
 }
 
-type ResourceListChangedNotification(
-    Notification[NotificationParams | None, Literal["notifications/resources/list_changed"]]
-){
+type ResourceListChangedNotification struct{
+    *Notification[NotificationParams]
     /*
     An optional notification from the server to the client, informing it that the list
     of resources it can read from has changed.
@@ -490,7 +474,7 @@ type ResourceListChangedNotification(
 
     Method string `json:"method"`//["notifications/resources/list_changed"]
     Params *NotificationParams `json:"params"`
-
+}
 
 type SubscribeRequestParams struct{
 	*RequestParams
@@ -502,18 +486,18 @@ type SubscribeRequestParams struct{
     the server how to interpret it.
     */
     ModelConfig map[string]any `json:"model_config"`
-
+}
 
 type SubscribeRequest struct{
- *Request[SubscribeRequestParams, Literal["resources/subscribe"]]){
+ *Request[SubscribeRequestParams]
     /*
     Sent from the client to request resources/updated notifications from the server
     whenever a particular resource changes.
     */
 
     Method string `json:"method"`//["resources/subscribe"]
-    params: SubscribeRequestParams
-
+    Params SubscribeRequestParams `json:"params"`
+}
 
 type UnsubscribeRequestParams struct{
 	*RequestParams
@@ -522,18 +506,18 @@ type UnsubscribeRequestParams struct{
     URI string `json:"uri"`//[AnyUrl, UrlConstraints(host_required=False)]
     /*The URI of the resource to unsubscribe from.*/
     ModelConfig map[string]any `json:"model_config"`
-
+}
 
 type UnsubscribeRequest struct{
- *Request[UnsubscribeRequestParams, Literal["resources/unsubscribe"]]){
+ *Request[UnsubscribeRequestParams]
     /*
     Sent from the client to request cancellation of resources/updated notifications from
     the server.
     */
 
     Method string `json:"method"`//["resources/unsubscribe"]
-    params: UnsubscribeRequestParams
-
+    Params UnsubscribeRequestParams `json:"params"`
+}
 
 type ResourceUpdatedNotificationParams struct{
 *NotificationParams
@@ -545,22 +529,22 @@ type ResourceUpdatedNotificationParams struct{
     one that the client actually subscribed to.
     */
     ModelConfig map[string]any `json:"model_config"`
+}
 
-
-type ResourceUpdatedNotification(
-    Notification[ResourceUpdatedNotificationParams, Literal["notifications/resources/updated"]]
-){
+type ResourceUpdatedNotification struct{
+    Notification[ResourceUpdatedNotificationParams]
     /*
     A notification from the server to the client, informing it that a resource has
     changed and may need to be read again.
     */
 
     Method string `json:"method"`//["notifications/resources/updated"]
-    params: ResourceUpdatedNotificationParams
+    Params ResourceUpdatedNotificationParams `json:"params"`
+}
 
 
 type ListPromptsRequest struct{
-*PaginatedRequest[RequestParams | None, Literal["prompts/list"]]){
+*PaginatedRequest[RequestParams]
     /*Sent from the client to request a list of prompts and prompt templates.*/
 
     Method string `json:"method"`//["prompts/list"]
@@ -575,10 +559,10 @@ type PromptArgument  struct {
     /*The name of the argument.*/
     Description string `json:"description"`
     /*A human-readable description of the argument.*/
-    required bool `json:"listChanged"`
+    Required bool `json:"required"`
     /*Whether this argument must be provided.*/
     ModelConfig map[string]any `json:"model_config"`
-
+}
 
 type Prompt  struct {
     /*A prompt or prompt template that the server offers.*/
@@ -587,17 +571,17 @@ type Prompt  struct {
     /*The name of the prompt or prompt template.*/
     Description string `json:"description"`
     /*An optional description of what this prompt provides.*/
-    arguments: list[PromptArgument] | None = None
+    Arguments []*PromptArgument`json:"arguments"`
     /*A list of arguments to use for templating the prompt.*/
     ModelConfig map[string]any `json:"model_config"`
-
+}
 
 type ListPromptsResult struct{
 	*PaginatedResult
     /*The server's response to a prompts/list request from the client.*/
 
-    prompts: list[Prompt]
-
+    Prompts []*Prompt`json:"prompts"`
+}
 
 type GetPromptRequestParams struct{
 	*RequestParams
@@ -605,34 +589,91 @@ type GetPromptRequestParams struct{
 
     Name string `json:"name"`
     /*The name of the prompt or prompt template.*/
-    arguments: dict[str, str] | None = None
+    Arguments map[string]string`json:"arguments"`
     /*Arguments to use for templating the prompt.*/
     ModelConfig map[string]any `json:"model_config"`
-
+}
 
 type GetPromptRequest struct{
- *Request[GetPromptRequestParams, Literal["prompts/get"]]){
+ *Request[GetPromptRequestParams]
     /*Used by the client to get a prompt provided by the server.*/
 
     Method string `json:"method"`//["prompts/get"]
-    params: GetPromptRequestParams
-
-
+    Params GetPromptRequestParams`json:"params"`
+}
+type ContentType string 
+const (
+    Content_TEXT ContentType = "text"
+    Content_IMAGE ContentType = "image"
+    Content_RESOURCE ContentType = "resource"
+)
+type Contenter interface{
+    Type()ContentType
+    ToDict() map[string]any
+}
 type TextContent  struct {
     /*Text content for a message.*/
 
-    type: Literal["text"]
     Text string `json:"text"`
     /*The text content of the message.*/
     Annotations *Annotations  `json:"annotations"`
     ModelConfig map[string]any `json:"model_config"`
+}
+func (content *TextContent)Type()ContentType{
+    return Content_TEXT
+}
+func (content *TextContent) ToDict() map[string]any {
+    if content.Annotations != nil {
+	return map[string]any{
+        "type": content.Type(),
+        "text":content.Text,
+        "annotations": content.Annotations.ToDict(),
+        "model_config": a.ModelConfig,
+    }
+    } else {
+        	return map[string]any{
+        "type": content.Type(),
+        "text":content.Text,
+        "annotations": nil,
+        "model_config": a.ModelConfig,
+    }
+    }
+}
+func (content TextContent) MarshalJSON() ([]byte, error) {
+	return json.Marshal((&msg).ToDict())
+}
+
+func (content *TextContent) UnmarshalJSON(data []byte) error {
+    var basedata struct{
+        Type ContentType `json:"type"`
+    }
+    	if err := json.Unmarshal(data, &basedata); err != nil {
+            mlog.Errorf("data=%s must contain type field:%v", string(data), err)
+		return err
+	}
+    if basedata.Type != Content_TEXT {
+        mlog.Errorf("data=%s type field must be text", string(data))
+        errors.New("data type field must be text")
+    }
+
+	type alias TextContent
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(param), // 把原始对象嵌进去，避免递归
+	}
+
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return err
+	}
+	return nil
+}
 
 
 type ImageContent  struct {
     /*Image content for a message.*/
 
-    type: Literal["image"]
-    data string `json:"code"`
+    Data string `json:"data"`
     /*The base64-encoded image data.*/
     MimeType string `json:"mimeType"`
     /*
@@ -641,17 +682,82 @@ type ImageContent  struct {
     */
     Annotations *Annotations  `json:"annotations"`
     ModelConfig map[string]any `json:"model_config"`
+}
+func (content *ImageContent)Type()ContentType{
+    return Content_IMAGE
+}
+func (content *ImageContent) ToDict() map[string]any {
+    if content.Annotations != nil {
+	return map[string]any{
+        "type": content.Type(),
+        "data":content.Data,
+        "mimeType": content.MimeType,
+        "annotations": content.Annotations.ToDict(),
+        "model_config": a.ModelConfig,
+    }
+    } else {
+        	return map[string]any{
+        "type": content.Type(),
+        "data":content.Data,
+        "mimeType": content.MimeType,
+        "annotations": nil,
+        "model_config": a.ModelConfig,
+    }
+    }
+}
+func (content ImageContent) MarshalJSON() ([]byte, error) {
+	return json.Marshal((&msg).ToDict())
+}
 
+func (content *ImageContent) UnmarshalJSON(data []byte) error {
+    var basedata struct{
+        Type ContentType `json:"type"`
+    }
+    	if err := json.Unmarshal(data, &basedata); err != nil {
+            mlog.Errorf("data=%s must contain type field:%v", string(data), err)
+		return err
+	}
+    if basedata.Type != Content_IMAGE {
+        mlog.Errorf("data=%s type field must be image", string(data))
+        errors.New("data type field must be image")
+    }
+
+	type alias ImageContent
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(param), // 把原始对象嵌进去，避免递归
+	}
+
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return err
+	}
+	return nil
+}
 
 type SamplingMessage  struct {
     /*Describes a message issued to or received from an LLM API.*/
 
-    role: Role
-    content: TextContent | ImageContent
+    Role RoleType`json:"role"`
+    Content Contenter 
     ModelConfig map[string]any `json:"model_config"`
-
-
-type EmbeddedResource  struct {
+}
+func (msg *SamplingMessage) ToDict() map[string]any {
+    if content.Content != nil {
+	return map[string]any{
+        "role": msg.Role,
+        "content":msg.Content.ToDict(),
+        "model_config": a.ModelConfig,
+    }
+    } else {
+        	return map[string]any{
+        "role": msg.Role,
+        "content": nil,
+        "model_config": a.ModelConfig,
+    }
+    }
+}
+type EmbeddedResourceContent  struct {
     /*
     The contents of a resource, embedded into a prompt or tool call result.
 
@@ -659,19 +765,69 @@ type EmbeddedResource  struct {
     of the LLM and/or the user.
     */
 
-    type: Literal["resource"]
-    resource: TextResourceContents | BlobResourceContents
+    // Type string `json:"type"` //Literal["resource"]
+    Resource ResourceContenter `json:"resource"`//TextResourceContents | BlobResourceContents
     Annotations *Annotations  `json:"annotations"`
     ModelConfig map[string]any `json:"model_config"`
+}
 
+func (content *EmbeddedResourceContent)Type()ContentType{
+    return Content_TEXT
+}
+func (content *EmbeddedResourceContent) ToDict() map[string]any {
+    ret := map[string]any{
+        "type": content.Type(),
+        "model_config": a.ModelConfig,
+    }
+    if content.Annotations != nil {
+	ret["annotations"]= content.Annotations.ToDict()
+    } else {
+       ret["annotations"]= nil
+    }
+    if content.Resource != nil {
+        ret["resource"] = content.Resource.ToDict()
+    } else {
+        ret["resource"] = nil
+    }
+    return ret
+}
+func (content EmbeddedResourceContent) MarshalJSON() ([]byte, error) {
+	return json.Marshal((&msg).ToDict())
+}
+
+func (content *EmbeddedResourceContent) UnmarshalJSON(data []byte) error {
+    var basedata struct{
+        Type ContentType `json:"type"`
+    }
+    	if err := json.Unmarshal(data, &basedata); err != nil {
+            mlog.Errorf("data=%s must contain type field:%v", string(data), err)
+		return err
+	}
+    if basedata.Type != Content_RESOURCE {
+        mlog.Errorf("data=%s type field must be resource", string(data))
+        errors.New("data type field must be resource")
+    }
+
+	type alias EmbeddedResourceContent
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(param), // 把原始对象嵌进去，避免递归
+	}
+
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return err
+	}
+	return nil
+}
 
 type PromptMessage  struct {
     /*Describes a message returned as part of a prompt.*/
 
-    role: Role
-    content: TextContent | ImageContent | EmbeddedResource
+    Role Role`json:"role"`
+    Content Contenter `json:"content"`
     ModelConfig map[string]any `json:"model_config"`
-
+}
 
 type GetPromptResult struct{
  *Result

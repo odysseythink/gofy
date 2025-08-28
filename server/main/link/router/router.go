@@ -234,6 +234,7 @@ func InitRouters() *gin.Engine {
 		authapiRouter.GET("workspaces/current/tool-labels", v1.ApiGroupApp.ToolsApi.ListToolLabels)
 		authapiRouter.GET("workspaces/current/tool-providers", v1.ApiGroupApp.ToolsApi.ListToolProvider)
 		authapiRouter.GET("workspaces/current/tools/:tool_type", v1.ApiGroupApp.ToolsApi.GetToolList)
+		authapiRouter.GET("workspaces/current/tools/mcp", v1.ApiGroupApp.ToolsApi.GetMCPToolList)
 
 		authapiRouter.GET("workspaces/current/plugin/preferences/fetch", v1.ApiGroupApp.PluginApi.PluginFetchPreferences)
 		authapiRouter.GET("workspaces/current/plugin/tasks", v1.ApiGroupApp.PluginApi.PluginFetchInstallTasks)

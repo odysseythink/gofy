@@ -13,7 +13,7 @@ type ServiceGroup struct {
 	ModelProvide          *ModelProvideService
 	Workflow              *WorkflowService
 	WorkflowRun           *WorkflowRunService
-	Tool                  *ToolService
+	Tools                 *ToolsService
 	Register              *RegisterService
 	DifySetup             *DifySetupService
 	Billing               *BillingService
@@ -32,6 +32,7 @@ type ServiceGroup struct {
 	AccountConversation   *ConversationService[*models.Account]
 	AppAnnotation         *AppAnnotationService
 	AppDSL                *AppDSLService
+	ToolsTransform        *ToolsTransformService
 }
 
 var ServiceGroupApp = ServiceGroup{
@@ -44,7 +45,7 @@ var ServiceGroupApp = ServiceGroup{
 	Feature:               &FeatureService{},
 	ModelProvide:          &ModelProvideService{},
 	Workflow:              &WorkflowService{},
-	Tool:                  &ToolService{},
+	Tools:                 &ToolsService{},
 	Register:              &RegisterService{},
 	DifySetup:             &DifySetupService{},
 	Billing:               &BillingService{},
@@ -64,4 +65,5 @@ var ServiceGroupApp = ServiceGroup{
 	AccountConversation:   &ConversationService[*models.Account]{},
 	AppAnnotation:         &AppAnnotationService{},
 	AppDSL:                &AppDSLService{},
+	ToolsTransform:        &ToolsTransformService{},
 }

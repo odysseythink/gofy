@@ -34,14 +34,14 @@ type ToolProviderApiEntity /*[T1 string | map[string]any]*/ struct {
 	OriginalCredentials    map[string]any                  `json:"original_credentials"`
 	IsTeamAuthorization    bool                            `json:"is_team_authorization"`
 	AllowDelete            bool                            `json:"allow_delete"`             //default true
-	PluginID               *string                         `json:"plugin_id"`                //description="The plugin id of the tool"
-	PluginUniqueIdentifier *string                         `json:"plugin_unique_identifier"` //description="The unique identifier of the tool"
+	PluginID               string                          `json:"plugin_id"`                //description="The plugin id of the tool"
+	PluginUniqueIdentifier string                          `json:"plugin_unique_identifier"` //description="The unique identifier of the tool"
 	Tools                  []*ToolApiEntity                `json:"tools"`
 	Labels                 []string                        `json:"labels"`
 	// MCP
-	ServerURL        *string `json:"server_url"`        //description="The server url of the tool"
-	UpdatedAt        int     `json:"updated_at"`        //default_factory=lambda: int(datetime.now().timestamp()))
-	ServerIdentifier *string `json:"server_identifier"` //description="The server identifier of the MCP tool"
+	ServerURL        string `json:"server_url"`        //description="The server url of the tool"
+	UpdatedAt        int64  `json:"updated_at"`        //default_factory=lambda: int(datetime.now().timestamp()))
+	ServerIdentifier string `json:"server_identifier"` //description="The server identifier of the MCP tool"
 }
 
 func (entity *ToolProviderApiEntity) ToDict() map[string]any {

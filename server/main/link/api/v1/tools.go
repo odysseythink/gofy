@@ -166,3 +166,49 @@ func (api *ToolsApi) GetToolList(c *gin.Context) {
 		return
 	}
 }
+
+func (api *ToolsApi) GetMCPToolList(c *gin.Context) {
+	rawuser, _ := c.Get("current_user")
+	acc := rawuser.(*models.Account)
+	conn := cluster.Instance().GetRpcClientByModule("tools")
+	if conn != nil {
+		pbrsp, err := pbapi.NewToolsClient(conn).GetMCPToolList(c, &pbapi.GetMCPToolListRequest{TenantId: acc.CurrentTenantID()})
+		if err != nil {
+			mlog.Errorf("remote call GetMCPToolList failed:%v", err)
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"result": "fail",
+				"data":   "remote call GetMCPToolList failed",
+			})
+			return
+		} else {
+			mlog.Infof("remote call GetMCPToolList return:%#v", pbrsp)
+			if pbrsp.Exp != nil {
+				response.PbHttpException(c, pbrsp.Exp)
+			} else {
+				if pbrsp.ToolsStr != "" {
+					var tmp []map[string]any
+					if err1 := json.Unmarshal([]byte(pbrsp.ToolsStr), &tmp); err1 != nil {
+						mlog.Errorf("json unmarshal(%s) to dict list failed:%v", pbrsp.ToolsStr, err)
+						c.JSON(http.StatusInternalServerError, gin.H{
+							"result": "fail",
+							"data":   fmt.Sprintf("json unmarshal(%s) to dict list failed:%v", pbrsp.ToolsStr, err),
+						})
+					} else {
+						c.JSON(http.StatusOK, tmp)
+					}
+				} else {
+					c.JSON(http.StatusOK, []map[string]any{})
+				}
+
+			}
+			return
+		}
+	} else {
+		mlog.Errorf("get rpc client failed")
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"result": "fail",
+			"data":   "internal server error",
+		})
+		return
+	}
+}

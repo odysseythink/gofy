@@ -40,7 +40,7 @@ func (s *WorkflowNodeExecutionService) Extras(wfne *models.WorkflowNodeExecution
 					if err != nil {
 						mlog.Errorf("node type validate failed:%v", err)
 					} else {
-						extras["icon"], _ = ServiceGroupApp.Tool.GetToolIcon(wfne.TenantID, tool_info["provider_type"].(string), tool_info["provider_id"].(string))
+						extras["icon"], _ = ServiceGroupApp.Tools.GetToolIcon(wfne.TenantID, tool_info["provider_type"].(string), tool_info["provider_id"].(string))
 					}
 				}
 			}

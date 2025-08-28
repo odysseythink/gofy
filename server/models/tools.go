@@ -2,13 +2,17 @@ package models
 
 import (
 	"encoding/json"
+	"net/url"
+	"strings"
 	"time"
 
 	uuid "github.com/satori/go.uuid"
+	"mlib.com/gofy/server/core/file"
 	dbengine "mlib.com/gofy/server/db_engine"
 	toolsentities "mlib.com/gofy/server/entities/tools"
 	toolsenumtypes "mlib.com/gofy/server/enum_types/tools"
 	commontypes "mlib.com/gofy/server/types/common"
+	mcptypes "mlib.com/gofy/server/types/mcp"
 	"mlib.com/mlog"
 )
 
@@ -27,11 +31,11 @@ func (ToolOAuthSystemClient) TableName() string {
 
 // tenant level tool oauth client params (client_id, client_secret, etc.)
 type ToolOAuthTenantClient struct {
-	ID       string `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
-	TenantID string `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
-	PluginID string `gorm:"column:plugin_id;type:varchar(512);not null" json:"plugin_id"`
-	Provider string `gorm:"column:provider;type:varchar(255);not null" json:"provider"`
-	Enabled  bool   `gorm:"column:enabled;type:tinyint(1);not null;default:1" json:"enabled"`
+	ID                   string `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	TenantID             string `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
+	PluginID             string `gorm:"column:plugin_id;type:varchar(512);not null" json:"plugin_id"`
+	Provider             string `gorm:"column:provider;type:varchar(255);not null" json:"provider"`
+	Enabled              bool   `gorm:"column:enabled;type:tinyint(1);not null;default:1" json:"enabled"`
 	EncryptedOauthParams string `gorm:"column:encrypted_oauth_params;type:text;not null" json:"encrypted_oauth_params"`
 }
 
@@ -77,37 +81,6 @@ func (btp *BuiltinToolProvider) Credentials() map[string]any {
 		return nil
 	} else {
 		return tmp
-	}
-}
-
-// PublishedAppTool [...]
-type PublishedAppTool struct {
-	ID               string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
-	AppID            string     `gorm:"column:app_id;type:varchar(36);not null" json:"app_id"`
-	App              *App       `json:"app" form:"app" gorm:"foreignKey:AppID;references:ID;"`
-	UserID           string     `gorm:"column:user_id;type:varchar(36);not null" json:"user_id"`
-	Description      string     `gorm:"column:description;type:text;not null" json:"description"`
-	LlmDescription   string     `gorm:"column:llm_description;type:text;not null" json:"llm_description"`
-	QueryDescription string     `gorm:"column:query_description;type:text;not null" json:"query_description"`
-	QueryName        string     `gorm:"column:query_name;type:varchar(40);not null" json:"query_name"`
-	ToolName         string     `gorm:"column:tool_name;type:varchar(40);not null" json:"tool_name"`
-	Author           string     `gorm:"column:author;type:varchar(40);not null" json:"author"`
-	CreatedAt        *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt        *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
-}
-
-// TableName get sql table name.获取数据库表名
-func (PublishedAppTool) TableName() string {
-	return "tool_published_apps"
-}
-func (pat *PublishedAppTool) Description2I18n() *commontypes.I18nObject {
-	e := new(commontypes.I18nObject)
-	err := json.Unmarshal([]byte(pat.Description), e)
-	if err != nil {
-		mlog.Errorf("json unmarshal failed:%v", err)
-		return nil
-	} else {
-		return e
 	}
 }
 
@@ -276,26 +249,26 @@ func (wftp *WorkflowToolProvider) App() *App {
 	return app
 }
 
-
-type MCPToolProvider struct{
-	ID                     string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
-	Name                   string     `gorm:"column:name;type:varchar(40);not null" json:"name"`
-	ServerIdentifier                  string     `gorm:"column:server_identifier;type:varchar(64);not null" json:"server_identifier"`
-	ServerURL                   string     `gorm:"column:server_url;not null" json:"server_url"`
-	ServerURLHash                  string     `gorm:"column:server_url_hash;type:varchar(64);not null" json:"server_url_hash"`
-	Icon                string     `gorm:"column:icon" json:"icon"`
-	TenantID               string     `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
-	UserID                 string     `gorm:"column:user_id;type:varchar(36);not null" json:"user_id"`
-	EncryptedCredentials            string     `gorm:"column:encrypted_credentials" json:"encrypted_credentials"`
-	Authed  bool   `gorm:"column:authed;type:tinyint(0);not null;default:1" json:"authed"`
-	Tools string     `gorm:"column:tools;type:text;default:'[]'" json:"tools"`
-		CreatedAt              *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt              *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+type MCPToolProvider struct {
+	ID                   string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	Name                 string     `gorm:"column:name;type:varchar(40);not null" json:"name"`
+	ServerIdentifier     string     `gorm:"column:server_identifier;type:varchar(64);not null" json:"server_identifier"`
+	ServerURL            string     `gorm:"column:server_url;not null" json:"server_url"`
+	ServerURLHash        string     `gorm:"column:server_url_hash;type:varchar(64);not null" json:"server_url_hash"`
+	Icon                 string     `gorm:"column:icon" json:"icon"`
+	TenantID             string     `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
+	UserID               string     `gorm:"column:user_id;type:varchar(36);not null" json:"user_id"`
+	EncryptedCredentials string     `gorm:"column:encrypted_credentials" json:"encrypted_credentials"`
+	Authed               bool       `gorm:"column:authed;type:tinyint(0);not null;default:1" json:"authed"`
+	Tools                string     `gorm:"column:tools;type:text;default:'[]'" json:"tools"`
+	CreatedAt            *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt            *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
-	func (MCPToolProvider) TableName() string {
+
+func (MCPToolProvider) TableName() string {
 	return "tool_mcp_providers"
 }
-	func (mcptp *MCPToolProvider) LoadUser() *Account {
+func (mcptp *MCPToolProvider) LoadUser() *Account {
 	if mcptp.UserID == "" {
 		return nil
 	}
@@ -308,8 +281,7 @@ type MCPToolProvider struct{
 	return user
 }
 
-
-	func (mcptp *MCPToolProvider)Tenant() *Tenant {
+func (mcptp *MCPToolProvider) Tenant() *Tenant {
 	if mcptp.TenantID == "" {
 		return nil
 	}
@@ -322,7 +294,7 @@ type MCPToolProvider struct{
 	return tenant
 }
 
-	func (mcptp *MCPToolProvider)Credentials() map[string]any {
+func (mcptp *MCPToolProvider) Credentials() map[string]any {
 	if mcptp.EncryptedCredentials == "" {
 		return nil
 	} else {
@@ -336,58 +308,86 @@ type MCPToolProvider struct{
 	}
 }
 
+func (mcptp *MCPToolProvider) MCPTools() []*mcptypes.Tool {
 
-	func (mcptp *MCPToolProvider)NCPTools() -> list[Tool]:
-        return [Tool(**tool) for tool in json.loads(self.tools)]
+	if mcptp.Tools != "" {
+		var datas []*mcptypes.Tool
+		err := json.Unmarshal([]byte(mcptp.Tools), &datas)
+		if err != nil {
+			mlog.Errorf("json unmashal %s to tool list failed:%v", mcptp.Tools, err)
+			return nil
+		}
+		return datas
+	}
+	return nil
+}
+func (mcptp *MCPToolProvider) ProviderIcon() any /*map[string]string | string*/ {
 
-	func (mcptp *MCPToolProvider)provider_icon() -> dict[str, str] | str:
-        try:
-            return cast(dict[str, str], json.loads(self.icon))
-        except json.JSONDecodeError:
-            return file_helpers.get_signed_file_url(self.icon)
+	if mcptp.Icon != "" {
+		var datas map[string]string
+		err := json.Unmarshal([]byte(mcptp.Icon), &datas)
+		if err != nil {
+			mlog.Warningf("json unmashal %s to map[string]string failed:%v", mcptp.Icon, err)
+			return file.GetSignedFileURL(mcptp.Icon)
+		}
+		return datas
+	}
+	return nil
+}
 
-	func (mcptp *MCPToolProvider)decrypted_server_url() -> str:
-        return cast(str, encrypter.decrypt_token(self.tenant_id, self.server_url))
+func (mcptp *MCPToolProvider) DecryptedServerURL() string {
+	return mcptp.ServerURL
+	// return cast(str, encrypter.DecryptToken(self.tenant_id, self.server_url))
+}
+func mask_url(rawURL string, mask_char string /* = "*"*/) string {
+	/*
+	   mask the url to a simple string
+	*/
+	if mask_char == "" {
+		mask_char = "*"
+	}
+	u, err := url.Parse(rawURL)
+	if err != nil {
+		// 如果解析失败，直接返回原串
+		return rawURL
+	}
+	base := u.Scheme + "://" + u.Host
+	path := u.EscapedPath()
+	if path == "" {
+		path = "/"
+	}
+	if path != "/" {
+		return base + "/" + strings.Repeat(mask_char, 6)
+	}
+	return base
+}
+func (mcptp *MCPToolProvider) MaskedServerURL() string {
+	return mask_url(mcptp.DecryptedServerURL(), "")
+}
 
-	func (mcptp *MCPToolProvider)masked_server_url() -> str:
-        def mask_url(url: str, mask_char: str = "*") -> str:
-            """
-            mask the url to a simple string
-            """
-            parsed = urlparse(url)
-            base_url = f"{parsed.scheme}://{parsed.netloc}"
+// func (mcptp *MCPToolProvider)decrypted_credentials() -> dict:
+//     from core.helper.provider_cache import NoOpProviderCredentialCache
+//     from core.tools.mcp_tool.provider import MCPToolProviderController
+//     from core.tools.utils.encryption import create_provider_encrypter
 
-            if parsed.path and parsed.path != "/":
-                return f"{base_url}/{mask_char * 6}"
-            else:
-                return base_url
+//     provider_controller = MCPToolProviderController._from_db(self)
 
-        return mask_url(self.decrypted_server_url)
+//     encrypter, _ = create_provider_encrypter(
+//         tenant_id=self.tenant_id,
+//         config=[x.to_basic_provider_config() for x in provider_controller.get_credentials_schema()],
+//         cache=NoOpProviderCredentialCache(),
+//     )
 
-	func (mcptp *MCPToolProvider)decrypted_credentials() -> dict:
-        from core.helper.provider_cache import NoOpProviderCredentialCache
-        from core.tools.mcp_tool.provider import MCPToolProviderController
-        from core.tools.utils.encryption import create_provider_encrypter
-
-        provider_controller = MCPToolProviderController._from_db(self)
-
-        encrypter, _ = create_provider_encrypter(
-            tenant_id=self.tenant_id,
-            config=[x.to_basic_provider_config() for x in provider_controller.get_credentials_schema()],
-            cache=NoOpProviderCredentialCache(),
-        )
-
-        return encrypter.decrypt(self.credentials)  # type: ignore
-
+//     return encrypter.decrypt(self.credentials)  # type: ignore
 
 // ToolModelInvoke [...]
 type ToolModelInvoke struct {
 	ID                      string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
 	UserID                  string     `gorm:"column:user_id;type:varchar(36);not null" json:"user_id"`
 	TenantID                string     `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
-	Provider                string     `gorm:"column:provider;type:varchar(40);not null" json:"provider"`
+	Provider                string     `gorm:"column:provider;type:varchar(255);not null" json:"provider"`
 	ToolType                string     `gorm:"column:tool_type;type:varchar(40);not null" json:"tool_type"`
-	ToolName                string     `gorm:"column:tool_name;type:varchar(40);not null" json:"tool_name"`
+	ToolName                string     `gorm:"column:tool_name;type:varchar(128);not null" json:"tool_name"`
 	ModelParameters         string     `gorm:"column:model_parameters;type:text;not null" json:"model_parameters"`
 	PromptMessages          string     `gorm:"column:prompt_messages;type:text;not null" json:"prompt_messages"`
 	ModelResponse           string     `gorm:"column:model_response;type:text;not null" json:"model_response"`
@@ -423,14 +423,14 @@ func (ToolConversationVariable) TableName() string {
 	return "tool_conversation_variables"
 }
 
-func (self *ToolConversationVariable) Variables() map[string]any {
-	if self.VariablesStr == "" {
+func (tcv *ToolConversationVariable) Variables() map[string]any {
+	if tcv.VariablesStr == "" {
 		return nil
 	} else {
 		var tmp map[string]any
-		err := json.Unmarshal([]byte(self.VariablesStr), &tmp)
+		err := json.Unmarshal([]byte(tcv.VariablesStr), &tmp)
 		if err != nil {
-			mlog.Errorf("json unmarshal(%s) failed:%v", self.VariablesStr, err)
+			mlog.Errorf("json unmarshal(%s) failed:%v", tcv.VariablesStr, err)
 			return nil
 		}
 		return tmp
@@ -445,7 +445,7 @@ type ToolFile struct {
 	ConversationID string `gorm:"column:conversation_id;type:varchar(36)" json:"conversation_id"`
 	FileKey        string `gorm:"column:file_key;type:varchar(255);not null" json:"file_key"`
 	Mimetype       string `gorm:"column:mimetype;type:varchar(255);not null" json:"mimetype"`
-	OriginalURL    string `gorm:"column:original_url;type:text" json:"original_url"`
+	OriginalURL    string `gorm:"column:original_url;type:varchar(2048)" json:"original_url"`
 	Name           string `gorm:"column:name;type:varchar(255);not null" json:"name"`
 	Size           int    `gorm:"column:size;type:int;not null" json:"size"`
 }
@@ -476,4 +476,35 @@ func NewToolFile(
 // TableName get sql table name.获取数据库表名
 func (ToolFile) TableName() string {
 	return "tool_files"
+}
+
+// DeprecatedPublishedAppTool [...]
+type DeprecatedPublishedAppTool struct {
+	ID               string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	AppID            string     `gorm:"column:app_id;type:varchar(36);not null" json:"app_id"`
+	App              *App       `json:"app" form:"app" gorm:"foreignKey:AppID;references:ID;"`
+	UserID           string     `gorm:"column:user_id;type:varchar(36);not null" json:"user_id"`
+	Description      string     `gorm:"column:description;type:text;not null" json:"description"`
+	LlmDescription   string     `gorm:"column:llm_description;type:text;not null" json:"llm_description"`
+	QueryDescription string     `gorm:"column:query_description;type:text;not null" json:"query_description"`
+	QueryName        string     `gorm:"column:query_name;type:varchar(40);not null" json:"query_name"`
+	ToolName         string     `gorm:"column:tool_name;type:varchar(40);not null" json:"tool_name"`
+	Author           string     `gorm:"column:author;type:varchar(40);not null" json:"author"`
+	CreatedAt        *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt        *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+}
+
+// TableName get sql table name.获取数据库表名
+func (DeprecatedPublishedAppTool) TableName() string {
+	return "tool_published_apps"
+}
+func (pat *DeprecatedPublishedAppTool) Description2I18n() *commontypes.I18nObject {
+	e := new(commontypes.I18nObject)
+	err := json.Unmarshal([]byte(pat.Description), e)
+	if err != nil {
+		mlog.Errorf("json unmarshal failed:%v", err)
+		return nil
+	} else {
+		return e
+	}
 }

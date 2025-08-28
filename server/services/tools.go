@@ -12,10 +12,10 @@ import (
 	"mlib.com/mlog"
 )
 
-type ToolService struct {
+type ToolsService struct {
 }
 
-func (s *ToolService) GetToolIcon(tenant_id, provider_type, provider_id string) (any, error) {
+func (s *ToolsService) GetToolIcon(tenant_id, provider_type, provider_id string) (any, error) {
 	// """
 	// get the tool icon
 
@@ -81,7 +81,7 @@ func (s *ToolService) GetToolIcon(tenant_id, provider_type, provider_id string) 
 
 }
 
-func (api *ToolService) ListToolLabels() []*toolsentities.ToolLabel {
+func (service *ToolsService) ListToolLabels() []*toolsentities.ToolLabel {
 	tmplist := []*toolsentities.ToolLabel{}
 	for _, v := range toolsentities.DefaultToolLabelDict {
 		tmplist = append(tmplist, &v)
@@ -89,7 +89,7 @@ func (api *ToolService) ListToolLabels() []*toolsentities.ToolLabel {
 	return tmplist
 }
 
-func (api *ToolService) ListToolProviders(user_id string, tenant_id string, typ string) []map[string]any {
+func (service *ToolsService) ListToolProviders(user_id string, tenant_id string, typ string) []map[string]any {
 	// providers = ToolManager.user_list_providers(user_id, tenant_id, typ)
 
 	// // add icon
@@ -100,15 +100,22 @@ func (api *ToolService) ListToolProviders(user_id string, tenant_id string, typ 
 
 	return nil
 }
-    func (api *ToolService) RetrieveMCPTools(tenant_id string, for_list bool) []*toolsentities.ToolProviderApiEntity{
-        mcp_providers = (
-            db.session.query(MCPToolProvider)
-            .where(MCPToolProvider.tenant_id == tenant_id)
-            .order_by(MCPToolProvider.name)
-            .all()
-        )
-        return [
-            ToolTransformService.mcp_provider_to_user_provider(mcp_provider, for_list=for_list)
-            for mcp_provider in mcp_providers
-        ]
+func (service *ToolsService) RetrieveMCPTools(tenant_id string, for_list bool) []*toolsentities.ToolProviderApiEntity {
+	var datas []*models.MCPToolProvider
+	err := dbengine.Instance().DB.Model(&models.MCPToolProvider{}).Where("tenant_id = ?", tenant_id).Find(&datas).Error
+	if err != nil {
+		mlog.Errorf("get MCPToolProvider by tenant_id = %s  failed:%v", tenant_id, err)
+		return nil
+	}
+	var entities []*toolsentities.ToolProviderApiEntity
+	for _, mcp_provider := range datas {
+		data := ServiceGroupApp.ToolsTransform.MCPProviderToUserProvider(mcp_provider, for_list)
+		if data != nil {
+			if entities == nil {
+				entities = make([]*toolsentities.ToolProviderApiEntity, 0)
+			}
+			entities = append(entities, data)
 		}
+	}
+	return entities
+}

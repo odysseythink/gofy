@@ -43,7 +43,7 @@ func (s *ToolsService) GetToolLabelsList(ctx context.Context, in *pbapi.GetToolL
 				}
 			}
 		}()
-		tool_labels_list := services.ServiceGroupApp.Tool.ListToolLabels()
+		tool_labels_list := services.ServiceGroupApp.Tools.ListToolLabels()
 		bindata, _ := json.Marshal(tool_labels_list)
 		out.ToolLabelsListStr = string(bindata)
 	}()
@@ -70,7 +70,18 @@ func (s *ToolsService) GetMCPToolList(ctx context.Context, in *pbapi.GetMCPToolL
 	mlog.Infof("remote[%s] admin.GetMCPToolList call:%#v", p.Addr.String(), in)
 
 	out = &pbapi.GetMCPToolListReply{}
-
+	if in.TenantId == "" {
+		mlog.Error("TenantId not provide")
+		out.Exp = exceptions.NewUnauthorizedPbHttpExp("TenantId not provide")
+		return
+	}
+	tools := services.ServiceGroupApp.Tools.RetrieveMCPTools(in.TenantId, false)
+	datas := []map[string]any{}
+	for _, tool := range tools {
+		datas = append(datas, tool.ToDict())
+	}
+	bindata, _ := json.Marshal(datas)
+	out.ToolsStr = string(bindata)
 	return
 }
 

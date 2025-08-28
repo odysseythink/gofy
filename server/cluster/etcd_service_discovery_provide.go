@@ -25,7 +25,7 @@ type etcdServiceDiscoveryProvide struct {
 	leaseTimer   *time.Timer
 }
 
-func (provide *etcdServiceDiscoveryProvide) Init(args ...interface{}) error {
+func (provide *etcdServiceDiscoveryProvide) Init(args ...any) error {
 	cli, err := clientv3.New(clientv3.Config{
 		Username:    viper.GetString("etcd.user_name"),
 		Password:    viper.GetString("etcd.password"),
@@ -72,7 +72,7 @@ func (provide *etcdServiceDiscoveryProvide) Destroy() {
 	}
 }
 
-func (provide *etcdServiceDiscoveryProvide) UserData() interface{} {
+func (provide *etcdServiceDiscoveryProvide) UserData() any {
 	return provide
 }
 

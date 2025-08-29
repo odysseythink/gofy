@@ -238,6 +238,8 @@ func InitRouters() *gin.Engine {
 
 		authapiRouter.GET("workspaces/current/plugin/preferences/fetch", v1.ApiGroupApp.PluginApi.PluginFetchPreferences)
 		authapiRouter.GET("workspaces/current/plugin/tasks", v1.ApiGroupApp.PluginApi.PluginFetchInstallTasks)
+
+		authapiRouter.POST("rule-generate", v1.ApiGroupApp.RuleGenerateApi.RuleGenerate)
 	}
 	{
 		noauthapiRouter := r.Group("v1")

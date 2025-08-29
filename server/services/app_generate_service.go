@@ -92,7 +92,8 @@ func (s *AppGenerateService) Generate(
 	// request_id = RateLimit.gen_request_key()
 	// try:
 	// request_id = rate_limit.enter(request_id)
-	if app_model.Mode == models.AppMode_WORKFLOW {
+	switch app_model.Mode {
+	case models.AppMode_WORKFLOW:
 		wf := s.getWorkflow(app_model, invoke_from)
 		switch realuser := user.(type) {
 		case *models.Account:
@@ -117,7 +118,7 @@ func (s *AppGenerateService) Generate(
 			)
 		}
 
-	} else if app_model.Mode == models.AppMode_ADVANCED_CHAT {
+	case models.AppMode_ADVANCED_CHAT:
 		wf := s.getWorkflow(app_model, invoke_from)
 		switch realuser := user.(type) {
 		case *models.Account:
@@ -139,6 +140,8 @@ func (s *AppGenerateService) Generate(
 				streaming,
 			)
 		}
+	case models.AppMode_AGENT_CHAT:
+
 	}
 	panic(exceptions.NewValueError(fmt.Sprintf("Invalid app mode %s", app_model.Mode)))
 }

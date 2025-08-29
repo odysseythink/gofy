@@ -2,6 +2,7 @@ package config
 
 import (
 	"mlib.com/gofy/server/core/file"
+	agententities "mlib.com/gofy/server/entities/agent"
 	coreentities "mlib.com/gofy/server/entities/core"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	appconfigenumtypes "mlib.com/gofy/server/enum_types/app_config"
@@ -200,4 +201,8 @@ type WorkflowUIBasedAppConfig struct {
 
 type AdvancedChatAppConfig struct {
 	*WorkflowUIBasedAppConfig
+}
+type AgentChatAppConfig struct {
+	*EasyUIBasedAppConfig
+	Agent *agententities.AgentEntity `json:"agent"`
 }

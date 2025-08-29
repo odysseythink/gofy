@@ -91,6 +91,7 @@ const (
 	Admin_AddTagBinding_FullMethodName                  = "/pbapi.admin/AddTagBinding"
 	Admin_DelTagBinding_FullMethodName                  = "/pbapi.admin/DelTagBinding"
 	Admin_GetCodeBasedExtension_FullMethodName          = "/pbapi.admin/GetCodeBasedExtension"
+	Admin_RuleGenerate_FullMethodName                   = "/pbapi.admin/RuleGenerate"
 )
 
 // AdminClient is the client API for Admin service.
@@ -170,6 +171,7 @@ type AdminClient interface {
 	AddTagBinding(ctx context.Context, in *AddTagBindingRequest, opts ...grpc.CallOption) (*AddTagBindingReply, error)
 	DelTagBinding(ctx context.Context, in *DelTagBindingRequest, opts ...grpc.CallOption) (*DelTagBindingReply, error)
 	GetCodeBasedExtension(ctx context.Context, in *GetCodeBasedExtensionRequest, opts ...grpc.CallOption) (*GetCodeBasedExtensionReply, error)
+	RuleGenerate(ctx context.Context, in *RuleGenerateRequest, opts ...grpc.CallOption) (*RuleGenerateReply, error)
 }
 
 type adminClient struct {
@@ -900,6 +902,16 @@ func (c *adminClient) GetCodeBasedExtension(ctx context.Context, in *GetCodeBase
 	return out, nil
 }
 
+func (c *adminClient) RuleGenerate(ctx context.Context, in *RuleGenerateRequest, opts ...grpc.CallOption) (*RuleGenerateReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RuleGenerateReply)
+	err := c.cc.Invoke(ctx, Admin_RuleGenerate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AdminServer is the server API for Admin service.
 // All implementations must embed UnimplementedAdminServer
 // for forward compatibility.
@@ -977,6 +989,7 @@ type AdminServer interface {
 	AddTagBinding(context.Context, *AddTagBindingRequest) (*AddTagBindingReply, error)
 	DelTagBinding(context.Context, *DelTagBindingRequest) (*DelTagBindingReply, error)
 	GetCodeBasedExtension(context.Context, *GetCodeBasedExtensionRequest) (*GetCodeBasedExtensionReply, error)
+	RuleGenerate(context.Context, *RuleGenerateRequest) (*RuleGenerateReply, error)
 	mustEmbedUnimplementedAdminServer()
 }
 
@@ -1202,6 +1215,9 @@ func (UnimplementedAdminServer) DelTagBinding(context.Context, *DelTagBindingReq
 }
 func (UnimplementedAdminServer) GetCodeBasedExtension(context.Context, *GetCodeBasedExtensionRequest) (*GetCodeBasedExtensionReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCodeBasedExtension not implemented")
+}
+func (UnimplementedAdminServer) RuleGenerate(context.Context, *RuleGenerateRequest) (*RuleGenerateReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RuleGenerate not implemented")
 }
 func (UnimplementedAdminServer) mustEmbedUnimplementedAdminServer() {}
 func (UnimplementedAdminServer) testEmbeddedByValue()               {}
@@ -2523,6 +2539,24 @@ func _Admin_GetCodeBasedExtension_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Admin_RuleGenerate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RuleGenerateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).RuleGenerate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Admin_RuleGenerate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).RuleGenerate(ctx, req.(*RuleGenerateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Admin_ServiceDesc is the grpc.ServiceDesc for Admin service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2817,6 +2851,10 @@ var Admin_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetCodeBasedExtension",
 			Handler:    _Admin_GetCodeBasedExtension_Handler,
+		},
+		{
+			MethodName: "RuleGenerate",
+			Handler:    _Admin_RuleGenerate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

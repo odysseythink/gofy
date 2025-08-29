@@ -167,7 +167,6 @@ const Prompt: FC<ISimplePromptInput> = ({
   }
   const minHeight = initEditorHeight || 228
   const [editorHeight, setEditorHeight] = useState(minHeight)
-
   return (
     <div className={cn('relative rounded-xl bg-gradient-to-r from-components-input-border-active-prompt-1 to-components-input-border-active-prompt-2 p-0.5 shadow-xs')}>
       <div className='rounded-xl bg-background-section-burn'>

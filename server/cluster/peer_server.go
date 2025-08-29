@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/timeout"
+	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"mlib.com/mlog"
@@ -62,7 +63,7 @@ func (ps *peerServer) Init(args ...any) error {
 			ps.modulename = modulename
 			var err error
 			target := ps.service_discovery_provider.GetTarget(ps.modulename)
-			ps.grpcClientConn, err = grpc.NewClient(target, grpc.WithResolvers(ps.service_discovery_provider), grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithChainUnaryInterceptor(timeout.UnaryClientInterceptor(5*time.Second)), grpc.WithDefaultServiceConfig(`{"loadBalancingPolicy":"round_robin"}`))
+			ps.grpcClientConn, err = grpc.NewClient(target, grpc.WithResolvers(ps.service_discovery_provider), grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithChainUnaryInterceptor(timeout.UnaryClientInterceptor(time.Duration(viper.GetIntWithDefault("cluster.client_connect_max_timeout", 30))*time.Second)), grpc.WithDefaultServiceConfig(`{"loadBalancingPolicy":"round_robin"}`))
 			if err != nil {
 				mlog.Warningf("连接服务端失败: %s", err)
 				return nil
@@ -76,7 +77,7 @@ func (ps *peerServer) RunOnce(ctx context.Context) error {
 	if ps.grpcClientConn == nil {
 		var err error
 		target := ps.service_discovery_provider.GetTarget(ps.modulename)
-		ps.grpcClientConn, err = grpc.NewClient(target, grpc.WithResolvers(ps.service_discovery_provider), grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithChainUnaryInterceptor(timeout.UnaryClientInterceptor(5*time.Second)), grpc.WithDefaultServiceConfig(`{"loadBalancingPolicy":"round_robin"}`))
+		ps.grpcClientConn, err = grpc.NewClient(target, grpc.WithResolvers(ps.service_discovery_provider), grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithChainUnaryInterceptor(timeout.UnaryClientInterceptor(time.Duration(viper.GetIntWithDefault("cluster.client_connect_max_timeout", 30))*time.Second)), grpc.WithDefaultServiceConfig(`{"loadBalancingPolicy":"round_robin"}`))
 		if err != nil {
 			mlog.Warningf("连接服务端失败: %s", err)
 			return nil

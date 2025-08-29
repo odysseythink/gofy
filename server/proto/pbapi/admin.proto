@@ -82,6 +82,7 @@ service admin {
   rpc AddTagBinding(AddTagBindingRequest) returns (AddTagBindingReply) {}
   rpc DelTagBinding(DelTagBindingRequest) returns (DelTagBindingReply) {}  
   rpc GetCodeBasedExtension(GetCodeBasedExtensionRequest) returns (GetCodeBasedExtensionReply) {}
+  rpc RuleGenerate(RuleGenerateRequest) returns (RuleGenerateReply) {}
 }
 
 message LoginRequest {
@@ -833,4 +834,14 @@ message GetWorkflowRunDetailRequest {
 message GetWorkflowRunDetailReply {
   exceptions.HTTPException exp = 1;
   string response_str = 2;
+}
+message RuleGenerateRequest {
+  string tenant_id = 1;
+  string model_config_str = 2;
+  bool no_variable = 3;
+  string instruction = 4;
+}
+message RuleGenerateReply {
+  exceptions.HTTPException exp = 1;
+  string rules_dict_str = 2;
 }

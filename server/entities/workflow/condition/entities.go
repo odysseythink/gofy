@@ -29,6 +29,13 @@ var (
 	}
 )
 
+type LogicalOperatorType string
+
+const (
+	LogicalOperator_OR  LogicalOperatorType = "or"
+	LogicalOperator_AND LogicalOperatorType = "and"
+)
+
 type ConditionValueType interface {
 	~string | []string | any
 }

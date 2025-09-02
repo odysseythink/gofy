@@ -5,9 +5,9 @@ import (
 	appconfigentities "mlib.com/gofy/server/entities/app/config"
 )
 
-type SensitiveWordAvoidanceConfigManage struct{}
+type SensitiveWordAvoidanceConfigManager struct{}
 
-func (mgr *SensitiveWordAvoidanceConfigManage) Convert(config map[string]any) *appconfigentities.SensitiveWordAvoidanceEntity {
+func (mgr *SensitiveWordAvoidanceConfigManager) Convert(config map[string]any) *appconfigentities.SensitiveWordAvoidanceEntity {
 	var sensitive_word_avoidance_dict map[string]any
 	if _, ok := config["sensitive_word_avoidance"]; ok {
 		if _, ok := config["sensitive_word_avoidance"].(map[string]any); ok {
@@ -44,7 +44,7 @@ func (mgr *SensitiveWordAvoidanceConfigManage) Convert(config map[string]any) *a
 		return nil
 	}
 }
-func (mgr *SensitiveWordAvoidanceConfigManage) ValidateAndSetDefaults(
+func (mgr *SensitiveWordAvoidanceConfigManager) ValidateAndSetDefaults(
 	tenant_id string, config map[string]any, only_structure_validate bool, /* = False*/
 ) (map[string]any, []string, error) {
 	var sensitive_word_avoidance_dict map[string]any

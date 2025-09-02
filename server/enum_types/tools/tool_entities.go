@@ -34,7 +34,7 @@ const (
 	/*
 	   Enum class for tool provider
 	*/
-
+	ToolProvider_PLUGIN            ToolProviderType = "plugin"
 	ToolProvider_BUILT_IN          ToolProviderType = "builtin"
 	ToolProvider_WORKFLOW          ToolProviderType = "workflow"
 	ToolProvider_API               ToolProviderType = "api"

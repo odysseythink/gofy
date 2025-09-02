@@ -8,8 +8,8 @@ import (
 	"time"
 
 	uuid "github.com/satori/go.uuid"
-	advancedchatcfgmgr "mlib.com/gofy/server/core/app/config_manages/advanced_chat"
-	workflowcfgmgr "mlib.com/gofy/server/core/app/config_manages/workflow"
+	advancedchatcfgmgr "mlib.com/gofy/server/core/app/config_manageres/advanced_chat"
+	workflowcfgmgr "mlib.com/gofy/server/core/app/config_manageres/workflow"
 	"mlib.com/gofy/server/core/exceptions"
 	wfexceptions "mlib.com/gofy/server/core/exceptions/workflow"
 	"mlib.com/gofy/server/core/variables"

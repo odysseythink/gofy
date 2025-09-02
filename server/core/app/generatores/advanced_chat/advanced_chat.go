@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	uuid "github.com/satori/go.uuid"
-	achatconfigmgr "mlib.com/gofy/server/core/app/config_manages/advanced_chat"
+	achatconfigmgr "mlib.com/gofy/server/core/app/config_manageres/advanced_chat"
 	acresponseconverter "mlib.com/gofy/server/core/app/generator_response_convertes/advanced_chat"
 	actaskpipeline "mlib.com/gofy/server/core/app/generator_task_pipelines/advanced_chat"
 	msggenerator "mlib.com/gofy/server/core/app/generatores/message_based"
@@ -31,7 +31,7 @@ type AdvancedChatAppGenerator[T1 interface {
 }] struct {
 	*msggenerator.MessageBasedAppGenerator[*appgeneratorentities.AdvancedChatAppGenerateEntity]
 	_dialogue_count int
-	config_manager  *achatconfigmgr.AdvancedChatAppConfigManage
+	config_manager  *achatconfigmgr.AdvancedChatAppConfigManager
 }
 
 func New[T1 interface {

@@ -4,8 +4,8 @@ import (
 	"iter"
 
 	uuid "github.com/satori/go.uuid"
-	fileupload "mlib.com/gofy/server/core/app/config_manages/features/file_upload"
-	wfappcfgmgr "mlib.com/gofy/server/core/app/config_manages/workflow"
+	fileupload "mlib.com/gofy/server/core/app/config_manageres/features/file_upload"
+	wfappcfgmgr "mlib.com/gofy/server/core/app/config_manageres/workflow"
 	wfappgeneratorreponseconvertor "mlib.com/gofy/server/core/app/generator_response_convertes/workflow"
 	wfappgeneratortaskpipeline "mlib.com/gofy/server/core/app/generator_task_pipelines/workflow"
 	baseappgenerator "mlib.com/gofy/server/core/app/generatores/base"
@@ -156,7 +156,7 @@ func (g *WorkflowAppGenerator[T1]) SingleIterationGenerate(
 	}
 
 	// convert to app config
-	app_config := (&wfappcfgmgr.WorkflowAppConfigManage{}).GetAppConfig(app_model, wf)
+	app_config := (&wfappcfgmgr.WorkflowAppConfigManager{}).GetAppConfig(app_model, wf)
 
 	// init application generate entity
 	application_generate_entity := &appgeneratorentities.WorkflowAppGenerateEntity{
@@ -272,7 +272,7 @@ func (g *WorkflowAppGenerator[T1]) Generate(
 	)
 
 	// convert to app config
-	app_config := (&wfappcfgmgr.WorkflowAppConfigManage{}).GetAppConfig(
+	app_config := (&wfappcfgmgr.WorkflowAppConfigManager{}).GetAppConfig(
 		app_model,
 		wf,
 	)

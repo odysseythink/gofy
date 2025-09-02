@@ -1,7 +1,7 @@
 package services
 
 import (
-	achatcfgmanage "mlib.com/gofy/server/core/app/config_manages/advanced_chat"
+	achatcfgmanage "mlib.com/gofy/server/core/app/config_manageres/advanced_chat"
 	"mlib.com/gofy/server/core/exceptions"
 	httpexceptions "mlib.com/gofy/server/core/exceptions/http"
 	llmgenerator "mlib.com/gofy/server/core/llm_generator"

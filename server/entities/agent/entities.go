@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	toolsentities "mlib.com/gofy/server/entities/tools"
+	toolsenumtypes "mlib.com/gofy/server/enum_types/tools"
 )
 
 type AgentToolEntity struct {
@@ -11,10 +12,12 @@ type AgentToolEntity struct {
 	   Agent Tool Entity.
 	*/
 
-	ProviderType   string         `json:"provider_type"` //Literal["builtin", "api", "workflow"]
-	ProviderID     string         `json:"provider_id"`
-	ToolName       string         `json:"tool_name"`
-	ToolParameters map[string]any `json:"tool_parameters"`
+	ProviderType           toolsenumtypes.ToolProviderType `json:"provider_type"`
+	ProviderID             string                          `json:"provider_id"`
+	ToolName               string                          `json:"tool_name"`
+	ToolParameters         map[string]any                  `json:"tool_parameters"`
+	PluginUniqueIdentifier string                          `json:"plugin_unique_identifier"`
+	CredentialID           string                          `json:"credential_id"`
 }
 
 type AgentPromptEntity struct {
@@ -64,15 +67,15 @@ func (a *AgentScratchpadUnit) IsFinal() bool {
 	return a.Action == nil || (strings.Contains(strings.ToLower(a.Action.ActionName), "final") && strings.Contains(strings.ToLower(a.Action.ActionName), "answer"))
 }
 
-type AgentEntityStrategy string
+type AgentEntityStrategyType string
 
 const (
 	/*
 	   Agent Strategy.
 	*/
 
-	AgentEntityStrategy_CHAIN_OF_THOUGHT AgentEntityStrategy = "chain-of-thought"
-	AgentEntityStrategy_FUNCTION_CALLING AgentEntityStrategy = "function-calling"
+	AgentEntityStrategy_CHAIN_OF_THOUGHT AgentEntityStrategyType = "chain-of-thought"
+	AgentEntityStrategy_FUNCTION_CALLING AgentEntityStrategyType = "function-calling"
 )
 
 type AgentEntity struct {
@@ -80,12 +83,12 @@ type AgentEntity struct {
 	   Agent Entity.
 	*/
 
-	Provider     string              `json:"provider"`
-	Model        string              `json:"model"`
-	Strategy     AgentEntityStrategy `json:"strategy"`
-	Prompt       *AgentPromptEntity  `json:"prompt"`
-	Tools        []*AgentToolEntity  `json:"tools"`
-	MaxIteration int                 `json:"max_iteration"`
+	Provider     string                  `json:"provider"`
+	Model        string                  `json:"model"`
+	Strategy     AgentEntityStrategyType `json:"strategy"`
+	Prompt       *AgentPromptEntity      `json:"prompt"`
+	Tools        []*AgentToolEntity      `json:"tools"`
+	MaxIteration int                     `json:"max_iteration"`
 }
 
 func NewAgentEntity() *AgentEntity {

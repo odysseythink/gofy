@@ -20,6 +20,10 @@ const (
 	Prompt_ADVANCED PromptType = "advanced"
 )
 
+func ValidatePromptType(val string) bool {
+	return PromptType(val) == Prompt_SIMPLE || PromptType(val) == Prompt_ADVANCED
+}
+
 // RetrieveStrategy represents retrieve strategy
 type RetrieveStrategy string
 
@@ -35,4 +39,12 @@ const (
 	EasyUIBasedAppModelConfigFrom_ARGS                       EasyUIBasedAppModelConfigFrom = "args"
 	EasyUIBasedAppModelConfigFrom_APPLATESTCONFIG            EasyUIBasedAppModelConfigFrom = "app-latest-config"
 	EasyUIBasedAppModelConfigFrom_CONVERSATIONSPECIFICCONFIG EasyUIBasedAppModelConfigFrom = "conversation-specific-config"
+)
+
+type MetadataFilteringModeType string
+
+const (
+	MetadataFilteringMode_Disabled  MetadataFilteringModeType = "disabled"
+	MetadataFilteringMode_Automatic MetadataFilteringModeType = "automatic"
+	MetadataFilteringMode_Manual    MetadataFilteringModeType = "manual"
 )

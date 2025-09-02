@@ -1,13 +1,84 @@
 package config
 
 import (
+	"encoding/json"
+
 	"mlib.com/gofy/server/core/file"
 	agententities "mlib.com/gofy/server/entities/agent"
 	coreentities "mlib.com/gofy/server/entities/core"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	conditionentities "mlib.com/gofy/server/entities/workflow/condition"
 	appconfigenumtypes "mlib.com/gofy/server/enum_types/app_config"
 	"mlib.com/gofy/server/models"
+	"mlib.com/mlog"
 )
+
+var SupportedComparisonOperator = []string{
+	// for string or array
+	"contains",
+	"not contains",
+	"start with",
+	"end with",
+	"is",
+	"is not",
+	"empty",
+	"not empty",
+	// for number
+	"=",
+	"≠",
+	">",
+	"<",
+	"≥",
+	"≤",
+	// for time
+	"before",
+	"after",
+}
+
+type MetadataFilteringCondition struct {
+	LogicalOperator conditionentities.LogicalOperatorType `json:"logical_operator"` // "and"
+	Conditions      []struct {
+		Name               string `json:"name"`
+		ComparisonOperator string `json:"comparison_operator"`
+		Value              any    `json:"value"` //str | Sequence[str] | None | int | float = None
+	} `json:"conditions"`
+}
+
+func NewMetadataFilteringCondition(args map[string]any) *MetadataFilteringCondition {
+	mc := &MetadataFilteringCondition{
+		LogicalOperator: conditionentities.LogicalOperator_AND,
+	}
+	if args != nil {
+		bindata, _ := json.Marshal(args)
+		err := json.Unmarshal(bindata, mc)
+		if err != nil {
+			mlog.Errorf("json unmarshal %s to MetadataFilteringCondition failed:%v", string(bindata), err)
+			return nil
+		}
+		for _, condition := range mc.Conditions {
+			if condition.Value != nil {
+				switch real_val := condition.Value.(type) {
+				case string:
+				case []any:
+					for _, sv := range real_val {
+						if _, ok := sv.(string); !ok {
+							mlog.Errorf("value must be []string")
+							return nil
+						}
+					}
+				case []string:
+				case int:
+				case float64:
+				default:
+					mlog.Errorf("value must be string,[]string, int or float64")
+					return nil
+				}
+			}
+		}
+		return mc
+	}
+	return mc
+}
 
 type ModelConfigWithCredentialsEntity struct {
 	Provider            string
@@ -19,12 +90,32 @@ type ModelConfigWithCredentialsEntity struct {
 	Parameters          map[string]any
 	Stop                []string
 }
+type ModelConfig struct {
+	Provider         string                       `json:"provider"`
+	Name             string                       `json:"name"`
+	Mode             modelruntimeentities.LLMMode `json:"mode"`
+	CompletionParams map[string]any               `json:"completion_params"`
+}
+
+func NewModelConfig(args map[string]any) *ModelConfig {
+	mc := new(ModelConfig)
+	if args != nil {
+		bindata, _ := json.Marshal(args)
+		err := json.Unmarshal(bindata, mc)
+		if err != nil {
+			mlog.Errorf("json unmarshal %s to ModelConfig failed:%v", string(bindata), err)
+			return nil
+		}
+		return mc
+	}
+	return mc
+}
 
 // ModelConfigEntity represents model config entity
 type ModelConfigEntity struct {
 	Provider   string         `json:"provider"`
 	Model      string         `json:"model"`
-	Mode       *string        `json:"mode,omitempty"`
+	Mode       string         `json:"mode,omitempty"`
 	Parameters map[string]any `json:"parameters"`
 	Stop       []string       `json:"stop"`
 }
@@ -55,7 +146,7 @@ type RolePrefixEntity struct {
 // PromptTemplateEntity represents prompt template entity
 type PromptTemplateEntity struct {
 	PromptType                       appconfigenumtypes.PromptType           `json:"prompt_type"`
-	SimplePromptTemplate             *string                                 `json:"simple_prompt_template,omitempty"`
+	SimplePromptTemplate             string                                  `json:"simple_prompt_template,omitempty"`
 	AdvancedChatPromptTemplate       *AdvancedChatPromptTemplateEntity       `json:"advanced_chat_prompt_template,omitempty"`
 	AdvancedCompletionPromptTemplate *AdvancedCompletionPromptTemplateEntity `json:"advanced_completion_prompt_template,omitempty"`
 }
@@ -67,6 +158,7 @@ type VariableEntity struct {
 	Description              string                                `json:"description"`
 	Type                     appconfigenumtypes.VariableEntityType `json:"type"`
 	Required                 bool                                  `json:"required"`
+	Hide                     bool                                  `json:"hide"`
 	MaxLength                int                                   `json:"max_length,omitempty"`
 	Options                  []string                              `json:"options"`
 	AllowedFileTypes         []file.FileType                       `json:"allowed_file_types"`
@@ -83,20 +175,24 @@ type ExternalDataVariableEntity struct {
 
 // DatasetRetrieveConfigEntity represents dataset retrieve config entity
 type DatasetRetrieveConfigEntity struct {
-	QueryVariable    *string                             `json:"query_variable,omitempty"`
-	RetrieveStrategy appconfigenumtypes.RetrieveStrategy `json:"retrieve_strategy"`
-	TopK             int                                 `json:"top_k,omitempty"`
-	ScoreThreshold   float64                             `json:"score_threshold"`
-	RerankMode       string                              `json:"rerank_mode,omitempty"`
-	RerankingModel   map[string]any                      `json:"reranking_model,omitempty"`
-	Weights          map[string]any                      `json:"weights,omitempty"`
-	RerankingEnabled bool                                `json:"reranking_enabled"`
+	QueryVariable               string                                       `json:"query_variable,omitempty"`
+	RetrieveStrategy            appconfigenumtypes.RetrieveStrategy          `json:"retrieve_strategy"`
+	TopK                        int                                          `json:"top_k,omitempty"`
+	ScoreThreshold              float64                                      `json:"score_threshold"`
+	RerankMode                  string                                       `json:"rerank_mode,omitempty"`
+	RerankingModel              map[string]any                               `json:"reranking_model,omitempty"`
+	Weights                     map[string]any                               `json:"weights,omitempty"`
+	RerankingEnabled            bool                                         `json:"reranking_enabled"`
+	MetadataFilteringMode       appconfigenumtypes.MetadataFilteringModeType `json:"metadata_filtering_mode"`
+	MetadataModelConfig         *ModelConfig                                 `json:"metadata_model_config"`
+	MetadataFilteringConditions *MetadataFilteringCondition                  `json:"metadata_filtering_conditions"`
 }
 
 func NewDatasetRetrieveConfigEntity() *DatasetRetrieveConfigEntity {
 	return &DatasetRetrieveConfigEntity{
-		RerankMode:       "reranking_model",
-		RerankingEnabled: true,
+		RerankMode:            "reranking_model",
+		RerankingEnabled:      true,
+		MetadataFilteringMode: appconfigenumtypes.MetadataFilteringMode_Disabled,
 	}
 }
 

@@ -4,29 +4,29 @@ import (
 	"slices"
 	"sort"
 
-	"mlib.com/gofy/server/core/app/config_manages/base"
-	fileupload "mlib.com/gofy/server/core/app/config_manages/features/file_upload"
-	openingstatement "mlib.com/gofy/server/core/app/config_manages/features/opening_statement"
-	speechtotext "mlib.com/gofy/server/core/app/config_manages/features/speech_to_text"
-	suggestedquestionsafteranswer "mlib.com/gofy/server/core/app/config_manages/features/suggested_questions_after_answer"
-	texttospeech "mlib.com/gofy/server/core/app/config_manages/features/text_to_speech"
-	sensitivewordavoidance "mlib.com/gofy/server/core/app/config_manages/sensitive_word_avoidance"
-	wfvariables "mlib.com/gofy/server/core/app/config_manages/workflow_variables"
+	"mlib.com/gofy/server/core/app/config_manageres/base"
+	fileupload "mlib.com/gofy/server/core/app/config_manageres/features/file_upload"
+	openingstatement "mlib.com/gofy/server/core/app/config_manageres/features/opening_statement"
+	speechtotext "mlib.com/gofy/server/core/app/config_manageres/features/speech_to_text"
+	suggestedquestionsafteranswer "mlib.com/gofy/server/core/app/config_manageres/features/suggested_questions_after_answer"
+	texttospeech "mlib.com/gofy/server/core/app/config_manageres/features/text_to_speech"
+	sensitivewordavoidance "mlib.com/gofy/server/core/app/config_manageres/sensitive_word_avoidance"
+	wfvariables "mlib.com/gofy/server/core/app/config_manageres/workflow_variables"
 	appconfigentities "mlib.com/gofy/server/entities/app/config"
 	"mlib.com/gofy/server/models"
 )
 
-type AdvancedChatAppConfigManage struct {
-	*base.BaseAppConfigManage
+type AdvancedChatAppConfigManager struct {
+	*base.BaseAppConfigManager
 }
 
-func New() *AdvancedChatAppConfigManage {
-	return &AdvancedChatAppConfigManage{
-		BaseAppConfigManage: &base.BaseAppConfigManage{},
+func New() *AdvancedChatAppConfigManager {
+	return &AdvancedChatAppConfigManager{
+		BaseAppConfigManager: &base.BaseAppConfigManager{},
 	}
 }
 
-func (mgr *AdvancedChatAppConfigManage) GetAppConfig(app_model *models.App, wf *models.Workflow) *appconfigentities.AdvancedChatAppConfig {
+func (mgr *AdvancedChatAppConfigManager) GetAppConfig(app_model *models.App, wf *models.Workflow) *appconfigentities.AdvancedChatAppConfig {
 	features_dict := wf.FeaturesDict()
 
 	app_config := &appconfigentities.AdvancedChatAppConfig{
@@ -36,7 +36,7 @@ func (mgr *AdvancedChatAppConfigManage) GetAppConfig(app_model *models.App, wf *
 				AppID:    app_model.ID,
 				AppMode:  app_model.Mode,
 
-				SensitiveWordAvoidance: (&sensitivewordavoidance.SensitiveWordAvoidanceConfigManage{}).Convert(features_dict),
+				SensitiveWordAvoidance: (&sensitivewordavoidance.SensitiveWordAvoidanceConfigManager{}).Convert(features_dict),
 				Variables:              (&wfvariables.WorkflowVariablesConfigManage{}).Convert(wf),
 				AdditionalFeatures:     mgr.ConvertFeatures(features_dict, app_model.Mode),
 			},
@@ -47,7 +47,7 @@ func (mgr *AdvancedChatAppConfigManage) GetAppConfig(app_model *models.App, wf *
 	return app_config
 }
 
-func (mgr *AdvancedChatAppConfigManage) ConfigValidate(tenant_id string, config map[string]any, only_structure_validate bool) map[string]any {
+func (mgr *AdvancedChatAppConfigManager) ConfigValidate(tenant_id string, config map[string]any, only_structure_validate bool) map[string]any {
 	/*
 	   Validate for advanced chat app model config
 
@@ -82,7 +82,7 @@ func (mgr *AdvancedChatAppConfigManage) ConfigValidate(tenant_id string, config 
 	// related_config_keys = append(related_config_keys,current_related_config_keys...)
 
 	// moderation validation
-	config, current_related_config_keys, _ = (&sensitivewordavoidance.SensitiveWordAvoidanceConfigManage{}).ValidateAndSetDefaults(
+	config, current_related_config_keys, _ = (&sensitivewordavoidance.SensitiveWordAvoidanceConfigManager{}).ValidateAndSetDefaults(
 		tenant_id, config, only_structure_validate,
 	)
 	related_config_keys = append(related_config_keys, current_related_config_keys...)

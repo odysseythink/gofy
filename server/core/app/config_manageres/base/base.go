@@ -1,8 +1,8 @@
 package base
 
 import (
-	retrievalresource "mlib.com/gofy/server/core/app/config_manages/features/retrieval_resource"
-	suggestedquestionsafteranswer "mlib.com/gofy/server/core/app/config_manages/features/suggested_questions_after_answer"
+	retrievalresource "mlib.com/gofy/server/core/app/config_manageres/features/retrieval_resource"
+	suggestedquestionsafteranswer "mlib.com/gofy/server/core/app/config_manageres/features/suggested_questions_after_answer"
 	appconfigentities "mlib.com/gofy/server/entities/app/config"
 	"mlib.com/gofy/server/models"
 )
@@ -23,11 +23,11 @@ type TracingConfigEntity struct {
 }
 
 // 定义BaseAppConfigManager结构体
-type BaseAppConfigManage struct {
+type BaseAppConfigManager struct {
 }
 
 // ConvertFeatures 方法
-func (m *BaseAppConfigManage) ConvertFeatures(configDict map[string]any, appMode models.AppMode) *appconfigentities.AppAdditionalFeatures {
+func (m *BaseAppConfigManager) ConvertFeatures(configDict map[string]any, appMode models.AppMode) *appconfigentities.AppAdditionalFeatures {
 	additionalFeatures := &appconfigentities.AppAdditionalFeatures{}
 
 	showRetrieveSource := (&retrievalresource.RetrievalResourceConfigManager{}).Convert(configDict)
@@ -59,7 +59,7 @@ func (m *BaseAppConfigManage) ConvertFeatures(configDict map[string]any, appMode
 // 	}
 // 	appMode := AppModeCHAT
 
-// 	manager := BaseAppConfigManage{}
+// 	manager := BaseAppConfigManager{}
 // 	features := manager.ConvertFeatures(config, appMode)
 // 	fmt.Printf("%+v\n", features)
 // }

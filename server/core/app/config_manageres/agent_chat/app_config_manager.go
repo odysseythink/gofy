@@ -4,30 +4,35 @@ import (
 	"slices"
 	"sort"
 
-	"mlib.com/gofy/server/core/app/config_manages/base"
-	fileupload "mlib.com/gofy/server/core/app/config_manages/features/file_upload"
-	openingstatement "mlib.com/gofy/server/core/app/config_manages/features/opening_statement"
-	speechtotext "mlib.com/gofy/server/core/app/config_manages/features/speech_to_text"
-	suggestedquestionsafteranswer "mlib.com/gofy/server/core/app/config_manages/features/suggested_questions_after_answer"
-	texttospeech "mlib.com/gofy/server/core/app/config_manages/features/text_to_speech"
-	sensitivewordavoidance "mlib.com/gofy/server/core/app/config_manages/sensitive_word_avoidance"
-	wfvariables "mlib.com/gofy/server/core/app/config_manages/workflow_variables"
+	"mlib.com/gofy/server/core/app/config_manageres/base"
+	modelconfigmanages "mlib.com/gofy/server/core/app/config_manageres/model"
+	datasetcfgmgr "mlib.com/gofy/server/core/app/config_manageres/dataset"
+	agentcfgmgr "mlib.com/gofy/server/core/app/config_manageres/agent"
+	prompttemplatecfgmgr "mlib.com/gofy/server/core/app/config_manageres/prompt_template"
+	sensitivewordavoidancecfgmgr "mlib.com/gofy/server/core/app/config_manageres/sensitive_word_avoidance"
+	fileupload "mlib.com/gofy/server/core/app/config_manageres/features/file_upload"
+	openingstatement "mlib.com/gofy/server/core/app/config_manageres/features/opening_statement"
+	speechtotext "mlib.com/gofy/server/core/app/config_manageres/features/speech_to_text"
+	suggestedquestionsafteranswer "mlib.com/gofy/server/core/app/config_manageres/features/suggested_questions_after_answer"
+	texttospeech "mlib.com/gofy/server/core/app/config_manageres/features/text_to_speech"
+	sensitivewordavoidance "mlib.com/gofy/server/core/app/config_manageres/sensitive_word_avoidance"
+	wfvariables "mlib.com/gofy/server/core/app/config_manageres/workflow_variables"
 	appconfigentities "mlib.com/gofy/server/entities/app/config"
 	appconfigenumtypes "mlib.com/gofy/server/enum_types/app_config"
 	"mlib.com/gofy/server/models"
 )
 
-type AgentChatAppConfigManage struct {
-	*base.BaseAppConfigManage
+type AgentChatAppConfigManager struct {
+	*base.BaseAppConfigManager
 }
 
-func New() *AgentChatAppConfigManage {
-	return &AgentChatAppConfigManage{
-		BaseAppConfigManage: &base.BaseAppConfigManage{},
+func New() *AgentChatAppConfigManager {
+	return &AgentChatAppConfigManager{
+		BaseAppConfigManager: &base.BaseAppConfigManager{},
 	}
 }
 
-func (mgr *AgentChatAppConfigManage) GetAppConfig(
+func (mgr *AgentChatAppConfigManager) GetAppConfig(
 	app_model *models.App,
 	app_model_config *models.AppModelConfig,
 	conversation *models.Conversation,
@@ -41,27 +46,37 @@ func (mgr *AgentChatAppConfigManage) GetAppConfig(
         }else{
             config_from = appconfigenumtypes.EasyUIBasedAppModelConfigFrom_APP_LATEST_CONFIG
 }
+var config_dict map[string]any
         if config_from != appconfigenumtypes.EasyUIBasedAppModelConfigFrom_ARGS{
-            app_model_config_dict = app_model_config.to_dict()
-            config_dict = app_model_config_dict.copy()
+            config_dict = app_model_config.ToDict()
         }else{
-            config_dict = override_config_dict or {}
+			if len(override_config_dict) > 0{
+config_dict = override_config_dict
+			}  else {
+				config_dict = map[string]any{}
+			}
 }
-        app_mode = AppMode.value_of(app_model.mode)
-        app_config = AgentChatAppConfig(
-            tenant_id=app_model.tenant_id,
-            app_id=app_model.id,
-            app_mode=app_mode,
-            app_model_config_from=config_from,
-            app_model_config_id=app_model_config.id,
-            app_model_config_dict=config_dict,
-            model=ModelConfigManager.convert(config=config_dict),
-            prompt_template=PromptTemplateConfigManager.convert(config=config_dict),
-            sensitive_word_avoidance=SensitiveWordAvoidanceConfigManager.convert(config=config_dict),
-            dataset=DatasetConfigManager.convert(config=config_dict),
-            agent=AgentConfigManager.convert(config=config_dict),
-            additional_features=cls.convert_features(config_dict, app_mode),
-        )
+        app_mode := app_model.Mode
+        app_config := &appconfigentities.AgentChatAppConfig{
+			EasyUIBasedAppConfig: &appconfigentities.EasyUIBasedAppConfig{
+				AppConfig: &appconfigentities.AppConfig{
+TenantID              : app_model.TenantID              ,
+AppID                 : app_model.ID                 ,
+AppMode               : app_model.Mode               ,
+AdditionalFeatures    : mgr.ConvertFeatures(config_dict, app_mode)    ,
+// Variables             : app_model.Variables             ,
+SensitiveWordAvoidance: (&sensitivewordavoidancecfgmgr.SensitiveWordAvoidanceConfigManager{}).Convert(config_dict),
+				},
+				AppModelConfigFrom: config_from,
+				AppModelConfigID: app_model_config.ID,
+				AppModelConfigDict: config_dict,
+				Model: *(&modelconfigmanages.ModelConfigManager{}).Convert(config_dict),
+				PromptTemplate: (&prompttemplatecfgmgr.PromptTemplateConfigManager{}).Convert(config_dict),
+				Dataset: (&datasetcfgmgr.DatasetConfigManager{}).Convert(config_dict),
+			},
+			Agent: (&agentcfgmgr.AgentConfigManager{}).Convert(config_dict),
+		}
+        
 
         app_config.variables, app_config.external_data_variables = BasicVariablesConfigManager.convert(
             config=config_dict
@@ -71,7 +86,7 @@ func (mgr *AgentChatAppConfigManage) GetAppConfig(
 	return app_config
 }
 
-func (mgr *AgentChatAppConfigManage) ConfigValidate(tenant_id string, config map[string]any, only_structure_validate bool) map[string]any {
+func (mgr *AgentChatAppConfigManager) ConfigValidate(tenant_id string, config map[string]any, only_structure_validate bool) map[string]any {
 	/*
 	   Validate for advanced chat app model config
 

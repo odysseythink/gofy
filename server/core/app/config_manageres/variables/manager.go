@@ -118,8 +118,9 @@ func (mgr *BasicVariablesConfigManager) ValidateVariablesAndSetDefaults(config m
 		}
 		config["user_input_form"] = user_input_form
 	}
+	re := regexp.MustCompile(`^(?![0-9])[\p{Han}A-Za-z0-9_\U0001F300-\U0001F64F\U0001F680-\U0001F6FF]{1,100}$`)
 	user_input_form := mapstruct.Get(config,"user_input_form",[]map[string]any{})
-	variables := []map[string]any{}
+	variables := []string{}
 	for _, item := range user_input_form{
 		for key := range item {
 			if !slices.Contains([]string {"text-input", "select", "paragraph", "number", "external_data_tool"}, key){
@@ -135,58 +136,76 @@ panic(exceptions.NewValueError("Keys in user_input_form list can only be 'text-i
 			if _, ok := form_item["label"].(string); !ok {
 				panic(exceptions.NewValueError("label in user_input_form must be of string type"))
 			}
-		}
-
-
-		if "variable" not in form_item{
-			panic(exceptions.NewValueError("variable is required in user_input_form")
-		}
-		if not isinstance(form_item["variable"], str){
-			panic(exceptions.NewValueError("variable in user_input_form must be of string type")
-		}
-		pattern = re.compile(r"^(?!\d)[\u4e00-\u9fa5A-Za-z0-9_\U0001F300-\U0001F64F\U0001F680-\U0001F6FF]{1,100}$")
-		if pattern.match(form_item["variable"]) is None{
-			panic(exceptions.NewValueError("variable in user_input_form must be a string, and cannot start with a number")
-		}
-		variables.append(form_item["variable"])
-
-		if "required" not in form_item or not form_item["required"]{
-			form_item["required"] = False
-		}
-		if not isinstance(form_item["required"], bool){
-			panic(exceptions.NewValueError("required in user_input_form must be of boolean type")
-		}
-		if key == "select"{
-			if "options" not in form_item or not form_item["options"]{
-				form_item["options"] = []
+			if _, ok := form_item["variable"]; !ok {
+				panic(exceptions.NewValueError("variable is required in user_input_form"))
 			}
-			if not isinstance(form_item["options"], list){
-				panic(exceptions.NewValueError("options in user_input_form must be a list of strings")
+			if _, ok := form_item["variable"].(string); !ok {
+				panic(exceptions.NewValueError("variable in user_input_form must be of string type"))
+			}			
+
+			if !re.MatchString(form_item["variable"].(string)) {
+				panic(errors.New("variable in user_input_form must be a string, and cannot start with a number"))
 			}
-			if "default" in form_item and form_item["default"] and form_item["default"] not in form_item["options"]{
-				panic(exceptions.NewValueError("default value in user_input_form must be in the options list")
+			variables=append(variables,form_item["variable"].(string))
+			if _, ok := form_item[ "required"]; !ok || form_item[ "required"] == nil{
+				form_item[ "required"] = false
 			}
+			if _, ok := form_item["required"].(bool); !ok {
+				panic(exceptions.NewValueError("required in user_input_form must be of boolean type"))
+			}	
+			if key == "select"{
+				if _, ok := form_item[ "options"]; !ok || form_item[ "options"] == nil{
+					form_item[ "options"] = []any{}
+				}				
+				if _, ok := form_item["options"].([]any); !ok {
+					panic(exceptions.NewValueError("options in user_input_form must be a list of strings"))
+				}					
+				if _, ok := form_item[ "default"]; ok && form_item[ "options"] != nil && !slices.Contains(form_item["options"].([]any), form_item[ "options"]){
+					panic(exceptions.NewValueError("default value in user_input_form must be in the options list"))
+				}	
+			}		
 		}
 	}
-	return config, ["user_input_form"]
+	return config, []string{"user_input_form"}
 
 }
 func (mgr *BasicVariablesConfigManager) ValidateExternalDataToolsAndSetDefaults(tenant_id  string, config map[string]any) (map[string]any, []string){
-	if not config.get("external_data_tools"){
-		config["external_data_tools"] = []
+	if _, ok := config["external_data_tools"]; !ok {
+		config["external_data_tools"] = []map[string]any{}
 	}
-	if not isinstance(config["external_data_tools"], list){
-		panic(exceptions.NewValueError("external_data_tools must be of list type")
-	}
-	for tool in config["external_data_tools"]{
-		if "enabled" not in tool or not tool["enabled"]{
-			tool["enabled"] = False
+	if _, ok := config["external_data_tools"].([]any); !ok {
+		if _, ok := config["external_data_tools"].([]map[string]any); !ok {
+			panic(exceptions.NewValueError("external_data_tools must be a list of objects"))
 		}
-		if not tool["enabled"]{
+	}	 else {
+		external_data_tools := []map[string]any{}
+		for _, v := range config["external_data_tools"].([]any) {
+			if _, ok := v.(map[string]any); !ok {
+				mlog.Errorf("external_data_tools=%#v must be a list of objects", config["external_data_tools"])
+				panic(exceptions.NewValueError("external_data_tools must be a list of objects"))
+			} else {
+				external_data_tools = append(external_data_tools, v.(map[string]any))
+			}
+		}
+		config["external_data_tools"] = external_data_tools
+	}
+external_data_tools := mapstruct.Get(config,"external_data_tools",[]map[string]any{})
+	for _, tool := range external_data_tools{
+		if _, ok := tool["enabled"]; !ok || tool["enabled"] == nil {
+			tool["enabled"] = false
+		}
+		if _, ok := tool["enabled"].(bool); !ok  {
+			panic(exceptions.NewValueError("enabled must be bool"))
+		}
+
+		if !tool["enabled"].(bool){
 			continue
 		}
-		if "type" not in tool or not tool["type"]{
-			panic(exceptions.NewValueError("external_data_tools[].type is required")
+		if _, ok := tool["type"]; !ok || tool["type"] == nil {
+			panic(exceptions.NewValueError("external_data_tools[].type is required"))
+		}		
+				if _, ok := tool["type"].(string); !ok  {
+			panic(exceptions.NewValueError("external_data_tools[].type must be string"))
 		}
 		typ = tool["type"]
 		config = tool["config"]

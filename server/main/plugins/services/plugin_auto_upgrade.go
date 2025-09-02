@@ -99,8 +99,12 @@ func (s *PluginAutoUpgradeService) ExcludePlugin(tenant_id string, plugin_id str
 		)
 		return true
 	} else {
-		exist_strategy.ExcludePlugins.Unmarshal(exist_strategy.ExcludePluginList)
-		exist_strategy.IncludePlugins.Unmarshal(exist_strategy.IncludePluginList)
+		if err := exist_strategy.ExcludePlugins.Bind(&exist_strategy.ExcludePluginList); err != nil {
+			mlog.Warningf("bind ExcludePlugins to list failed:%v", err)
+		}
+		if err := exist_strategy.IncludePlugins.Bind(&exist_strategy.IncludePluginList); err != nil {
+			mlog.Warningf("bind IncludePlugins to list failed:%v", err)
+		}
 		if exist_strategy.UpgradeMode == models.TenantPluginAutoUpgradeStrategyUpgradeMode_EXCLUDE {
 			if !slices.Contains(exist_strategy.ExcludePluginList, plugin_id) {
 				if exist_strategy.ExcludePluginList == nil {

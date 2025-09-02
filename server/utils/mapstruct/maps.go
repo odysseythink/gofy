@@ -2,7 +2,7 @@ package mapstruct
 
 import "mlib.com/mlog"
 
-func Get[T int | bool | string | map[string]any | float64 | []map[string]any](val map[string]any, key string, default_val T) T {
+func Get[T int | bool | string | map[string]any | float64 | []map[string]any | []string](val map[string]any, key string, default_val T) T {
 	if _, ok := val[key]; ok {
 		if _, ok := val[key].(T); ok {
 			return val[key].(T)
@@ -16,6 +16,19 @@ func Get[T int | bool | string | map[string]any | float64 | []map[string]any](va
 							ret = append(ret, sv.(map[string]any))
 						} else {
 							mlog.Warningf("val[%s]=%#v is not map slice", key, val[key])
+							return default_val
+						}
+					}
+					return any(ret).(T)
+				}
+			case []string:
+				if _, ok := val[key].([]any); ok {
+					ret := []string{}
+					for _, sv := range val[key].([]any) {
+						if _, ok := sv.(string); ok {
+							ret = append(ret, sv.(string))
+						} else {
+							mlog.Warningf("val[%s]=%#v is not string slice", key, val[key])
 							return default_val
 						}
 					}

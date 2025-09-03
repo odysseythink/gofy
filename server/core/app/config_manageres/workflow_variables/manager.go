@@ -8,9 +8,9 @@ import (
 	"mlib.com/mlog"
 )
 
-type WorkflowVariablesConfigManage struct{}
+type WorkflowVariablesConfigManager struct{}
 
-func (mgr *WorkflowVariablesConfigManage) Convert(wf *models.Workflow) []*appconfigentities.VariableEntity {
+func (mgr *WorkflowVariablesConfigManager) Convert(wf *models.Workflow) []*appconfigentities.VariableEntity {
 	/*
 	   Convert workflow start variables to variables
 

@@ -50,7 +50,7 @@ type MemoryConfig struct {
 	   Memory Config.
 	*/
 
-	RolePrefix          *RolePrefix   `json:"role_prefix"`
-	Window              *WindowConfig `json:"window"`
-	QueryPromptTemplate string        `json:"query_prompt_template"`
+	RolePrefix          *RolePrefix  `json:"role_prefix"`
+	Window              WindowConfig `json:"window"`
+	QueryPromptTemplate string       `json:"query_prompt_template"`
 }

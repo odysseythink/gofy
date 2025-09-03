@@ -1591,7 +1591,6 @@ func (MessageFile) TableName() string {
 type MessageAnnotation struct {
 	ID             string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
 	AppID          string     `gorm:"column:app_id;type:varchar(36);not null" json:"app_id"`
-	App            *App       `gorm:"ForeignKey:AppID;AssociationForeignKey:ID" json:"app"`
 	ConversationID string     `gorm:"column:conversation_id;type:varchar(36)" json:"conversation_id"`
 	MessageID      string     `gorm:"column:message_id;type:varchar(36)" json:"message_id"`
 	Content        string     `gorm:"column:content;type:text;not null" json:"content"`

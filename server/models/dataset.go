@@ -10,6 +10,7 @@ import (
 	"github.com/spf13/viper"
 	"gorm.io/datatypes"
 	dbengine "mlib.com/gofy/server/db_engine"
+	knowledgeentities "mlib.com/gofy/server/entities/knowledge"
 	enumtypes "mlib.com/gofy/server/enum_types"
 	ragindexprocessorenumtypes "mlib.com/gofy/server/enum_types/rag/index_processor"
 	"mlib.com/mlog"
@@ -928,6 +929,117 @@ type DocumentSegment struct {
 func (DocumentSegment) TableName() string {
 	return "document_segments"
 }
+
+func (seg *DocumentSegment) Dataset() *Dataset {
+	data := new(Dataset)
+	err := dbengine.Instance().DB.Model(&Dataset{}).Where("id = ?", seg.DatasetID).First(data).Error
+	if err != nil {
+		mlog.Errorf("get Dataset failed:%v", err)
+		data = nil
+	}
+	return data
+}
+func (seg *DocumentSegment) Document() *Document {
+	data := new(Document)
+	err := dbengine.Instance().DB.Model(&Document{}).Where("id = ?", seg.DocumentID).First(data).Error
+	if err != nil {
+		mlog.Errorf("get Document failed:%v", err)
+		data = nil
+	}
+	return data
+}
+
+func (seg *DocumentSegment) PreviousSegment() *DocumentSegment {
+	data := new(DocumentSegment)
+	err := dbengine.Instance().DB.Model(&DocumentSegment{}).Where("document_id = ? and position=?", seg.DocumentID, seg.Position-1).First(data).Error
+	if err != nil {
+		mlog.Errorf("get DocumentSegment failed:%v", err)
+		data = nil
+	}
+	return data
+}
+
+func (seg *DocumentSegment) NextSegment() *DocumentSegment {
+	data := new(DocumentSegment)
+	err := dbengine.Instance().DB.Model(&DocumentSegment{}).Where("document_id = ? and position=?", seg.DocumentID, seg.Position+1).First(data).Error
+	if err != nil {
+		mlog.Errorf("get DocumentSegment failed:%v", err)
+		data = nil
+	}
+	return data
+}
+
+func (seg *DocumentSegment) ChildChunks() []*ChildChunk {
+	process_rule := seg.Document().DatasetProcessRule()
+	if process_rule.Mode == "hierarchical" {
+		rules := knowledgeentities.NewRule(process_rule.RulesDict())
+		if string(rules.ParentMode) != "" && rules.ParentMode != knowledgeentities.ParentMode_FULL_DOC {
+			var child_chunks []*ChildChunk
+			err := dbengine.Instance().DB.Model(&ChildChunk{}).Where("segment_id = ?", seg.ID).Order("position ASC").Find(&child_chunks).Error
+			if err != nil {
+				mlog.Errorf("get ChildChunk failed:%v", err)
+				return nil
+			}
+			return child_chunks
+		} else {
+			return []*ChildChunk{}
+		}
+	} else {
+		return []*ChildChunk{}
+	}
+}
+
+func (seg *DocumentSegment) GetChildChunks() []*ChildChunk {
+	return seg.ChildChunks()
+}
+
+// @property
+// def sign_content(){
+//     return self.get_sign_content()
+
+// def get_sign_content(){
+//     signed_urls = []
+//     text = self.content
+
+//     # For data before v0.10.0
+//     pattern = r"/files/([a-f0-9\-]+)/image-preview"
+//     matches = re.finditer(pattern, text)
+//     for match in matches:
+//         upload_file_id = match.group(1)
+//         nonce = os.urandom(16).hex()
+//         timestamp = str(int(time.time()))
+//         data_to_sign = f"image-preview|{upload_file_id}|{timestamp}|{nonce}"
+//         secret_key = dify_config.SECRET_KEY.encode() if dify_config.SECRET_KEY else b""
+//         sign = hmac.new(secret_key, data_to_sign.encode(), hashlib.sha256).digest()
+//         encoded_sign = base64.urlsafe_b64encode(sign).decode()
+
+//         params = f"timestamp={timestamp}&nonce={nonce}&sign={encoded_sign}"
+//         signed_url = f"{match.group(0)}?{params}"
+//         signed_urls.append((match.start(), match.end(), signed_url))
+
+//     # For data after v0.10.0
+//     pattern = r"/files/([a-f0-9\-]+)/file-preview"
+//     matches = re.finditer(pattern, text)
+//     for match in matches:
+//         upload_file_id = match.group(1)
+//         nonce = os.urandom(16).hex()
+//         timestamp = str(int(time.time()))
+//         data_to_sign = f"file-preview|{upload_file_id}|{timestamp}|{nonce}"
+//         secret_key = dify_config.SECRET_KEY.encode() if dify_config.SECRET_KEY else b""
+//         sign = hmac.new(secret_key, data_to_sign.encode(), hashlib.sha256).digest()
+//         encoded_sign = base64.urlsafe_b64encode(sign).decode()
+
+//         params = f"timestamp={timestamp}&nonce={nonce}&sign={encoded_sign}"
+//         signed_url = f"{match.group(0)}?{params}"
+//         signed_urls.append((match.start(), match.end(), signed_url))
+
+//     # Reconstruct the text with signed URLs
+//     offset = 0
+//     for start, end, signed_url in signed_urls:
+//         text = text[: start + offset] + signed_url + text[end + offset :]
+//         offset += len(signed_url) - (end - start)
+
+//     return text
 
 // ChildChunk [...]
 type ChildChunk struct {

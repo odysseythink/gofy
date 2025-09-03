@@ -105,7 +105,8 @@ func (s *PluginAutoUpgradeService) ExcludePlugin(tenant_id string, plugin_id str
 		if err := exist_strategy.IncludePlugins.Bind(&exist_strategy.IncludePluginList); err != nil {
 			mlog.Warningf("bind IncludePlugins to list failed:%v", err)
 		}
-		if exist_strategy.UpgradeMode == models.TenantPluginAutoUpgradeStrategyUpgradeMode_EXCLUDE {
+		switch exist_strategy.UpgradeMode {
+		case models.TenantPluginAutoUpgradeStrategyUpgradeMode_EXCLUDE:
 			if !slices.Contains(exist_strategy.ExcludePluginList, plugin_id) {
 				if exist_strategy.ExcludePluginList == nil {
 					exist_strategy.ExcludePluginList = make([]string, 0)
@@ -118,7 +119,7 @@ func (s *PluginAutoUpgradeService) ExcludePlugin(tenant_id string, plugin_id str
 				update_strategy.ExcludePlugins.Scan(bindata)
 				dbengine.Instance().DB.Updates(update_strategy)
 			}
-		} else if exist_strategy.UpgradeMode == models.TenantPluginAutoUpgradeStrategyUpgradeMode_PARTIAL {
+		case models.TenantPluginAutoUpgradeStrategyUpgradeMode_PARTIAL:
 			if slices.Contains(exist_strategy.IncludePluginList, plugin_id) {
 				update_strategy := &models.TenantPluginAutoUpgradeStrategy{
 					ID: exist_strategy.ID,
@@ -128,7 +129,7 @@ func (s *PluginAutoUpgradeService) ExcludePlugin(tenant_id string, plugin_id str
 				update_strategy.IncludePlugins.Scan(bindata)
 				dbengine.Instance().DB.Updates(update_strategy)
 			}
-		} else if exist_strategy.UpgradeMode == models.TenantPluginAutoUpgradeStrategyUpgradeMode_ALL {
+		case models.TenantPluginAutoUpgradeStrategyUpgradeMode_ALL:
 			update_strategy := &models.TenantPluginAutoUpgradeStrategy{
 				ID:          exist_strategy.ID,
 				UpgradeMode: models.TenantPluginAutoUpgradeStrategyUpgradeMode_EXCLUDE,

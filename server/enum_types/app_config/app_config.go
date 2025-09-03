@@ -36,9 +36,9 @@ const (
 type EasyUIBasedAppModelConfigFrom string
 
 const (
-	EasyUIBasedAppModelConfigFrom_ARGS                       EasyUIBasedAppModelConfigFrom = "args"
-	EasyUIBasedAppModelConfigFrom_APPLATESTCONFIG            EasyUIBasedAppModelConfigFrom = "app-latest-config"
-	EasyUIBasedAppModelConfigFrom_CONVERSATIONSPECIFICCONFIG EasyUIBasedAppModelConfigFrom = "conversation-specific-config"
+	EasyUIBasedAppModelConfigFrom_ARGS                         EasyUIBasedAppModelConfigFrom = "args"
+	EasyUIBasedAppModelConfigFrom_APP_LATEST_CONFIG            EasyUIBasedAppModelConfigFrom = "app-latest-config"
+	EasyUIBasedAppModelConfigFrom_CONVERSATION_SPECIFIC_CONFIG EasyUIBasedAppModelConfigFrom = "conversation-specific-config"
 )
 
 type MetadataFilteringModeType string

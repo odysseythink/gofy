@@ -38,7 +38,7 @@ func (mgr *WorkflowAppConfigManager) GetAppConfig(app_model *models.App, wf *mod
 			AppMode:  app_model.Mode,
 
 			SensitiveWordAvoidance: (&sensitivewordavoidance.SensitiveWordAvoidanceConfigManager{}).Convert(features_map_dict),
-			Variables:              (&workflowvariables.WorkflowVariablesConfigManage{}).Convert(wf),
+			Variables:              (&workflowvariables.WorkflowVariablesConfigManager{}).Convert(wf),
 			AdditionalFeatures:     mgr.ConvertFeatures(features_map_dict, app_model.Mode),
 		},
 		WorkflowID: wf.ID,

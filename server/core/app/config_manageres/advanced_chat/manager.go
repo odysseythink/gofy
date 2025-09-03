@@ -37,7 +37,7 @@ func (mgr *AdvancedChatAppConfigManager) GetAppConfig(app_model *models.App, wf 
 				AppMode:  app_model.Mode,
 
 				SensitiveWordAvoidance: (&sensitivewordavoidance.SensitiveWordAvoidanceConfigManager{}).Convert(features_dict),
-				Variables:              (&wfvariables.WorkflowVariablesConfigManage{}).Convert(wf),
+				Variables:              (&wfvariables.WorkflowVariablesConfigManager{}).Convert(wf),
 				AdditionalFeatures:     mgr.ConvertFeatures(features_dict, app_model.Mode),
 			},
 			WorkflowID: wf.ID,

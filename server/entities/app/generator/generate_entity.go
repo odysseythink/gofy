@@ -47,7 +47,7 @@ type AppGenerateEntitier interface {
 }
 
 type AppGenerateEntity[T interface {
-	*appconfigentities.WorkflowUIBasedAppConfig | *appconfigentities.EasyUIBasedAppConfig | *appconfigentities.AdvancedChatAppConfig
+	*appconfigentities.WorkflowUIBasedAppConfig | *appconfigentities.EasyUIBasedAppConfig | *appconfigentities.AdvancedChatAppConfig | *appconfigentities.AgentChatAppConfig
 }] struct {
 	TaskID           string                  `json:"task_id"`
 	AppConfig        T                       `json:"app_config"`
@@ -95,9 +95,12 @@ type CompletionAppGenerateEntity struct {
 }
 
 type AgentChatAppGenerateEntity struct {
-	*EasyUIBasedAppGenerateEntity
-	ConversationID  string `json:"conversation_id"`
-	ParentMessageID string `json:"parent_message_id"`
+	*AppGenerateEntity[*appconfigentities.AgentChatAppConfig]
+	ModelConf       *appconfigentities.ModelConfigWithCredentialsEntity `json:"model_conf"`
+	Query           string                                              `json:"query"`
+	ModelConfig     map[string]any                                      `json:"model_config"`
+	ConversationID  string                                              `json:"conversation_id"`
+	ParentMessageID string                                              `json:"parent_message_id"`
 }
 
 type AdvancedChatAppGenerateEntity struct {

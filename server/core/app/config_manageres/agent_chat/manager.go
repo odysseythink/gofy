@@ -4,19 +4,18 @@ import (
 	"slices"
 	"sort"
 
-	"mlib.com/gofy/server/core/app/config_manageres/base"
-	modelconfigmanages "mlib.com/gofy/server/core/app/config_manageres/model"
-	datasetcfgmgr "mlib.com/gofy/server/core/app/config_manageres/dataset"
 	agentcfgmgr "mlib.com/gofy/server/core/app/config_manageres/agent"
-	prompttemplatecfgmgr "mlib.com/gofy/server/core/app/config_manageres/prompt_template"
-	sensitivewordavoidancecfgmgr "mlib.com/gofy/server/core/app/config_manageres/sensitive_word_avoidance"
+	"mlib.com/gofy/server/core/app/config_manageres/base"
+	datasetcfgmgr "mlib.com/gofy/server/core/app/config_manageres/dataset"
 	fileupload "mlib.com/gofy/server/core/app/config_manageres/features/file_upload"
 	openingstatement "mlib.com/gofy/server/core/app/config_manageres/features/opening_statement"
 	speechtotext "mlib.com/gofy/server/core/app/config_manageres/features/speech_to_text"
 	suggestedquestionsafteranswer "mlib.com/gofy/server/core/app/config_manageres/features/suggested_questions_after_answer"
 	texttospeech "mlib.com/gofy/server/core/app/config_manageres/features/text_to_speech"
-	sensitivewordavoidance "mlib.com/gofy/server/core/app/config_manageres/sensitive_word_avoidance"
-	wfvariables "mlib.com/gofy/server/core/app/config_manageres/workflow_variables"
+	modelconfigmanages "mlib.com/gofy/server/core/app/config_manageres/model"
+	prompttemplatecfgmgr "mlib.com/gofy/server/core/app/config_manageres/prompt_template"
+	sensitivewordavoidancecfgmgr "mlib.com/gofy/server/core/app/config_manageres/sensitive_word_avoidance"
+	variablescfgmgr "mlib.com/gofy/server/core/app/config_manageres/variables"
 	appconfigentities "mlib.com/gofy/server/entities/app/config"
 	appconfigenumtypes "mlib.com/gofy/server/enum_types/app_config"
 	"mlib.com/gofy/server/models"
@@ -39,50 +38,46 @@ func (mgr *AgentChatAppConfigManager) GetAppConfig(
 	override_config_dict map[string]any,
 ) *appconfigentities.AgentChatAppConfig {
 	var config_from appconfigenumtypes.EasyUIBasedAppModelConfigFrom
-        if len(override_config_dict) > 0 {
-            config_from = appconfigenumtypes.EasyUIBasedAppModelConfigFrom_ARGS
-        }else if conversation != nil{
-            config_from = appconfigenumtypes.EasyUIBasedAppModelConfigFrom_CONVERSATION_SPECIFIC_CONFIG
-        }else{
-            config_from = appconfigenumtypes.EasyUIBasedAppModelConfigFrom_APP_LATEST_CONFIG
-}
-var config_dict map[string]any
-        if config_from != appconfigenumtypes.EasyUIBasedAppModelConfigFrom_ARGS{
-            config_dict = app_model_config.ToDict()
-        }else{
-			if len(override_config_dict) > 0{
-config_dict = override_config_dict
-			}  else {
-				config_dict = map[string]any{}
-			}
-}
-        app_mode := app_model.Mode
-        app_config := &appconfigentities.AgentChatAppConfig{
-			EasyUIBasedAppConfig: &appconfigentities.EasyUIBasedAppConfig{
-				AppConfig: &appconfigentities.AppConfig{
-TenantID              : app_model.TenantID              ,
-AppID                 : app_model.ID                 ,
-AppMode               : app_model.Mode               ,
-AdditionalFeatures    : mgr.ConvertFeatures(config_dict, app_mode)    ,
-// Variables             : app_model.Variables             ,
-SensitiveWordAvoidance: (&sensitivewordavoidancecfgmgr.SensitiveWordAvoidanceConfigManager{}).Convert(config_dict),
-				},
-				AppModelConfigFrom: config_from,
-				AppModelConfigID: app_model_config.ID,
-				AppModelConfigDict: config_dict,
-				Model: *(&modelconfigmanages.ModelConfigManager{}).Convert(config_dict),
-				PromptTemplate: (&prompttemplatecfgmgr.PromptTemplateConfigManager{}).Convert(config_dict),
-				Dataset: (&datasetcfgmgr.DatasetConfigManager{}).Convert(config_dict),
-			},
-			Agent: (&agentcfgmgr.AgentConfigManager{}).Convert(config_dict),
+	if len(override_config_dict) > 0 {
+		config_from = appconfigenumtypes.EasyUIBasedAppModelConfigFrom_ARGS
+	} else if conversation != nil {
+		config_from = appconfigenumtypes.EasyUIBasedAppModelConfigFrom_CONVERSATION_SPECIFIC_CONFIG
+	} else {
+		config_from = appconfigenumtypes.EasyUIBasedAppModelConfigFrom_APP_LATEST_CONFIG
+	}
+	var config_dict map[string]any
+	if config_from != appconfigenumtypes.EasyUIBasedAppModelConfigFrom_ARGS {
+		config_dict = app_model_config.ToDict()
+	} else {
+		if len(override_config_dict) > 0 {
+			config_dict = override_config_dict
+		} else {
+			config_dict = map[string]any{}
 		}
-        
+	}
+	app_mode := app_model.Mode
+	app_config := &appconfigentities.AgentChatAppConfig{
+		EasyUIBasedAppConfig: &appconfigentities.EasyUIBasedAppConfig{
+			AppConfig: &appconfigentities.AppConfig{
+				TenantID:           app_model.TenantID,
+				AppID:              app_model.ID,
+				AppMode:            app_model.Mode,
+				AdditionalFeatures: mgr.ConvertFeatures(config_dict, app_mode),
+				// Variables             : app_model.Variables             ,
+				SensitiveWordAvoidance: (&sensitivewordavoidancecfgmgr.SensitiveWordAvoidanceConfigManager{}).Convert(config_dict),
+			},
+			AppModelConfigFrom: config_from,
+			AppModelConfigID:   app_model_config.ID,
+			AppModelConfigDict: config_dict,
+			Model:              (&modelconfigmanages.ModelConfigManager{}).Convert(config_dict),
+			PromptTemplate:     (&prompttemplatecfgmgr.PromptTemplateConfigManager{}).Convert(config_dict),
+			Dataset:            (&datasetcfgmgr.DatasetConfigManager{}).Convert(config_dict),
+		},
+		Agent: (&agentcfgmgr.AgentConfigManager{}).Convert(config_dict),
+	}
 
-        app_config.variables, app_config.external_data_variables = BasicVariablesConfigManager.convert(
-            config=config_dict
-        )
+	app_config.Variables, app_config.ExternalDataVariables = (&variablescfgmgr.BasicVariablesConfigManager{}).Convert(config_dict)
 
-        return app_config
 	return app_config
 }
 
@@ -121,7 +116,7 @@ func (mgr *AgentChatAppConfigManager) ConfigValidate(tenant_id string, config ma
 	// related_config_keys = append(related_config_keys,current_related_config_keys...)
 
 	// moderation validation
-	config, current_related_config_keys, _ = (&sensitivewordavoidance.SensitiveWordAvoidanceConfigManage{}).ValidateAndSetDefaults(
+	config, current_related_config_keys, _ = (&sensitivewordavoidancecfgmgr.SensitiveWordAvoidanceConfigManager{}).ValidateAndSetDefaults(
 		tenant_id, config, only_structure_validate,
 	)
 	related_config_keys = append(related_config_keys, current_related_config_keys...)

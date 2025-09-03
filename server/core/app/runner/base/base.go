@@ -5,9 +5,17 @@ import (
 	"iter"
 
 	"mlib.com/gofy/server/core/exceptions"
+	modelruntimeexceptions "mlib.com/gofy/server/core/exceptions/model_runtime"
+	"mlib.com/gofy/server/core/file"
+	"mlib.com/gofy/server/core/memory"
+	"mlib.com/gofy/server/core/prompt"
+	appconfigentities "mlib.com/gofy/server/entities/app/config"
 	appqueueentities "mlib.com/gofy/server/entities/app/queue"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	promptentities "mlib.com/gofy/server/entities/prompt"
 	appenumtypes "mlib.com/gofy/server/enum_types/app"
+	appconfigenumtypes "mlib.com/gofy/server/enum_types/app_config"
+	"mlib.com/gofy/server/models"
 )
 
 type AppRunner[T interface {
@@ -99,3 +107,117 @@ func (r *AppRunner[T]) handleInvokeResultStream(
 
 	queue_manager.Publish(&appqueueentities.QueueMessageEndEvent{LLMResult: llm_result}, appenumtypes.PublishFrom_APPLICATION_MANAGER)
 }
+func (r *AppRunner[T]) OrganizePromptMessages(
+	app_record *models.App,
+	model_config *appconfigentities.ModelConfigWithCredentialsEntity,
+	prompt_template_entity *appconfigentities.PromptTemplateEntity,
+	inputs map[string]string,
+	files []*file.File,
+	query string,
+	context string,
+	mem *memory.TokenBufferMemory,
+) ([]modelruntimeentities.PromptMessager, []string) {
+	/*
+	   Organize prompt messages
+	   :param context:
+	   :param app_record: app record
+	   :param model_config: model config entity
+	   :param prompt_template_entity: prompt template entity
+	   :param inputs: inputs
+	   :param files: files
+	   :param query: query
+	   :param memory: memory
+	   :param image_detail_config: the image quality config
+	   :return:
+	*/
+	//  get prompt without memory and context
+	if prompt_template_entity.PromptType == appconfigenumtypes.Prompt_SIMPLE {
+		// prompt_transform: Union[SimplePromptTransform, AdvancedPromptTransform]
+		prompt_transform := &prompt.SimplePromptTransform{}
+		return prompt_transform.GetPrompt(
+			app_record.Mode,
+			prompt_template_entity,
+			inputs,
+			query,
+			files,
+			context,
+			mem,
+			model_config,
+		)
+	} else {
+		memory_config := &promptentities.MemoryConfig{
+			Window: promptentities.WindowConfig{
+				Enabled: false,
+			},
+		}
+
+		model_mode := model_config.Mode
+		var prompt_messages []modelruntimeentities.PromptMessager
+		// prompt_template: Union[CompletionModelPromptTemplate, list[ChatModelMessage]]
+		if model_mode == modelruntimeentities.LLMMode_COMPLETION {
+			advanced_completion_prompt_template := prompt_template_entity.AdvancedCompletionPromptTemplate
+			if advanced_completion_prompt_template == nil {
+				panic(modelruntimeexceptions.NewInvokeBadRequestError("Advanced completion prompt template is required."))
+			}
+			prompt_template := &promptentities.CompletionModelPromptTemplate{Text: advanced_completion_prompt_template.Prompt}
+
+			if advanced_completion_prompt_template.RolePrefix != nil {
+				memory_config.RolePrefix = &promptentities.RolePrefix{
+					User:      advanced_completion_prompt_template.RolePrefix.User,
+					Assistant: advanced_completion_prompt_template.RolePrefix.Assistant,
+				}
+			}
+			prompt_transform := prompt.NewAdvancedPromptTransform[*promptentities.CompletionModelPromptTemplate](false, modelruntimeentities.ImagePromptMessageContentDETAIL(""))
+			prompt_messages = prompt_transform.GetPrompt(
+				prompt_template,
+				inputs,
+				query,
+				files,
+				context,
+				memory_config,
+				mem,
+				model_config,
+			)
+		} else {
+			if prompt_template_entity.AdvancedChatPromptTemplate == nil {
+				panic(modelruntimeexceptions.NewInvokeBadRequestError("Advanced chat prompt template is required."))
+			}
+			prompt_template := []*promptentities.ChatModelMessage{}
+			for _, message := range prompt_template_entity.AdvancedChatPromptTemplate.Messages {
+				prompt_template = append(prompt_template, &promptentities.ChatModelMessage{Text: message.Text, Role: message.Role})
+			}
+			prompt_transform := prompt.NewAdvancedPromptTransform[[]*promptentities.ChatModelMessage](false, modelruntimeentities.ImagePromptMessageContentDETAIL(""))
+			prompt_messages = prompt_transform.GetPrompt(
+				prompt_template,
+				inputs,
+				query,
+				files,
+				context,
+				memory_config,
+				mem,
+				model_config,
+			)
+		}
+
+		stop := model_config.Stop
+		return prompt_messages, stop
+	}
+}
+
+func (r *AppRunner[T]) QueryAppAnnotationsToReply(
+        app_record *models.App, message *models.Message, query string, user_id string, invoke_from appenumtypes.InvokeFrom,
+    ) *models.MessageAnnotation{
+        /*
+        Query app annotations to reply
+        :param app_record: app record
+        :param message: message
+        :param query: query
+        :param user_id: user id
+        :param invoke_from: invoke from
+        :return:
+        */
+        annotation_reply_feature = AnnotationReplyFeature()
+        return annotation_reply_feature.query(
+            app_record=app_record, message=message, query=query, user_id=user_id, invoke_from=invoke_from
+        )
+	}

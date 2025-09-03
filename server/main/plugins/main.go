@@ -53,8 +53,8 @@ func (s *PluginsService) FetchPreferences(ctx context.Context, in *pbapi.FetchPr
 	}
 
 	if auto_upgrade != nil {
-		auto_upgrade.ExcludePlugins.Unmarshal(auto_upgrade.ExcludePluginList)
-		auto_upgrade.IncludePlugins.Unmarshal(auto_upgrade.IncludePluginList)
+		auto_upgrade.ExcludePlugins.Bind(auto_upgrade.ExcludePluginList)
+		auto_upgrade.IncludePlugins.Bind(auto_upgrade.IncludePluginList)
 		auto_upgrade_dict = map[string]any{
 			"strategy_setting":    auto_upgrade.StrategySetting,
 			"upgrade_time_of_day": auto_upgrade.UpgradeTimeOfDay,

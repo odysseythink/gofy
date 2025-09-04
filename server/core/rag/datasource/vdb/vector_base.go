@@ -4,11 +4,23 @@ import (
 	ragentities "mlib.com/gofy/server/entities/rag"
 )
 
-type BaseVector struct {
+type BaseVector interface {
+	GetType() string
+	Create(texts []*ragentities.Document, embeddings [][]float64, kwargs ...any)
+	AddTexts(documents []*ragentities.Document, embeddings [][]float64, kwargs ...any)
+	TextExists(id string) bool
+	DeleteByIDs(ids []string)
+	GetIDsByMetadataField(key string, value string)
+	DeleteByMetadataField(key string, value string)
+	SearchByVector(query_vector []float64, kwargs ...any) []*ragentities.Document
+	SearchByFullText(query string, kwargs ...any) []*ragentities.Document
+	Delete()
+}
+type BaseVectorImpl struct {
 	CollectionNname string `json:"collection_name"`
 }
 
-func (bv *BaseVector) _filter_duplicate_texts(v IVector, texts []*ragentities.Document) []*ragentities.Document {
+func (bv *BaseVectorImpl) _filter_duplicate_texts(v BaseVector, texts []*ragentities.Document) []*ragentities.Document {
 	new_text := []*ragentities.Document{}
 	for _, text := range texts {
 		if len(text.Metadata) > 0 {
@@ -26,7 +38,7 @@ func (bv *BaseVector) _filter_duplicate_texts(v IVector, texts []*ragentities.Do
 	return new_text
 }
 
-func (bv *BaseVector) _get_uuids(texts []*ragentities.Document) []string {
+func (bv *BaseVectorImpl) _get_uuids(texts []*ragentities.Document) []string {
 	ids := []string{}
 	for _, text := range texts {
 		if len(text.Metadata) > 0 {
@@ -38,17 +50,4 @@ func (bv *BaseVector) _get_uuids(texts []*ragentities.Document) []string {
 		}
 	}
 	return ids
-}
-
-type IVector interface {
-	GetType() string
-	Create(texts []*ragentities.Document, embeddings [][]float64, kwargs ...any)
-	AddTexts(documents []*ragentities.Document, embeddings [][]float64, kwargs ...any)
-	TextExists(id string) bool
-	DeleteByIDs(ids []string)
-	GetIDsByMetadataField(key string, value string)
-	DeleteByMetadataField(key string, value string)
-	SearchByVector(query_vector []float64, kwargs ...any) []*ragentities.Document
-	SearchByFullText(query string, kwargs ...any) []*ragentities.Document
-	Delete()
 }

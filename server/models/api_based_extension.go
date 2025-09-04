@@ -2,8 +2,17 @@ package models
 
 import "time"
 
-// APIBasedExtensions [...]
-type APIBasedExtensions struct {
+type APIBasedExtensionPointType string
+
+const (
+	APIBasedExtensionPoint_APP_EXTERNAL_DATA_TOOL_QUERY APIBasedExtensionPointType = "app.external_data_tool.query"
+	APIBasedExtensionPoint_PING                         APIBasedExtensionPointType = "ping"
+	APIBasedExtensionPoint_APP_MODERATION_INPUT         APIBasedExtensionPointType = "app.moderation.input"
+	APIBasedExtensionPoint_APP_MODERATION_OUTPUT        APIBasedExtensionPointType = "app.moderation.output"
+)
+
+// APIBasedExtension [...]
+type APIBasedExtension struct {
 	ID          string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
 	TenantID    string     `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
 	Name        string     `gorm:"column:name;type:varchar(255);not null" json:"name"`
@@ -13,6 +22,6 @@ type APIBasedExtensions struct {
 }
 
 // TableName get sql table name.获取数据库表名
-func (APIBasedExtensions) TableName() string {
+func (APIBasedExtension) TableName() string {
 	return "api_based_extensions"
 }

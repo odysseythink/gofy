@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"iter"
 
+	annotationreply "mlib.com/gofy/server/core/app/features/annotation_reply"
 	"mlib.com/gofy/server/core/exceptions"
 	modelruntimeexceptions "mlib.com/gofy/server/core/exceptions/model_runtime"
+	extdatatool "mlib.com/gofy/server/core/external_data_tool"
 	"mlib.com/gofy/server/core/file"
 	"mlib.com/gofy/server/core/memory"
 	"mlib.com/gofy/server/core/prompt"
@@ -205,19 +207,39 @@ func (r *AppRunner[T]) OrganizePromptMessages(
 }
 
 func (r *AppRunner[T]) QueryAppAnnotationsToReply(
-        app_record *models.App, message *models.Message, query string, user_id string, invoke_from appenumtypes.InvokeFrom,
-    ) *models.MessageAnnotation{
-        /*
-        Query app annotations to reply
-        :param app_record: app record
-        :param message: message
-        :param query: query
-        :param user_id: user id
-        :param invoke_from: invoke from
-        :return:
-        */
-        annotation_reply_feature = AnnotationReplyFeature()
-        return annotation_reply_feature.query(
-            app_record=app_record, message=message, query=query, user_id=user_id, invoke_from=invoke_from
-        )
-	}
+	app_record *models.App, message *models.Message, query string, user_id string, invoke_from appenumtypes.InvokeFrom,
+) *models.MessageAnnotation {
+	/*
+	   Query app annotations to reply
+	   :param app_record: app record
+	   :param message: message
+	   :param query: query
+	   :param user_id: user id
+	   :param invoke_from: invoke from
+	   :return:
+	*/
+	annotation_reply_feature := &annotationreply.AnnotationReplyFeature{}
+	return annotation_reply_feature.Query(app_record, message, query, user_id, invoke_from)
+}
+func (r *AppRunner[T]) FillInInputsFromExternalDataTools(
+	tenant_id string,
+	app_id string,
+	external_data_tools []*appconfigentities.ExternalDataVariableEntity,
+	inputs map[string]any,
+	query string,
+) map[string]any {
+	/*
+	   Fill in variable inputs from external data tools if exists.
+
+	   :param tenant_id: workspace id
+	   :param app_id: app id
+	   :param external_data_tools: external data tools configs
+	   :param inputs: the inputs
+	   :param query: the query
+	   :return: the filled inputs
+	*/
+	external_data_fetch_feature := &extdatatool.ExternalDataFetch{}
+	return external_data_fetch_feature.Fetch(
+		tenant_id, app_id, external_data_tools, inputs, query,
+	)
+}

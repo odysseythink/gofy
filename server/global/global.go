@@ -1,6 +1,7 @@
 package global
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"maps"
@@ -8,6 +9,7 @@ import (
 	"sync"
 
 	"golang.org/x/sync/singleflight"
+	"mlib.com/gofy/server/core/extension"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 )
 
@@ -39,7 +41,8 @@ var (
 		"sl-SI":   "Europe/Ljubljana",
 		"th-TH":   "Asia/Bangkok",
 	}
-	LANGUAGES = slices.AppendSeq([]string{}, maps.Keys(LANGUAGE_TIMEZONE_MAPPING))
+	LANGUAGES          = slices.AppendSeq([]string{}, maps.Keys(LANGUAGE_TIMEZONE_MAPPING))
+	CodeBasedExtension = &extension.Extension{}
 )
 
 func RegisgterModelProvider(mp modelruntimeentities.ModelProvider) error {
@@ -48,5 +51,35 @@ func RegisgterModelProvider(mp modelruntimeentities.ModelProvider) error {
 		return fmt.Errorf("provider(%s) already exist", mp.ProviderName())
 	}
 	AllModelProviders.Store(mp.ProviderName(), mp)
+	return nil
+}
+
+func RegisgterExtension(extension_class extension.Extensiblor, label map[string]any, form_schema []map[string]any, builtin bool, position int) error {
+	if extension_class == nil {
+		log.Printf("[E]extension_class is nil\n")
+		return errors.New("extension_class is nil")
+	}
+	if string(extension_class.Module()) == "" || extension_class.Name() == "" {
+		log.Printf("[E]extension_class Module(%s) and Name(%s) can't be empty\n", extension_class.Module(), extension_class.Name())
+		return fmt.Errorf("extension_class Module(%s) and Name(%s) can't be empty", extension_class.Module(), extension_class.Name())
+	}
+	if CodeBasedExtension.ModuleExtensions == nil {
+		CodeBasedExtension.ModuleExtensions = make(map[extension.ExtensionModuleType]map[string]*extension.ModuleExtension)
+	}
+	if _, ok := CodeBasedExtension.ModuleExtensions[extension_class.Module()]; !ok {
+		CodeBasedExtension.ModuleExtensions[extension_class.Module()] = make(map[string]*extension.ModuleExtension)
+	}
+	if _, ok := CodeBasedExtension.ModuleExtensions[extension_class.Module()][extension_class.Name()]; ok {
+		log.Printf("[E]extension_class Module(%s) and Name(%s) already exist\n", extension_class.Module(), extension_class.Name())
+		return fmt.Errorf("extension_class Module(%s) and Name(%s) already exist", extension_class.Module(), extension_class.Name())
+	}
+	CodeBasedExtension.ModuleExtensions[extension_class.Module()][extension_class.Name()] = &extension.ModuleExtension{
+		ExtensionClass: extension_class,
+		Name:           extension_class.Name(),
+		Label:          label,
+		FormSchema:     form_schema,
+		Builtin:        builtin,
+		Position:       position,
+	}
 	return nil
 }

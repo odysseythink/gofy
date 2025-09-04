@@ -20,7 +20,6 @@ import (
 type Dataset struct {
 	ID                     string         `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
 	TenantID               string         `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
-	Tenant                 *Tenant        `json:"tenant" form:"tenant" gorm:"foreignKey:TenantID;references:ID;"`
 	Name                   string         `gorm:"column:name;type:varchar(255);not null" json:"name"`
 	Description            string         `gorm:"column:description;type:text" json:"description"`
 	Provider               string         `gorm:"column:provider;type:varchar(255);default:vendor" json:"provider"`
@@ -997,14 +996,14 @@ func (seg *DocumentSegment) GetChildChunks() []*ChildChunk {
 // def sign_content(){
 //     return self.get_sign_content()
 
-// def get_sign_content(){
-//     signed_urls = []
-//     text = self.content
+// func (seg *DocumentSegment) GetSignContent() string{
+//     signed_urls := [][3]string{}
+//     text := seg.Content
 
-//     # For data before v0.10.0
-//     pattern = r"/files/([a-f0-9\-]+)/image-preview"
-//     matches = re.finditer(pattern, text)
-//     for match in matches:
+//     // For data before v0.10.0
+//     pattern := regexp.MustCompile(`/files/([a-f0-9\-]+)/image-preview`)
+//     matches := pattern.FindAllStringSubmatchIndex(text, -1)
+//     for _, match := range matches{
 //         upload_file_id = match.group(1)
 //         nonce = os.urandom(16).hex()
 //         timestamp = str(int(time.time()))
@@ -1016,11 +1015,11 @@ func (seg *DocumentSegment) GetChildChunks() []*ChildChunk {
 //         params = f"timestamp={timestamp}&nonce={nonce}&sign={encoded_sign}"
 //         signed_url = f"{match.group(0)}?{params}"
 //         signed_urls.append((match.start(), match.end(), signed_url))
-
-//     # For data after v0.10.0
-//     pattern = r"/files/([a-f0-9\-]+)/file-preview"
-//     matches = re.finditer(pattern, text)
-//     for match in matches:
+// 	}
+//     // For data after v0.10.0
+//     pattern = regexp.MustCompile(`/files/([a-f0-9\-]+)/file-preview`)
+//     matches = pattern.FindAllStringSubmatchIndex(text, -1)
+//     for _, match := range matches{
 //         upload_file_id = match.group(1)
 //         nonce = os.urandom(16).hex()
 //         timestamp = str(int(time.time()))
@@ -1029,18 +1028,19 @@ func (seg *DocumentSegment) GetChildChunks() []*ChildChunk {
 //         sign = hmac.new(secret_key, data_to_sign.encode(), hashlib.sha256).digest()
 //         encoded_sign = base64.urlsafe_b64encode(sign).decode()
 
-//         params = f"timestamp={timestamp}&nonce={nonce}&sign={encoded_sign}"
-//         signed_url = f"{match.group(0)}?{params}"
-//         signed_urls.append((match.start(), match.end(), signed_url))
-
-//     # Reconstruct the text with signed URLs
-//     offset = 0
-//     for start, end, signed_url in signed_urls:
-//         text = text[: start + offset] + signed_url + text[end + offset :]
-//         offset += len(signed_url) - (end - start)
-
-//     return text
-
+//	        params = f"timestamp={timestamp}&nonce={nonce}&sign={encoded_sign}"
+//	        signed_url = f"{match.group(0)}?{params}"
+//	        signed_urls.append((match.start(), match.end(), signed_url))
+//		}
+//	    // Reconstruct the text with signed URLs
+//	    offset = 0
+//	    for _, (start, end, signed_url) := range signed_urls{
+//	        text = text[: start + offset] + signed_url + text[end + offset :]
+//	        offset += len(signed_url) - (end - start)
+//		}
+//	    return text
+//	}
+//
 // ChildChunk [...]
 type ChildChunk struct {
 	ID            string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`

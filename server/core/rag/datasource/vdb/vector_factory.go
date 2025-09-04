@@ -1,236 +1,275 @@
 package vdb
 
+import (
+	"github.com/spf13/viper"
+	"mlib.com/gofy/server/core/exceptions"
+	"mlib.com/gofy/server/core/rag/embedding"
+	dbengine "mlib.com/gofy/server/db_engine"
+	"mlib.com/gofy/server/models"
+	"mlib.com/mlog"
+)
 
-type AbstractVectorFactory interface{
-    InitVector(dataset *models.Dataset, attributes: list, embeddings: Embeddings) -> BaseVector:
-        raise NotImplementedError
+type AbstractVectorFactory interface {
+	InitVector(dataset *models.Dataset, attributes []any, embeddings embedding.IEmbeddings) BaseVector
 }
-    @staticmethod
-    def gen_index_struct_dict(vector_type: VectorType, collection_name: str) -> dict:
-        index_struct_dict = {"type": vector_type, "vector_store": {"class_prefix": collection_name}}
-        return index_struct_dict
 
+func GenIndexStructDict(vector_type VectorType, collection_name string) map[string]any {
+	return map[string]any{"type": vector_type, "vector_store": map[string]any{"class_prefix": collection_name}}
+}
 
-class Vector:
-    def __init__(self, dataset: Dataset, attributes: Optional[list] = None):
-        if attributes is None:
-            attributes = ["doc_id", "dataset_id", "document_id", "doc_hash"]
-        self._dataset = dataset
-        self._embeddings = self._get_embeddings()
-        self._attributes = attributes
-        self._vector_processor = self._init_vector()
+type Vector struct {
+	_dataset          *models.Dataset
+	_embeddings       embedding.IEmbeddings
+	_attributes       []string
+	_vector_processor BaseVector
+}
 
-    def _init_vector(self) -> BaseVector:
-        vector_type = dify_config.VECTOR_STORE
+func NewVector(dataset *models.Dataset, attributes []string) *Vector {
+	if len(attributes) == 0 {
+		attributes = []string{"doc_id", "dataset_id", "document_id", "doc_hash"}
+	}
+	v := &Vector{
+		_dataset:    dataset,
+		_attributes: attributes,
+	}
+	v._embeddings = v._get_embeddings()
+	v._vector_processor = v._init_vector()
+	return v
+}
+func (v *Vector) _init_vector() BaseVector {
+	vector_type := viper.GetStringWithDefault("vector_store", "")
+	index_struct_dict := v._dataset.IndexStructDict()
+	if len(index_struct_dict) > 0 {
+		if _, ok := index_struct_dict["type"]; ok {
+			if _, ok := index_struct_dict["type"].(string); ok {
+				vector_type = index_struct_dict["type"].(string)
+			}
+		}
+	} else {
+		if viper.GetBoolWithDefault("vector_store_whitelist_enable", false) {
+			whitelist := new(models.Whitelist)
+			err := dbengine.Instance().DB.Model(&models.Whitelist{}).Where("tenant_id = ? and category = ?", v._dataset.TenantID, "vector_db").First(whitelist).Error
+			if err != nil {
+				mlog.Errorf("get Whitelist failed:%v", err)
+				whitelist = nil
+			}
+			if whitelist != nil {
+				vector_type = string(Vector_TIDB_ON_QDRANT)
+			}
+		}
+	}
+	if vector_type == "" {
+		panic(exceptions.NewValueError("Vector store must be specified."))
+	}
+	// vector_factory_cls = v.get_vector_factory(vector_type)
+	// return vector_factory_cls().init_vector(v._dataset, v._attributes, v._embeddings)
+	return nil
+}
 
-        if self._dataset.index_struct_dict:
-            vector_type = self._dataset.index_struct_dict["type"]
-        else:
-            if dify_config.VECTOR_STORE_WHITELIST_ENABLE:
-                whitelist = (
-                    db.session.query(Whitelist)
-                    .where(Whitelist.tenant_id == self._dataset.tenant_id, Whitelist.category == "vector_db")
-                    .one_or_none()
-                )
-                if whitelist:
-                    vector_type = VectorType.TIDB_ON_QDRANT
+func (v *Vector) get_vector_factory(vector_type string) AbstractVectorFactory {
+	return nil
+	// switch VectorType(vector_type) {
+	//     case Vector_CHROMA:
+	//         from core.rag.datasource.vdb.chroma.chroma_vector import ChromaVectorFactory
 
-        if not vector_type:
-            raise ValueError("Vector store must be specified.")
+	//         return ChromaVectorFactory
+	//     case Vector_MILVUS:
+	//         from core.rag.datasource.vdb.milvus.milvus_vector import MilvusVectorFactory
 
-        vector_factory_cls = self.get_vector_factory(vector_type)
-        return vector_factory_cls().init_vector(self._dataset, self._attributes, self._embeddings)
+	//         return MilvusVectorFactory
+	//     case Vector_MYSCALE:
+	//         from core.rag.datasource.vdb.myscale.myscale_vector import MyScaleVectorFactory
 
-    @staticmethod
-    def get_vector_factory(vector_type: str) -> type[AbstractVectorFactory]:
-        match vector_type:
-            case VectorType.CHROMA:
-                from core.rag.datasource.vdb.chroma.chroma_vector import ChromaVectorFactory
+	//         return MyScaleVectorFactory
+	//     case Vector_PGVECTOR:
+	//         from core.rag.datasource.vdb.pgvector.pgvector import PGVectorFactory
 
-                return ChromaVectorFactory
-            case VectorType.MILVUS:
-                from core.rag.datasource.vdb.milvus.milvus_vector import MilvusVectorFactory
+	//         return PGVectorFactory
+	//     case Vector_VASTBASE:
+	//         from core.rag.datasource.vdb.pyvastbase.vastbase_vector import VastbaseVectorFactory
 
-                return MilvusVectorFactory
-            case VectorType.MYSCALE:
-                from core.rag.datasource.vdb.myscale.myscale_vector import MyScaleVectorFactory
+	//         return VastbaseVectorFactory
+	//     case Vector_PGVECTO_RS:
+	//         from core.rag.datasource.vdb.pgvecto_rs.pgvecto_rs import PGVectoRSFactory
 
-                return MyScaleVectorFactory
-            case VectorType.PGVECTOR:
-                from core.rag.datasource.vdb.pgvector.pgvector import PGVectorFactory
+	//         return PGVectoRSFactory
+	//     case Vector_QDRANT:
+	//         from core.rag.datasource.vdb.qdrant.qdrant_vector import QdrantVectorFactory
 
-                return PGVectorFactory
-            case VectorType.VASTBASE:
-                from core.rag.datasource.vdb.pyvastbase.vastbase_vector import VastbaseVectorFactory
+	//         return QdrantVectorFactory
+	//     case Vector_RELYT:
+	//         from core.rag.datasource.vdb.relyt.relyt_vector import RelytVectorFactory
 
-                return VastbaseVectorFactory
-            case VectorType.PGVECTO_RS:
-                from core.rag.datasource.vdb.pgvecto_rs.pgvecto_rs import PGVectoRSFactory
+	//         return RelytVectorFactory
+	//     case Vector_ELASTICSEARCH:
+	//         from core.rag.datasource.vdb.elasticsearch.elasticsearch_vector import ElasticSearchVectorFactory
 
-                return PGVectoRSFactory
-            case VectorType.QDRANT:
-                from core.rag.datasource.vdb.qdrant.qdrant_vector import QdrantVectorFactory
+	//         return ElasticSearchVectorFactory
+	//     case Vector_ELASTICSEARCH_JA:
+	//         from core.rag.datasource.vdb.elasticsearch.elasticsearch_ja_vector import (
+	//             ElasticSearchJaVectorFactory,
+	//         )
 
-                return QdrantVectorFactory
-            case VectorType.RELYT:
-                from core.rag.datasource.vdb.relyt.relyt_vector import RelytVectorFactory
+	//         return ElasticSearchJaVectorFactory
+	//     case Vector_TIDB_VECTOR:
+	//         from core.rag.datasource.vdb.tidb_vector.tidb_vector import TiDBVectorFactory
 
-                return RelytVectorFactory
-            case VectorType.ELASTICSEARCH:
-                from core.rag.datasource.vdb.elasticsearch.elasticsearch_vector import ElasticSearchVectorFactory
+	//         return TiDBVectorFactory
+	//     case Vector_WEAVIATE:
+	//         from core.rag.datasource.vdb.weaviate.weaviate_vector import WeaviateVectorFactory
 
-                return ElasticSearchVectorFactory
-            case VectorType.ELASTICSEARCH_JA:
-                from core.rag.datasource.vdb.elasticsearch.elasticsearch_ja_vector import (
-                    ElasticSearchJaVectorFactory,
-                )
+	//         return WeaviateVectorFactory
+	//     case Vector_TENCENT:
+	//         from core.rag.datasource.vdb.tencent.tencent_vector import TencentVectorFactory
 
-                return ElasticSearchJaVectorFactory
-            case VectorType.TIDB_VECTOR:
-                from core.rag.datasource.vdb.tidb_vector.tidb_vector import TiDBVectorFactory
+	//         return TencentVectorFactory
+	//     case Vector_ORACLE:
+	//         from core.rag.datasource.vdb.oracle.oraclevector import OracleVectorFactory
 
-                return TiDBVectorFactory
-            case VectorType.WEAVIATE:
-                from core.rag.datasource.vdb.weaviate.weaviate_vector import WeaviateVectorFactory
+	//         return OracleVectorFactory
+	//     case Vector_OPENSEARCH:
+	//         from core.rag.datasource.vdb.opensearch.opensearch_vector import OpenSearchVectorFactory
 
-                return WeaviateVectorFactory
-            case VectorType.TENCENT:
-                from core.rag.datasource.vdb.tencent.tencent_vector import TencentVectorFactory
+	//         return OpenSearchVectorFactory
+	//     case Vector_ANALYTICDB:
+	//         from core.rag.datasource.vdb.analyticdb.analyticdb_vector import AnalyticdbVectorFactory
 
-                return TencentVectorFactory
-            case VectorType.ORACLE:
-                from core.rag.datasource.vdb.oracle.oraclevector import OracleVectorFactory
+	//         return AnalyticdbVectorFactory
+	//     case Vector_COUCHBASE:
+	//         from core.rag.datasource.vdb.couchbase.couchbase_vector import CouchbaseVectorFactory
 
-                return OracleVectorFactory
-            case VectorType.OPENSEARCH:
-                from core.rag.datasource.vdb.opensearch.opensearch_vector import OpenSearchVectorFactory
+	//         return CouchbaseVectorFactory
+	//     case Vector_BAIDU:
+	//         from core.rag.datasource.vdb.baidu.baidu_vector import BaiduVectorFactory
 
-                return OpenSearchVectorFactory
-            case VectorType.ANALYTICDB:
-                from core.rag.datasource.vdb.analyticdb.analyticdb_vector import AnalyticdbVectorFactory
+	//         return BaiduVectorFactory
+	//     case Vector_VIKINGDB:
+	//         from core.rag.datasource.vdb.vikingdb.vikingdb_vector import VikingDBVectorFactory
 
-                return AnalyticdbVectorFactory
-            case VectorType.COUCHBASE:
-                from core.rag.datasource.vdb.couchbase.couchbase_vector import CouchbaseVectorFactory
+	//         return VikingDBVectorFactory
+	//     case Vector_UPSTASH:
+	//         from core.rag.datasource.vdb.upstash.upstash_vector import UpstashVectorFactory
 
-                return CouchbaseVectorFactory
-            case VectorType.BAIDU:
-                from core.rag.datasource.vdb.baidu.baidu_vector import BaiduVectorFactory
+	//         return UpstashVectorFactory
+	//     case Vector_TIDB_ON_QDRANT:
+	//         from core.rag.datasource.vdb.tidb_on_qdrant.tidb_on_qdrant_vector import TidbOnQdrantVectorFactory
 
-                return BaiduVectorFactory
-            case VectorType.VIKINGDB:
-                from core.rag.datasource.vdb.vikingdb.vikingdb_vector import VikingDBVectorFactory
+	//         return TidbOnQdrantVectorFactory
+	//     case Vector_LINDORM:
+	//         from core.rag.datasource.vdb.lindorm.lindorm_vector import LindormVectorStoreFactory
 
-                return VikingDBVectorFactory
-            case VectorType.UPSTASH:
-                from core.rag.datasource.vdb.upstash.upstash_vector import UpstashVectorFactory
+	//         return LindormVectorStoreFactory
+	//     case Vector_OCEANBASE:
+	//         from core.rag.datasource.vdb.oceanbase.oceanbase_vector import OceanBaseVectorFactory
 
-                return UpstashVectorFactory
-            case VectorType.TIDB_ON_QDRANT:
-                from core.rag.datasource.vdb.tidb_on_qdrant.tidb_on_qdrant_vector import TidbOnQdrantVectorFactory
+	//         return OceanBaseVectorFactory
+	//     case Vector_OPENGAUSS:
+	//         from core.rag.datasource.vdb.opengauss.opengauss import OpenGaussFactory
 
-                return TidbOnQdrantVectorFactory
-            case VectorType.LINDORM:
-                from core.rag.datasource.vdb.lindorm.lindorm_vector import LindormVectorStoreFactory
+	//         return OpenGaussFactory
+	//     case Vector_TABLESTORE:
+	//         from core.rag.datasource.vdb.tablestore.tablestore_vector import TableStoreVectorFactory
 
-                return LindormVectorStoreFactory
-            case VectorType.OCEANBASE:
-                from core.rag.datasource.vdb.oceanbase.oceanbase_vector import OceanBaseVectorFactory
+	//         return TableStoreVectorFactory
+	//     case Vector_HUAWEI_CLOUD:
+	//         from core.rag.datasource.vdb.huawei.huawei_cloud_vector import HuaweiCloudVectorFactory
 
-                return OceanBaseVectorFactory
-            case VectorType.OPENGAUSS:
-                from core.rag.datasource.vdb.opengauss.opengauss import OpenGaussFactory
+	//         return HuaweiCloudVectorFactory
+	//     case Vector_MATRIXONE:
+	//         from core.rag.datasource.vdb.matrixone.matrixone_vector import MatrixoneVectorFactory
 
-                return OpenGaussFactory
-            case VectorType.TABLESTORE:
-                from core.rag.datasource.vdb.tablestore.tablestore_vector import TableStoreVectorFactory
+	//         return MatrixoneVectorFactory
+	//     default:
+	//         panic(exceptions.NewValueError(fmt.Sprintf("Vector store {%s} is not supported.", vector_type)))
+	//     }
+}
 
-                return TableStoreVectorFactory
-            case VectorType.HUAWEI_CLOUD:
-                from core.rag.datasource.vdb.huawei.huawei_cloud_vector import HuaweiCloudVectorFactory
+// func(v *Vector) create(texts: Optional[list] = None, **kwargs):
+//         if texts:
+//             start = time.time()
+//             logger.info("start embedding %s texts %s", len(texts), start)
+//             batch_size = 1000
+//             total_batches = len(texts) + batch_size - 1
+//             for i in range(0, len(texts), batch_size):
+//                 batch = texts[i : i + batch_size]
+//                 batch_start = time.time()
+//                 logger.info("Processing batch %s/%s (%s texts)", i // batch_size + 1, total_batches, len(batch))
+//                 batch_embeddings = v._embeddings.embed_documents([document.page_content for document in batch])
+//                 logger.info(
+//                     "Embedding batch %s/%s took %s s", i // batch_size + 1, total_batches, time.time() - batch_start
+//                 )
+//                 v._vector_processor.create(texts=batch, embeddings=batch_embeddings, **kwargs)
+//             logger.info("Embedding %s texts took %s s", len(texts), time.time() - start)
 
-                return HuaweiCloudVectorFactory
-            case VectorType.MATRIXONE:
-                from core.rag.datasource.vdb.matrixone.matrixone_vector import MatrixoneVectorFactory
+// }
+// func(v *Vector) add_texts(documents: list[Document], **kwargs):
+//         if kwargs.get("duplicate_check", False):
+//             documents = v._filter_duplicate_texts(documents)
 
-                return MatrixoneVectorFactory
-            case _:
-                raise ValueError(f"Vector store {vector_type} is not supported.")
+//         embeddings = v._embeddings.embed_documents([document.page_content for document in documents])
+//         v._vector_processor.create(texts=documents, embeddings=embeddings, **kwargs)
 
-    def create(self, texts: Optional[list] = None, **kwargs):
-        if texts:
-            start = time.time()
-            logger.info("start embedding %s texts %s", len(texts), start)
-            batch_size = 1000
-            total_batches = len(texts) + batch_size - 1
-            for i in range(0, len(texts), batch_size):
-                batch = texts[i : i + batch_size]
-                batch_start = time.time()
-                logger.info("Processing batch %s/%s (%s texts)", i // batch_size + 1, total_batches, len(batch))
-                batch_embeddings = self._embeddings.embed_documents([document.page_content for document in batch])
-                logger.info(
-                    "Embedding batch %s/%s took %s s", i // batch_size + 1, total_batches, time.time() - batch_start
-                )
-                self._vector_processor.create(texts=batch, embeddings=batch_embeddings, **kwargs)
-            logger.info("Embedding %s texts took %s s", len(texts), time.time() - start)
+// }
+// func(v *Vector) text_exists(id string) -> bool:
+//         return v._vector_processor.text_exists(id)
 
-    def add_texts(self, documents: list[Document], **kwargs):
-        if kwargs.get("duplicate_check", False):
-            documents = self._filter_duplicate_texts(documents)
+// }
+// func(v *Vector) delete_by_ids(ids: list[str]) -> None:
+//         v._vector_processor.delete_by_ids(ids)
 
-        embeddings = self._embeddings.embed_documents([document.page_content for document in documents])
-        self._vector_processor.create(texts=documents, embeddings=embeddings, **kwargs)
+// }
+// func(v *Vector) delete_by_metadata_field(key string, value string) -> None:
+//         v._vector_processor.delete_by_metadata_field(key, value)
 
-    def text_exists(self, id: str) -> bool:
-        return self._vector_processor.text_exists(id)
+// }
+// func(v *Vector) search_by_vector(query string, **kwargs: Any) -> list[Document]:
+//         query_vector = v._embeddings.embed_query(query)
+//         return v._vector_processor.search_by_vector(query_vector, **kwargs)
 
-    def delete_by_ids(self, ids: list[str]) -> None:
-        self._vector_processor.delete_by_ids(ids)
+// }
+// func(v *Vector) search_by_full_text(query string, **kwargs: Any) -> list[Document]:
+//         return v._vector_processor.search_by_full_text(query, **kwargs)
 
-    def delete_by_metadata_field(self, key: str, value: str) -> None:
-        self._vector_processor.delete_by_metadata_field(key, value)
+// }
+// func(v *Vector) delete() -> None:
+//         v._vector_processor.delete()
+//         // delete collection redis cache
+//         if v._vector_processor.collection_name:
+//             collection_exist_cache_key = f"vector_indexing_{v._vector_processor.collection_name}"
+//             redis_client.delete(collection_exist_cache_key)
 
-    def search_by_vector(self, query: str, **kwargs: Any) -> list[Document]:
-        query_vector = self._embeddings.embed_query(query)
-        return self._vector_processor.search_by_vector(query_vector, **kwargs)
+// }
+func (v *Vector) _get_embeddings() embedding.IEmbeddings {
+	// model_manager = ModelManager()
 
-    def search_by_full_text(self, query: str, **kwargs: Any) -> list[Document]:
-        return self._vector_processor.search_by_full_text(query, **kwargs)
+	// embedding_model = model_manager.get_model_instance(
+	//     tenant_id=v._dataset.tenant_id,
+	//     provider=v._dataset.embedding_model_provider,
+	//     model_type=ModelType.TEXT_EMBEDDING,
+	//     model=v._dataset.embedding_model,
+	// )
+	// return CacheEmbedding(embedding_model)
+	return nil
+}
 
-    def delete(self) -> None:
-        self._vector_processor.delete()
-        # delete collection redis cache
-        if self._vector_processor.collection_name:
-            collection_exist_cache_key = f"vector_indexing_{self._vector_processor.collection_name}"
-            redis_client.delete(collection_exist_cache_key)
+// func(v *Vector) _filter_duplicate_texts(texts: list[Document]) -> list[Document]:
+//         for text in texts.copy():
+//             if text.metadata is None:
+//                 continue
+//             doc_id = text.metadata["doc_id"]
+//             if doc_id:
+//                 exists_duplicate_node = v.text_exists(doc_id)
+//                 if exists_duplicate_node:
+//                     texts.remove(text)
 
-    def _get_embeddings(self) -> Embeddings:
-        model_manager = ModelManager()
+//         return texts
 
-        embedding_model = model_manager.get_model_instance(
-            tenant_id=self._dataset.tenant_id,
-            provider=self._dataset.embedding_model_provider,
-            model_type=ModelType.TEXT_EMBEDDING,
-            model=self._dataset.embedding_model,
-        )
-        return CacheEmbedding(embedding_model)
+// }
+// func(v *Vector) __getattr__(name):
+//         if v._vector_processor is not None:
+//             method = getattr(v._vector_processor, name)
+//             if callable(method):
+//                 return method
 
-    def _filter_duplicate_texts(self, texts: list[Document]) -> list[Document]:
-        for text in texts.copy():
-            if text.metadata is None:
-                continue
-            doc_id = text.metadata["doc_id"]
-            if doc_id:
-                exists_duplicate_node = self.text_exists(doc_id)
-                if exists_duplicate_node:
-                    texts.remove(text)
-
-        return texts
-
-    def __getattr__(self, name):
-        if self._vector_processor is not None:
-            method = getattr(self._vector_processor, name)
-            if callable(method):
-                return method
-
-        raise AttributeError(f"'vector_processor' object has no attribute '{name}'")
+//         raise AttributeError(f"'vector_processor' object has no attribute '{name}'")
+// }

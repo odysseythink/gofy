@@ -12,7 +12,7 @@ import (
 )
 
 type ToolProviderController interface {
-	GetTool(tool_name string) *Tooler
+	GetTool(tool_name string) *Toolor
 	GetCredentialsSchema() []*providerentities.ProviderConfig
 	/*
 		validate the credentials of the provider

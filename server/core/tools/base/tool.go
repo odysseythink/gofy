@@ -13,7 +13,7 @@ type ToolInvokeResponseType interface {
 	*toolsentities.ToolInvokeMessage | []*toolsentities.ToolInvokeMessage
 }
 
-type Tooler interface {
+type Toolor interface {
 	ToolProviderType() toolsenumtypes.ToolProviderType
 	Invoke(
 		user_id string,
@@ -22,7 +22,7 @@ type Tooler interface {
 		app_id string,
 		message_id string,
 	) (*toolsentities.ToolInvokeMessage, []*toolsentities.ToolInvokeMessage, iter.Seq[*toolsentities.ToolInvokeMessage])
-	ForkToolRuntime(runtime *ToolRuntime) *Tooler
+	ForkToolRuntime(runtime *ToolRuntime) *Toolor
 }
 
 type Tool struct {
@@ -53,7 +53,7 @@ func (t *Tool) ForkToolRuntime(runtime *ToolRuntime) *Tool {
 }
 
 func (t *Tool) Invoke1(
-	instance Tooler,
+	instance Toolor,
 	user_id string,
 	tool_parameters map[string]any,
 	conversation_id string,

@@ -11,6 +11,8 @@ import (
 	graphengineentities "mlib.com/gofy/server/entities/graph_engine"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	basenodesentities "mlib.com/gofy/server/entities/nodes/base"
+	ragentities "mlib.com/gofy/server/entities/rag"
+	wfentities "mlib.com/gofy/server/entities/workflow"
 	appenumtypes "mlib.com/gofy/server/enum_types/app"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 	workflowenumtypes "mlib.com/gofy/server/enum_types/workflow"
@@ -19,7 +21,7 @@ import (
 )
 
 type AppQueueEventer interface {
-	Event() appenumtypes.QueueEvent
+	Event() appenumtypes.QueueEventType
 }
 
 // QueueLLMChunkEvent represents a queue event for LLM chunk.
@@ -28,7 +30,7 @@ type QueueLLMChunkEvent struct {
 	Chunk *modelruntimeentities.LLMResultChunk `json:"chunk"`
 }
 
-func (aqe *QueueLLMChunkEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueLLMChunkEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_LLM_CHUNK
 }
 
@@ -38,18 +40,18 @@ type QueueIterationStartEvent struct {
 	NodeID                    string                          `json:"node_id"`
 	NodeType                  nodesenumtypes.NodeType         `json:"node_type"`
 	NodeData                  *basenodesentities.BaseNodeData `json:"node_data"`
-	ParallelID                string                          `json:"parallel_id,omitempty"`
-	ParallelStartNodeID       string                          `json:"parallel_start_node_id,omitempty"`
-	ParentParallelID          string                          `json:"parent_parallel_id,omitempty"`
-	ParentParallelStartNodeID string                          `json:"parent_parallel_start_node_id,omitempty"`
+	ParallelID                string                          `json:"parallel_id"`
+	ParallelStartNodeID       string                          `json:"parallel_start_node_id"`
+	ParentParallelID          string                          `json:"parent_parallel_id"`
+	ParentParallelStartNodeID string                          `json:"parent_parallel_start_node_id"`
 	StartAt                   time.Time                       `json:"start_at"`
 	NodeRunIndex              int                             `json:"node_run_index"`
-	Inputs                    map[string]any                  `json:"inputs,omitempty"`
-	PredecessorNodeID         string                          `json:"predecessor_node_id,omitempty"`
-	Metadata                  map[string]any                  `json:"metadata,omitempty"`
+	Inputs                    map[string]any                  `json:"inputs"`
+	PredecessorNodeID         string                          `json:"predecessor_node_id"`
+	Metadata                  map[string]any                  `json:"metadata"`
 }
 
-func (aqe *QueueIterationStartEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueIterationStartEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_ITERATION_START
 }
 
@@ -60,17 +62,17 @@ type QueueIterationNextEvent struct {
 	NodeID                    string                          `json:"node_id"`
 	NodeType                  nodesenumtypes.NodeType         `json:"node_type"`
 	NodeData                  *basenodesentities.BaseNodeData `json:"node_data"`
-	ParallelID                string                          `json:"parallel_id,omitempty"`
-	ParallelStartNodeID       string                          `json:"parallel_start_node_id,omitempty"`
-	ParentParallelID          string                          `json:"parent_parallel_id,omitempty"`
-	ParentParallelStartNodeID string                          `json:"parent_parallel_start_node_id,omitempty"`
-	ParallelModeRunID         string                          `json:"parallel_mode_run_id,omitempty"`
+	ParallelID                string                          `json:"parallel_id"`
+	ParallelStartNodeID       string                          `json:"parallel_start_node_id"`
+	ParentParallelID          string                          `json:"parent_parallel_id"`
+	ParentParallelStartNodeID string                          `json:"parent_parallel_start_node_id"`
+	ParallelModeRunID         string                          `json:"parallel_mode_run_id"`
 	NodeRunIndex              int                             `json:"node_run_index"`
-	Output                    any                             `json:"output,omitempty"`
-	Duration                  float64                         `json:"duration,omitempty"`
+	Output                    any                             `json:"output"`
+	Duration                  float64                         `json:"duration"`
 }
 
-func (aqe *QueueIterationNextEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueIterationNextEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_ITERATION_NEXT
 }
 
@@ -80,31 +82,94 @@ type QueueIterationCompletedEvent struct {
 	NodeID                    string                          `json:"node_id"`
 	NodeType                  nodesenumtypes.NodeType         `json:"node_type"`
 	NodeData                  *basenodesentities.BaseNodeData `json:"node_data"`
-	ParallelID                string                          `json:"parallel_id,omitempty"`
-	ParallelStartNodeID       string                          `json:"parallel_start_node_id,omitempty"`
-	ParentParallelID          string                          `json:"parent_parallel_id,omitempty"`
-	ParentParallelStartNodeID string                          `json:"parent_parallel_start_node_id,omitempty"`
+	ParallelID                string                          `json:"parallel_id"`
+	ParallelStartNodeID       string                          `json:"parallel_start_node_id"`
+	ParentParallelID          string                          `json:"parent_parallel_id"`
+	ParentParallelStartNodeID string                          `json:"parent_parallel_start_node_id"`
 	StartAt                   time.Time                       `json:"start_at"`
 	NodeRunIndex              int                             `json:"node_run_index"`
-	Inputs                    map[string]any                  `json:"inputs,omitempty"`
-	Outputs                   map[string]any                  `json:"outputs,omitempty"`
-	Metadata                  map[string]any                  `json:"metadata,omitempty"`
+	Inputs                    map[string]any                  `json:"inputs"`
+	Outputs                   map[string]any                  `json:"outputs"`
+	Metadata                  map[string]any                  `json:"metadata"`
 	Steps                     int                             `json:"steps"`
-	Error                     string                          `json:"error,omitempty"`
+	Error                     string                          `json:"error"`
 }
 
-func (aqe *QueueIterationCompletedEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueIterationCompletedEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_ITERATION_COMPLETED
+}
+
+type QueueLoopStartEvent struct {
+	NodeExecutionID           string                          `json:"node_execution_id"`
+	NodeID                    string                          `json:"node_id"`
+	NodeType                  nodesenumtypes.NodeType         `json:"node_type"`
+	NodeData                  *basenodesentities.BaseNodeData `json:"node_data"` // BaseNodeData
+	ParallelID                string                          `json:"parallel_id"`
+	ParallelStartNodeID       string                          `json:"parallel_start_node_id"`
+	ParentParallelID          string                          `json:"parent_parallel_id"`
+	ParentParallelStartNodeID string                          `json:"parent_parallel_start_node_id"`
+	StartAt                   time.Time                       `json:"start_at"`
+	NodeRunIndex              int                             `json:"node_run_index"`
+	Inputs                    map[string]any                  `json:"inputs"` // map[string]any
+	PredecessorNodeID         string                          `json:"predecessor_node_id"`
+	Metadata                  map[string]any                  `json:"metadata"` // map[string]any
+}
+
+func (aqe *QueueLoopStartEvent) Event() appenumtypes.QueueEventType {
+	return appenumtypes.QueueEvent_LOOP_START
+}
+
+type QueueLoopNextEvent struct {
+	Index                     int                             `json:"index"`
+	NodeExecutionID           string                          `json:"node_execution_id"`
+	NodeID                    string                          `json:"node_id"`
+	NodeType                  nodesenumtypes.NodeType         `json:"node_type"`
+	NodeData                  *basenodesentities.BaseNodeData `json:"node_data"`
+	ParallelID                string                          `json:"parallel_id"`
+	ParallelStartNodeID       string                          `json:"parallel_start_node_id"`
+	ParentParallelID          string                          `json:"parent_parallel_id"`
+	ParentParallelStartNodeID string                          `json:"parent_parallel_start_node_id"`
+	ParallelModeRunID         string                          `json:"parallel_mode_run_id"`
+	NodeRunIndex              int                             `json:"node_run_index"`
+	Output                    any                             `json:"output"` // any
+	Duration                  float64                         `json:"duration"`
+}
+
+func (aqe *QueueLoopNextEvent) Event() appenumtypes.QueueEventType {
+	return appenumtypes.QueueEvent_LOOP_NEXT
+}
+
+type QueueLoopCompletedEvent struct {
+	NodeExecutionID           string                          `json:"node_execution_id"`
+	NodeID                    string                          `json:"node_id"`
+	NodeType                  nodesenumtypes.NodeType         `json:"node_type"`
+	NodeData                  *basenodesentities.BaseNodeData `json:"node_data"`
+	ParallelID                string                          `json:"parallel_id"`
+	ParallelStartNodeID       string                          `json:"parallel_start_node_id"`
+	ParentParallelID          string                          `json:"parent_parallel_id"`
+	ParentParallelStartNodeID string                          `json:"parent_parallel_start_node_id"`
+	StartAt                   time.Time                       `json:"start_at"`
+	NodeRunIndex              int                             `json:"node_run_index"`
+	Inputs                    map[string]any                  `json:"inputs"`
+	Outputs                   map[string]any                  `json:"outputs"`
+	Metadata                  map[string]any                  `json:"metadata"`
+	Steps                     int                             `json:"steps"`
+	Error                     string                          `json:"error"`
+}
+
+func (aqe *QueueLoopCompletedEvent) Event() appenumtypes.QueueEventType {
+	return appenumtypes.QueueEvent_LOOP_COMPLETED
 }
 
 // QueueTextChunkEvent represents a queue event for text chunk.
 type QueueTextChunkEvent struct {
 	Text                 string   `json:"text"`
-	FromVariableSelector []string `json:"from_variable_selector,omitempty"`
-	InIterationID        string   `json:"in_iteration_id,omitempty"`
+	FromVariableSelector []string `json:"from_variable_selector"`
+	InIterationID        string   `json:"in_iteration_id"`
+	InLoopID             string   `json:"in_loop_id"`
 }
 
-func (aqe *QueueTextChunkEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueTextChunkEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_TEXT_CHUNK
 }
 
@@ -113,26 +178,28 @@ type QueueAgentMessageEvent struct {
 	Chunk *modelruntimeentities.LLMResultChunk `json:"chunk"`
 }
 
-func (aqe *QueueAgentMessageEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueAgentMessageEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_AGENT_MESSAGE
 }
 
 // QueueMessageReplaceEvent represents a queue event for message replace.
 type QueueMessageReplaceEvent struct {
-	Text string `json:"text"`
+	Text   string `json:"text"`
+	Reason string `json:"reason"`
 }
 
-func (aqe *QueueMessageReplaceEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueMessageReplaceEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_MESSAGE_REPLACE
 }
 
 // QueueRetrieverResourcesEvent represents a queue event for retriever resources.
 type QueueRetrieverResourcesEvent struct {
-	RetrieverResources []map[string]any `json:"retriever_resources"`
-	InIterationID      string           `json:"in_iteration_id,omitempty"`
+	RetrieverResources []*ragentities.RetrievalSourceMetadata `json:"retriever_resources"`
+	InIterationID      string                                 `json:"in_iteration_id"`
+	InLoopID           string                                 `json:"in_loop_id"`
 }
 
-func (aqe *QueueRetrieverResourcesEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueRetrieverResourcesEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_RETRIEVER_RESOURCES
 }
 
@@ -141,16 +208,16 @@ type QueueAnnotationReplyEvent struct {
 	MessageAnnotationID string `json:"message_annotation_id"`
 }
 
-func (aqe *QueueAnnotationReplyEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueAnnotationReplyEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_ANNOTATION_REPLY
 }
 
 // QueueMessageEndEvent represents a queue event for message end.
 type QueueMessageEndEvent struct {
-	LLMResult *modelruntimeentities.LLMResult `json:"llm_result,omitempty"`
+	LLMResult *modelruntimeentities.LLMResult `json:"llm_result"`
 }
 
-func (aqe *QueueMessageEndEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueMessageEndEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_MESSAGE_END
 }
 
@@ -158,7 +225,7 @@ func (aqe *QueueMessageEndEvent) Event() appenumtypes.QueueEvent {
 type QueueAdvancedChatMessageEndEvent struct {
 }
 
-func (aqe *QueueAdvancedChatMessageEndEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueAdvancedChatMessageEndEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_ADVANCED_CHAT_MESSAGE_END
 }
 
@@ -167,16 +234,16 @@ type QueueWorkflowStartedEvent struct {
 	GraphRuntimeState *graphengineentities.GraphRuntimeState `json:"graph_runtime_state"`
 }
 
-func (aqe *QueueWorkflowStartedEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueWorkflowStartedEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_WORKFLOW_STARTED
 }
 
 // QueueWorkflowSucceededEvent represents a queue event for workflow succeeded.
 type QueueWorkflowSucceededEvent struct {
-	Outputs map[string]any `json:"outputs,omitempty"`
+	Outputs map[string]any `json:"outputs"`
 }
 
-func (aqe *QueueWorkflowSucceededEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueWorkflowSucceededEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_WORKFLOW_SUCCEEDED
 }
 
@@ -186,17 +253,17 @@ type QueueWorkflowFailedEvent struct {
 	ExceptionsCount int    `json:"exceptions_count"`
 }
 
-func (aqe *QueueWorkflowFailedEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueWorkflowFailedEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_WORKFLOW_FAILED
 }
 
 // QueueWorkflowPartialSuccessEvent represents a queue event for workflow partial success.
 type QueueWorkflowPartialSuccessEvent struct {
 	ExceptionsCount int            `json:"exceptions_count"`
-	Outputs         map[string]any `json:"outputs,omitempty"`
+	Outputs         map[string]any `json:"outputs"`
 }
 
-func (aqe *QueueWorkflowPartialSuccessEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueWorkflowPartialSuccessEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_WORKFLOW_PARTIAL_SUCCEEDED
 }
 
@@ -211,18 +278,20 @@ type QueueNodeStartedEvent struct {
 	NodeID                    string                  `json:"node_id"`
 	NodeType                  nodesenumtypes.NodeType `json:"node_type"`
 	NodeData                  any/* *basenodesentities.BaseNodeData*/ `json:"node_data"`
-	NodeRunIndex              int       `json:"node_run_index"`
-	PredecessorNodeID         string    `json:"predecessor_node_id,omitempty"`
-	ParallelID                string    `json:"parallel_id,omitempty"`
-	ParallelStartNodeID       string    `json:"parallel_start_node_id,omitempty"`
-	ParentParallelID          string    `json:"parent_parallel_id,omitempty"`
-	ParentParallelStartNodeID string    `json:"parent_parallel_start_node_id,omitempty"`
-	InIterationID             string    `json:"in_iteration_id,omitempty"`
-	StartAt                   time.Time `json:"start_at"`
-	ParallelModeRunID         string    `json:"parallel_mode_run_id,omitempty"`
+	NodeRunIndex              int                               `json:"node_run_index"`
+	PredecessorNodeID         string                            `json:"predecessor_node_id"`
+	ParallelID                string                            `json:"parallel_id"`
+	ParallelStartNodeID       string                            `json:"parallel_start_node_id"`
+	ParentParallelID          string                            `json:"parent_parallel_id"`
+	ParentParallelStartNodeID string                            `json:"parent_parallel_start_node_id"`
+	InIterationID             string                            `json:"in_iteration_id"`
+	InLoopID                  string                            `json:"in_loop_id"`
+	StartAt                   time.Time                         `json:"start_at"`
+	ParallelModeRunID         string                            `json:"parallel_mode_run_id"`
+	AgentStrategy             *wfentities.AgentNodeStrategyInit `json:"agent_strategy"`
 }
 
-func (aqe *QueueNodeStartedEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueNodeStartedEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_NODE_STARTED
 }
 
@@ -265,21 +334,23 @@ type QueueNodeSucceededEvent struct {
 	NodeID                    string                                       `json:"node_id"`
 	NodeType                  nodesenumtypes.NodeType                      `json:"node_type"`
 	NodeData                  *basenodesentities.BaseNodeData              `json:"node_data"`
-	ParallelID                string                                       `json:"parallel_id,omitempty"`
-	ParallelStartNodeID       string                                       `json:"parallel_start_node_id,omitempty"`
-	ParentParallelID          string                                       `json:"parent_parallel_id,omitempty"`
-	ParentParallelStartNodeID string                                       `json:"parent_parallel_start_node_id,omitempty"`
-	InIterationID             string                                       `json:"in_iteration_id,omitempty"`
+	ParallelID                string                                       `json:"parallel_id"`
+	ParallelStartNodeID       string                                       `json:"parallel_start_node_id"`
+	ParentParallelID          string                                       `json:"parent_parallel_id"`
+	ParentParallelStartNodeID string                                       `json:"parent_parallel_start_node_id"`
+	InIterationID             string                                       `json:"in_iteration_id"`
+	InLoopID                  string                                       `json:"in_loop_id"`
 	StartAt                   time.Time                                    `json:"start_at"`
-	Inputs                    map[string]any                               `json:"inputs,omitempty"`
-	ProcessData               map[string]any                               `json:"process_data,omitempty"`
-	Outputs                   map[string]any                               `json:"outputs,omitempty"`
-	ExecutionMetadata         map[workflowenumtypes.NodeRunMetadataKey]any `json:"execution_metadata,omitempty"`
-	Error                     string                                       `json:"error,omitempty"`
-	IterationDurationMap      map[string]float64                           `json:"iteration_duration_map,omitempty"`
+	Inputs                    map[string]any                               `json:"inputs"`
+	ProcessData               map[string]any                               `json:"process_data"`
+	Outputs                   map[string]any                               `json:"outputs"`
+	ExecutionMetadata         map[workflowenumtypes.NodeRunMetadataKey]any `json:"execution_metadata"`
+	Error                     string                                       `json:"error"`
+	IterationDurationMap      map[string]float64                           `json:"iteration_duration_map"`
+	LoopDurationMap           map[string]float64                           `json:"loop_duration_map"`
 }
 
-func (aqe *QueueNodeSucceededEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueNodeSucceededEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_NODE_SUCCEEDED
 }
 
@@ -309,18 +380,34 @@ func (aqe *QueueNodeSucceededEvent) Handle(workflow_run *models.WorkflowRun, wor
 	return workflow_node_execution
 }
 
+type QueueAgentLogEvent struct {
+	ID              string         `json:"id"`
+	Label           string         `json:"label"`
+	NodeExecutionID string         `json:"node_execution_id"`
+	ParentID        string         `json:"parent_id"`
+	Error           string         `json:"error"`
+	Status          string         `json:"status"`
+	Data            map[string]any `json:"data"`
+	Metadata        map[string]any `json:"metadata"`
+	NodeID          string         `json:"node_id"`
+}
+
+func (aqe *QueueAgentLogEvent) Event() appenumtypes.QueueEventType {
+	return appenumtypes.QueueEvent_AGENT_LOG
+}
+
 // QueueNodeRetryEvent represents a queue event for node retry.
 type QueueNodeRetryEvent struct {
 	*QueueNodeStartedEvent
-	Inputs            map[string]any                               `json:"inputs,omitempty"`
-	ProcessData       map[string]any                               `json:"process_data,omitempty"`
-	Outputs           map[string]any                               `json:"outputs,omitempty"`
-	ExecutionMetadata map[workflowenumtypes.NodeRunMetadataKey]any `json:"execution_metadata,omitempty"`
+	Inputs            map[string]any                               `json:"inputs"`
+	ProcessData       map[string]any                               `json:"process_data"`
+	Outputs           map[string]any                               `json:"outputs"`
+	ExecutionMetadata map[workflowenumtypes.NodeRunMetadataKey]any `json:"execution_metadata"`
 	Error             string                                       `json:"error"`
 	RetryIndex        int                                          `json:"retry_index"`
 }
 
-func (aqe *QueueNodeRetryEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueNodeRetryEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_RETRY
 }
 
@@ -381,20 +468,21 @@ type QueueNodeInIterationFailedEvent struct {
 	NodeID                    string                                       `json:"node_id"`
 	NodeType                  nodesenumtypes.NodeType                      `json:"node_type"`
 	NodeData                  *basenodesentities.BaseNodeData              `json:"node_data"`
-	ParallelID                string                                       `json:"parallel_id,omitempty"`
-	ParallelStartNodeID       string                                       `json:"parallel_start_node_id,omitempty"`
-	ParentParallelID          string                                       `json:"parent_parallel_id,omitempty"`
-	ParentParallelStartNodeID string                                       `json:"parent_parallel_start_node_id,omitempty"`
-	InIterationID             string                                       `json:"in_iteration_id,omitempty"`
+	ParallelID                string                                       `json:"parallel_id"`
+	ParallelStartNodeID       string                                       `json:"parallel_start_node_id"`
+	ParentParallelID          string                                       `json:"parent_parallel_id"`
+	ParentParallelStartNodeID string                                       `json:"parent_parallel_start_node_id"`
+	InIterationID             string                                       `json:"in_iteration_id"`
+	InLoopID                  string                                       `json:"in_loop_id"`
 	StartAt                   time.Time                                    `json:"start_at"`
-	Inputs                    map[string]any                               `json:"inputs,omitempty"`
-	ProcessData               map[string]any                               `json:"process_data,omitempty"`
-	Outputs                   map[string]any                               `json:"outputs,omitempty"`
-	ExecutionMetadata         map[workflowenumtypes.NodeRunMetadataKey]any `json:"execution_metadata,omitempty"`
+	Inputs                    map[string]any                               `json:"inputs"`
+	ProcessData               map[string]any                               `json:"process_data"`
+	Outputs                   map[string]any                               `json:"outputs"`
+	ExecutionMetadata         map[workflowenumtypes.NodeRunMetadataKey]any `json:"execution_metadata"`
 	Error                     string                                       `json:"error"`
 }
 
-func (aqe *QueueNodeInIterationFailedEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueNodeInIterationFailedEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_NODE_FAILED
 }
 
@@ -424,26 +512,50 @@ func (aqe *QueueNodeInIterationFailedEvent) Handle(workflow_run *models.Workflow
 	return workflow_node_execution
 }
 
+type QueueNodeInLoopFailedEvent struct {
+	NodeExecutionID           string                                       `json:"node_execution_id"`
+	NodeID                    string                                       `json:"node_id"`
+	NodeType                  nodesenumtypes.NodeType                      `json:"node_type"`
+	NodeData                  *basenodesentities.BaseNodeData              `json:"node_data"`
+	ParallelID                string                                       `json:"parallel_id"`
+	ParallelStartNodeID       string                                       `json:"parallel_start_node_id"`
+	ParentParallelID          string                                       `json:"parent_parallel_id"`
+	ParentParallelStartNodeID string                                       `json:"parent_parallel_start_node_id"`
+	InIterationID             string                                       `json:"in_iteration_id"`
+	InLoopID                  string                                       `json:"in_loop_id"`
+	StartAt                   time.Time                                    `json:"start_at"`
+	Inputs                    map[string]any                               `json:"inputs"`
+	ProcessData               map[string]any                               `json:"process_data"`
+	Outputs                   map[string]any                               `json:"outputs"`
+	ExecutionMetadata         map[workflowenumtypes.NodeRunMetadataKey]any `json:"execution_metadata"`
+	Error                     string                                       `json:"error"`
+}
+
+func (aqe *QueueNodeInLoopFailedEvent) Event() appenumtypes.QueueEventType {
+	return appenumtypes.QueueEvent_NODE_FAILED
+}
+
 // QueueNodeExceptionEvent represents a queue event for node exception.
 type QueueNodeExceptionEvent struct {
 	NodeExecutionID           string                                       `json:"node_execution_id"`
 	NodeID                    string                                       `json:"node_id"`
 	NodeType                  nodesenumtypes.NodeType                      `json:"node_type"`
 	NodeData                  *basenodesentities.BaseNodeData              `json:"node_data"`
-	ParallelID                string                                       `json:"parallel_id,omitempty"`
-	ParallelStartNodeID       string                                       `json:"parallel_start_node_id,omitempty"`
-	ParentParallelID          string                                       `json:"parent_parallel_id,omitempty"`
-	ParentParallelStartNodeID string                                       `json:"parent_parallel_start_node_id,omitempty"`
-	InIterationID             string                                       `json:"in_iteration_id,omitempty"`
+	ParallelID                string                                       `json:"parallel_id"`
+	ParallelStartNodeID       string                                       `json:"parallel_start_node_id"`
+	ParentParallelID          string                                       `json:"parent_parallel_id"`
+	ParentParallelStartNodeID string                                       `json:"parent_parallel_start_node_id"`
+	InIterationID             string                                       `json:"in_iteration_id"`
+	InLoopID                  string                                       `json:"in_loop_id"`
 	StartAt                   time.Time                                    `json:"start_at"`
-	Inputs                    map[string]any                               `json:"inputs,omitempty"`
-	ProcessData               map[string]any                               `json:"process_data,omitempty"`
-	Outputs                   map[string]any                               `json:"outputs,omitempty"`
-	ExecutionMetadata         map[workflowenumtypes.NodeRunMetadataKey]any `json:"execution_metadata,omitempty"`
+	Inputs                    map[string]any                               `json:"inputs"`
+	ProcessData               map[string]any                               `json:"process_data"`
+	Outputs                   map[string]any                               `json:"outputs"`
+	ExecutionMetadata         map[workflowenumtypes.NodeRunMetadataKey]any `json:"execution_metadata"`
 	Error                     string                                       `json:"error"`
 }
 
-func (aqe *QueueNodeExceptionEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueNodeExceptionEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_NODE_EXCEPTION
 }
 
@@ -479,20 +591,21 @@ type QueueNodeFailedEvent struct {
 	NodeID                    string                                       `json:"node_id"`
 	NodeType                  nodesenumtypes.NodeType                      `json:"node_type"`
 	NodeData                  *basenodesentities.BaseNodeData              `json:"node_data"`
-	ParallelID                string                                       `json:"parallel_id,omitempty"`
-	ParallelStartNodeID       string                                       `json:"parallel_start_node_id,omitempty"`
-	ParentParallelID          string                                       `json:"parent_parallel_id,omitempty"`
-	ParentParallelStartNodeID string                                       `json:"parent_parallel_start_node_id,omitempty"`
-	InIterationID             string                                       `json:"in_iteration_id,omitempty"`
+	ParallelID                string                                       `json:"parallel_id"`
+	ParallelStartNodeID       string                                       `json:"parallel_start_node_id"`
+	ParentParallelID          string                                       `json:"parent_parallel_id"`
+	ParentParallelStartNodeID string                                       `json:"parent_parallel_start_node_id"`
+	InIterationID             string                                       `json:"in_iteration_id"`
+	InLoopID                  string                                       `json:"in_loop_id"`
 	StartAt                   time.Time                                    `json:"start_at"`
-	Inputs                    map[string]any                               `json:"inputs,omitempty"`
-	ProcessData               map[string]any                               `json:"process_data,omitempty"`
-	Outputs                   map[string]any                               `json:"outputs,omitempty"`
-	ExecutionMetadata         map[workflowenumtypes.NodeRunMetadataKey]any `json:"execution_metadata,omitempty"`
+	Inputs                    map[string]any                               `json:"inputs"`
+	ProcessData               map[string]any                               `json:"process_data"`
+	Outputs                   map[string]any                               `json:"outputs"`
+	ExecutionMetadata         map[workflowenumtypes.NodeRunMetadataKey]any `json:"execution_metadata"`
 	Error                     string                                       `json:"error"`
 }
 
-func (aqe *QueueNodeFailedEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueNodeFailedEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_NODE_FAILED
 }
 
@@ -527,7 +640,7 @@ type QueueAgentThoughtEvent struct {
 	AgentThoughtID string `json:"agent_thought_id"`
 }
 
-func (aqe *QueueAgentThoughtEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueAgentThoughtEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_AGENT_THOUGHT
 }
 
@@ -536,16 +649,16 @@ type QueueMessageFileEvent struct {
 	MessageFileID string `json:"message_file_id"`
 }
 
-func (aqe *QueueMessageFileEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueMessageFileEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_MESSAGE_FILE
 }
 
 // QueueErrorEvent represents a queue event for error.
 type QueueErrorEvent struct {
-	Err error `json:"error,omitempty"`
+	Err error `json:"error"`
 }
 
-func (aqe *QueueErrorEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueErrorEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_ERROR
 }
 
@@ -553,7 +666,7 @@ func (aqe *QueueErrorEvent) Event() appenumtypes.QueueEvent {
 type QueuePingEvent struct {
 }
 
-func (aqe *QueuePingEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueuePingEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_PING
 }
 
@@ -562,7 +675,7 @@ type QueueStopEvent struct {
 	StoppedBy appenumtypes.QueueStopEvent_StopBy `json:"stopped_by"`
 }
 
-func (aqe *QueueStopEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueStopEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_STOP
 }
 
@@ -605,12 +718,13 @@ type WorkflowQueueMessage struct {
 type QueueParallelBranchRunStartedEvent struct {
 	ParallelID                string `json:"parallel_id"`
 	ParallelStartNodeID       string `json:"parallel_start_node_id"`
-	ParentParallelID          string `json:"parent_parallel_id,omitempty"`
-	ParentParallelStartNodeID string `json:"parent_parallel_start_node_id,omitempty"`
-	InIterationID             string `json:"in_iteration_id,omitempty"`
+	ParentParallelID          string `json:"parent_parallel_id"`
+	ParentParallelStartNodeID string `json:"parent_parallel_start_node_id"`
+	InIterationID             string `json:"in_iteration_id"`
+	InLoopID                  string `json:"in_loop_id"`
 }
 
-func (aqe *QueueParallelBranchRunStartedEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueParallelBranchRunStartedEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_PARALLEL_BRANCH_RUN_STARTED
 }
 
@@ -618,12 +732,13 @@ func (aqe *QueueParallelBranchRunStartedEvent) Event() appenumtypes.QueueEvent {
 type QueueParallelBranchRunSucceededEvent struct {
 	ParallelID                string `json:"parallel_id"`
 	ParallelStartNodeID       string `json:"parallel_start_node_id"`
-	ParentParallelID          string `json:"parent_parallel_id,omitempty"`
-	ParentParallelStartNodeID string `json:"parent_parallel_start_node_id,omitempty"`
-	InIterationID             string `json:"in_iteration_id,omitempty"`
+	ParentParallelID          string `json:"parent_parallel_id"`
+	ParentParallelStartNodeID string `json:"parent_parallel_start_node_id"`
+	InIterationID             string `json:"in_iteration_id"`
+	InLoopID                  string `json:"in_loop_id"`
 }
 
-func (aqe *QueueParallelBranchRunSucceededEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueParallelBranchRunSucceededEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_PARALLEL_BRANCH_RUN_SUCCEEDED
 }
 
@@ -631,12 +746,13 @@ func (aqe *QueueParallelBranchRunSucceededEvent) Event() appenumtypes.QueueEvent
 type QueueParallelBranchRunFailedEvent struct {
 	ParallelID                string `json:"parallel_id"`
 	ParallelStartNodeID       string `json:"parallel_start_node_id"`
-	ParentParallelID          string `json:"parent_parallel_id,omitempty"`
-	ParentParallelStartNodeID string `json:"parent_parallel_start_node_id,omitempty"`
-	InIterationID             string `json:"in_iteration_id,omitempty"`
+	ParentParallelID          string `json:"parent_parallel_id"`
+	ParentParallelStartNodeID string `json:"parent_parallel_start_node_id"`
+	InIterationID             string `json:"in_iteration_id"`
+	InLoopID                  string `json:"in_loop_id"`
 	Error                     string `json:"error"`
 }
 
-func (aqe *QueueParallelBranchRunFailedEvent) Event() appenumtypes.QueueEvent {
+func (aqe *QueueParallelBranchRunFailedEvent) Event() appenumtypes.QueueEventType {
 	return appenumtypes.QueueEvent_PARALLEL_BRANCH_RUN_FAILED
 }

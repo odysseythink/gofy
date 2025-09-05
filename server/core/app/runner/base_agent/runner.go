@@ -17,6 +17,7 @@ import (
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
     agenttoolcbhandler   "mlib.com/gofy/server/core/callback_handler/agent_tool"
+	idxtoolcbhandler   "mlib.com/gofy/server/core/callback_handler/index_tool"
 	"mlib.com/gofy/server/main/sandbox/runner"
 	"mlib.com/gofy/server/models"
 	"mlib.com/mlog"
@@ -70,14 +71,14 @@ queue_manager appqueueentities.AppQueueManager[*appqueueentities.MessageQueueMes
         runner.history_prompt_messages = runner.OrganizeAgentHistory(prompt_messages)
 
         // init dataset tools
-        hit_callback = DatasetIndexToolCallbackHandler(
-            queue_manager=queue_manager,
-            app_id=self.app_config.app_id,
-            message_id=message.id,
-            user_id=user_id,
-            invoke_from=self.application_generate_entity.invoke_from,
+        hit_callback := idxtoolcbhandler.New(
+            queue_manager,
+            runner.app_config.AppID,
+            message.ID,
+            user_id,
+            runner.application_generate_entity.InvokeFrom,
         )
-        self.dataset_tools = DatasetRetrieverTool.get_dataset_tools(
+        runner.dataset_tools = DatasetRetrieverTool.get_dataset_tools(
             tenant_id=tenant_id,
             dataset_ids=app_config.dataset.dataset_ids if app_config.dataset else [],
             retrieve_config=app_config.dataset.retrieve_config if app_config.dataset else None,

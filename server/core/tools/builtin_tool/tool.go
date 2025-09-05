@@ -27,7 +27,7 @@ func (t *BuiltinTool) ToolProviderType() toolsenumtypes.ToolProviderType {
 	return toolsenumtypes.ToolProvider_BUILT_IN
 }
 
-//	func (t *BuiltinTool) ForkToolRuntime(runtime *base.ToolRuntime) *base.Tooler {
+//	func (t *BuiltinTool) ForkToolRuntime(runtime *base.ToolRuntime) *base.Toolor {
 //		return &BuiltinTool{
 //			Tool: &base.Tool{
 //				Entity:  toolsentities.NewToolEntity(t.Tool.Entity),

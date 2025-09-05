@@ -27,3 +27,8 @@ func NewNodeRunResult() *NodeRunResult {
 		Status: models.WorkflowNodeExecutionStatus_RUNNING,
 	}
 }
+
+type AgentNodeStrategyInit struct {
+	Name string `json:"name"`
+	Icon string `json:"icon"`
+}

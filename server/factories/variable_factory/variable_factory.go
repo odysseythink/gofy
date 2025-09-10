@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/constants"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/file"
@@ -86,8 +86,8 @@ func _build_variable_from_mapping(mapping map[string]any, selector []string) var
 		if result.Selector == nil {
 			result.Selector = selector
 		}
-		if result.Size() > viper.GetIntWithDefault("workflow.max_variable_size", 204800) {
-			panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), viper.GetIntWithDefault("workflow.max_variable_size", 204800))))
+		if result.Size() > confy.GetWithDefault[int]("workflow.max_variable_size", 204800) {
+			panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), confy.GetWithDefault[int]("workflow.max_variable_size", 204800))))
 		}
 
 		return &variables.StringVariable{BaseVariable: result}
@@ -102,8 +102,8 @@ func _build_variable_from_mapping(mapping map[string]any, selector []string) var
 		if result.Selector == nil {
 			result.Selector = selector
 		}
-		if result.Size() > viper.GetIntWithDefault("workflow.max_variable_size", 204800) {
-			panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), viper.GetIntWithDefault("workflow.max_variable_size", 204800))))
+		if result.Size() > confy.GetWithDefault[int]("workflow.max_variable_size", 204800) {
+			panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), confy.GetWithDefault[int]("workflow.max_variable_size", 204800))))
 		}
 
 		return &variables.BooleanVariable{BaseVariable: result}
@@ -119,8 +119,8 @@ func _build_variable_from_mapping(mapping map[string]any, selector []string) var
 			if result.Selector == nil {
 				result.Selector = selector
 			}
-			if result.Size() > viper.GetIntWithDefault("workflow.max_variable_size", 204800) {
-				panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), viper.GetIntWithDefault("workflow.max_variable_size", 204800))))
+			if result.Size() > confy.GetWithDefault[int]("workflow.max_variable_size", 204800) {
+				panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), confy.GetWithDefault[int]("workflow.max_variable_size", 204800))))
 			}
 			return &variables.IntegerVariable{BaseVariable: result}
 		} else if _, ok := value.(float64); ok {
@@ -134,8 +134,8 @@ func _build_variable_from_mapping(mapping map[string]any, selector []string) var
 			if result.Selector == nil {
 				result.Selector = selector
 			}
-			if result.Size() > viper.GetIntWithDefault("workflow.max_variable_size", 204800) {
-				panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), viper.GetIntWithDefault("workflow.max_variable_size", 204800))))
+			if result.Size() > confy.GetWithDefault[int]("workflow.max_variable_size", 204800) {
+				panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), confy.GetWithDefault[int]("workflow.max_variable_size", 204800))))
 			}
 			return &variables.FloatVariable{BaseVariable: result}
 		} else {
@@ -153,8 +153,8 @@ func _build_variable_from_mapping(mapping map[string]any, selector []string) var
 		if result.Selector == nil {
 			result.Selector = selector
 		}
-		if result.Size() > viper.GetIntWithDefault("workflow.max_variable_size", 204800) {
-			panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), viper.GetIntWithDefault("workflow.max_variable_size", 204800))))
+		if result.Size() > confy.GetWithDefault[int]("workflow.max_variable_size", 204800) {
+			panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), confy.GetWithDefault[int]("workflow.max_variable_size", 204800))))
 		}
 		return &variables.ObjectVariable{BaseVariable: result}
 	case variableenumtypes.Variable_ARRAY_ANY:
@@ -168,8 +168,8 @@ func _build_variable_from_mapping(mapping map[string]any, selector []string) var
 		if result.Selector == nil {
 			result.Selector = selector
 		}
-		if result.Size() > viper.GetIntWithDefault("workflow.max_variable_size", 204800) {
-			panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), viper.GetIntWithDefault("workflow.max_variable_size", 204800))))
+		if result.Size() > confy.GetWithDefault[int]("workflow.max_variable_size", 204800) {
+			panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), confy.GetWithDefault[int]("workflow.max_variable_size", 204800))))
 		}
 		return &variables.ArrayAnyVariable{BaseVariable: result}
 	case variableenumtypes.Variable_ARRAY_STRING:
@@ -183,8 +183,8 @@ func _build_variable_from_mapping(mapping map[string]any, selector []string) var
 		if result.Selector == nil {
 			result.Selector = selector
 		}
-		if result.Size() > viper.GetIntWithDefault("workflow.max_variable_size", 204800) {
-			panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), viper.GetIntWithDefault("workflow.max_variable_size", 204800))))
+		if result.Size() > confy.GetWithDefault[int]("workflow.max_variable_size", 204800) {
+			panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), confy.GetWithDefault[int]("workflow.max_variable_size", 204800))))
 		}
 		return &variables.ArrayStringVariable{BaseVariable: result}
 	case variableenumtypes.Variable_ARRAY_NUMBER:
@@ -199,8 +199,8 @@ func _build_variable_from_mapping(mapping map[string]any, selector []string) var
 			if result.Selector == nil {
 				result.Selector = selector
 			}
-			if result.Size() > viper.GetIntWithDefault("workflow.max_variable_size", 204800) {
-				panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), viper.GetIntWithDefault("workflow.max_variable_size", 204800))))
+			if result.Size() > confy.GetWithDefault[int]("workflow.max_variable_size", 204800) {
+				panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), confy.GetWithDefault[int]("workflow.max_variable_size", 204800))))
 			}
 			return &variables.ArrayIntegerVariable{BaseVariable: result}
 		} else if _, ok := value.([]float64); ok {
@@ -214,8 +214,8 @@ func _build_variable_from_mapping(mapping map[string]any, selector []string) var
 			if result.Selector == nil {
 				result.Selector = selector
 			}
-			if result.Size() > viper.GetIntWithDefault("workflow.max_variable_size", 204800) {
-				panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), viper.GetIntWithDefault("workflow.max_variable_size", 204800))))
+			if result.Size() > confy.GetWithDefault[int]("workflow.max_variable_size", 204800) {
+				panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), confy.GetWithDefault[int]("workflow.max_variable_size", 204800))))
 			}
 			return &variables.ArrayFloatVariable{BaseVariable: result}
 		} else {
@@ -233,8 +233,8 @@ func _build_variable_from_mapping(mapping map[string]any, selector []string) var
 		if result.Selector == nil {
 			result.Selector = selector
 		}
-		if result.Size() > viper.GetIntWithDefault("workflow.max_variable_size", 204800) {
-			panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), viper.GetIntWithDefault("workflow.max_variable_size", 204800))))
+		if result.Size() > confy.GetWithDefault[int]("workflow.max_variable_size", 204800) {
+			panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), confy.GetWithDefault[int]("workflow.max_variable_size", 204800))))
 		}
 		return &variables.ArrayObjectVariable{BaseVariable: result}
 	case variableenumtypes.Variable_ARRAY_FILE:
@@ -248,8 +248,8 @@ func _build_variable_from_mapping(mapping map[string]any, selector []string) var
 		if result.Selector == nil {
 			result.Selector = selector
 		}
-		if result.Size() > viper.GetIntWithDefault("workflow.max_variable_size", 204800) {
-			panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), viper.GetIntWithDefault("workflow.max_variable_size", 204800))))
+		if result.Size() > confy.GetWithDefault[int]("workflow.max_variable_size", 204800) {
+			panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), confy.GetWithDefault[int]("workflow.max_variable_size", 204800))))
 		}
 		return &variables.ArrayFileVariable{BaseVariable: result}
 	}

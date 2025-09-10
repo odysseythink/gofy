@@ -8,7 +8,7 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/cache"
 	"mlib.com/gofy/server/core/exceptions"
 	dbengine "mlib.com/gofy/server/db_engine"
@@ -134,7 +134,7 @@ func (cls *RegisterService) Setup(email string, name string, password string, ip
 		ServiceGroupApp.Tenant.CreateOwnerTenantIfNotExist(account, "", true)
 
 		dify_setup := &models.DifySetup{
-			Version: viper.GetString("CURRENT_VERSION"),
+			Version: confy.Get[string]("CURRENT_VERSION"),
 			SetupAt: &now,
 		}
 		dbengine.Instance().DB.Create(dify_setup)

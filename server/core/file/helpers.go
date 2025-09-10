@@ -11,7 +11,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	"mlib.com/mlog"
 )
 
@@ -29,7 +29,7 @@ import (
 
 // getSignedFileURL generates a signed URL for a file.
 func GetSignedFileURL(uploadFileID string) string {
-	baseURL := fmt.Sprintf("%s/files/%s/file-preview", viper.GetString("FILES_URL"), uploadFileID)
+	baseURL := fmt.Sprintf("%s/files/%s/file-preview", confy.Get[string]("FILES_URL"), uploadFileID)
 
 	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
 	nonce := generateNonce()
@@ -94,13 +94,13 @@ func verifySignature(action, uploadFileID, timestamp, nonce, sign string) bool {
 		return false
 	}
 
-	return currentTime-timestampInt <= viper.GetInt64("FILES_ACCESS_TIMEOUT")
+	return currentTime-timestampInt <= confy.Get[int64]("FILES_ACCESS_TIMEOUT")
 }
 
 // generateSignature generates a signature for the given parameters.
 func generateSignature(action, uploadFileID, timestamp, nonce string) string {
 	dataToSign := fmt.Sprintf("%s|%s|%s|%s", action, uploadFileID, timestamp, nonce)
-	sign := hmac.New(sha256.New, []byte(viper.GetString("SECRET_KEY")))
+	sign := hmac.New(sha256.New, []byte(confy.Get[string]("SECRET_KEY")))
 	sign.Write([]byte(dataToSign))
 	return base64.RawURLEncoding.EncodeToString(sign.Sum(nil))
 }

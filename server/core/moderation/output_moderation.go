@@ -44,7 +44,7 @@ func (o *OutputModeration) AppendNewToken(token string) {
 	o.Buffer += token
 
 	o.Thread.Add(1)
-	// go o.StartThread(viper.GetInt("moderation.buffer_size"))
+	// go o.StartThread(confy.Get[int]("moderation.buffer_size"))
 
 }
 
@@ -79,7 +79,7 @@ func (o *OutputModeration) AppendNewToken(token string) {
 
 // 	bufferSize = bufferSize
 // 	if bufferSize <= 0 {
-// 		bufferSize = viper.GetInt("moderation.buffer_size")
+// 		bufferSize = confy.Get[int]("moderation.buffer_size")
 // 	}
 
 // 	o.worker(flaskApp, bufferSize)

@@ -5,7 +5,7 @@ import (
 	"slices"
 	"time"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/cache"
 	"mlib.com/gofy/server/core/exceptions"
 	appqueueentities "mlib.com/gofy/server/entities/app/queue"
@@ -32,8 +32,8 @@ func New[T *appqueueentities.WorkflowQueueMessage | *appqueueentities.MessageQue
 		TaskID:     task_id,
 		UserID:     user_id,
 		InvokeFrom: invoke_from,
-		// WorkflowMsgQueue: make(chan appentities.WorkflowQueueMessage, viper.GetIntWithDefault("app_config.workflow_msg_queue_capacity", 1024)),
-		MsgQueue: make(chan T, viper.GetIntWithDefault("app_config.msg_queue_capacity", 1024)),
+		// WorkflowMsgQueue: make(chan appentities.WorkflowQueueMessage, confy.GetWithDefault[int]("app_config.workflow_msg_queue_capacity", 1024)),
+		MsgQueue: make(chan T, confy.GetWithDefault[int]("app_config.msg_queue_capacity", 1024)),
 	}
 	var user_prefix string
 	if slices.Contains([]appenumtypes.InvokeFrom{appenumtypes.InvokeFrom_EXPLORE, appenumtypes.InvokeFrom_DEBUGGER}, invoke_from) {
@@ -66,7 +66,7 @@ func (mgr *BaseAppQueueManager[T]) Listen(aqm appqueueentities.AppQueueManager[T
 			case <-refreshTicker.C:
 				mlog.Debugf("------refresh")
 				elapsed_time := time.Since(start_time).Seconds()
-				if elapsed_time >= float64(viper.GetIntWithDefault("app_config.max_execution_time", 1200)) || mgr.IsStopped() {
+				if elapsed_time >= float64(confy.GetWithDefault[int]("app_config.max_execution_time", 1200)) || mgr.IsStopped() {
 					aqm.Publish(
 						&appqueueentities.QueueStopEvent{StoppedBy: appenumtypes.QueueStopEvent_StopBy_USER_MANUAL}, appenumtypes.PublishFrom_TASK_PIPELINE,
 					)
@@ -83,7 +83,7 @@ func (mgr *BaseAppQueueManager[T]) Listen(aqm appqueueentities.AppQueueManager[T
 	   :return:
 	*/
 	// wait for APP_MAX_EXECUTION_TIME seconds to stop listen
-	// listen_timeout := viper.GetInt("app_config.max_execution_time")
+	// listen_timeout := confy.Get[int]("app_config.max_execution_time")
 	// start_time := time.Now()
 	// for {
 

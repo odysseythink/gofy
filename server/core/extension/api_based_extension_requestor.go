@@ -8,7 +8,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/models"
 	"mlib.com/mlog"
@@ -53,11 +53,11 @@ func (r *APIBasedExtensionRequestor) Request(
 	req.Header.Set("Authorization", "Bearer "+r.api_key)
 
 	// 代理支持（对应 Python 的 SSRF_PROXY_*）
-	if httpProxy := viper.GetStringWithDefault("ssrf.proxy.http_url", ""); httpProxy != "" {
+	if httpProxy := confy.GetWithDefault[string]("ssrf.proxy.http_url", ""); httpProxy != "" {
 		proxyURL, _ := url.Parse(httpProxy)
 		r.httpClient.Transport = &http.Transport{Proxy: http.ProxyURL(proxyURL)}
 	}
-	if httpsProxy := viper.GetStringWithDefault("ssrf.proxy.https_url", ""); httpsProxy != "" {
+	if httpsProxy := confy.GetWithDefault[string]("ssrf.proxy.https_url", ""); httpsProxy != "" {
 		proxyURL, _ := url.Parse(httpsProxy)
 		r.httpClient.Transport = &http.Transport{Proxy: http.ProxyURL(proxyURL)}
 	}

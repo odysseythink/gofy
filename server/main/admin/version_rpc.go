@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 
-	"github.com/spf13/viper"
 	"google.golang.org/grpc/peer"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/proto/pbapi"
 	"mlib.com/mlog"
 )
@@ -13,12 +13,12 @@ func (s *AdminService) GetVersion(ctx context.Context, in *pbapi.GetVersionReque
 	p, _ := peer.FromContext(ctx)
 	mlog.Infof("remote[%s] admin.GetVersion call:%#v", p.Addr.String(), in)
 
-	// check_update_url := viper.GetString("check_update_url")
+	// check_update_url := confy.Get[string]("check_update_url")
 	out = &pbapi.GetVersionReply{
-		Version: viper.GetString("CURRENT_VERSION"),
+		Version: confy.Get[string]("CURRENT_VERSION"),
 		Features: &pbapi.VersionFeatures{
-			CanReplaceLogo:            viper.GetBool("CAN_REPLACE_LOGO"),
-			ModelLoadBalancingEnabled: viper.GetBool("MODEL_LB_ENABLED"),
+			CanReplaceLogo:            confy.Get[bool]("CAN_REPLACE_LOGO"),
+			ModelLoadBalancingEnabled: confy.Get[bool]("MODEL_LB_ENABLED"),
 		},
 	}
 	return

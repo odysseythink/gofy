@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"iter"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	achatgenerator "mlib.com/gofy/server/core/app/generatores/advanced_chat"
 	wfgenerator "mlib.com/gofy/server/core/app/generatores/workflow"
 	"mlib.com/gofy/server/core/exceptions"
@@ -18,7 +18,7 @@ type AppGenerateService struct {
 func (s *AppGenerateService) getMaxActiveRequests(app_model *models.App) int {
 	max_active_requests := app_model.MaxActiveRequests
 	if max_active_requests <= 0 {
-		max_active_requests = viper.GetInt("app_config.max_active_requests")
+		max_active_requests = confy.Get[int]("app_config.max_active_requests")
 	}
 	return max_active_requests
 }

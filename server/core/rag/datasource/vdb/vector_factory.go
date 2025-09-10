@@ -1,7 +1,7 @@
 package vdb
 
 import (
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/rag/embedding"
 	dbengine "mlib.com/gofy/server/db_engine"
@@ -37,7 +37,7 @@ func NewVector(dataset *models.Dataset, attributes []string) *Vector {
 	return v
 }
 func (v *Vector) _init_vector() BaseVector {
-	vector_type := viper.GetStringWithDefault("vector_store", "")
+	vector_type := confy.GetWithDefault[string]("vector_store", "")
 	index_struct_dict := v._dataset.IndexStructDict()
 	if len(index_struct_dict) > 0 {
 		if _, ok := index_struct_dict["type"]; ok {
@@ -46,7 +46,7 @@ func (v *Vector) _init_vector() BaseVector {
 			}
 		}
 	} else {
-		if viper.GetBoolWithDefault("vector_store_whitelist_enable", false) {
+		if confy.GetWithDefault[bool]("vector_store_whitelist_enable", false) {
 			whitelist := new(models.Whitelist)
 			err := dbengine.Instance().DB.Model(&models.Whitelist{}).Where("tenant_id = ? and category = ?", v._dataset.TenantID, "vector_db").First(whitelist).Error
 			if err != nil {

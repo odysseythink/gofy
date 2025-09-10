@@ -887,7 +887,7 @@ def go_repositories():
     )
     go_repository(
         name = "com_github_spf13_cast",
-        importpath = "github.com/spf13/cast",
+        importpath = "mlib.com/confy/cast",
         sum = "h1:oget//CVOEoFewqQxwr0Ej5yjygnqGkvggSE/gB35Q8=",
         version = "v1.3.0",
     )

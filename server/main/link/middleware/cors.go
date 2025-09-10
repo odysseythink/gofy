@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/config"
 	"mlib.com/mlog"
 )
@@ -33,7 +33,7 @@ func Cors() gin.HandlerFunc {
 // CorsByRules 按照配置处理跨域请求
 func CorsByRules() gin.HandlerFunc {
 	// 放行全部
-	if viper.GetString("cors.mode") == "allow-all" {
+	if confy.Get[string]("cors.mode") == "allow-all" {
 		return Cors()
 	}
 	return func(c *gin.Context) {
@@ -51,7 +51,7 @@ func CorsByRules() gin.HandlerFunc {
 		}
 
 		// 严格白名单模式且未通过检查，直接拒绝处理请求
-		if whitelist == nil && viper.GetString("cors.mode") == "strict-whitelist" && !(c.Request.Method == "GET" && c.Request.URL.Path == "/health") {
+		if whitelist == nil && confy.Get[string]("cors.mode") == "strict-whitelist" && !(c.Request.Method == "GET" && c.Request.URL.Path == "/health") {
 			c.AbortWithStatus(http.StatusForbidden)
 		} else {
 			// 非严格白名单模式，无论是否通过检查均放行所有 OPTIONS 方法
@@ -66,7 +66,7 @@ func CorsByRules() gin.HandlerFunc {
 }
 
 func checkCors(currentOrigin string) *config.CORSWhitelist {
-	tmp := viper.Get("cors.whitelist")
+	tmp := confy.Get[[]map[string]any]("cors.whitelist")
 	bindata, err := json.Marshal(tmp)
 	if err != nil {
 		mlog.Warningf("json marshal=%#v to string failed:%v", tmp, err)

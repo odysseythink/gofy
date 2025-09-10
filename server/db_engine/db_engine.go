@@ -7,9 +7,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/config"
 	"mlib.com/mlog"
 )
@@ -19,7 +19,7 @@ type DBEngine struct {
 }
 
 func (m *DBEngine) Init() error {
-	tmp := viper.Get("mysql")
+	tmp := confy.Get[map[string]any]("mysql")
 	bindata, err := json.Marshal(tmp)
 	if err != nil {
 		mlog.Warningf("json marshal=%#v to string failed:%v", tmp, err)

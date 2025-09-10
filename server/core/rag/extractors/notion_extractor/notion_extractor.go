@@ -10,9 +10,9 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/spf13/viper"
 	"gorm.io/datatypes"
 	"gorm.io/gen"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	dbengine "mlib.com/gofy/server/db_engine"
 	ragentities "mlib.com/gofy/server/entities/rag"
@@ -64,7 +64,7 @@ func New(
 	if ext._notion_access_token == "" {
 		ext._notion_access_token = ext._get_access_token(tenant_id, ext._notion_workspace_id)
 		if ext._notion_access_token == "" {
-			integration_token := viper.GetString("notion.integration_token")
+			integration_token := confy.Get[string]("notion.integration_token")
 			if integration_token == "" {
 				panic(exceptions.NewValueError("Must specify `integration_token` or set environment variable `NOTION_INTEGRATION_TOKEN`."))
 			}
@@ -104,7 +104,7 @@ func (extractor *NotionExtractor) _read_table_rows(block_id string) string {
 		}
 		req.Header.Set("Content-Type", "application/json")
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", extractor._notion_access_token))
-		req.Header.Set("Notion-Version", viper.GetStringWithDefault("notion.version", "2022-06-28"))
+		req.Header.Set("Notion-Version", confy.GetWithDefault[string]("notion.version", "2022-06-28"))
 		resp, err := http.DefaultClient.Do(req)
 		if err != nil {
 			mlog.Warningf("sending request failed:%v", err)
@@ -245,7 +245,7 @@ func (extractor *NotionExtractor) _read_block(block_id string, num_tabs int /* =
 		}
 		req.Header.Set("Content-Type", "application/json")
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", extractor._notion_access_token))
-		req.Header.Set("Notion-Version", viper.GetStringWithDefault("notion.version", "2022-06-28"))
+		req.Header.Set("Notion-Version", confy.GetWithDefault[string]("notion.version", "2022-06-28"))
 		resp, err := http.DefaultClient.Do(req)
 		if err != nil {
 			mlog.Warningf("sending request failed:%v", err)
@@ -369,7 +369,7 @@ func (extractor *NotionExtractor) get_notion_last_edited_time() string {
 	}
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", extractor._notion_access_token))
-	req.Header.Set("Notion-Version", viper.GetStringWithDefault("notion.version", "2022-06-28"))
+	req.Header.Set("Notion-Version", confy.GetWithDefault[string]("notion.version", "2022-06-28"))
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		mlog.Warningf("sending request failed:%v", err)
@@ -431,7 +431,7 @@ func (extractor *NotionExtractor) _get_notion_database_data(database_id string, 
 	}
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", extractor._notion_access_token))
-	req.Header.Set("Notion-Version", viper.GetStringWithDefault("notion.version", "2022-06-28"))
+	req.Header.Set("Notion-Version", confy.GetWithDefault[string]("notion.version", "2022-06-28"))
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		mlog.Warningf("sending request failed:%v", err)
@@ -602,7 +602,7 @@ func (extractor *NotionExtractor) _get_notion_block_data(page_id string) []strin
 		}
 		req.Header.Set("Content-Type", "application/json")
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", extractor._notion_access_token))
-		req.Header.Set("Notion-Version", viper.GetStringWithDefault("notion.version", "2022-06-28"))
+		req.Header.Set("Notion-Version", confy.GetWithDefault[string]("notion.version", "2022-06-28"))
 		resp, err := http.DefaultClient.Do(req)
 		if err != nil {
 			mlog.Warningf("sending request failed:%v", err)

@@ -64,7 +64,7 @@ func CastParameterValue(typ string, value any) any {
 			if _, ok := value.(string); ok {
 				return value.(string)
 			} else {
-				real_val, err := cast.ToStringE(value)
+				real_val, err := cast.ToE[string](value)
 				if err != nil {
 					panic(exceptions.NewValueError(fmt.Sprintf("value {%#v} to string failed:%v", value, err)))
 				}
@@ -83,7 +83,7 @@ func CastParameterValue(typ string, value any) any {
 			case "false", "no", "n", "0":
 				return false
 			default:
-				real_val, err := cast.ToBoolE(value)
+				real_val, err := cast.ToE[bool](value)
 				if err != nil {
 					panic(exceptions.NewValueError(fmt.Sprintf("value {%#v} to bool failed:%v", value, err)))
 				}
@@ -92,7 +92,7 @@ func CastParameterValue(typ string, value any) any {
 		} else if _, ok := value.(bool); ok {
 			return value.(bool)
 		} else {
-			real_val, err := cast.ToBoolE(value)
+			real_val, err := cast.ToE[bool](value)
 			if err != nil {
 				panic(exceptions.NewValueError(fmt.Sprintf("value {%#v} to bool failed:%v", value, err)))
 			}
@@ -179,7 +179,7 @@ func CastParameterValue(typ string, value any) any {
 		}
 		return value
 	default:
-		tmp, err := cast.ToStringE(value)
+		tmp, err := cast.ToE[string](value)
 		if err != nil {
 			panic(exceptions.NewValueError(fmt.Sprintf("value {%#v} to string failed:%v", value, err)))
 		}

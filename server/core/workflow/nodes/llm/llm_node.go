@@ -7,8 +7,8 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/spf13/cast"
 	"gorm.io/gorm"
+	"mlib.com/confy/cast"
 	"mlib.com/gofy/server/constants"
 	"mlib.com/gofy/server/core/exceptions"
 	llmnodesexceptions "mlib.com/gofy/server/core/exceptions/nodes/llm"
@@ -932,11 +932,11 @@ func _calculate_rest_token(
 		for _, parameter_rule := range model_config.ModelSchema.ParameterRules {
 			if parameter_rule.Name == "max_tokens" || (parameter_rule.UseTemplate != "" && parameter_rule.UseTemplate == "max_tokens") {
 				if _, ok := model_config.Parameters[parameter_rule.Name]; ok {
-					val, err := cast.ToIntE(model_config.Parameters[parameter_rule.Name])
+					val, err := cast.ToE[int](model_config.Parameters[parameter_rule.Name])
 					if err != nil {
 						mlog.Errorf("cast(%#v) to int failed:%v", model_config.Parameters[parameter_rule.Name], err)
 						if _, ok := model_config.Parameters[parameter_rule.UseTemplate]; ok {
-							val, err := cast.ToIntE(model_config.Parameters[parameter_rule.UseTemplate])
+							val, err := cast.ToE[int](model_config.Parameters[parameter_rule.UseTemplate])
 							if err != nil {
 								mlog.Errorf("cast(%#v) to int failed:%v", model_config.Parameters[parameter_rule.UseTemplate], err)
 							} else {

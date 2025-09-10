@@ -9,8 +9,8 @@ import (
 	"time"
 
 	uuid "github.com/satori/go.uuid"
-	"github.com/spf13/viper"
 	"gorm.io/gorm"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/cache"
 	"mlib.com/gofy/server/core/exceptions"
 	httpexceptions "mlib.com/gofy/server/core/exceptions/http"
@@ -56,7 +56,7 @@ func (s *AccountService) CreateAccount(
 		panic(httpexceptions.NewAccountNotFound())
 	}
 
-	if viper.GetBool("billing_enabled") && ServiceGroupApp.Billing.IsEmailInFreeze(email) {
+	if confy.Get[bool]("billing_enabled") && ServiceGroupApp.Billing.IsEmailInFreeze(email) {
 		panic(exceptions.NewAccountRegisterError("This email account has been deleted within the past 30 days and is temporarily unavailable for new account registration"))
 	}
 	now := time.Now()
@@ -222,7 +222,7 @@ func (s *AccountService) UpdateLastLogin(account *models.Account, ip_address str
 }
 
 func (s *AccountService) GetAccountJWTToken(account *models.Account, exp time.Duration) string {
-	jtokenstr, _, _ := jwtutils.GenToken(account.ID, viper.GetString("SECRET_KEY"), viper.GetString("EDITION"), 12*3600*time.Second)
+	jtokenstr, _, _ := jwtutils.GenToken(account.ID, confy.Get[string]("SECRET_KEY"), confy.Get[string]("EDITION"), 12*3600*time.Second)
 	return jtokenstr
 }
 
@@ -237,8 +237,8 @@ func (s *AccountService) _get_account_refresh_token_key(account_id string) strin
 	return ACCOUNT_REFRESH_TOKEN_PREFIX + account_id
 }
 func (s *AccountService) _store_refresh_token(refresh_token, account_id string) {
-	cache.Instance().SetEx(s._get_refresh_token_key(refresh_token), account_id, time.Duration(viper.GetIntWithDefault("refresh_token_expire_days", 30))*time.Second*3600*24)
-	cache.Instance().SetEx(s._get_account_refresh_token_key(account_id), refresh_token, time.Duration(viper.GetIntWithDefault("refresh_token_expire_days", 30))*time.Second*3600*24)
+	cache.Instance().SetEx(s._get_refresh_token_key(refresh_token), account_id, time.Duration(confy.GetWithDefault[int]("refresh_token_expire_days", 30))*time.Second*3600*24)
+	cache.Instance().SetEx(s._get_account_refresh_token_key(account_id), refresh_token, time.Duration(confy.GetWithDefault[int]("refresh_token_expire_days", 30))*time.Second*3600*24)
 }
 func (s *AccountService) _delete_refresh_token(refresh_token string, account_id string) {
 	cache.Instance().DelKey(s._get_refresh_token_key(refresh_token))
@@ -394,7 +394,7 @@ func (s *AccountService) AddLoginErrorRateLimit(email string) {
 	} else {
 		count += 1
 	}
-	cache.Instance().SetEx(key, count, time.Duration(viper.GetInt("login_lockout_duration"))*time.Second)
+	cache.Instance().SetEx(key, count, time.Duration(confy.Get[int]("login_lockout_duration"))*time.Second)
 }
 func (cls *AccountService) SendResetPasswordEmail(account *models.Account, email string, language string /*"en-US"*/) string {
 	account_email := email

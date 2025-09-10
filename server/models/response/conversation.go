@@ -3,7 +3,7 @@ package response
 import (
 	"encoding/json"
 
-	"github.com/spf13/cast"
+	"mlib.com/confy/cast"
 	"mlib.com/gofy/server/models"
 	"mlib.com/mlog"
 )

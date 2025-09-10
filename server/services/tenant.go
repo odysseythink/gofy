@@ -7,8 +7,8 @@ import (
 	"time"
 
 	uuid "github.com/satori/go.uuid"
-	"github.com/spf13/viper"
 	"gorm.io/gorm"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	httpexceptions "mlib.com/gofy/server/core/exceptions/http"
 	dbengine "mlib.com/gofy/server/db_engine"
@@ -182,8 +182,8 @@ func (s *TenantService) GetTenantInfo(tenant *models.Tenant, current_user *model
 
 	tenant_info["role"] = ta.Role
 
-	if viper.GetBool("CAN_REPLACE_LOGO") && s.HasRoles(tenant, []enumtypes.TenantAccountJoinRole{enumtypes.TenantAccountJoinRole_OWNER, enumtypes.TenantAccountJoinRole_ADMIN}) {
-		base_url := viper.GetString("FILES_URL")
+	if confy.Get[bool]("CAN_REPLACE_LOGO") && s.HasRoles(tenant, []enumtypes.TenantAccountJoinRole{enumtypes.TenantAccountJoinRole_OWNER, enumtypes.TenantAccountJoinRole_ADMIN}) {
+		base_url := confy.Get[string]("FILES_URL")
 		replace_webapp_logo := ""
 		remove_webapp_brand := false
 		custom_config_dict := make(map[string]any)

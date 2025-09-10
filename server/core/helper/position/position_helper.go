@@ -7,8 +7,8 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/spf13/viper"
 	"gopkg.in/yaml.v3"
+	"mlib.com/confy"
 	"mlib.com/mlog"
 )
 
@@ -57,7 +57,7 @@ func GetToolPositionMap(folder_path string, file_name string /* = "_position.yam
 	*/
 	position_map := GetPositionMap(folder_path, file_name)
 
-	return PinPositionMap(position_map, viper.GetStringSlice("position.tool_pin_list"))
+	return PinPositionMap(position_map, confy.Get[[]string]("position.tool_pin_list"))
 
 }
 func GetProviderPositionMap(folder_path string, file_name string /* = "_position.yaml"*/) map[string]int {
@@ -68,7 +68,7 @@ func GetProviderPositionMap(folder_path string, file_name string /* = "_position
 	   :return: a dict with name as key and index as value
 	*/
 	position_map := GetPositionMap(folder_path, file_name)
-	return PinPositionMap(position_map, viper.GetStringSlice("position.provider_pin_list"))
+	return PinPositionMap(position_map, confy.Get[[]string]("position.provider_pin_list"))
 }
 func PinPositionMap(original_position_map map[string]int, pin_list []string) map[string]int {
 	/*

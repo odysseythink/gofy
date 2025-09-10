@@ -7,8 +7,8 @@ import (
 	"time"
 
 	uuid "github.com/satori/go.uuid"
-	"github.com/spf13/viper"
 	"gorm.io/gorm"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	httpexceptions "mlib.com/gofy/server/core/exceptions/http"
 	"mlib.com/gofy/server/core/manageres"
@@ -104,7 +104,7 @@ func (s *AppService) ModeCompatibleWitAgent(a *models.App) models.AppMode {
 }
 
 func (s *AppService) apiBaseUrl() string {
-	return viper.GetString("SERVICE_API_URL") + "/v1"
+	return confy.Get[string]("SERVICE_API_URL") + "/v1"
 }
 
 func (s *AppService) GetPaginateApps(user_id, tenant_id string, args *pbapi.ListAppsRequest) *response.AppPaginationResponse {

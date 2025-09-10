@@ -10,8 +10,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/spf13/viper"
-
+	"mlib.com/confy"
 	"mlib.com/gofy/server/main/sandbox/global"
 	"mlib.com/gofy/server/main/sandbox/runner"
 	python_dependencies "mlib.com/gofy/server/main/sandbox/runner/python/dependencies"
@@ -135,7 +134,7 @@ func InstallDependencies(requirements string) error {
 		}
 
 		// install dependencies
-		pipMirrorURL := viper.GetString("python_pip_mirror_url")
+		pipMirrorURL := confy.Get[string]("python_pip_mirror_url")
 
 		// Create the base command
 		args := []string{"install", "-r", "requirements.txt"}

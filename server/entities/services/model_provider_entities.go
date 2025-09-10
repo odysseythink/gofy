@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	modelentities "mlib.com/gofy/server/entities/model"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	providerentities "mlib.com/gofy/server/entities/provider"
@@ -62,7 +62,7 @@ func NewProviderResponse(args map[string]any) *ProviderResponse {
 			mlog.Errorf("json unmarshal(%#v) failed:%v", args, err)
 		}
 	}
-	url_prefix := viper.GetString("CONSOLE_API_URL") + "/console/api/workspaces/current/model-providers/" + rsp.Provider
+	url_prefix := confy.Get[string]("CONSOLE_API_URL") + "/console/api/workspaces/current/model-providers/" + rsp.Provider
 	if rsp.IconSmall != nil {
 		rsp.IconSmall = &commontypes.I18nObject{
 			EnUS: fmt.Sprintf("%s/icon_small/en_US", url_prefix), ZhHans: fmt.Sprintf("%s/icon_small/zh_Hans", url_prefix),
@@ -96,7 +96,7 @@ func NewProviderWithModelsResponse(args map[string]any) *ProviderWithModelsRespo
 			mlog.Errorf("json unmarshal(%#v) failed:%v", args, err)
 		}
 	}
-	url_prefix := viper.GetString("CONSOLE_API_URL") + "/console/api/workspaces/current/model-providers/" + rsp.Provider
+	url_prefix := confy.Get[string]("CONSOLE_API_URL") + "/console/api/workspaces/current/model-providers/" + rsp.Provider
 	if rsp.IconSmall != nil {
 		rsp.IconSmall = &commontypes.I18nObject{
 			EnUS: fmt.Sprintf("%s/icon_small/en_US", url_prefix), ZhHans: fmt.Sprintf("%s/icon_small/zh_Hans", url_prefix),
@@ -125,7 +125,7 @@ func NewSimpleProviderEntityResponse(args map[string]any) *SimpleProviderEntityR
 			mlog.Errorf("json unmarshal(%#v) failed:%v", args, err)
 		}
 	}
-	url_prefix := viper.GetString("CONSOLE_API_URL") + "/console/api/workspaces/current/model-providers/" + rsp.Provider
+	url_prefix := confy.Get[string]("CONSOLE_API_URL") + "/console/api/workspaces/current/model-providers/" + rsp.Provider
 	if rsp.IconSmall != nil {
 		rsp.IconSmall = &commontypes.I18nObject{
 			EnUS: fmt.Sprintf("%s/icon_small/en_US", url_prefix), ZhHans: fmt.Sprintf("%s/icon_small/zh_Hans", url_prefix),

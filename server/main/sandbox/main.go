@@ -9,9 +9,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/spf13/viper"
 	"golang.org/x/time/rate"
 	"google.golang.org/grpc/peer"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/cache"
 	dbengine "mlib.com/gofy/server/db_engine"
 	"mlib.com/gofy/server/main/sandbox/global"
@@ -25,8 +25,8 @@ import (
 
 func (s *SandboxService) sandbox_user_init() error {
 	// create sandbox user
-	user := viper.GetStringWithDefault("sandbox_user", "sandbox")
-	uid := viper.GetIntWithDefault("sandbox_user_uid", 65537)
+	user := confy.GetWithDefault[string]("sandbox_user", "sandbox")
+	uid := confy.GetWithDefault[int]("sandbox_user_uid", 65537)
 
 	// check if user exists
 	_, err := exec.Command("id", user).Output()
@@ -188,7 +188,7 @@ func (s *SandboxService) Init(args ...any) error {
 		mlog.Errorf("mysql init failed:%v", err)
 		return fmt.Errorf("mysql init failed:%v", err)
 	}
-	limiter = rate.NewLimiter(rate.Limit(viper.GetIntWithDefault("max_requests", 10000)), viper.GetIntWithDefault("max_requests", 10000)) // 每秒最多10000个请求，桶大小为10000
+	limiter = rate.NewLimiter(rate.Limit(confy.GetWithDefault[int]("max_requests", 10000)), confy.GetWithDefault[int]("max_requests", 10000)) // 每秒最多10000个请求，桶大小为10000
 
 	return nil
 }

@@ -46,10 +46,10 @@ func (processor *ExtractProcessor) Extract(
 			utils.DownloadFileFromRemoteURL(upload_file.Key, file_path)
 		}
 		file_extension := strings.ToLower(filepath.Ext(file_path))
-		// etl_type := viper.GetStringWithDefault("ETL_TYPE", "dify")
+		// etl_type := confy.GetWithDefault[string]("ETL_TYPE", "dify")
 
-		// unstructured_api_url := viper.GetString("unstructured_api_url")
-		// unstructured_api_key := viper.GetString("unstructured_api_key")
+		// unstructured_api_url := confy.Get[string]("unstructured_api_url")
+		// unstructured_api_key := confy.Get[string]("unstructured_api_key")
 
 		if slices.Contains([]string{".xlsx", ".xls"}, file_extension) {
 			extractor = excelextractor.New(file_path, "", false)

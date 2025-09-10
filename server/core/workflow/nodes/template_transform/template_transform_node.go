@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"iter"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	codeexecutor "mlib.com/gofy/server/core/helper/code_executor"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
 	templatetransformnodesentities "mlib.com/gofy/server/entities/nodes/template_transform"
@@ -82,12 +82,12 @@ func (n *TemplateTransformNode) Run() (*workflowentities.NodeRunResult, iter.Seq
 			}
 			return
 		}
-		if len(result_str) > viper.GetIntWithDefault("template_transform_max_length", 80000) {
-			mlog.Errorf("Output length exceeds %d characters", viper.GetIntWithDefault("template_transform_max_length", 80000))
+		if len(result_str) > confy.GetWithDefault[int]("template_transform_max_length", 80000) {
+			mlog.Errorf("Output length exceeds %d characters", confy.GetWithDefault[int]("template_transform_max_length", 80000))
 			res = &workflowentities.NodeRunResult{
 				Inputs: variables,
 				Status: models.WorkflowNodeExecutionStatus_FAILED,
-				Error:  fmt.Sprintf("Output length exceeds %d characters", viper.GetIntWithDefault("template_transform_max_length", 80000)),
+				Error:  fmt.Sprintf("Output length exceeds %d characters", confy.GetWithDefault[int]("template_transform_max_length", 80000)),
 			}
 			return
 		}

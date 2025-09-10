@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/tools/base"
 	builtintool "mlib.com/gofy/server/core/tools/builtin_tool"
@@ -242,7 +242,7 @@ func (tm *ToolManager) GetToolIcon(tenant_id string, provider_type string, provi
 
 	// provider: Optional[Union[BuiltinToolProvider, ApiToolProvider, WorkflowToolProvider]] = None
 	if provider_type == "builtin" {
-		return viper.GetStringWithDefault("console_api_url", "http://127.0.0.1:5001") + "/console/api/workspaces/current/tool-provider/builtin/" + provider_id + "/icon"
+		return confy.GetWithDefault[string]("console_api_url", "http://127.0.0.1:5001") + "/console/api/workspaces/current/tool-provider/builtin/" + provider_id + "/icon"
 	} else if provider_type == "api" {
 		// try:
 		provider := new(models.ApiToolProvider)

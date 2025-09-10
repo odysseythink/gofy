@@ -7,10 +7,9 @@ import (
 	"strings"
 	"sync"
 
-	"mlib.com/mlog"
-
 	"github.com/redis/go-redis/v9"
-	"github.com/spf13/viper"
+	"mlib.com/confy"
+	"mlib.com/mlog"
 )
 
 type Cache struct {
@@ -24,7 +23,7 @@ func (m *Cache) validatorConfig() bool {
 }
 
 func (m *Cache) Init(args ...any) error {
-	if viper.Get("redis") == nil {
+	if !confy.InConfig("redis") {
 		mlog.Errorf("don't exist redis config, return")
 		return errors.New("don't exist redis config, return")
 	}
@@ -36,13 +35,13 @@ func (m *Cache) Init(args ...any) error {
 	//  = NewRedisClient(
 	//
 	// 	,
-	// 	viper.GetBool("redis.is_cluster"),
+	// 	confy.Get[bool]("redis.is_cluster"),
 	// 	)
-	if viper.GetBool("redis.is_cluster") {
-		addrs := strings.ReplaceAll(viper.GetString("redis.addr"), " ", "")
+	if confy.Get[bool]("redis.is_cluster") {
+		addrs := strings.ReplaceAll(confy.Get[string]("redis.addr"), " ", "")
 		rdb := redis.NewClusterClient(&redis.ClusterOptions{
 			Addrs:    strings.Split(addrs, ","),
-			Password: viper.GetString("redis.password"),
+			Password: confy.Get[string]("redis.password"),
 		})
 		err := rdb.ForEachShard(context.Background(), func(ctx context.Context, shared *redis.Client) error {
 			return shared.Ping(ctx).Err()
@@ -55,9 +54,9 @@ func (m *Cache) Init(args ...any) error {
 		m.rdsCli = rdb
 	} else {
 		rdb := redis.NewClient(&redis.Options{
-			Addr:     viper.GetString("redis.addr"),
-			Password: viper.GetString("redis.password"),
-			DB:       viper.GetInt("redis.db"),
+			Addr:     confy.Get[string]("redis.addr"),
+			Password: confy.Get[string]("redis.password"),
+			DB:       confy.Get[int]("redis.db"),
 		})
 		err := rdb.Ping(context.Background()).Err()
 		if err != nil {

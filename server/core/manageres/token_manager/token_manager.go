@@ -7,7 +7,7 @@ import (
 	"time"
 
 	uuid "github.com/satori/go.uuid"
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/cache"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/models"
@@ -54,7 +54,7 @@ func (tm *TokenManager) GenerateToken(token_type string, account *models.Account
 	}
 	maps.Copy(tokenData, additionalData)
 
-	expiryMinutes := viper.GetInt(fmt.Sprintf("%s_token_expiry_minutes", token_type))
+	expiryMinutes := confy.Get[int](fmt.Sprintf("%s_token_expiry_minutes", token_type))
 	if expiryMinutes == 0 {
 		return "", exceptions.NewValueError(fmt.Sprintf("expiry minutes for %s token is not set", token_type))
 	}

@@ -8,10 +8,9 @@ import (
 	"log"
 	"os"
 
+	"mlib.com/confy"
 	"mlib.com/gofy/server/cluster"
 	"mlib.com/mrun"
-
-	"github.com/spf13/viper"
 
 	"mlib.com/mlog"
 )
@@ -24,16 +23,16 @@ func main() {
 		log.Println("usage: ./server -c config.yml")
 		return
 	}
-	viper.SetConfigFile(cfgfile)
-	viper.SetConfigType("yaml")
-	err := viper.ReadInConfig()
+	confy.SetConfigFile(cfgfile)
+	confy.SetConfigType("yaml")
+	err := confy.ReadInConfig()
 	if err != nil {
 		log.Printf("read config file(%s) failed: %v\n", cfgfile, err)
 		return
 	}
 	{
-		logpath := viper.GetStringWithDefault("log.path", "logs")
-		loglevel := viper.GetUint32WithDefault("log.log_level", 1)
+		logpath := confy.GetWithDefault[string]("log.path", "logs")
+		loglevel := confy.GetWithDefault[uint32]("log.log_level", 1)
 		log.Println("******loglevel=", loglevel)
 		if loglevel >= 4 {
 			loglevel = 1
@@ -42,7 +41,7 @@ func main() {
 		mlog.SetLogDir(logpath)
 	}
 	defer mlog.Flush()
-	viper.WatchConfig()
+	confy.WatchConfig()
 	mrun.Register(cluster.Instance(), []mrun.ModuleMgrOption{mrun.NewPriorityModuleMgrOption(0)}, []any{&Link})
 
 	err = mrun.Run(&Link)

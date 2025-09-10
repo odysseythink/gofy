@@ -3,7 +3,7 @@ package modelruntime
 import (
 	"fmt"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	commontypes "mlib.com/gofy/server/types/common"
 	"mlib.com/gofy/server/utils"
@@ -134,7 +134,7 @@ func (pe *ProviderEntity) Fullfile() {
 		}
 	}
 	ip := utils.GetIP()
-	port := viper.GetInt("system.addr")
+	port := confy.Get[int]("system.addr")
 	url := ""
 	if port > 0 && port < 65536 {
 		url = fmt.Sprintf("http://%s:%d", ip, port)

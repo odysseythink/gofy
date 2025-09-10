@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	servicesenumtypes "mlib.com/gofy/server/enum_types/services"
 	pbentities "mlib.com/gofy/server/proto/entities"
 )
@@ -79,14 +79,14 @@ func (s *FeatureService) GetSystemFeatures() *pbentities.SystemFeature {
 		License: NewLicenseModel(),
 	}
 
-	// if viper.GetBool("ENTERPRISE_ENABLED") {
+	// if confy.Get[bool]("ENTERPRISE_ENABLED") {
 	// 	system_features.EnableWebSsoSwitchComponent = true
 	// 	s.fulfillParamsFromEnterprise(system_features)
 	// }
 	// return system_features
 	s.fulfillSystemParamsFromEnv(system_features)
 
-	if viper.GetBool("ENTERPRISE_ENABLED") {
+	if confy.Get[bool]("ENTERPRISE_ENABLED") {
 		system_features.EnableWebSsoSwitchComponent = true
 
 		s.fulfillParamsFromEnterprise(system_features)
@@ -95,12 +95,12 @@ func (s *FeatureService) GetSystemFeatures() *pbentities.SystemFeature {
 }
 
 func (s *FeatureService) fulfillSystemParamsFromEnv(features *pbentities.SystemFeature) {
-	features.EnableEmailCodeLogin = viper.GetBool("enable_email_code_login")
-	features.EnableEmailPasswordLogin = viper.GetBool("enable_email_password_login")
-	features.EnableSocialOauthLogin = viper.GetBool("enable_social_oauth_login")
-	features.IsAllowRegister = viper.GetBool("allow_register")
-	features.IsAllowCreateWorkspace = viper.GetBool("allow_create_workspace")
-	if viper.GetString("mail_type") != "" {
+	features.EnableEmailCodeLogin = confy.Get[bool]("enable_email_code_login")
+	features.EnableEmailPasswordLogin = confy.Get[bool]("enable_email_password_login")
+	features.EnableSocialOauthLogin = confy.Get[bool]("enable_social_oauth_login")
+	features.IsAllowRegister = confy.Get[bool]("allow_register")
+	features.IsAllowCreateWorkspace = confy.Get[bool]("allow_create_workspace")
+	if confy.Get[string]("mail_type") != "" {
 		features.IsEmailSetup = true
 	}
 
@@ -137,9 +137,9 @@ func (s *FeatureService) fulfillParamsFromEnterprise(features *pbentities.System
 }
 
 func (s *FeatureService) fulfillParamsFromEnv(f *pbentities.FeatureModel) {
-	f.CanReplaceLogo = viper.GetBool("CAN_REPLACE_LOGO")
-	f.ModelLoadBalancingEnabled = viper.GetBool("MODEL_LB_ENABLED")
-	f.DatasetOperatorEnabled = viper.GetBool("dataset_operator_enabled")
+	f.CanReplaceLogo = confy.Get[bool]("CAN_REPLACE_LOGO")
+	f.ModelLoadBalancingEnabled = confy.Get[bool]("MODEL_LB_ENABLED")
+	f.DatasetOperatorEnabled = confy.Get[bool]("dataset_operator_enabled")
 }
 
 func (s *FeatureService) fulfillParamsFromBillingApi(f *pbentities.FeatureModel, tenant_id string) {
@@ -212,7 +212,7 @@ func (s *FeatureService) GetFeatures(tenant_id string) *pbentities.FeatureModel 
 
 	s.fulfillParamsFromEnv(f)
 
-	if viper.GetBool("billing_enabled") {
+	if confy.Get[bool]("billing_enabled") {
 		s.fulfillParamsFromBillingApi(f, tenant_id)
 	}
 	// bindata, _ := json.Marshal(f)

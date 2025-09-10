@@ -8,8 +8,8 @@ import (
 	"time"
 
 	uuid "github.com/satori/go.uuid"
-	"github.com/spf13/viper"
 	"google.golang.org/grpc/peer"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	dbengine "mlib.com/gofy/server/db_engine"
 	"mlib.com/gofy/server/models"
@@ -196,11 +196,11 @@ func (s *AdminService) GenerateApiKeyList(ctx context.Context, in *pbapi.Generat
 		mlog.Errorf("count api key failed:%v", err)
 	}
 
-	if current_key_count >= viper.GetInt64WithDefault("api_key.max_keys", 10) {
+	if current_key_count >= confy.GetWithDefault[int64]("api_key.max_keys", 10) {
 		out.Exp = &pbexceptions.HTTPException{
 			Status:  http.StatusBadRequest,
 			Code:    "max_keys_exceeded",
-			Message: fmt.Sprintf("Cannot create more than %d API keys for this resource type.", viper.GetInt64WithDefault("api_key.max_keys", 10)),
+			Message: fmt.Sprintf("Cannot create more than %d API keys for this resource type.", confy.GetWithDefault[int64]("api_key.max_keys", 10)),
 		}
 		return
 	}

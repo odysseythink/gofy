@@ -7,7 +7,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	"mlib.com/mlog"
 	"mlib.com/mrun"
 )
@@ -17,7 +17,7 @@ func (c *Cluster) Init(args ...any) error {
 		mlog.Errorf("in windows platform, first arg must be rpc service implement instance")
 		return errors.New("in windows platform, first arg must be rpc service implement instance")
 	}
-	provider_name := viper.GetString("cluster.service_discovery_provide")
+	provider_name := confy.Get[string]("cluster.service_discovery_provide")
 	switch provider_name {
 	case "zookeeper":
 		zk_service_discovery_provider := &zkServiceDiscoveryProvide{}

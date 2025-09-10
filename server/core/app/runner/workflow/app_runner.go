@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"slices"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	wfbasedrunner "mlib.com/gofy/server/core/app/runner/workflow_based"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/workflow"
@@ -75,7 +75,7 @@ func (r *WorkflowAppRunner) Run() {
 	}
 
 	workflow_callbacks := []callbacks.WorkflowCallback{}
-	if viper.GetBool("debug") {
+	if confy.Get[bool]("debug") {
 		workflow_callbacks = append(workflow_callbacks, &callbacks.WorkflowLoggingCallback{})
 	}
 	var gh *graph.Graph

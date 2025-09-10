@@ -9,12 +9,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/spf13/viper"
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"go.etcd.io/etcd/client/v3/naming/endpoints"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/resolver"
 	"google.golang.org/grpc/status"
+	"mlib.com/confy"
 	"mlib.com/mlog"
 )
 
@@ -27,9 +27,9 @@ type etcdServiceDiscoveryProvide struct {
 
 func (provide *etcdServiceDiscoveryProvide) Init(args ...any) error {
 	cli, err := clientv3.New(clientv3.Config{
-		Username:    viper.GetString("etcd.user_name"),
-		Password:    viper.GetString("etcd.password"),
-		Endpoints:   strings.Split(viper.GetString("etcd.endpoints"), ","),
+		Username:    confy.Get[string]("etcd.user_name"),
+		Password:    confy.Get[string]("etcd.password"),
+		Endpoints:   strings.Split(confy.Get[string]("etcd.endpoints"), ","),
 		DialTimeout: time.Second * 3,
 	})
 	if err != nil {
@@ -38,7 +38,7 @@ func (provide *etcdServiceDiscoveryProvide) Init(args ...any) error {
 	}
 
 	// 创建一个租约，每隔 10s 需要向 etcd 汇报一次心跳，证明当前节点仍然存活
-	ttl := viper.GetInt64WithDefault("etcd.ttl", 10)
+	ttl := confy.GetWithDefault[int64]("etcd.ttl", 10)
 	lease, err := cli.Grant(context.Background(), ttl)
 	if err != nil {
 		cli.Close()
@@ -77,7 +77,7 @@ func (provide *etcdServiceDiscoveryProvide) UserData() any {
 }
 
 func (provide *etcdServiceDiscoveryProvide) RootKey() string {
-	return viper.GetString("etcd.ROOTKEY")
+	return confy.Get[string]("etcd.ROOTKEY")
 }
 func (provide *etcdServiceDiscoveryProvide) Register(service_name, ip_port_addr, service_status string) error {
 	endpoint_mgr, err := endpoints.NewManager(provide.cli, fmt.Sprintf("%s/%s", provide.RootKey(), service_name))

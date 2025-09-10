@@ -8,9 +8,9 @@ import (
 	"strings"
 	"sync"
 
+	"mlib.com/confy"
 	"mlib.com/mrun"
 
-	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"mlib.com/mlog"
 )
@@ -169,13 +169,13 @@ func (s *server) Init(args ...any) error {
 	// }
 	// mlog.Infof("Weight %d", s.serverInfo.Weight)
 
-	s.Ip = viper.GetString("ServerCom.IP")
+	s.Ip = confy.Get[string]("ServerCom.IP")
 	if s.Ip == "" {
 		s.Ip = s.HostName
 	}
 	mlog.Infof("IP %s", s.Ip)
 
-	s.Port = uint16(viper.GetInt("cluster.port"))
+	s.Port = uint16(confy.Get[int]("cluster.port"))
 	if s.Port == 0 {
 		mlog.Warning("no port define, means no need cluster, derict return")
 		return nil
@@ -186,7 +186,7 @@ func (s *server) Init(args ...any) error {
 	mlog.Infof("Server IpPort %s", s.IpPort)
 
 	// 请求服务类型列表
-	s.ReqModulesStr = viper.GetString("cluster.req_modules")
+	s.ReqModulesStr = confy.Get[string]("cluster.req_modules")
 	if s.ReqModulesStr == "" {
 		mlog.Errorf("cluster.req_modules is not exist")
 		return fmt.Errorf("cluster.req_modules is not exist")

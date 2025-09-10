@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	"mlib.com/gofy/server/utils"
@@ -195,13 +195,13 @@ func getSignedFileURL(uploadFileID string) string {
 }
 
 func SignFile(tool_file_id string, extension string) string {
-	base_url := viper.GetString("FILES_URL")
+	base_url := confy.Get[string]("FILES_URL")
 	file_preview_url := fmt.Sprintf("%s/files/tools/%s%s", base_url, tool_file_id, extension)
 
 	timestamp := strconv.Itoa(int(time.Now().Unix()))
 	nonce := utils.GenerateRandomHex(16)
 	data_to_sign := fmt.Sprintf("file-preview|%s|%s|%s", tool_file_id, timestamp, nonce)
-	secretKey := []byte(viper.GetString("SECRET_KEY")) // 替换为实际的密钥
+	secretKey := []byte(confy.Get[string]("SECRET_KEY")) // 替换为实际的密钥
 
 	// 创建 HMAC-SHA256 签名
 	sign := hmac.New(sha256.New, secretKey)

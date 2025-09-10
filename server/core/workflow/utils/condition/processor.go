@@ -6,7 +6,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/spf13/cast"
+	"mlib.com/confy/cast"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/file"
 	"mlib.com/gofy/server/core/variables"
@@ -279,7 +279,7 @@ func _assert_equal(value any, expected any) bool {
 		if expected == nil {
 			return false
 		}
-		if _, err := cast.ToIntE(expected); err != nil {
+		if _, err := cast.ToE[int](expected); err != nil {
 			panic(exceptions.NewValueError("Invalid actual expected type: number"))
 		}
 		return v == expected.(int)
@@ -287,7 +287,7 @@ func _assert_equal(value any, expected any) bool {
 		if expected == nil {
 			return false
 		}
-		if _, err := cast.ToFloat64E(expected); err != nil {
+		if _, err := cast.ToE[float64](expected); err != nil {
 			panic(exceptions.NewValueError("Invalid actual expected type: number"))
 		}
 		return v == expected.(float64)
@@ -306,7 +306,7 @@ func _assert_not_equal(value any, expected any) bool {
 		if expected == nil {
 			return true
 		}
-		if _, err := cast.ToInt64E(expected); err != nil {
+		if _, err := cast.ToE[int64](expected); err != nil {
 			panic(exceptions.NewValueError("Invalid actual expected type: number"))
 		}
 		return v != expected.(int)
@@ -314,7 +314,7 @@ func _assert_not_equal(value any, expected any) bool {
 		if expected == nil {
 			return true
 		}
-		if _, err := cast.ToFloat64E(expected); err != nil {
+		if _, err := cast.ToE[float64](expected); err != nil {
 			panic(exceptions.NewValueError("Invalid actual expected type: number"))
 		}
 		return v != expected.(float64)
@@ -333,7 +333,7 @@ func _assert_greater_than(value any, expected any) bool {
 		if expected == nil {
 			return false
 		}
-		if _, err := cast.ToInt64E(expected); err != nil {
+		if _, err := cast.ToE[int64](expected); err != nil {
 			panic(exceptions.NewValueError("Invalid actual expected type: number"))
 		}
 		return v > expected.(int)
@@ -341,7 +341,7 @@ func _assert_greater_than(value any, expected any) bool {
 		if expected == nil {
 			return false
 		}
-		if _, err := cast.ToFloat64E(expected); err != nil {
+		if _, err := cast.ToE[float64](expected); err != nil {
 			panic(exceptions.NewValueError("Invalid actual expected type: number"))
 		}
 		return v > expected.(float64)
@@ -360,7 +360,7 @@ func _assert_less_than(value any, expected any) bool {
 		if expected == nil {
 			return false
 		}
-		if _, err := cast.ToInt64E(expected); err != nil {
+		if _, err := cast.ToE[int64](expected); err != nil {
 			panic(exceptions.NewValueError("Invalid actual expected type: number"))
 		}
 		return v < expected.(int)
@@ -368,7 +368,7 @@ func _assert_less_than(value any, expected any) bool {
 		if expected == nil {
 			return false
 		}
-		if _, err := cast.ToFloat64E(expected); err != nil {
+		if _, err := cast.ToE[float64](expected); err != nil {
 			panic(exceptions.NewValueError("Invalid actual expected type: number"))
 		}
 		return v < expected.(float64)
@@ -387,7 +387,7 @@ func _assert_greater_than_or_equal(value any, expected any) bool {
 		if expected == nil {
 			return false
 		}
-		if _, err := cast.ToInt64E(expected); err != nil {
+		if _, err := cast.ToE[int64](expected); err != nil {
 			panic(exceptions.NewValueError("Invalid actual expected type: number"))
 		}
 		return v >= expected.(int)
@@ -395,7 +395,7 @@ func _assert_greater_than_or_equal(value any, expected any) bool {
 		if expected == nil {
 			return false
 		}
-		if _, err := cast.ToFloat64E(expected); err != nil {
+		if _, err := cast.ToE[float64](expected); err != nil {
 			panic(exceptions.NewValueError("Invalid actual expected type: number"))
 		}
 		return v >= expected.(float64)
@@ -414,7 +414,7 @@ func _assert_less_than_or_equal(value any, expected any) bool {
 		if expected == nil {
 			return false
 		}
-		if _, err := cast.ToInt64E(expected); err != nil {
+		if _, err := cast.ToE[int64](expected); err != nil {
 			panic(exceptions.NewValueError("Invalid actual expected type: number"))
 		}
 		return v <= expected.(int)
@@ -422,7 +422,7 @@ func _assert_less_than_or_equal(value any, expected any) bool {
 		if expected == nil {
 			return false
 		}
-		if _, err := cast.ToFloat64E(expected); err != nil {
+		if _, err := cast.ToE[float64](expected); err != nil {
 			panic(exceptions.NewValueError("Invalid actual expected type: number"))
 		}
 		return v <= expected.(float64)

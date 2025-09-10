@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	httpexceptions "mlib.com/gofy/server/core/exceptions/http"
 	dbengine "mlib.com/gofy/server/db_engine"
@@ -71,7 +71,7 @@ func JWTAuth() gin.HandlerFunc {
 		}
 
 		// parseToken 解析token包含的信息
-		claims, err := jwtutils.ParseToken(token, viper.GetString("SECRET_KEY"))
+		claims, err := jwtutils.ParseToken(token, confy.Get[string]("SECRET_KEY"))
 		if err != nil || claims == nil {
 			mlog.Errorf("parse token failed:%v", err)
 			c.JSON(401, gin.H{"code": "unauthorized", "message": "Unauthorized."})

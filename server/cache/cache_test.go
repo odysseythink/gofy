@@ -3,12 +3,12 @@ package cache
 import (
 	"testing"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 )
 
 func TestCluster(t *testing.T) {
-	viper.SetConfigFile("redis.yml")
-	err := viper.ReadInConfig()
+	confy.SetConfigFile("redis.yml")
+	err := confy.ReadInConfig()
 	if err != nil {
 		t.Errorf("read config file(redis.yml) failed: %v", err)
 		return

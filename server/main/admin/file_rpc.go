@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 
-	"github.com/spf13/viper"
 	"google.golang.org/grpc/peer"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/proto/pbapi"
 	"mlib.com/mlog"
 )
@@ -13,14 +13,14 @@ func (s *AdminService) GetFileUploadConfig(ctx context.Context, in *pbapi.GetFil
 	p, _ := peer.FromContext(ctx)
 	mlog.Infof("remote[%s] admin.GetFileUploadConfig call:%#v", p.Addr.String(), in)
 
-	// check_update_url := viper.GetString("check_update_url")
+	// check_update_url := confy.Get[string]("check_update_url")
 	out = &pbapi.GetFileUploadConfigReply{
-		FileSizeLimit:           viper.GetInt64WithDefault("upload.file_size_limit", 15),
-		BatchCountLimit:         viper.GetInt64WithDefault("upload.file_batch_limit", 5),
-		ImageFileSizeLimit:      viper.GetInt64WithDefault("upload.image_file_size_limit", 10),
-		VideoFileSizeLimit:      viper.GetInt64WithDefault("upload.video_file_size_limit", 100),
-		AudioFileSizeLimit:      viper.GetInt64WithDefault("upload.audio_file_size_limit", 50),
-		WorkflowFileUploadLimit: viper.GetInt64WithDefault("upload.workflow_file_limit", 10),
+		FileSizeLimit:           confy.GetWithDefault[int64]("upload.file_size_limit", 15),
+		BatchCountLimit:         confy.GetWithDefault[int64]("upload.file_batch_limit", 5),
+		ImageFileSizeLimit:      confy.GetWithDefault[int64]("upload.image_file_size_limit", 10),
+		VideoFileSizeLimit:      confy.GetWithDefault[int64]("upload.video_file_size_limit", 100),
+		AudioFileSizeLimit:      confy.GetWithDefault[int64]("upload.audio_file_size_limit", 50),
+		WorkflowFileUploadLimit: confy.GetWithDefault[int64]("upload.workflow_file_limit", 10),
 	}
 	return
 }

@@ -7,8 +7,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/spf13/viper"
 	"google.golang.org/grpc/peer"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/cache"
 	dbengine "mlib.com/gofy/server/db_engine"
 	"mlib.com/gofy/server/main/link/router"
@@ -93,7 +93,7 @@ func (s *LinkService) Init(args ...any) error {
 	r := router.InitRouters()
 	r.Static("/form-generator", "./resource/page")
 
-	address := fmt.Sprintf(":%d", viper.GetIntWithDefault("system.addr", 5001))
+	address := fmt.Sprintf(":%d", confy.GetWithDefault[int]("system.addr", 5001))
 	s.httpserver = &http.Server{
 		Addr:              address,
 		Handler:           r,

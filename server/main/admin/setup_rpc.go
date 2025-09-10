@@ -7,8 +7,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/spf13/viper"
 	"google.golang.org/grpc/peer"
+	"mlib.com/confy"
 	httpexceptions "mlib.com/gofy/server/core/exceptions/http"
 	"mlib.com/gofy/server/global"
 	"mlib.com/gofy/server/libs/password"
@@ -25,7 +25,7 @@ func (s *AdminService) GetSetupStatus(ctx context.Context, in *pbapi.GetSetupSta
 	out = &pbapi.GetSetupStatusReply{
 		Step: "finished",
 	}
-	if viper.GetString("EDITION") == "SELF_HOSTED" {
+	if confy.Get[string]("EDITION") == "SELF_HOSTED" {
 		setup_status, _ := services.ServiceGroupApp.DifySetup.Get()
 		if setup_status != nil {
 			if setup_status.SetupAt == nil {
@@ -111,7 +111,7 @@ func (s *AdminService) Setup(ctx context.Context, in *pbapi.SetupRequest) (out *
 }
 
 func (s *AdminService) get_init_validate_status() bool {
-	if viper.GetString("EDITION") == "SELF_HOSTED" {
+	if confy.Get[string]("EDITION") == "SELF_HOSTED" {
 		if os.Getenv("INIT_PASSWORD") == "on" {
 			setup_status, _ := services.ServiceGroupApp.DifySetup.Get()
 			return global.IsInitValidated || setup_status != nil

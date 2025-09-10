@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/spf13/viper"
 	"gopkg.in/yaml.v2"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
@@ -21,7 +21,7 @@ type BaseAIModel struct {
 	StartedAt    time.Time
 
 	// pydantic configs
-	ModelConfig *viper.Viper
+	ModelConfig *confy.Confy
 }
 
 func (m *BaseAIModel) GetCustomizableModelSchemaFromCredentials(modeler modelruntimeentities.AIModeler, model string, credentials map[string]any) *modelruntimeentities.AIModelEntity {

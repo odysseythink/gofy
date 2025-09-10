@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 )
@@ -50,10 +50,10 @@ func ToPromptMessageContent(f *File, imageDetailConfig modelruntimeentities.Imag
 		"format":      strings.TrimPrefix(f.Extension, "."),
 		"mime_type":   f.MimeType,
 	}
-	if viper.GetString("MULTIMODAL_SEND_FORMAT") == "base64" {
+	if confy.Get[string]("MULTIMODAL_SEND_FORMAT") == "base64" {
 		params["base64_data"] = getEncodedString(f)
 	}
-	if viper.GetString("MULTIMODAL_SEND_FORMAT") == "url" {
+	if confy.Get[string]("MULTIMODAL_SEND_FORMAT") == "url" {
 		params["url"], _ = toURL(f)
 	}
 

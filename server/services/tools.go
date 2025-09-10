@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	dbengine "mlib.com/gofy/server/db_engine"
 	toolsentities "mlib.com/gofy/server/entities/tools"
@@ -28,7 +28,7 @@ func (s *ToolsService) GetToolIcon(tenant_id, provider_type, provider_id string)
 	// provider_id = provider_id
 	// provider: Optional[Union[BuiltinToolProvider, ApiToolProvider, WorkflowToolProvider]] = None
 	if provider_type == "builtin" {
-		return viper.GetString("CONSOLE_API_URL") + "/console/api/workspaces/current/tool-provider/builtin/" + provider_id + "/icon", nil
+		return confy.Get[string]("CONSOLE_API_URL") + "/console/api/workspaces/current/tool-provider/builtin/" + provider_id + "/icon", nil
 	} else if provider_type == "api" {
 		provider := new(models.ApiToolProvider)
 		err := dbengine.Instance().DB.Model(&models.ApiToolProvider{}).Where("tenant_id = ? and id = ?", tenant_id, provider_id).First(provider).Error

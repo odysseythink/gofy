@@ -5,7 +5,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	basenodesentities "mlib.com/gofy/server/entities/nodes/base"
 )
 
@@ -89,13 +89,13 @@ type HttpRequestNodeTimeout struct {
 
 func NewHttpRequestNodeTimeout(connect, read, write int) *HttpRequestNodeTimeout {
 	if connect <= 0 {
-		connect = viper.GetInt("http_node_config.max_connect_timeout")
+		connect = confy.Get[int]("http_node_config.max_connect_timeout")
 	}
 	if read <= 0 {
-		read = viper.GetInt("http_node_config.max_read_timeout")
+		read = confy.Get[int]("http_node_config.max_read_timeout")
 	}
 	if write <= 0 {
-		write = viper.GetInt("http_node_config.max_write_timeout")
+		write = confy.Get[int]("http_node_config.max_write_timeout")
 	}
 	return &HttpRequestNodeTimeout{
 		Connect: connect,

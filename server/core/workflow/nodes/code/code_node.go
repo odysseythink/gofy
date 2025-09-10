@@ -6,7 +6,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	codenodesexceptions "mlib.com/gofy/server/core/exceptions/nodes/code"
 	codeexecutor "mlib.com/gofy/server/core/helper/code_executor"
 	python3codeexecutor "mlib.com/gofy/server/core/helper/code_executor/template_transformer/python3"
@@ -134,8 +134,8 @@ func checkString(value string, variable string) string {
 	   :return:
 	*/
 
-	if len(value) > viper.GetIntWithDefault("code_execution_config.max_string_length", 80000) {
-		panic(codenodesexceptions.NewOutputValidationError(fmt.Sprintf("The length of output variable `%#v` must be less than %d characters", variable, viper.GetIntWithDefault("code_execution_config.max_string_length", 80000))))
+	if len(value) > confy.GetWithDefault[int]("code_execution_config.max_string_length", 80000) {
+		panic(codenodesexceptions.NewOutputValidationError(fmt.Sprintf("The length of output variable `%#v` must be less than %d characters", variable, confy.GetWithDefault[int]("code_execution_config.max_string_length", 80000))))
 	}
 	return strings.ReplaceAll(value, "\x00", "")
 }
@@ -147,17 +147,17 @@ func checkNumber[T int | int32 | int64 | uint | uint32 | uint64 | float32 | floa
 	   :return:
 	*/
 
-	if int(value) > viper.GetIntWithDefault("code_execution_config.max_number", 9223372036854775807) || int(value) < viper.GetIntWithDefault("code_execution_config.min_number", -9223372036854775808) {
-		panic(codenodesexceptions.NewOutputValidationError(fmt.Sprintf("Output variable `%s` is out of range, it must be between %d and %d.", variable, viper.GetIntWithDefault("code_execution_config.min_number", -9223372036854775808), viper.GetIntWithDefault("code_execution_config.max_number", 9223372036854775807))))
+	if int(value) > confy.GetWithDefault[int]("code_execution_config.max_number", 9223372036854775807) || int(value) < confy.GetWithDefault[int]("code_execution_config.min_number", -9223372036854775808) {
+		panic(codenodesexceptions.NewOutputValidationError(fmt.Sprintf("Output variable `%s` is out of range, it must be between %d and %d.", variable, confy.GetWithDefault[int]("code_execution_config.min_number", -9223372036854775808), confy.GetWithDefault[int]("code_execution_config.max_number", 9223372036854775807))))
 	}
 	switch realdata := any(value).(type) {
 	case float32:
-		if len(strings.Split(fmt.Sprintf("%v", realdata), ".")[1]) > viper.GetIntWithDefault("code_execution_config.max_precision", 20) {
-			panic(codenodesexceptions.NewOutputValidationError(fmt.Sprintf("Output variable `%s` has too high precision, it must be less than %d digits.", variable, viper.GetIntWithDefault("code_execution_config.max_precision", 20))))
+		if len(strings.Split(fmt.Sprintf("%v", realdata), ".")[1]) > confy.GetWithDefault[int]("code_execution_config.max_precision", 20) {
+			panic(codenodesexceptions.NewOutputValidationError(fmt.Sprintf("Output variable `%s` has too high precision, it must be less than %d digits.", variable, confy.GetWithDefault[int]("code_execution_config.max_precision", 20))))
 		}
 	case float64:
-		if len(strings.Split(fmt.Sprintf("%v", realdata), ".")[1]) > viper.GetIntWithDefault("code_execution_config.max_precision", 20) {
-			panic(codenodesexceptions.NewOutputValidationError(fmt.Sprintf("Output variable `%s` has too high precision, it must be less than %d digits.", variable, viper.GetIntWithDefault("code_execution_config.max_precision", 20))))
+		if len(strings.Split(fmt.Sprintf("%v", realdata), ".")[1]) > confy.GetWithDefault[int]("code_execution_config.max_precision", 20) {
+			panic(codenodesexceptions.NewOutputValidationError(fmt.Sprintf("Output variable `%s` has too high precision, it must be less than %d digits.", variable, confy.GetWithDefault[int]("code_execution_config.max_precision", 20))))
 		}
 	}
 
@@ -170,8 +170,8 @@ func transformResult(
 	prefix string,
 	depth int, /* = 1*/
 ) map[string]any {
-	if depth > viper.GetIntWithDefault("code_execution_config.max_depth", 5) {
-		panic(codenodesexceptions.NewDepthLimitError(fmt.Sprintf("Depth limit %d reached, object too deep.", viper.GetIntWithDefault("code_execution_config.max_depth", 5))))
+	if depth > confy.GetWithDefault[int]("code_execution_config.max_depth", 5) {
+		panic(codenodesexceptions.NewDepthLimitError(fmt.Sprintf("Depth limit %d reached, object too deep.", confy.GetWithDefault[int]("code_execution_config.max_depth", 5))))
 	}
 
 	transformedResult := make(map[string]any)
@@ -298,8 +298,8 @@ func transformResult(
 			}
 		case "array[number]":
 			if value, ok := result[outputName].([]any); ok {
-				if len(value) > viper.GetIntWithDefault("code_execution_config.max_number_array_length", 1000) {
-					panic(codenodesexceptions.NewOutputValidationError(fmt.Sprintf("The length of output variable `%s` must be less than %d elements.", realprefix, viper.GetIntWithDefault("code_execution_config.max_number_array_length", 1000))))
+				if len(value) > confy.GetWithDefault[int]("code_execution_config.max_number_array_length", 1000) {
+					panic(codenodesexceptions.NewOutputValidationError(fmt.Sprintf("The length of output variable `%s` must be less than %d elements.", realprefix, confy.GetWithDefault[int]("code_execution_config.max_number_array_length", 1000))))
 				}
 
 				validated := make([]any, 0)
@@ -322,8 +322,8 @@ func transformResult(
 			}
 		case "array[string]":
 			if value, ok := result[outputName].([]any); ok {
-				if len(value) > viper.GetIntWithDefault("code_execution_config.max_string_array_length", 30) {
-					panic(codenodesexceptions.NewOutputValidationError(fmt.Sprintf("The length of output variable `%s` must be less than %d elements.", realprefix, viper.GetIntWithDefault("code_execution_config.max_string_array_length", 30))))
+				if len(value) > confy.GetWithDefault[int]("code_execution_config.max_string_array_length", 30) {
+					panic(codenodesexceptions.NewOutputValidationError(fmt.Sprintf("The length of output variable `%s` must be less than %d elements.", realprefix, confy.GetWithDefault[int]("code_execution_config.max_string_array_length", 30))))
 				}
 
 				validated := make([]any, len(value))
@@ -343,8 +343,8 @@ func transformResult(
 			}
 		case "array[object]":
 			if value, ok := result[outputName].([]any); ok {
-				if len(value) > viper.GetIntWithDefault("code_execution_config.max_object_array_length", 30) {
-					panic(codenodesexceptions.NewOutputValidationError(fmt.Sprintf("The length of output variable `%s` must be less than %d elements.", realprefix, viper.GetIntWithDefault("code_execution_config.max_object_array_length", 30))))
+				if len(value) > confy.GetWithDefault[int]("code_execution_config.max_object_array_length", 30) {
+					panic(codenodesexceptions.NewOutputValidationError(fmt.Sprintf("The length of output variable `%s` must be less than %d elements.", realprefix, confy.GetWithDefault[int]("code_execution_config.max_object_array_length", 30))))
 				}
 
 				validated := make([]any, len(value))

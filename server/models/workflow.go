@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/spf13/cast"
+	"mlib.com/confy/cast"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/variables"
 	dbengine "mlib.com/gofy/server/db_engine"
@@ -203,7 +203,7 @@ func (wf *Workflow) Features() string {
 								image_enabled := true
 								image_number_limits := 1
 								if _, ok := image["number_limits"]; ok {
-									val, err := cast.ToIntE(image["number_limits"])
+									val, err := cast.ToE[int](image["number_limits"])
 									if err == nil {
 										image_number_limits = val
 									}

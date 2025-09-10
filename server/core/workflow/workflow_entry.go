@@ -8,7 +8,7 @@ import (
 	"time"
 
 	uuid "github.com/satori/go.uuid"
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/file"
 	"mlib.com/gofy/server/models"
@@ -61,7 +61,7 @@ func NewWorkflowEntry(
 		:param thread_pool_id: thread pool id
 	*/
 	// check call depth
-	workflow_call_max_depth := viper.GetIntWithDefault("workflow.call_max_depth", 5)
+	workflow_call_max_depth := confy.GetWithDefault[int]("workflow.call_max_depth", 5)
 	if call_depth > workflow_call_max_depth {
 		panic(exceptions.NewValueError(fmt.Sprintf("Max workflow call depth %d reached.", workflow_call_max_depth)))
 	}
@@ -79,8 +79,8 @@ func NewWorkflowEntry(
 		gf,
 		graph_config,
 		variable_pool,
-		viper.GetIntWithDefault("workflow.max_execution_steps", 500),
-		viper.GetIntWithDefault("workflow.max_execution_time", 1200),
+		confy.GetWithDefault[int]("workflow.max_execution_steps", 500),
+		confy.GetWithDefault[int]("workflow.max_execution_time", 1200),
 	)
 	return wfe
 }

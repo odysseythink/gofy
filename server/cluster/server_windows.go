@@ -7,10 +7,10 @@ import (
 	"errors"
 	"fmt"
 
+	"mlib.com/confy"
 	"mlib.com/gofy/server/utils"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/recovery"
-	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -27,7 +27,7 @@ func (s *server) argsInit(args ...any) error {
 		return errors.New("args[0] must be ServiceDiscoveryProvider")
 	} else {
 
-		port := uint16(viper.GetInt("cluster.port"))
+		port := uint16(confy.Get[int]("cluster.port"))
 		if port == 0 {
 			mlog.Warning("no port define, means no need cluster, derict return")
 			return nil
@@ -40,7 +40,7 @@ func (s *server) argsInit(args ...any) error {
 		s.service_discovery_provider = provide
 
 		// 服务类型
-		s.ModuleName = viper.GetString("ServerCom.ModuleName")
+		s.ModuleName = confy.Get[string]("ServerCom.ModuleName")
 		if s.ModuleName == "" {
 			mlog.Errorf("ModuleName is not exist")
 			return fmt.Errorf("ModuleName is not exist")

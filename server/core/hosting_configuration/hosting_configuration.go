@@ -4,7 +4,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	providerentities "mlib.com/gofy/server/entities/provider"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
@@ -111,14 +111,14 @@ func (hc *HostingConfiguration) InitApp() {
 
 func (hc *HostingConfiguration) initAzureOpenAI() *HostingProvider {
 	quotaUnit := providerenumtypes.QuotaUnit_TIMES
-	if viper.GetBoolWithDefault("hosted_azure_openai_config.enable", false) {
+	if confy.GetWithDefault[bool]("hosted_azure_openai_config.enable", false) {
 		credentials := map[string]any{
-			"openai_api_key":  viper.GetStringWithDefault("hosted_azure_openai_config.api_key", ""),
-			"openai_api_base": viper.GetStringWithDefault("hosted_azure_openai_config.api_base", ""),
+			"openai_api_key":  confy.GetWithDefault[string]("hosted_azure_openai_config.api_key", ""),
+			"openai_api_base": confy.GetWithDefault[string]("hosted_azure_openai_config.api_base", ""),
 			"base_model_name": "gpt-35-turbo",
 		}
 
-		hostedQuotaLimit := viper.GetIntWithDefault("hosted_azure_openai_config.quota_limit", 200)
+		hostedQuotaLimit := confy.GetWithDefault[int]("hosted_azure_openai_config.quota_limit", 200)
 		trialQuota := &TrialHostingQuota{
 			HostingQuota: &HostingQuota{
 				RestrictModels: []*providerentities.RestrictModel{
@@ -159,8 +159,8 @@ func (hc *HostingConfiguration) initOpenAI() *HostingProvider {
 	quotaUnit := providerenumtypes.QuotaUnit_CREDITS
 	quotas := make([]HostingQuotaer, 0)
 
-	if viper.GetBoolWithDefault("hosted_openai_config.trial_enable", false) {
-		hostedQuotaLimit := viper.GetIntWithDefault("hosted_openai_config.quota_limit", 200)
+	if confy.GetWithDefault[bool]("hosted_openai_config.trial_enable", false) {
+		hostedQuotaLimit := confy.GetWithDefault[int]("hosted_openai_config.quota_limit", 200)
 		trialModels := hc.parseRestrictModelsFromEnv("HOSTED_OPENAI_TRIAL_MODELS")
 		trialQuota := &TrialHostingQuota{
 			HostingQuota: &HostingQuota{
@@ -171,7 +171,7 @@ func (hc *HostingConfiguration) initOpenAI() *HostingProvider {
 		quotas = append(quotas, trialQuota)
 	}
 
-	if viper.GetBoolWithDefault("hosted_openai_config.paid_enable", false) {
+	if confy.GetWithDefault[bool]("hosted_openai_config.paid_enable", false) {
 		paidModels := hc.parseRestrictModelsFromEnv("HOSTED_OPENAI_PAID_MODELS")
 		paidQuota := &PaidHostingQuota{
 			HostingQuota: &HostingQuota{
@@ -183,9 +183,9 @@ func (hc *HostingConfiguration) initOpenAI() *HostingProvider {
 
 	if len(quotas) > 0 {
 		credentials := map[string]any{
-			"openai_api_key":      viper.GetStringWithDefault("hosted_openai_config.api_key", ""),
-			"openai_api_base":     viper.GetStringWithDefault("hosted_openai_config.api_base", ""),
-			"openai_organization": viper.GetStringWithDefault("hosted_openai_config.api_organization", ""),
+			"openai_api_key":      confy.GetWithDefault[string]("hosted_openai_config.api_key", ""),
+			"openai_api_base":     confy.GetWithDefault[string]("hosted_openai_config.api_base", ""),
+			"openai_organization": confy.GetWithDefault[string]("hosted_openai_config.api_organization", ""),
 		}
 
 		return &HostingProvider{
@@ -206,8 +206,8 @@ func (hc *HostingConfiguration) initAnthropic() *HostingProvider {
 	quotaUnit := providerenumtypes.QuotaUnit_TOKENS
 	quotas := make([]HostingQuotaer, 0)
 
-	if viper.GetBoolWithDefault("hosted_anthropic_config.trial_enable", false) {
-		hostedQuotaLimit := viper.GetIntWithDefault("hosted_anthropic_config.quota_limit", 200)
+	if confy.GetWithDefault[bool]("hosted_anthropic_config.trial_enable", false) {
+		hostedQuotaLimit := confy.GetWithDefault[int]("hosted_anthropic_config.quota_limit", 200)
 		trialQuota := &TrialHostingQuota{
 			HostingQuota: &HostingQuota{},
 			QuotaLimit:   hostedQuotaLimit,
@@ -215,7 +215,7 @@ func (hc *HostingConfiguration) initAnthropic() *HostingProvider {
 		quotas = append(quotas, trialQuota)
 	}
 
-	if viper.GetBoolWithDefault("hosted_anthropic_config.pid_enable", false) {
+	if confy.GetWithDefault[bool]("hosted_anthropic_config.pid_enable", false) {
 		paidQuota := &PaidHostingQuota{
 			HostingQuota: &HostingQuota{},
 		}
@@ -224,8 +224,8 @@ func (hc *HostingConfiguration) initAnthropic() *HostingProvider {
 
 	if len(quotas) > 0 {
 		credentials := map[string]any{
-			"anthropic_api_key":  viper.GetStringWithDefault("hosted_anthropic_config.api_key", ""),
-			"anthropic_api_base": viper.GetStringWithDefault("hosted_anthropic_config.api_base", ""),
+			"anthropic_api_key":  confy.GetWithDefault[string]("hosted_anthropic_config.api_key", ""),
+			"anthropic_api_base": confy.GetWithDefault[string]("hosted_anthropic_config.api_base", ""),
 		}
 
 		return &HostingProvider{
@@ -244,7 +244,7 @@ func (hc *HostingConfiguration) initAnthropic() *HostingProvider {
 
 func (hc *HostingConfiguration) initMinimax() *HostingProvider {
 	quotaUnit := providerenumtypes.QuotaUnit_TOKENS
-	if viper.GetBoolWithDefault("hosted_minmax_config.enable", false) {
+	if confy.GetWithDefault[bool]("hosted_minmax_config.enable", false) {
 		quotas := []HostingQuotaer{&FreeHostingQuota{HostingQuota: &HostingQuota{}}}
 
 		return &HostingProvider{
@@ -263,7 +263,7 @@ func (hc *HostingConfiguration) initMinimax() *HostingProvider {
 
 func (hc *HostingConfiguration) initSpark() *HostingProvider {
 	quotaUnit := providerenumtypes.QuotaUnit_TOKENS
-	if viper.GetBoolWithDefault("hosted_spark_config.enable", false) {
+	if confy.GetWithDefault[bool]("hosted_spark_config.enable", false) {
 		quotas := []HostingQuotaer{&FreeHostingQuota{HostingQuota: &HostingQuota{}}}
 
 		return &HostingProvider{
@@ -282,7 +282,7 @@ func (hc *HostingConfiguration) initSpark() *HostingProvider {
 
 func (hc *HostingConfiguration) initZhipuai() *HostingProvider {
 	quotaUnit := providerenumtypes.QuotaUnit_TOKENS
-	if viper.GetBoolWithDefault("hosted_zhipu_ai_config.enable", false) {
+	if confy.GetWithDefault[bool]("hosted_zhipu_ai_config.enable", false) {
 		quotas := []HostingQuotaer{&FreeHostingQuota{HostingQuota: &HostingQuota{}}}
 
 		return &HostingProvider{
@@ -300,8 +300,8 @@ func (hc *HostingConfiguration) initZhipuai() *HostingProvider {
 }
 
 func (hc *HostingConfiguration) initModerationConfig() *HostedModerationConfig {
-	if viper.GetBoolWithDefault("hosted_moderation_config.enable", false) && viper.GetStringWithDefault("hosted_moderation_config.providers", "") != "" {
-		providers := strings.Split(viper.GetStringWithDefault("hosted_moderation_config.providers", ""), ",")
+	if confy.GetWithDefault[bool]("hosted_moderation_config.enable", false) && confy.GetWithDefault[string]("hosted_moderation_config.providers", "") != "" {
+		providers := strings.Split(confy.GetWithDefault[string]("hosted_moderation_config.providers", ""), ",")
 		return &HostedModerationConfig{
 			Enabled:   true,
 			Providers: providers,

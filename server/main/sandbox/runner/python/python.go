@@ -13,7 +13,7 @@ import (
 	"time"
 
 	uuid "github.com/satori/go.uuid"
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/main/sandbox/global"
 	"mlib.com/gofy/server/main/sandbox/runner"
 	"mlib.com/gofy/server/main/sandbox/runner/types"
@@ -51,7 +51,7 @@ func (p *PythonRunner) Run(
 
 	// create a new process
 	cmd := exec.Command(
-		viper.GetString("python_path"),
+		confy.Get[string]("python_path"),
 		untrusted_code_path,
 		LIB_PATH,
 		key,
@@ -59,18 +59,18 @@ func (p *PythonRunner) Run(
 	cmd.Env = []string{}
 	cmd.Dir = LIB_PATH
 
-	if viper.GetString("proxy.socks5") != "" {
-		cmd.Env = append(cmd.Env, fmt.Sprintf("HTTPS_PROXY=%s", viper.GetString("proxy.socks5")))
-		cmd.Env = append(cmd.Env, fmt.Sprintf("HTTP_PROXY=%s", viper.GetString("proxy.socks5")))
-	} else if viper.GetString("proxy.https") != "" || viper.GetString("proxy.http") != "" {
-		if viper.GetString("proxy.https") != "" {
-			cmd.Env = append(cmd.Env, fmt.Sprintf("HTTPS_PROXY=%s", viper.GetString("proxy.https")))
+	if confy.Get[string]("proxy.socks5") != "" {
+		cmd.Env = append(cmd.Env, fmt.Sprintf("HTTPS_PROXY=%s", confy.Get[string]("proxy.socks5")))
+		cmd.Env = append(cmd.Env, fmt.Sprintf("HTTP_PROXY=%s", confy.Get[string]("proxy.socks5")))
+	} else if confy.Get[string]("proxy.https") != "" || confy.Get[string]("proxy.http") != "" {
+		if confy.Get[string]("proxy.https") != "" {
+			cmd.Env = append(cmd.Env, fmt.Sprintf("HTTPS_PROXY=%s", confy.Get[string]("proxy.https")))
 		}
-		if viper.GetString("proxy.http") != "" {
-			cmd.Env = append(cmd.Env, fmt.Sprintf("HTTP_PROXY=%s", viper.GetString("proxy.http")))
+		if confy.Get[string]("proxy.http") != "" {
+			cmd.Env = append(cmd.Env, fmt.Sprintf("HTTP_PROXY=%s", confy.Get[string]("proxy.http")))
 		}
 	}
-	allowed_syscalls := viper.GetIntSlice("allowed_syscalls")
+	allowed_syscalls := confy.Get[[]int]("allowed_syscalls")
 	if len(allowed_syscalls) > 0 {
 		cmd.Env = append(cmd.Env,
 			fmt.Sprintf("ALLOWED_SYSCALLS=%s",
@@ -93,7 +93,7 @@ func (p *PythonRunner) InitializeEnvironment(code string, preload string, option
 		// ensure environment is reversed
 		releaseLibBinary(false)
 	}
-	uid := viper.GetIntWithDefault("sandbox_user_uid", 65537)
+	uid := confy.GetWithDefault[int]("sandbox_user_uid", 65537)
 	// create a tmp dir and copy the python script
 	temp_code_name := strings.ReplaceAll(uuid.NewV4().String(), "-", "_")
 	temp_code_name = strings.ReplaceAll(temp_code_name, "/", ".")

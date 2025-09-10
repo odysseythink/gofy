@@ -3,7 +3,7 @@ package services
 import (
 	"time"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/main/sandbox/runner/python"
 	runnertypes "mlib.com/gofy/server/main/sandbox/runner/types"
 	"mlib.com/gofy/server/main/sandbox/types"
@@ -25,12 +25,12 @@ func (s *PythonService) RunPython3Code(code string, preload string, options *run
 		return types.ErrorResponse(-400, err.Error())
 	}
 
-	if !viper.GetBoolWithDefault("enable_preload", false) {
+	if !confy.GetWithDefault[bool]("enable_preload", false) {
 		preload = ""
 	}
 
 	timeout := time.Duration(
-		viper.GetIntWithDefault("worker_timeout", 0) * int(time.Second),
+		confy.GetWithDefault[int]("worker_timeout", 0) * int(time.Second),
 	)
 
 	runner := python.PythonRunner{}

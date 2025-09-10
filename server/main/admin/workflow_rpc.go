@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/spf13/viper"
 	"google.golang.org/grpc/peer"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	appexceptions "mlib.com/gofy/server/core/exceptions/app"
 	httpexceptions "mlib.com/gofy/server/core/exceptions/http"
@@ -341,7 +341,7 @@ func (s *AdminService) GetWorkflowConfig(ctx context.Context, in *pbapi.GetWorkf
 	mlog.Infof("remote[%s] admin.GetWorkflowConfig call:%#v", p.Addr.String(), in)
 
 	out = &pbapi.GetWorkflowConfigReply{}
-	out.ParallelDepthLimit = viper.GetInt32WithDefault("workflow.parallel_depth_limit", 3)
+	out.ParallelDepthLimit = confy.GetWithDefault[int32]("workflow.parallel_depth_limit", 3)
 	return
 }
 func (s *AdminService) GetWorkflowDefaultBlockConfigs(ctx context.Context, in *pbapi.GetWorkflowDefaultBlockConfigsRequest) (out *pbapi.GetWorkflowDefaultBlockConfigsReply, err error) {

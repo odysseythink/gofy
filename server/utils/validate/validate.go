@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/spf13/cast"
+	"mlib.com/confy/cast"
 	"mlib.com/mlog"
 )
 
@@ -351,7 +351,7 @@ func IsValidNetPort(str string) bool {
 		mlog.Errorf("invalid arg")
 		return false
 	}
-	port, err := cast.ToIntE(str)
+	port, err := cast.ToE[int](str)
 	if err != nil {
 		return false
 	}

@@ -15,7 +15,7 @@ import (
 	"time"
 
 	uuid "github.com/satori/go.uuid"
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	dbengine "mlib.com/gofy/server/db_engine"
 	"mlib.com/gofy/server/models"
@@ -27,13 +27,13 @@ import (
 type ToolFileManager struct{}
 
 func (mgr *ToolFileManager) SignFile(tool_file_id string, extension string) string {
-	base_url := viper.GetString("FILES_URL")
+	base_url := confy.Get[string]("FILES_URL")
 	file_preview_url := fmt.Sprintf("%s/files/tools/%s%s", base_url, tool_file_id, extension)
 
 	timestamp := strconv.Itoa(int(time.Now().Unix()))
 	nonce := utils.GenerateRandomHex(16)
 	data_to_sign := fmt.Sprintf("file-preview|%s|%s|%s", tool_file_id, timestamp, nonce)
-	secretKey := []byte(viper.GetString("SECRET_KEY")) // 替换为实际的密钥
+	secretKey := []byte(confy.Get[string]("SECRET_KEY")) // 替换为实际的密钥
 
 	// 创建 HMAC-SHA256 签名
 	sign := hmac.New(sha256.New, secretKey)
@@ -53,7 +53,7 @@ func (mgr *ToolFileManager) VerifyFile(file_id string, timestamp string, nonce s
 		panic(exceptions.NewValueError("invalid timestatmp"))
 	}
 	data_to_sign := fmt.Sprintf("file-preview|%s|%s|%s", file_id, timestamp, nonce)
-	secretKey := []byte(viper.GetString("SECRET_KEY"))
+	secretKey := []byte(confy.Get[string]("SECRET_KEY"))
 	recalculated_sign := hmac.New(sha256.New, secretKey)
 	recalculated_sign.Write([]byte(data_to_sign))
 	sign_bytes := recalculated_sign.Sum(nil)
@@ -64,7 +64,7 @@ func (mgr *ToolFileManager) VerifyFile(file_id string, timestamp string, nonce s
 		return false
 	}
 	current_time := time.Now().Unix()
-	return int(current_time)-timestamp_num <= viper.GetIntWithDefault("FILES_ACCESS_TIMEOUT", 300)
+	return int(current_time)-timestamp_num <= confy.GetWithDefault[int]("FILES_ACCESS_TIMEOUT", 300)
 
 }
 func (mgr *ToolFileManager) CreateFileByRaw(

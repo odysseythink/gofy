@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	httprequestnodesentities "mlib.com/gofy/server/entities/nodes/http_request"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
@@ -468,7 +468,7 @@ func (e *Executor) do_http_request(headers map[string]string) *http.Response {
 func (e *Executor) validate_and_parse_response(response *http.Response) *httprequestnodesentities.Response {
 	executor_response := httprequestnodesentities.NewResponse(response)
 
-	threshold_size := viper.GetInt64WithDefault("http_node_config.max_text_size", 1048576)
+	threshold_size := confy.GetWithDefault[int64]("http_node_config.max_text_size", 1048576)
 	if executor_response.Size() > threshold_size {
 		panic(exceptions.NewResponseSizeError(fmt.Sprintf("'Text' size is too large, max size is %.2f MB, but current size is %s.", float64(threshold_size)/float64(1024)/float64(1024), executor_response.ReadableSize())))
 	}

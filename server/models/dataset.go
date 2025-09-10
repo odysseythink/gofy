@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/spf13/viper"
 	"gorm.io/datatypes"
+	"mlib.com/confy"
 	dbengine "mlib.com/gofy/server/db_engine"
 	knowledgeentities "mlib.com/gofy/server/entities/knowledge"
 	enumtypes "mlib.com/gofy/server/enum_types"
@@ -272,7 +272,7 @@ func (ds *Dataset) DocMetadata() []map[string]any {
 }
 func GenDatasetCollectionNameByID(dataset_id string) string {
 	normalized_dataset_id := strings.ReplaceAll(dataset_id, "-", "_")
-	return fmt.Sprintf("%s_%s_Node", viper.GetStringWithDefault("vector.index-name-prefix", "Vector_index"), normalized_dataset_id)
+	return fmt.Sprintf("%s_%s_Node", confy.GetWithDefault[string]("vector.index-name-prefix", "Vector_index"), normalized_dataset_id)
 }
 
 func (ds *Dataset) GenCollectionNameByID(dataset_id string) string {

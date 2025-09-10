@@ -7,9 +7,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/spf13/viper"
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
+	"mlib.com/confy"
 	"mlib.com/mlog"
 )
 
@@ -19,8 +19,8 @@ type GormLogger struct {
 }
 
 func NewGormLogger() GormLogger {
-	sql_log := viper.GetBool("system.sql_log")
-	slow_log := viper.GetInt("system.slow_log")
+	sql_log := confy.Get[bool]("system.sql_log")
+	slow_log := confy.Get[int]("system.slow_log")
 	if slow_log == 0 {
 		slow_log = 1000
 	}

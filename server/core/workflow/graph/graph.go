@@ -7,6 +7,7 @@ import (
 	"slices"
 	"sort"
 
+	"mlib.com/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	answergeneraterouter "mlib.com/gofy/server/core/workflow/nodes_generate_router/answer"
 	endgeneraterouter "mlib.com/gofy/server/core/workflow/nodes_generate_router/end"
@@ -16,7 +17,6 @@ import (
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 
 	uuid "github.com/satori/go.uuid"
-	"github.com/spf13/viper"
 	"mlib.com/gofy/server/utils/validate"
 	"mlib.com/mlog"
 )
@@ -197,7 +197,7 @@ func NewGraph(graph_config map[string]any, root_node_id string) *Graph {
 		if parallel.ParentParallelID != "" {
 			checkExceedParallelLimit(
 				parallel_mapping,
-				viper.GetIntWithDefault("workflow.parallel_depth_limit", 3),
+				confy.GetWithDefault[int]("workflow.parallel_depth_limit", 3),
 				parallel.ParentParallelID,
 				1,
 			)

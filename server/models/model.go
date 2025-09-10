@@ -7,8 +7,8 @@ import (
 	"time"
 
 	uuid "github.com/satori/go.uuid"
-	"github.com/spf13/viper"
 	"gorm.io/datatypes"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	dbengine "mlib.com/gofy/server/db_engine"
 	"mlib.com/gofy/server/utils"
@@ -333,9 +333,9 @@ func (a *App) Tenant() *Tenant {
 	return nil
 }
 func (a *App) ApiBaseUrl() string {
-	service_api_url := viper.GetString("service_api_url")
+	service_api_url := confy.Get[string]("service_api_url")
 	if service_api_url == "" {
-		service_api_url = fmt.Sprintf("http://%s:%d", utils.GetIP(), viper.GetInt("system.addr"))
+		service_api_url = fmt.Sprintf("http://%s:%d", utils.GetIP(), confy.Get[int]("system.addr"))
 	}
 	return service_api_url + "/v1"
 }
@@ -1801,7 +1801,7 @@ type Site struct {
 }
 
 func (s *Site) AppBaseURL() string {
-	return viper.GetString("APP_WEB_URL")
+	return confy.Get[string]("APP_WEB_URL")
 }
 
 // TableName get sql table name.获取数据库表名

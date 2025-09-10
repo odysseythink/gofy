@@ -11,7 +11,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/cluster"
 	codenodesexceptions "mlib.com/gofy/server/core/exceptions/nodes/code"
 	"mlib.com/gofy/server/core/helper/code_executor/template_transformer/base"
@@ -87,7 +87,7 @@ func ExecuteCode(language codeexecutorenumtypes.CodeLanguage, preload string, co
 		:return:
 	*/
 	mlog.Debugf("----run code=%s", code)
-	u, err := url.Parse(viper.GetStringWithDefault("code_execution_config.endpoint", "http://127.0.0.1:8194"))
+	u, err := url.Parse(confy.GetWithDefault[string]("code_execution_config.endpoint", "http://127.0.0.1:8194"))
 	if err != nil {
 		mlog.Errorf("url parse failed:%v", err)
 		panic(codenodesexceptions.NewCodeExecutionError("Invalid URL"))
@@ -96,7 +96,7 @@ func ExecuteCode(language codeexecutorenumtypes.CodeLanguage, preload string, co
 	// 构建请求头
 	headers := http.Header{
 		"Content-Type": {"application/json"},
-		"X-Api-Key":    {viper.GetStringWithDefault("code_execution_config.api_key", "dify-sandbox")},
+		"X-Api-Key":    {confy.GetWithDefault[string]("code_execution_config.api_key", "dify-sandbox")},
 	}
 	if _, ok := code_language_to_running_language[language]; !ok {
 		mlog.Errorf("language(%s) is not surpported", language)
@@ -112,7 +112,7 @@ func ExecuteCode(language codeexecutorenumtypes.CodeLanguage, preload string, co
 
 	// 创建HTTP客户端
 	httpClient := &http.Client{
-		Timeout: time.Duration(viper.GetFloat64WithDefault("code_execution_config.connect_timeout", 10.0)+viper.GetFloat64WithDefault("code_execution_config.read_timeout", 60.0)+viper.GetFloat64WithDefault("code_execution_config.write_timeout", 10.0)) * time.Second,
+		Timeout: time.Duration(confy.GetWithDefault[float64]("code_execution_config.connect_timeout", 10.0)+confy.GetWithDefault[float64]("code_execution_config.read_timeout", 60.0)+confy.GetWithDefault[float64]("code_execution_config.write_timeout", 10.0)) * time.Second,
 	}
 
 	// 创建请求

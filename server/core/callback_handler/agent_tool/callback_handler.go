@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 )
 
 var (
@@ -56,7 +56,7 @@ func (handler *AgentCallbackHandler) OnToolStart(
 	tool_inputs map[string]any,
 ) {
 	/*Do nothing.*/
-	if viper.GetBoolWithDefault("DEBUG", false) {
+	if confy.GetWithDefault[bool]("DEBUG", false) {
 		bindata, _ := json.Marshal(tool_inputs)
 		print_text("\n[OnToolStart] ToolCall:"+tool_name+"\n"+string(bindata)+"\n", handler.color)
 	}
@@ -71,7 +71,7 @@ func (handler *AgentCallbackHandler) OnToolEnd(
 	// trace_manager: Optional[TraceQueueManager] = None,
 ) {
 	/*If not the final action, print out observation.*/
-	if viper.GetBoolWithDefault("DEBUG", false) {
+	if confy.GetWithDefault[bool]("DEBUG", false) {
 		bindata, _ := json.Marshal(tool_inputs)
 		print_text("\n[OnToolEnd]\n", handler.color)
 		print_text("Tool: "+tool_name+"\n", handler.color)
@@ -93,13 +93,13 @@ func (handler *AgentCallbackHandler) OnToolEnd(
 }
 func (handler *AgentCallbackHandler) OnToolError(err error) {
 	/*Do nothing.*/
-	if viper.GetBoolWithDefault("DEBUG", false) {
+	if confy.GetWithDefault[bool]("DEBUG", false) {
 		print_text("\n[OnToolError] Error: "+err.Error()+"\n", "red")
 	}
 }
 func (handler *AgentCallbackHandler) OnAgentStart(thought string) {
 	/*Run on agent start.*/
-	if viper.GetBoolWithDefault("DEBUG", false) {
+	if confy.GetWithDefault[bool]("DEBUG", false) {
 		if thought != "" {
 			print_text(
 				"\n[OnAgentStart] \nCurrent Loop: "+strconv.Itoa(handler.current_loop)+"\nThought: "+thought+"\n",
@@ -112,7 +112,7 @@ func (handler *AgentCallbackHandler) OnAgentStart(thought string) {
 }
 func (handler *AgentCallbackHandler) OnAgentFinish(color string) {
 	/*Run on agent end.*/
-	if viper.GetBoolWithDefault("DEBUG", false) {
+	if confy.GetWithDefault[bool]("DEBUG", false) {
 		print_text("\n[OnAgentFinish]\n Loop: "+strconv.Itoa(handler.current_loop)+"\n", handler.color)
 	}
 	handler.current_loop += 1
@@ -120,10 +120,10 @@ func (handler *AgentCallbackHandler) OnAgentFinish(color string) {
 }
 func (handler *AgentCallbackHandler) ignore_agent() bool {
 	/*Whether to ignore agent callbacks.*/
-	return !viper.GetBoolWithDefault("DEBUG", false)
+	return !confy.GetWithDefault[bool]("DEBUG", false)
 
 }
 func (handler *AgentCallbackHandler) ignore_chat_model() bool {
 	/*Whether to ignore chat model callbacks.*/
-	return !viper.GetBoolWithDefault("DEBUG", false)
+	return !confy.GetWithDefault[bool]("DEBUG", false)
 }

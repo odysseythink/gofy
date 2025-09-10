@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/spf13/viper"
 	"google.golang.org/grpc/resolver"
+	"mlib.com/confy"
 	"mlib.com/mlog"
 	"mlib.com/zkmgr"
 )
@@ -22,35 +22,35 @@ type zkServiceDiscoveryProvide struct {
 }
 
 func (provide *zkServiceDiscoveryProvide) Init(args ...interface{}) error {
-	port := uint16(viper.GetInt("cluster.port"))
-	if port == 0 {
+
+	if !confy.InConfig("cluster") || !confy.InConfig("cluster.port") || confy.Get[int]("cluster.port") == 0 {
 		mlog.Warning("no port define, means no need cluster, derict return")
 		return nil
 	}
-
 	// 服务IP
-	provide.zkHostStr = viper.GetString("ZooKeeper.HOST")
-	if provide.zkHostStr == "" {
-		mlog.Errorf("%s don't contain zk host config", viper.ConfigFileUsed())
-		return fmt.Errorf("%s don't contain zk host config", viper.ConfigFileUsed())
+
+	if !confy.InConfig("ZooKeeper") || confy.Get[string]("ZooKeeper.HOST") == "" {
+		mlog.Errorf("%s don't contain zk host config", confy.ConfigFileUsed())
+		return fmt.Errorf("%s don't contain zk host config", confy.ConfigFileUsed())
 	}
+	provide.zkHostStr = confy.Get[string]("ZooKeeper.HOST")
 	mlog.Info("ZooKeeper HOST: ", provide.zkHostStr)
 
 	// rootkey 根节点
-	provide.zkRootKeyStr = viper.GetString("ZooKeeper.ROOTKEY")
+	provide.zkRootKeyStr = confy.Get[string]("ZooKeeper.ROOTKEY")
 	if provide.zkRootKeyStr == "" {
-		mlog.Errorf("%s don't contain zk ROOTKEY config", viper.ConfigFileUsed())
-		return fmt.Errorf("%s don't contain zk ROOTKEY config", viper.ConfigFileUsed())
+		mlog.Errorf("%s don't contain zk ROOTKEY config", confy.ConfigFileUsed())
+		return fmt.Errorf("%s don't contain zk ROOTKEY config", confy.ConfigFileUsed())
 	}
 	mlog.Info("ZooKeeper ROOTKEY: ", provide.zkRootKeyStr)
 
 	// 集群标识
 	// 服务path： rootKey/serverType/Cluster/IP:port
-	provide.zkClusterStr = viper.GetString("ZooKeeper.CLUSTER")
+	provide.zkClusterStr = confy.Get[string]("ZooKeeper.CLUSTER")
 	mlog.Info("ZooKeeper ROOTKEY: ", provide.zkClusterStr)
 
 	// 超时时间
-	provide.zkSessionTimeout = viper.GetInt("ZooKeeper.TIMEOUT")
+	provide.zkSessionTimeout = confy.Get[int]("ZooKeeper.TIMEOUT")
 	if provide.zkSessionTimeout > zkmgr.MAX_ZK_RECV_TIMEOUT || provide.zkSessionTimeout < zkmgr.MIN_ZK_RECV_TIMEOUT {
 		provide.zkSessionTimeout = zkmgr.DEFAULT_RECV_TIMEOUT
 	}
@@ -88,7 +88,7 @@ func (provide *zkServiceDiscoveryProvide) UserData() interface{} {
 }
 
 func (provide *zkServiceDiscoveryProvide) RootKey() string {
-	return viper.GetString("ZooKeeper.ROOTKEY")
+	return confy.Get[string]("ZooKeeper.ROOTKEY")
 }
 func (provide *zkServiceDiscoveryProvide) Register(service_name, ip_port_addr, service_status string) error {
 	err := provide.zkClient.RegisterDirect(fmt.Sprintf("/%s/%s", provide.RootKey(), service_name), ip_port_addr, service_status)

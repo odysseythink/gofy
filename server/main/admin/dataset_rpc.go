@@ -4,8 +4,8 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/spf13/viper"
 	"google.golang.org/grpc/peer"
+	"mlib.com/confy"
 	enumtypes "mlib.com/gofy/server/enum_types"
 	pbexceptions "mlib.com/gofy/server/proto/exceptions"
 	"mlib.com/gofy/server/proto/pbapi"
@@ -23,7 +23,7 @@ func (s *AdminService) GetDatasetRetrievalSetting(ctx context.Context, in *pbapi
 	mlog.Infof("remote[%s] admin.GetDatasetRetrievalSetting call:%#v", p.Addr.String(), in)
 
 	out = &pbapi.GetDatasetRetrievalSettingReply{}
-	switch enumtypes.VectorType(viper.GetString("vector_store")) {
+	switch enumtypes.VectorType(confy.Get[string]("vector_store")) {
 	case enumtypes.Vector_MILVUS,
 		enumtypes.Vector_RELYT,
 		enumtypes.Vector_PGVECTOR,
@@ -40,7 +40,7 @@ func (s *AdminService) GetDatasetRetrievalSetting(ctx context.Context, in *pbapi
 		enumtypes.Vector_ELASTICSEARCH:
 		out.RetrievalMethod = []string{RetrievalMethod_SEMANTIC_SEARCH, RetrievalMethod_FULL_TEXT_SEARCH, RetrievalMethod_HYBRID_SEARCH}
 	default:
-		mlog.Errorf("Unsupported vector db type %s.", viper.GetString("vector_store"))
+		mlog.Errorf("Unsupported vector db type %s.", confy.Get[string]("vector_store"))
 		out.Exp = &pbexceptions.HTTPException{
 			Status:  http.StatusNoContent,
 			Message: "Unsupported vector db type",

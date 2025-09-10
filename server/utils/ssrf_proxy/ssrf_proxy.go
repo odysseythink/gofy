@@ -81,19 +81,19 @@ package ssrfproxy
 // func make_request(method, urlStr string, maxRetries int, opts ...func(*http.Request)) (*http.Response, error) {
 // 	var proxy_url *url.URL
 // 	var err error
-// 	if viper.GetString("ssrf.proxy_all_url") != "" {
-// 		proxy_url, err = url.Parse(viper.GetString("ssrf.proxy_all_url"))
+// 	if confy.Get[string]("ssrf.proxy_all_url") != "" {
+// 		proxy_url, err = url.Parse(confy.Get[string]("ssrf.proxy_all_url"))
 // 		if err != nil {
-// 			mlog.Errorf("Invalid ssrf.proxy_all_url(%s): %v", viper.GetString("ssrf.proxy_all_url"), err)
+// 			mlog.Errorf("Invalid ssrf.proxy_all_url(%s): %v", confy.Get[string]("ssrf.proxy_all_url"), err)
 // 		}
-// 	} else if viper.GetString("ssrf.proxy_http_url") != "" && viper.GetString("ssrf.proxy_https_url") != "" {
-// 		http_proxy_url, err := url.Parse(viper.GetString("ssrf.proxy_http_url"))
+// 	} else if confy.Get[string]("ssrf.proxy_http_url") != "" && confy.Get[string]("ssrf.proxy_https_url") != "" {
+// 		http_proxy_url, err := url.Parse(confy.Get[string]("ssrf.proxy_http_url"))
 // 		if err != nil {
-// 			mlog.Errorf("Invalid ssrf.proxy_http_url(%s): %v", viper.GetString("ssrf.proxy_http_url"), err)
+// 			mlog.Errorf("Invalid ssrf.proxy_http_url(%s): %v", confy.Get[string]("ssrf.proxy_http_url"), err)
 // 		}
-// 		https_proxy_url, err := url.Parse(viper.GetString("ssrf.proxy_https_url"))
+// 		https_proxy_url, err := url.Parse(confy.Get[string]("ssrf.proxy_https_url"))
 // 		if err != nil {
-// 			mlog.Errorf("Invalid ssrf.proxy_https_url(%s): %v", viper.GetString("ssrf.proxy_https_url"), err)
+// 			mlog.Errorf("Invalid ssrf.proxy_https_url(%s): %v", confy.Get[string]("ssrf.proxy_https_url"), err)
 // 		}
 // 		proxyURL = httpProxyURL
 // 		req.Header.Set("HTTP-Proxy", httpProxyURL.String())
@@ -107,9 +107,9 @@ package ssrfproxy
 // 	}
 
 // 	client := newClient(
-// 		time.Duration(viper.GetIntWithDefault("ssrf.default_connect_timeout", 5))*time.Second,
-// 		time.Duration(viper.GetIntWithDefault("ssrf.default_read_timeout", 5))*time.Second,
-// 		time.Duration(viper.GetIntWithDefault("ssrf.default_write_timeout", 5))*time.Second,
+// 		time.Duration(confy.GetWithDefault[int]("ssrf.default_connect_timeout", 5))*time.Second,
+// 		time.Duration(confy.GetWithDefault[int]("ssrf.default_read_timeout", 5))*time.Second,
+// 		time.Duration(confy.GetWithDefault[int]("ssrf.default_write_timeout", 5))*time.Second,
 // 	)
 
 // 	req, err := http.NewRequest(method, urlStr, nil)
@@ -128,9 +128,9 @@ package ssrfproxy
 // 		req.Header.Del("Allow-Redirects")
 // 	}
 
-// 	req.Header.Set("Connect-TimeOut", fmt.Sprintf("%f", viper.GetIntWithDefault("ssrf.default_connect_timeout", 5)))
-// 	req.Header.Set("Read-TimeOut", fmt.Sprintf("%f", viper.GetIntWithDefault("ssrf.default_read_timeout", 5)))
-// 	req.Header.Set("Write-TimeOut", fmt.Sprintf("%f", viper.GetIntWithDefault("ssrf.default_write_timeout", 5)))
+// 	req.Header.Set("Connect-TimeOut", fmt.Sprintf("%f", confy.GetWithDefault[int]("ssrf.default_connect_timeout", 5)))
+// 	req.Header.Set("Read-TimeOut", fmt.Sprintf("%f", confy.GetWithDefault[int]("ssrf.default_read_timeout", 5)))
+// 	req.Header.Set("Write-TimeOut", fmt.Sprintf("%f", confy.GetWithDefault[int]("ssrf.default_write_timeout", 5)))
 
 // 	resp, err := client.Do(req)
 // 	if err != nil {

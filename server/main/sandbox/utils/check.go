@@ -3,7 +3,7 @@ package utils
 import (
 	"errors"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/main/sandbox/runner/types"
 )
 
@@ -12,7 +12,7 @@ var (
 )
 
 func CheckOptions(options *types.RunnerOptions) error {
-	if options.EnableNetwork && !viper.GetBoolWithDefault("enable_network", false) {
+	if options.EnableNetwork && !confy.GetWithDefault[bool]("enable_network", false) {
 		return ErrNetworkDisabled
 	}
 

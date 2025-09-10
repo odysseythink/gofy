@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/spf13/cast"
+	"mlib.com/confy/cast"
 )
 
 const (

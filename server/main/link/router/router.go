@@ -89,7 +89,7 @@ func InitRouters() *gin.Engine {
 		}
 	}
 
-	// r.StaticFS(viper.GetString("local.path") , http.Dir(viper.GetString("local.store-path"))) // 为用户头像和文件提供静态地址
+	// r.StaticFS(confy.Get[string]("local.path") , http.Dir(confy.Get[string]("local.store-path"))) // 为用户头像和文件提供静态地址
 	// Router.Use(middleware.LoadTls())  // 如果需要使用https 请打开此中间件 然后前往 core/server.go 将启动模式 更变为 Router.RunTLS("端口","你的cre/pem文件","你的key文件")
 	// 跨域，如需跨域可以打开下面的注释
 	r.Use(middleware.Cors()) // 直接放行全部跨域请求

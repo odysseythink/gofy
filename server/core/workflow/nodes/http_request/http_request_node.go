@@ -5,7 +5,7 @@ import (
 	"iter"
 	"strings"
 
-	"github.com/spf13/viper"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
 	variabletemplateparser "mlib.com/gofy/server/core/workflow/utils/variable_template_parser"
@@ -105,16 +105,16 @@ func (n *HttpRequestNode) GetDefaultConfig(filters map[string]any) map[string]an
 			},
 			"body": map[string]any{"type": "none"},
 			"timeout": map[string]any{
-				"connect":             viper.GetIntWithDefault("http_node_config.max_connect_timeout", 300),
-				"read":                viper.GetIntWithDefault("http_node_config.max_read_timeout", 600),
-				"write":               viper.GetIntWithDefault("http_node_config.max_write_timeout", 600),
-				"max_connect_timeout": viper.GetIntWithDefault("http_node_config.max_connect_timeout", 300),
-				"max_read_timeout":    viper.GetIntWithDefault("http_node_config.max_read_timeout", 600),
-				"max_write_timeout":   viper.GetIntWithDefault("http_node_config.max_write_timeout", 600),
+				"connect":             confy.GetWithDefault[int]("http_node_config.max_connect_timeout", 300),
+				"read":                confy.GetWithDefault[int]("http_node_config.max_read_timeout", 600),
+				"write":               confy.GetWithDefault[int]("http_node_config.max_write_timeout", 600),
+				"max_connect_timeout": confy.GetWithDefault[int]("http_node_config.max_connect_timeout", 300),
+				"max_read_timeout":    confy.GetWithDefault[int]("http_node_config.max_read_timeout", 600),
+				"max_write_timeout":   confy.GetWithDefault[int]("http_node_config.max_write_timeout", 600),
 			},
 		},
 		"retry_config": map[string]any{
-			"max_retries":    viper.GetIntWithDefault("ssrf.default_max_retries", 3),
+			"max_retries":    confy.GetWithDefault[int]("ssrf.default_max_retries", 3),
 			"retry_interval": 0.5 * (2 * 2),
 			"retry_enabled":  true,
 		},
@@ -176,19 +176,19 @@ func (n *HttpRequestNode) get_request_timeout(node_data *httprequestnodesentitie
 	timeout := node_data.Timeout
 	if timeout == nil {
 		return &httprequestnodesentities.HttpRequestNodeTimeout{
-			Connect: viper.GetIntWithDefault("http_node_config.max_connect_timeout", 300),
-			Read:    viper.GetIntWithDefault("http_node_config.max_read_timeout", 600),
-			Write:   viper.GetIntWithDefault("http_node_config.max_write_timeout", 600),
+			Connect: confy.GetWithDefault[int]("http_node_config.max_connect_timeout", 300),
+			Read:    confy.GetWithDefault[int]("http_node_config.max_read_timeout", 600),
+			Write:   confy.GetWithDefault[int]("http_node_config.max_write_timeout", 600),
 		}
 	}
 	if timeout.Connect <= 0 {
-		timeout.Connect = viper.GetIntWithDefault("http_node_config.max_connect_timeout", 300)
+		timeout.Connect = confy.GetWithDefault[int]("http_node_config.max_connect_timeout", 300)
 	}
 	if timeout.Read <= 0 {
-		timeout.Read = viper.GetIntWithDefault("http_node_config.max_read_timeout", 600)
+		timeout.Read = confy.GetWithDefault[int]("http_node_config.max_read_timeout", 600)
 	}
 	if timeout.Write <= 0 {
-		timeout.Write = viper.GetIntWithDefault("http_node_config.max_write_timeout", 600)
+		timeout.Write = confy.GetWithDefault[int]("http_node_config.max_write_timeout", 600)
 	}
 	return timeout
 }

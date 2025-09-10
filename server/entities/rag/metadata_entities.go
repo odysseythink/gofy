@@ -24,13 +24,13 @@ var (
 	}
 )
 
-type Condition[T string | []string | int | float64] struct {
+type Condition struct {
 	Name               string `json:"name"`
 	ComparisonOperator string `json:"comparison_operator"` //SupportedComparisonOperator
-	Value              T      `json:"value"`
+	Value              any    `json:"value"`               // [T string | []string | int | float64]
 }
 
-type MetadataCondition[T string | []string | int | float64] struct {
-	LogicalOperator string          `json:"logical_operator"` // Optional[Literal["and", "or"]] = "and"
-	Conditions      []*Condition[T] `json:"conditions"`
+type MetadataCondition struct {
+	LogicalOperator string       `json:"logical_operator"` // Optional[Literal["and", "or"]] = "and"
+	Conditions      []*Condition `json:"conditions"`
 }

@@ -333,7 +333,7 @@ func (n *QuestionClassifierNode) _get_prompt_template(
 	memory_str := ""
 	if mem != nil {
 		message_limit := 0
-		if node_data.Memory != nil && node_data.Memory.Window != nil {
+		if node_data.Memory != nil {
 			message_limit = node_data.Memory.Window.Size
 		}
 		memory_str = mem.GetHistoryPromptText(

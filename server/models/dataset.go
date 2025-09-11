@@ -11,8 +11,8 @@ import (
 	"mlib.com/confy"
 	dbengine "mlib.com/gofy/server/db_engine"
 	knowledgeentities "mlib.com/gofy/server/entities/knowledge"
-	enumtypes "mlib.com/gofy/server/enum_types"
 	ragindexprocessorenumtypes "mlib.com/gofy/server/enum_types/rag/index_processor"
+	retrievalenumtypes "mlib.com/gofy/server/enum_types/rag/retrieval"
 	"mlib.com/mlog"
 )
 
@@ -154,7 +154,7 @@ func (ds *Dataset) DocForm() string {
 
 func (ds *Dataset) RetrievalModelDict() map[string]any {
 	default_retrieval_model := map[string]any{
-		"search_method":           enumtypes.RetrievalMethod_SEMANTIC_SEARCH,
+		"search_method":           retrievalenumtypes.RetrievalMethod_SEMANTIC_SEARCH,
 		"reranking_enable":        false,
 		"reranking_model":         map[string]any{"reranking_provider_name": "", "reranking_model_name": ""},
 		"top_k":                   2,
@@ -289,323 +289,6 @@ func (ds *Dataset) ToDict() map[string]any {
 	}
 	return tmp_dict
 }
-
-type RerankingModelFields struct {
-	RerankingProviderName string `json:"reranking_provider_name"`
-	RerankingModelName    string `json:"reranking_model_name"`
-}
-type DatasetFields struct {
-	ID                string `json:"id"`
-	Name              string `json:"name"`
-	Description       string `json:"description"`
-	Permission        string `json:"permission"`
-	DataSourceType    string `json:"data_source_type"`
-	IndexingTechnique string `json:"indexing_technique"`
-	CreatedBy         string `json:"created_by"`
-	CreatedAt         int64  `json:"created_at"`
-}
-type KeywordSettingFields struct {
-	KeywordWeight float64 `json:"keyword_weight"`
-}
-
-type VectorSettingFields struct {
-	VectorWeight          float64 `json:"vector_weight"`
-	EmbeddingModelName    string  `json:"embedding_model_name"`
-	EmbeddingProviderName string  `json:"embedding_provider_name"`
-}
-
-type WeightedScoreFields struct {
-	WeightType     string                `json:"weight_type"`
-	KeywordSetting *KeywordSettingFields `json:"keyword_setting"`
-	VectorSetting  *VectorSettingFields  `json:"vector_setting"`
-}
-type DatasetRetrievalModelFields struct {
-	SearchMethod          string                `json:"search_method"`
-	RerankingEnable       bool                  `json:"reranking_enable"`
-	RerankingMode         string                `json:"reranking_mode"`
-	RerankingModel        *RerankingModelFields `json:"reranking_model"`
-	Weights               *WeightedScoreFields  `json:"weights"`
-	TopK                  int                   `json:"top_k"`
-	ScoreThresholdEnabled bool                  `json:"score_threshold_enabled"`
-	ScoreThreshold        float64               `json:"score_threshold"`
-}
-
-func NewDatasetRetrievalModelFields(args any) *DatasetRetrievalModelFields {
-	if args != nil {
-		if str, ok := args.(string); ok {
-			dsdf := &DatasetRetrievalModelFields{}
-			err := json.Unmarshal([]byte(str), dsdf)
-			if err != nil {
-				mlog.Errorf("json unmarshal %s to DatasetRetrievalModelFields failed:%v", str, err)
-				return nil
-			}
-			return dsdf
-		} else if dict, ok := args.(map[string]any); ok {
-			bindata, _ := json.Marshal(dict)
-			dsdf := &DatasetRetrievalModelFields{}
-			err := json.Unmarshal(bindata, dsdf)
-			if err != nil {
-				mlog.Errorf("json unmarshal %#v to DatasetRetrievalModelFields failed:%v", dict, err)
-				return nil
-			}
-			return dsdf
-		} else {
-			mlog.Errorf("unsupported args=%#v", args)
-			return nil
-		}
-	} else {
-		return &DatasetRetrievalModelFields{}
-	}
-}
-
-type ExternalRetrievalModelFields struct {
-	TopK                  int     `json:"top_k"`
-	ScoreThresholdEnabled bool    `json:"score_threshold_enabled"`
-	ScoreThreshold        float64 `json:"score_threshold"`
-}
-
-func NewExternalRetrievalModelFields(args any) *ExternalRetrievalModelFields {
-	if args != nil {
-		if str, ok := args.(string); ok {
-			ermf := &ExternalRetrievalModelFields{}
-			err := json.Unmarshal([]byte(str), ermf)
-			if err != nil {
-				mlog.Errorf("json unmarshal %s to ExternalRetrievalModelFields failed:%v", str, err)
-				return nil
-			}
-			return ermf
-		} else if dict, ok := args.(map[string]any); ok {
-			bindata, _ := json.Marshal(dict)
-			ermf := &ExternalRetrievalModelFields{}
-			err := json.Unmarshal(bindata, ermf)
-			if err != nil {
-				mlog.Errorf("json unmarshal %#v to ExternalRetrievalModelFields failed:%v", dict, err)
-				return nil
-			}
-			return ermf
-		} else {
-			mlog.Errorf("unsupported args=%#v", args)
-			return nil
-		}
-	} else {
-		return &ExternalRetrievalModelFields{}
-	}
-}
-
-type TagFields struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
-	Type string `json:"type"`
-}
-
-func NewTagFields(args any) *TagFields {
-	if args != nil {
-		if tag, ok := args.(*Tag); ok {
-			tf := &TagFields{
-				ID:   tag.ID,
-				Name: tag.Name,
-				Type: tag.Type,
-			}
-			return tf
-		} else if str, ok := args.(string); ok {
-			tf := &TagFields{}
-			err := json.Unmarshal([]byte(str), tf)
-			if err != nil {
-				mlog.Errorf("json unmarshal %s to TagFields failed:%v", str, err)
-				return nil
-			}
-			return tf
-		} else if dict, ok := args.(map[string]any); ok {
-			bindata, _ := json.Marshal(dict)
-			tf := &TagFields{}
-			err := json.Unmarshal(bindata, tf)
-			if err != nil {
-				mlog.Errorf("json unmarshal %#v to TagFields failed:%v", dict, err)
-				return nil
-			}
-			return tf
-		} else {
-			mlog.Errorf("unsupported args=%#v", args)
-			return nil
-		}
-	} else {
-		return &TagFields{}
-	}
-}
-
-type ExternalKnowledgeInfoFields struct {
-	ExternalKnowledgeID          string `json:"external_knowledge_id"`
-	ExternalKnowledgeApiID       string `json:"external_knowledge_api_id"`
-	ExternalKnowledgeApiName     string `json:"external_knowledge_api_name"`
-	ExternalKnowledgeApiEndpoint string `json:"external_knowledge_api_endpoint"`
-}
-
-func NewExternalKnowledgeInfoFields(args any) *ExternalKnowledgeInfoFields {
-	if args != nil {
-		if str, ok := args.(string); ok {
-			ekif := &ExternalKnowledgeInfoFields{}
-			err := json.Unmarshal([]byte(str), ekif)
-			if err != nil {
-				mlog.Errorf("json unmarshal %s to ExternalKnowledgeInfoFields failed:%v", str, err)
-				return nil
-			}
-			return ekif
-		} else if dict, ok := args.(map[string]any); ok {
-			bindata, _ := json.Marshal(dict)
-			ekif := &ExternalKnowledgeInfoFields{}
-			err := json.Unmarshal(bindata, ekif)
-			if err != nil {
-				mlog.Errorf("json unmarshal %#v to ExternalKnowledgeInfoFields failed:%v", dict, err)
-				return nil
-			}
-			return ekif
-		} else {
-			mlog.Errorf("unsupported args=%#v", args)
-			return nil
-		}
-	} else {
-		return &ExternalKnowledgeInfoFields{}
-	}
-}
-
-type DocMetadataFields struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
-	Type string `json:"type"`
-}
-
-func NewDocMetadataFields(args any) *DocMetadataFields {
-	if args != nil {
-		if str, ok := args.(string); ok {
-			dmf := &DocMetadataFields{}
-			err := json.Unmarshal([]byte(str), dmf)
-			if err != nil {
-				mlog.Errorf("json unmarshal %s to DocMetadataFields failed:%v", str, err)
-				return nil
-			}
-			return dmf
-		} else if dict, ok := args.(map[string]any); ok {
-			bindata, _ := json.Marshal(dict)
-			dmf := &DocMetadataFields{}
-			err := json.Unmarshal(bindata, dmf)
-			if err != nil {
-				mlog.Errorf("json unmarshal %#v to DocMetadataFields failed:%v", dict, err)
-				return nil
-			}
-			return dmf
-		} else {
-			mlog.Errorf("unsupported args=%#v", args)
-			return nil
-		}
-	} else {
-		return &DocMetadataFields{}
-	}
-}
-
-type DatasetDetailFields struct {
-	ID                     string                        `json:"id"`
-	Name                   string                        `json:"name"`
-	Description            string                        `json:"description"`
-	Provider               string                        `json:"provider"`
-	Permission             string                        `json:"permission"`
-	DataSourceType         string                        `json:"data_source_type"`
-	IndexingTechnique      string                        `json:"indexing_technique"`
-	AppCount               int64                         `json:"app_count"`
-	DocumentCount          int64                         `json:"idocument_countd"`
-	WordCount              int64                         `json:"word_count"`
-	CreatedBy              string                        `json:"created_by"`
-	CreatedAt              int64                         `json:"created_at"`
-	UpdatedBy              string                        `json:"updated_by"`
-	UpdatedAt              int64                         `json:"updated_at"`
-	EmbeddingModel         string                        `json:"embedding_model"`
-	EmbeddingModelProvider string                        `json:"embedding_model_provider"`
-	EmbeddingAvailable     bool                          `json:"embedding_available"`
-	RetrievalModelDict     *DatasetRetrievalModelFields  `json:"retrieval_model_dict"`
-	Tags                   []*TagFields                  `json:"tags"`
-	DocForm                string                        `json:"doc_form"`
-	ExternalKnowledgeInfo  *ExternalKnowledgeInfoFields  `json:"external_knowledge_info"`
-	ExternalRetrievalModel *ExternalRetrievalModelFields `json:"external_retrieval_model"`
-	DocMetadata            []*DocMetadataFields          `json:"doc_metadata"`
-	BuiltInFieldEnabled    bool                          `json:"built_in_field_enabled"`
-	PartialMemberList      []string                      `json:"partial_member_list"`
-}
-
-func NewDatasetDetailFields(args any) *DatasetDetailFields {
-	if args != nil {
-		if ds, ok := args.(*Dataset); ok {
-			dsdf := &DatasetDetailFields{
-				ID:                     ds.ID,
-				Name:                   ds.Name,
-				Description:            ds.Description,
-				Provider:               ds.Provider,
-				Permission:             ds.Permission,
-				DataSourceType:         ds.DataSourceType,
-				IndexingTechnique:      ds.IndexingTechnique,
-				AppCount:               ds.AppCount(),
-				DocumentCount:          ds.DocumentCount(),
-				WordCount:              ds.WordCount(),
-				CreatedBy:              ds.CreatedBy,
-				UpdatedBy:              ds.UpdatedBy,
-				EmbeddingModel:         ds.EmbeddingModel,
-				EmbeddingModelProvider: ds.EmbeddingModelProvider,
-				RetrievalModelDict:     NewDatasetRetrievalModelFields(ds.RetrievalModelDict()),
-				Tags:                   []*TagFields{},
-				DocForm:                ds.DocForm(),
-				ExternalKnowledgeInfo:  NewExternalKnowledgeInfoFields(ds.ExternalKnowledgeInfo()),
-				ExternalRetrievalModel: NewExternalRetrievalModelFields(ds.ExternalRetrievalModel()),
-				DocMetadata:            []*DocMetadataFields{},
-				BuiltInFieldEnabled:    ds.BuiltInFieldEnabled,
-			}
-			if ds.CreatedAt != nil {
-				dsdf.CreatedAt = ds.CreatedAt.Unix()
-			}
-			if ds.UpdatedAt != nil {
-				dsdf.UpdatedAt = ds.UpdatedAt.Unix()
-			}
-			for _, tag := range ds.Tags() {
-				dsdf.Tags = append(dsdf.Tags, NewTagFields(tag))
-			}
-			for _, data := range ds.DocMetadata() {
-				dsdf.DocMetadata = append(dsdf.DocMetadata, NewDocMetadataFields(data))
-			}
-			return dsdf
-		} else if str, ok := args.(string); ok {
-			dsdf := &DatasetDetailFields{}
-			err := json.Unmarshal([]byte(str), dsdf)
-			if err != nil {
-				mlog.Errorf("json unmarshal %s to DatasetDetailFields failed:%v", str, err)
-				return nil
-			}
-			return dsdf
-		} else if dict, ok := args.(map[string]any); ok {
-			bindata, _ := json.Marshal(dict)
-			dsdf := &DatasetDetailFields{}
-			err := json.Unmarshal(bindata, dsdf)
-			if err != nil {
-				mlog.Errorf("json unmarshal %#v to DatasetDetailFields failed:%v", dict, err)
-				return nil
-			}
-			return dsdf
-		} else {
-			mlog.Errorf("unsupported args=%#v", args)
-			return nil
-		}
-	} else {
-		return &DatasetDetailFields{}
-	}
-}
-
-var (
-	MODES                = []string{"automatic", "custom", "hierarchical"}
-	PRE_PROCESSING_RULES = []string{"remove_stopwords", "remove_extra_spaces", "remove_urls_emails"}
-	AUTOMATIC_RULES      = map[string]any{
-		"pre_processing_rules": []map[string]any{
-			{"id": "remove_extra_spaces", "enabled": true},
-			{"id": "remove_urls_emails", "enabled": false},
-		},
-		"segmentation": map[string]any{"delimiter": "\n", "max_tokens": 500, "chunk_overlap": 50},
-	}
-)
 
 // DatasetProcessRule [...]
 type DatasetProcessRule struct {
@@ -1040,7 +723,7 @@ func (seg *DocumentSegment) GetChildChunks() []*ChildChunk {
 //		}
 //	    return text
 //	}
-//
+
 // ChildChunk [...]
 type ChildChunk struct {
 	ID            string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
@@ -1394,3 +1077,320 @@ type DatasetMetadataBinding struct {
 func (DatasetMetadataBinding) TableName() string {
 	return "dataset_metadata_bindings"
 }
+
+type RerankingModelFields struct {
+	RerankingProviderName string `json:"reranking_provider_name"`
+	RerankingModelName    string `json:"reranking_model_name"`
+}
+type DatasetFields struct {
+	ID                string `json:"id"`
+	Name              string `json:"name"`
+	Description       string `json:"description"`
+	Permission        string `json:"permission"`
+	DataSourceType    string `json:"data_source_type"`
+	IndexingTechnique string `json:"indexing_technique"`
+	CreatedBy         string `json:"created_by"`
+	CreatedAt         int64  `json:"created_at"`
+}
+type KeywordSettingFields struct {
+	KeywordWeight float64 `json:"keyword_weight"`
+}
+
+type VectorSettingFields struct {
+	VectorWeight          float64 `json:"vector_weight"`
+	EmbeddingModelName    string  `json:"embedding_model_name"`
+	EmbeddingProviderName string  `json:"embedding_provider_name"`
+}
+
+type WeightedScoreFields struct {
+	WeightType     string                `json:"weight_type"`
+	KeywordSetting *KeywordSettingFields `json:"keyword_setting"`
+	VectorSetting  *VectorSettingFields  `json:"vector_setting"`
+}
+type DatasetRetrievalModelFields struct {
+	SearchMethod          string                `json:"search_method"`
+	RerankingEnable       bool                  `json:"reranking_enable"`
+	RerankingMode         string                `json:"reranking_mode"`
+	RerankingModel        *RerankingModelFields `json:"reranking_model"`
+	Weights               *WeightedScoreFields  `json:"weights"`
+	TopK                  int                   `json:"top_k"`
+	ScoreThresholdEnabled bool                  `json:"score_threshold_enabled"`
+	ScoreThreshold        float64               `json:"score_threshold"`
+}
+
+func NewDatasetRetrievalModelFields(args any) *DatasetRetrievalModelFields {
+	if args != nil {
+		if str, ok := args.(string); ok {
+			dsdf := &DatasetRetrievalModelFields{}
+			err := json.Unmarshal([]byte(str), dsdf)
+			if err != nil {
+				mlog.Errorf("json unmarshal %s to DatasetRetrievalModelFields failed:%v", str, err)
+				return nil
+			}
+			return dsdf
+		} else if dict, ok := args.(map[string]any); ok {
+			bindata, _ := json.Marshal(dict)
+			dsdf := &DatasetRetrievalModelFields{}
+			err := json.Unmarshal(bindata, dsdf)
+			if err != nil {
+				mlog.Errorf("json unmarshal %#v to DatasetRetrievalModelFields failed:%v", dict, err)
+				return nil
+			}
+			return dsdf
+		} else {
+			mlog.Errorf("unsupported args=%#v", args)
+			return nil
+		}
+	} else {
+		return &DatasetRetrievalModelFields{}
+	}
+}
+
+type ExternalRetrievalModelFields struct {
+	TopK                  int     `json:"top_k"`
+	ScoreThresholdEnabled bool    `json:"score_threshold_enabled"`
+	ScoreThreshold        float64 `json:"score_threshold"`
+}
+
+func NewExternalRetrievalModelFields(args any) *ExternalRetrievalModelFields {
+	if args != nil {
+		if str, ok := args.(string); ok {
+			ermf := &ExternalRetrievalModelFields{}
+			err := json.Unmarshal([]byte(str), ermf)
+			if err != nil {
+				mlog.Errorf("json unmarshal %s to ExternalRetrievalModelFields failed:%v", str, err)
+				return nil
+			}
+			return ermf
+		} else if dict, ok := args.(map[string]any); ok {
+			bindata, _ := json.Marshal(dict)
+			ermf := &ExternalRetrievalModelFields{}
+			err := json.Unmarshal(bindata, ermf)
+			if err != nil {
+				mlog.Errorf("json unmarshal %#v to ExternalRetrievalModelFields failed:%v", dict, err)
+				return nil
+			}
+			return ermf
+		} else {
+			mlog.Errorf("unsupported args=%#v", args)
+			return nil
+		}
+	} else {
+		return &ExternalRetrievalModelFields{}
+	}
+}
+
+type TagFields struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+	Type string `json:"type"`
+}
+
+func NewTagFields(args any) *TagFields {
+	if args != nil {
+		if tag, ok := args.(*Tag); ok {
+			tf := &TagFields{
+				ID:   tag.ID,
+				Name: tag.Name,
+				Type: tag.Type,
+			}
+			return tf
+		} else if str, ok := args.(string); ok {
+			tf := &TagFields{}
+			err := json.Unmarshal([]byte(str), tf)
+			if err != nil {
+				mlog.Errorf("json unmarshal %s to TagFields failed:%v", str, err)
+				return nil
+			}
+			return tf
+		} else if dict, ok := args.(map[string]any); ok {
+			bindata, _ := json.Marshal(dict)
+			tf := &TagFields{}
+			err := json.Unmarshal(bindata, tf)
+			if err != nil {
+				mlog.Errorf("json unmarshal %#v to TagFields failed:%v", dict, err)
+				return nil
+			}
+			return tf
+		} else {
+			mlog.Errorf("unsupported args=%#v", args)
+			return nil
+		}
+	} else {
+		return &TagFields{}
+	}
+}
+
+type ExternalKnowledgeInfoFields struct {
+	ExternalKnowledgeID          string `json:"external_knowledge_id"`
+	ExternalKnowledgeApiID       string `json:"external_knowledge_api_id"`
+	ExternalKnowledgeApiName     string `json:"external_knowledge_api_name"`
+	ExternalKnowledgeApiEndpoint string `json:"external_knowledge_api_endpoint"`
+}
+
+func NewExternalKnowledgeInfoFields(args any) *ExternalKnowledgeInfoFields {
+	if args != nil {
+		if str, ok := args.(string); ok {
+			ekif := &ExternalKnowledgeInfoFields{}
+			err := json.Unmarshal([]byte(str), ekif)
+			if err != nil {
+				mlog.Errorf("json unmarshal %s to ExternalKnowledgeInfoFields failed:%v", str, err)
+				return nil
+			}
+			return ekif
+		} else if dict, ok := args.(map[string]any); ok {
+			bindata, _ := json.Marshal(dict)
+			ekif := &ExternalKnowledgeInfoFields{}
+			err := json.Unmarshal(bindata, ekif)
+			if err != nil {
+				mlog.Errorf("json unmarshal %#v to ExternalKnowledgeInfoFields failed:%v", dict, err)
+				return nil
+			}
+			return ekif
+		} else {
+			mlog.Errorf("unsupported args=%#v", args)
+			return nil
+		}
+	} else {
+		return &ExternalKnowledgeInfoFields{}
+	}
+}
+
+type DocMetadataFields struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+	Type string `json:"type"`
+}
+
+func NewDocMetadataFields(args any) *DocMetadataFields {
+	if args != nil {
+		if str, ok := args.(string); ok {
+			dmf := &DocMetadataFields{}
+			err := json.Unmarshal([]byte(str), dmf)
+			if err != nil {
+				mlog.Errorf("json unmarshal %s to DocMetadataFields failed:%v", str, err)
+				return nil
+			}
+			return dmf
+		} else if dict, ok := args.(map[string]any); ok {
+			bindata, _ := json.Marshal(dict)
+			dmf := &DocMetadataFields{}
+			err := json.Unmarshal(bindata, dmf)
+			if err != nil {
+				mlog.Errorf("json unmarshal %#v to DocMetadataFields failed:%v", dict, err)
+				return nil
+			}
+			return dmf
+		} else {
+			mlog.Errorf("unsupported args=%#v", args)
+			return nil
+		}
+	} else {
+		return &DocMetadataFields{}
+	}
+}
+
+type DatasetDetailFields struct {
+	ID                     string                        `json:"id"`
+	Name                   string                        `json:"name"`
+	Description            string                        `json:"description"`
+	Provider               string                        `json:"provider"`
+	Permission             string                        `json:"permission"`
+	DataSourceType         string                        `json:"data_source_type"`
+	IndexingTechnique      string                        `json:"indexing_technique"`
+	AppCount               int64                         `json:"app_count"`
+	DocumentCount          int64                         `json:"idocument_countd"`
+	WordCount              int64                         `json:"word_count"`
+	CreatedBy              string                        `json:"created_by"`
+	CreatedAt              int64                         `json:"created_at"`
+	UpdatedBy              string                        `json:"updated_by"`
+	UpdatedAt              int64                         `json:"updated_at"`
+	EmbeddingModel         string                        `json:"embedding_model"`
+	EmbeddingModelProvider string                        `json:"embedding_model_provider"`
+	EmbeddingAvailable     bool                          `json:"embedding_available"`
+	RetrievalModelDict     *DatasetRetrievalModelFields  `json:"retrieval_model_dict"`
+	Tags                   []*TagFields                  `json:"tags"`
+	DocForm                string                        `json:"doc_form"`
+	ExternalKnowledgeInfo  *ExternalKnowledgeInfoFields  `json:"external_knowledge_info"`
+	ExternalRetrievalModel *ExternalRetrievalModelFields `json:"external_retrieval_model"`
+	DocMetadata            []*DocMetadataFields          `json:"doc_metadata"`
+	BuiltInFieldEnabled    bool                          `json:"built_in_field_enabled"`
+	PartialMemberList      []string                      `json:"partial_member_list"`
+}
+
+func NewDatasetDetailFields(args any) *DatasetDetailFields {
+	if args != nil {
+		if ds, ok := args.(*Dataset); ok {
+			dsdf := &DatasetDetailFields{
+				ID:                     ds.ID,
+				Name:                   ds.Name,
+				Description:            ds.Description,
+				Provider:               ds.Provider,
+				Permission:             ds.Permission,
+				DataSourceType:         ds.DataSourceType,
+				IndexingTechnique:      ds.IndexingTechnique,
+				AppCount:               ds.AppCount(),
+				DocumentCount:          ds.DocumentCount(),
+				WordCount:              ds.WordCount(),
+				CreatedBy:              ds.CreatedBy,
+				UpdatedBy:              ds.UpdatedBy,
+				EmbeddingModel:         ds.EmbeddingModel,
+				EmbeddingModelProvider: ds.EmbeddingModelProvider,
+				RetrievalModelDict:     NewDatasetRetrievalModelFields(ds.RetrievalModelDict()),
+				Tags:                   []*TagFields{},
+				DocForm:                ds.DocForm(),
+				ExternalKnowledgeInfo:  NewExternalKnowledgeInfoFields(ds.ExternalKnowledgeInfo()),
+				ExternalRetrievalModel: NewExternalRetrievalModelFields(ds.ExternalRetrievalModel()),
+				DocMetadata:            []*DocMetadataFields{},
+				BuiltInFieldEnabled:    ds.BuiltInFieldEnabled,
+			}
+			if ds.CreatedAt != nil {
+				dsdf.CreatedAt = ds.CreatedAt.Unix()
+			}
+			if ds.UpdatedAt != nil {
+				dsdf.UpdatedAt = ds.UpdatedAt.Unix()
+			}
+			for _, tag := range ds.Tags() {
+				dsdf.Tags = append(dsdf.Tags, NewTagFields(tag))
+			}
+			for _, data := range ds.DocMetadata() {
+				dsdf.DocMetadata = append(dsdf.DocMetadata, NewDocMetadataFields(data))
+			}
+			return dsdf
+		} else if str, ok := args.(string); ok {
+			dsdf := &DatasetDetailFields{}
+			err := json.Unmarshal([]byte(str), dsdf)
+			if err != nil {
+				mlog.Errorf("json unmarshal %s to DatasetDetailFields failed:%v", str, err)
+				return nil
+			}
+			return dsdf
+		} else if dict, ok := args.(map[string]any); ok {
+			bindata, _ := json.Marshal(dict)
+			dsdf := &DatasetDetailFields{}
+			err := json.Unmarshal(bindata, dsdf)
+			if err != nil {
+				mlog.Errorf("json unmarshal %#v to DatasetDetailFields failed:%v", dict, err)
+				return nil
+			}
+			return dsdf
+		} else {
+			mlog.Errorf("unsupported args=%#v", args)
+			return nil
+		}
+	} else {
+		return &DatasetDetailFields{}
+	}
+}
+
+var (
+	MODES                = []string{"automatic", "custom", "hierarchical"}
+	PRE_PROCESSING_RULES = []string{"remove_stopwords", "remove_extra_spaces", "remove_urls_emails"}
+	AUTOMATIC_RULES      = map[string]any{
+		"pre_processing_rules": []map[string]any{
+			{"id": "remove_extra_spaces", "enabled": true},
+			{"id": "remove_urls_emails", "enabled": false},
+		},
+		"segmentation": map[string]any{"delimiter": "\n", "max_tokens": 500, "chunk_overlap": 50},
+	}
+)

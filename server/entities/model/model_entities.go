@@ -2,7 +2,7 @@ package model
 
 import (
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	coreenumtypes "mlib.com/gofy/server/enum_types/core"
+	modelenumtypes "mlib.com/gofy/server/enum_types/model"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	commontypes "mlib.com/gofy/server/types/common"
 )
@@ -30,8 +30,8 @@ func NewSimpleModelProviderEntity(providerEntity *modelruntimeentities.ProviderE
 // ProviderModelWithStatusEntity represents a model with status for model response
 type ProviderModelWithStatusEntity struct {
 	*modelruntimeentities.ProviderModel
-	Status               coreenumtypes.ModelStatus `json:"status" yaml:"status"`
-	LoadBalancingEnabled bool                      `json:"load_balancing_enabled" yaml:"load_balancing_enabled"`
+	Status               modelenumtypes.ModelStatusType `json:"status" yaml:"status"`
+	LoadBalancingEnabled bool                           `json:"load_balancing_enabled" yaml:"load_balancing_enabled"`
 }
 
 // ModelWithProviderEntity represents a model with provider entity

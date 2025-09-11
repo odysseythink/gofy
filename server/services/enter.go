@@ -33,6 +33,7 @@ type ServiceGroup struct {
 	AppAnnotation         *AppAnnotationService
 	AppDSL                *AppDSLService
 	ToolsTransform        *ToolsTransformService
+	ExternalDataset       *ExternalDatasetService
 }
 
 var ServiceGroupApp = ServiceGroup{
@@ -66,4 +67,5 @@ var ServiceGroupApp = ServiceGroup{
 	AppAnnotation:         &AppAnnotationService{},
 	AppDSL:                &AppDSLService{},
 	ToolsTransform:        &ToolsTransformService{},
+	ExternalDataset:       &ExternalDatasetService{},
 }

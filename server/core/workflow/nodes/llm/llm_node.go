@@ -27,7 +27,7 @@ import (
 	llmnodesentities "mlib.com/gofy/server/entities/nodes/llm"
 	promptentities "mlib.com/gofy/server/entities/prompt"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
-	coreenumtypes "mlib.com/gofy/server/enum_types/core"
+	modelenumtypes "mlib.com/gofy/server/enum_types/model"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
@@ -601,11 +601,11 @@ func FetchModelConfig(tenant_id string, node_data_model *llmnodesentities.ModelC
 		panic(llmnodesexceptions.NewModelNotExistError(fmt.Sprintf("Model %s not exist.", model_name)))
 	}
 
-	if provider_model.Status == coreenumtypes.ModelStatus_NO_CONFIGURE {
+	if provider_model.Status == modelenumtypes.ModelStatus_NO_CONFIGURE {
 		panic(exceptions.NewProviderTokenNotInitError(fmt.Sprintf("Model %s credentials is not initialized.", model_name)))
-	} else if provider_model.Status == coreenumtypes.ModelStatus_NO_PERMISSION {
+	} else if provider_model.Status == modelenumtypes.ModelStatus_NO_PERMISSION {
 		panic(exceptions.NewModelCurrentlyNotSupportError(fmt.Sprintf("Gofy Hosted OpenAI %s currently not support.", model_name)))
-	} else if provider_model.Status == coreenumtypes.ModelStatus_QUOTA_EXCEEDED {
+	} else if provider_model.Status == modelenumtypes.ModelStatus_QUOTA_EXCEEDED {
 		panic(exceptions.NewQuotaExceededError(fmt.Sprintf("Model provider %s quota exceeded.", provider_name)))
 	}
 	// model config

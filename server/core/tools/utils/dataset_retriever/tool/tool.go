@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"strings"
 
+	"mlib.com/gofy/server/core/rag/retrieval"
 	"mlib.com/gofy/server/core/tools/utils/dataset_retriever/base"
 	dbengine "mlib.com/gofy/server/db_engine"
 	appconfigentities "mlib.com/gofy/server/entities/app/config"
 	ragretrievalenumtypes "mlib.com/gofy/server/enum_types/rag/retrieval"
 	"mlib.com/gofy/server/models"
+	"mlib.com/gofy/server/utils/mapstruct"
 	"mlib.com/mlog"
 )
 
@@ -76,24 +78,26 @@ func (tool *DatasetRetrieverTool) Run(query string) string{
 	for _, hit_callback := range  tool.HitCallbacks{
 		hit_callback.OnQuery(query, dataset.ID)
 	}
-	dataset_retrieval = DatasetRetrieval()
-	metadata_filter_document_ids, metadata_condition = dataset_retrieval.get_metadata_filter_condition(
-		[dataset.ID],
+	user_id := tool.UserID
+	if user_id == "" {
+		user_id = "unknown"
+	}
+	metadata_filter_document_ids, metadata_condition := retrieval.GetMetadataFilterCondition(
+		[]string{dataset.ID},
 		query,
 		tool.TenantID,
-		tool.user_id or "unknown",
-		cast(str, tool.retrieve_config.metadata_filtering_mode),
-		cast(ModelConfig, tool.retrieve_config.metadata_model_config),
-		tool.retrieve_config.metadata_filtering_conditions,
-		tool.inputs,
+		user_id,
+		string(tool.RetrieveConfig.MetadataFilteringMode),
+		tool.RetrieveConfig.MetadataModelConfig,
+		tool.RetrieveConfig.MetadataFilteringConditions,
+		tool.Inputs,
 	)
-	if metadata_filter_document_ids{
-		document_ids_filter = metadata_filter_document_ids.get(dataset.ID, [])
-	} else {
-		document_ids_filter = None
+	var document_ids_filter []string
+	if len(metadata_filter_document_ids) > 0 {
+		document_ids_filter = mapstruct.Get(metadata_filter_document_ids,dataset.ID, []string{})
 	}
-	if dataset.provider == "external"{
-		results: list[RetrievalDocument] = []
+	if dataset.Provider == "external"{
+		results:= []*ragentities.Document{}
 		external_documents = ExternalDatasetService.fetch_external_knowledge_retrieval(
 			tenant_id=dataset.TenantID,
 			dataset_id=dataset.ID,

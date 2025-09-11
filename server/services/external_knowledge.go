@@ -4,6 +4,7 @@ import (
 	dbengine "mlib.com/gofy/server/db_engine"
 	ragentities "mlib.com/gofy/server/entities/rag"
 	"mlib.com/mlog"
+    "mlib.com/gofy/server/models"
 )
 
 type ExternalDatasetService struct {
@@ -27,11 +28,21 @@ func(s *ExternalDatasetService) FetchExternalKnowledgeRetrieval(
             panic(exceptions.NewValueError("external knowledge binding not found"))
 }
         external_knowledge_api := new(models.ExternalKnowledgeApi)
-        err = dbengine.Instance().DB.Model(&models.ExternalKnowledgeApis{}).Where("id=?",external_knowledge_binding.ExternalKnowledgeApiID).First(external_knowledge_api).Error
-        if not external_knowledge_api:
-            raise ValueError("external api template not found")
+        err = dbengine.Instance().DB.Model(&models.ExternalKnowledgeApi{}).Where("id=?",external_knowledge_binding.ExternalKnowledgeApiID).First(external_knowledge_api).Error
+        		if err != nil {
+			mlog.Errorf("get ExternalKnowledgeApi failed:%v", err)
+			external_knowledge_api = nil
+		}
+        if  external_knowledge_api == nil{
+            panic(exceptions.NewValueError("external api template not found"))
+}
 
-        settings = json.loads(external_knowledge_api.settings)
+        var settings map[string]any
+        err= json.Unmarshal([]byte(external_knowledge_api.Settings), &settings)
+        if err != nil {
+			mlog.Errorf("get ExternalKnowledgeApi failed:%v", err)
+			external_knowledge_api = nil
+		}
         headers = {"Content-Type": "application/json"}
         if settings.get("api_key"):
             headers["Authorization"] = f"Bearer {settings.get('api_key')}"

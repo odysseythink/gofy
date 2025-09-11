@@ -9,7 +9,7 @@ import (
 	modelentities "mlib.com/gofy/server/entities/model"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	servicesentities "mlib.com/gofy/server/entities/services"
-	coreenumtypes "mlib.com/gofy/server/enum_types/core"
+	modelenumtypes "mlib.com/gofy/server/enum_types/model"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	"mlib.com/gofy/server/models"
 	"mlib.com/mlog"
@@ -67,7 +67,7 @@ func (s *ModelProvideService) GetModelsByModelType(tenant_id string, model_type 
 		if model.Deprecated {
 			continue
 		}
-		if model.Status != coreenumtypes.ModelStatus_ACTIVE {
+		if model.Status != modelenumtypes.ModelStatus_ACTIVE {
 			continue
 		}
 		provider_models[model.Provider.Provider] = append(provider_models[model.Provider.Provider], model)

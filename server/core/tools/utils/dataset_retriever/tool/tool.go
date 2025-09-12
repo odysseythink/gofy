@@ -3,11 +3,13 @@ package tool
 import (
 	"fmt"
 	"strings"
-
+"mlib.com/gofy/server/services"
 	"mlib.com/gofy/server/core/rag/retrieval"
 	"mlib.com/gofy/server/core/tools/utils/dataset_retriever/base"
 	dbengine "mlib.com/gofy/server/db_engine"
 	appconfigentities "mlib.com/gofy/server/entities/app/config"
+	"mlib.com/gofy/server/entities/services"
+	ragentities "mlib.com/gofy/server/entities/rag"
 	ragretrievalenumtypes "mlib.com/gofy/server/enum_types/rag/retrieval"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/utils/mapstruct"
@@ -98,58 +100,70 @@ func (tool *DatasetRetrieverTool) Run(query string) string{
 	}
 	if dataset.Provider == "external"{
 		results:= []*ragentities.Document{}
-		external_documents = ExternalDatasetService.fetch_external_knowledge_retrieval(
-			tenant_id=dataset.TenantID,
-			dataset_id=dataset.ID,
-			query=query,
-			external_retrieval_parameters=dataset.retrieval_model,
-			metadata_condition=metadata_condition,
+		external_documents := services.ServiceGroupApp.ExternalDataset.FetchExternalKnowledgeRetrieval(
+			dataset.TenantID,
+			dataset.ID,
+			query,
+			dataset.RetrievalModelDict(),
+			metadata_condition,
 		)
-		for external_document := range  external_documents{
-			document = RetrievalDocument(
-				page_content=external_document.get("content"),
-				metadata=external_document.get("metadata"),
-				provider="external",
-			)
-			if document.metadata is not None{
-				document.metadata["score"] = external_document.get("score")
-				document.metadata["title"] = external_document.get("title")
-				document.metadata["dataset_id"] = dataset.ID
-				document.metadata["dataset_name"] = dataset.name
-				results.append(document)
+		for _, external_document := range  external_documents{
+			document :=  &ragentities.Document{
+				PageContent: mapstruct.Get(external_document,"content", ""),
+				Metadata: mapstruct.Get(external_document,"metadata", map[string]any{}),
+				Provider:"external",
+			}
+			if document.Metadata != nil{
+				document.Metadata["score"] = external_document["score"]
+				document.Metadata["title"] = external_document["title"]
+				document.Metadata["dataset_id"] = dataset.ID
+				document.Metadata["dataset_name"] = dataset.name
+				results=append(results, document)
 			}
 		}
 		// deal with external documents
-		context_list: list[RetrievalSourceMetadata] = []
-		for position, item := range  enumerate(results, start=1){
-			if item.metadata is not None{
-				source = RetrievalSourceMetadata(
-					position=position,
-					dataset_id=item.metadata.get("dataset_id"),
-					dataset_name=item.metadata.get("dataset_name"),
-					document_id=item.metadata.get("document_id") or item.metadata.get("title"),
-					document_name=item.metadata.get("title"),
-					data_source_type="external",
-					retriever_from=tool.retriever_from,
-					score=item.metadata.get("score"),
-					title=item.metadata.get("title"),
-					content=item.page_content,
-				)
-				context_list.append(source)
+		context_list:= []*ragentities.RetrievalSourceMetadata{}
+		if len(results) > 2{
+		for position, item := range  results{
+			if item.Metadata != nil{
+				source := &ragentities.RetrievalSourceMetadata{
+					Position: position,
+					DatasetID:mapstruct.Get(item.Metadata,"dataset_id", ""),
+					DatasetName:mapstruct.Get(item.Metadata,"dataset_name", ""),
+					DocumentID:mapstruct.Get(item.Metadata,"document_id", ""),
+					DocumentName:mapstruct.Get(item.Metadata,"title", ""),
+					DataSourceType:"external",
+					RetrieverFrom: tool.RetrieverFrom,
+					Score:mapstruct.Get(item.Metadata,"score", ""),
+					Title:mapstruct.Get(item.Metadata,"title", ""),
+					Content:item.PageContent,
+				}
+				if source.DocumentID != "" {
+					source.DocumentID = mapstruct.Get(item.Metadata,"title", "")
+				}
+				context_list=append(context_list, source)
 			}
 		}
-		for hit_callback := range  tool.HitCallbacks{
-			hit_callback.return_retriever_resource_info(context_list)
 		}
-		return str("\n".join([item.page_content for item := range  results]))
+		for _, hit_callback := range  tool.HitCallbacks{
+			hit_callback.ReturnRetrieverResourceInfo(context_list)
+		}
+		page_contents := []string{}
+		for _, item := range  results {
+			page_contents = append(page_contents, item.PageContent)
+		}
+		return strings.Join(page_contents, "\n")
 	} else {
-		if metadata_condition and not document_ids_filter{
+		if metadata_condition != nil && len(document_ids_filter) == 0{
 			return ""
 		}
 		// get retrieval model , if the model is not setting , using default
-		retrieval_model: dict[str, Any] = dataset.retrieval_model or default_retrieval_model
-		retrieval_resource_list: list[RetrievalSourceMetadata] = []
-		if dataset.indexing_technique == "economy"{
+		retrieval_model:=  dataset.RetrievalModelDict() 
+		if retrieval_model == nil {
+			retrieval_model =default_retrieval_model
+		}
+		retrieval_resource_list:= []*ragentities.RetrievalSourceMetadata{}
+		if dataset.IndexingTechnique == "economy"{
 			// use keyword table query
 			documents = RetrievalService.retrieve(
 				retrieval_method="keyword_search",

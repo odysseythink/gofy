@@ -289,6 +289,15 @@ func (ds *Dataset) ToDict() map[string]any {
 	}
 	return tmp_dict
 }
+func GetDataset(dataset_id string) *Dataset {
+	data := new(Dataset)
+	err := dbengine.Instance().DB.Model(&Dataset{}).Where("id = ?", dataset_id).First(data).Error
+	if err != nil {
+		mlog.Errorf("get Dataset failed:%v", err)
+		return nil
+	}
+	return data
+}
 
 // DatasetProcessRule [...]
 type DatasetProcessRule struct {

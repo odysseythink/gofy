@@ -20,6 +20,7 @@ type DBEngine struct {
 
 func (m *DBEngine) Init() error {
 	tmp := confy.Get[map[string]any]("mysql")
+	mlog.Debugf("------%#v", tmp)
 	bindata, err := json.Marshal(tmp)
 	if err != nil {
 		mlog.Warningf("json marshal=%#v to string failed:%v", tmp, err)

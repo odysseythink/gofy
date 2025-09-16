@@ -253,7 +253,7 @@ func (c *Cache) TTL(key string) int {
 	// }
 }
 
-func (c *Cache) SetExKey(key string, val any, expiration time.Duration) {
+func (c *Cache) SetExKey(key string, val interface{}, expiration time.Duration) {
 	if c.rdsCli == nil {
 		mlog.Error("redis don't have cluster client")
 		// return fmt.Errorf("redis don't have cluster client")
@@ -309,7 +309,7 @@ func (c *Cache) PTTL(key string) int64 {
 	return int64(cmd.Val().Seconds())
 }
 
-func (c *Cache) Get(key string, val any) error {
+func (c *Cache) Get(key string, val interface{}) error {
 	if c.rdsCli == nil {
 		mlog.Errorf("redis don't have cluster client")
 		// return fmt.Errorf("redis don't have cluster client")
@@ -556,7 +556,7 @@ func (c *Cache) GetFloat64(key string) float64 {
 	return res
 }
 
-func (c *Cache) Set(key string, val any) {
+func (c *Cache) Set(key string, val interface{}) {
 	if c.rdsCli == nil {
 		mlog.Error("redis don't have cluster client")
 		// return fmt.Errorf("redis don't have cluster client")
@@ -586,7 +586,7 @@ func (c *Cache) Set(key string, val any) {
 	// }
 }
 
-func (c *Cache) SetEx(key string, val any, tm time.Duration) error {
+func (c *Cache) SetEx(key string, val interface{}, tm time.Duration) error {
 	if c.rdsCli == nil {
 		mlog.Error("redis don't have cluster client")
 		return fmt.Errorf("redis don't have cluster client")
@@ -597,33 +597,44 @@ func (c *Cache) SetEx(key string, val any, tm time.Duration) error {
 		return errors.New("invalid arg")
 		// return
 	}
+	// return c.rdb.SetEx(context.Background(), key, val, -1*time.Second).Err()
+	// if c.rdsCli != nil {
 	cmd := c.rdsCli.SetEx(context.Background(), key, val, tm)
 	if cmd.Err() != nil {
 		mlog.Errorf("redis SetEx(%s) failed:%v", key, cmd.Err())
-		return fmt.Errorf("redis SetEx(%s) failed:%v", key, cmd.Err())
+		return fmt.Errorf("redis Scan(%s) failed:%v", key, cmd.Err())
 		// return
 	}
+	// } else {
+	// 	cmd := c.rdsClusterCli.SetEx(context.Background(), key, val, tm)
+	// 	if cmd.Err() != nil {
+	// 		mlog.Errorf("redis SetEx(%s) failed:%v", key, cmd.Err())
+	// 		return fmt.Errorf("redis Scan(%s) failed:%v", key, cmd.Err())
+	// 		// return
+	// 	}
+	// }
 	return nil
 }
 
-func (c *Cache) SetNX(key string, val any, tm time.Duration) error {
+func (c *Cache) SetNX(key string, val interface{}, tm time.Duration) (error, bool) {
 	if c.rdsCli == nil {
 		mlog.Error("redis don't have cluster client")
-		return fmt.Errorf("redis don't have cluster client")
+		return fmt.Errorf("redis don't have cluster client"), false
 		// return
 	}
 	if key == "" {
 		mlog.Error("invalid arg")
-		return errors.New("invalid arg")
+		return errors.New("invalid arg"), false
 		// return
 	}
 	cmd := c.rdsCli.SetNX(context.Background(), key, val, tm)
 	if cmd.Err() != nil {
 		mlog.Errorf("redis SetNX(%s) failed:%v", key, cmd.Err())
-		return fmt.Errorf("redis SetNX(%s) failed:%v", key, cmd.Err())
+		return fmt.Errorf("redis SetNX(%s) failed:%v", key, cmd.Err()), false
 		// return
 	}
-	return nil
+
+	return nil, cmd.Val()
 }
 
 func (c *Cache) LIndex(key string, index int64) string {
@@ -656,7 +667,7 @@ func (c *Cache) LIndex(key string, index int64) string {
 	return cmd.Val()
 }
 
-func (c *Cache) LInsert(key string, op string, pivot any, value any) int {
+func (c *Cache) LInsert(key string, op string, pivot interface{}, value interface{}) int {
 	if c.rdsCli == nil {
 		mlog.Error("redis don't have cluster client")
 		// return 0, fmt.Errorf("redis don't have cluster client")
@@ -684,7 +695,7 @@ func (c *Cache) LInsert(key string, op string, pivot any, value any) int {
 	return int(cmd.Val())
 }
 
-func (c *Cache) LInsertBefore(key string, pivot any, value any) int {
+func (c *Cache) LInsertBefore(key string, pivot interface{}, value interface{}) int {
 	if c.rdsCli == nil {
 		mlog.Error("redis don't have cluster client")
 		// return 0, fmt.Errorf("redis don't have cluster client")
@@ -712,7 +723,7 @@ func (c *Cache) LInsertBefore(key string, pivot any, value any) int {
 	return int(cmd.Val())
 }
 
-func (c *Cache) LInsertAfter(key string, pivot any, value any) int {
+func (c *Cache) LInsertAfter(key string, pivot interface{}, value interface{}) int {
 	if c.rdsCli == nil {
 		mlog.Error("redis don't have cluster client")
 		// return 0, fmt.Errorf("redis don't have cluster client")
@@ -770,7 +781,7 @@ func (c *Cache) LLen(key string) int64 {
 	return cmd.Val()
 }
 
-func (c *Cache) LPop(key string, val any) {
+func (c *Cache) LPop(key string, val interface{}) {
 	if c.rdsCli == nil {
 		mlog.Error("redis don't have cluster client")
 		// return fmt.Errorf("redis don't have cluster client")
@@ -803,7 +814,7 @@ func (c *Cache) LPop(key string, val any) {
 	}
 }
 
-func (c *Cache) RPop(key string, val any) {
+func (c *Cache) RPop(key string, val interface{}) {
 	if c.rdsCli == nil {
 		mlog.Error("redis don't have cluster client")
 		// return fmt.Errorf("redis don't have cluster client")
@@ -836,7 +847,7 @@ func (c *Cache) RPop(key string, val any) {
 	}
 }
 
-func (c *Cache) LPush(key string, vals ...any) {
+func (c *Cache) LPush(key string, vals ...interface{}) {
 	if c.rdsCli == nil {
 		mlog.Error("redis don't have cluster client")
 		return
@@ -861,7 +872,7 @@ func (c *Cache) LPush(key string, vals ...any) {
 	// }
 }
 
-func (c *Cache) RPush(key string, vals ...any) {
+func (c *Cache) RPush(key string, vals ...interface{}) {
 	if c.rdsCli == nil {
 		mlog.Error("redis don't have cluster client")
 		return
@@ -913,7 +924,7 @@ func (c *Cache) LRange(key string, start, stop int64) []string {
 	return cmd.Val()
 }
 
-func (c *Cache) LRem(key string, val any) {
+func (c *Cache) LRem(key string, val interface{}) {
 	if c.rdsCli == nil {
 		mlog.Error("redis don't have cluster client")
 		// return fmt.Errorf("redis don't have cluster client")
@@ -939,7 +950,7 @@ func (c *Cache) LRem(key string, val any) {
 	// }
 }
 
-func (c *Cache) LSet(key string, idx int64, val any) {
+func (c *Cache) LSet(key string, idx int64, val interface{}) {
 	if c.rdsCli == nil {
 		mlog.Error("redis don't have cluster client")
 		// return fmt.Errorf("redis don't have cluster client")
@@ -965,7 +976,7 @@ func (c *Cache) LSet(key string, idx int64, val any) {
 	// }
 }
 
-func (c *Cache) HMGetData(key string, attrNames []string) ([]any, error) {
+func (c *Cache) HMGetData(key string, attrNames []string) ([]interface{}, error) {
 	if c.rdsCli == nil {
 		mlog.Error("redis don't have cluster client")
 		// return fmt.Errorf("redis don't have cluster client")
@@ -1032,7 +1043,7 @@ func (c *Cache) HGetAllData(key string) map[string]string {
 	return attr
 }
 
-func (c *Cache) HGetData(key string, field string, val any) {
+func (c *Cache) HGetData(key string, field string, val interface{}) {
 	if c.rdsCli == nil {
 		mlog.Error("redis don't have cluster client")
 		// return fmt.Errorf("redis don't have cluster client")
@@ -1097,7 +1108,7 @@ func (c *Cache) HGet(key string, field string) string {
 	return cmd.Val()
 }
 
-func (c *Cache) HSetData(key string, field string, val any) error {
+func (c *Cache) HSetData(key string, field string, val interface{}) error {
 	if c.rdsCli == nil {
 		mlog.Error("redis don't have cluster client")
 		// return fmt.Errorf("redis don't have cluster client")
@@ -1126,7 +1137,7 @@ func (c *Cache) HSetData(key string, field string, val any) error {
 	return nil
 }
 
-func (c *Cache) HMSetData(key string, attrs map[string]any) {
+func (c *Cache) HMSetData(key string, attrs map[string]interface{}) {
 	if c.rdsCli == nil {
 		mlog.Error("redis don't have cluster client")
 		// return fmt.Errorf("redis don't have cluster client")
@@ -1137,7 +1148,7 @@ func (c *Cache) HMSetData(key string, attrs map[string]any) {
 		// return fmt.Errorf("invalid arg")
 		return
 	}
-	vals := make([]any, 0)
+	vals := make([]interface{}, 0)
 	for k, v := range attrs {
 		vals = append(vals, k)
 		vals = append(vals, v)
@@ -1170,7 +1181,7 @@ func (c *Cache) HMSetStrData(key string, attrs map[string]string) {
 		// return fmt.Errorf("invalid arg")
 		return
 	}
-	vals := make([]any, 0)
+	vals := make([]interface{}, 0)
 	for k, v := range attrs {
 		vals = append(vals, k)
 		vals = append(vals, v)
@@ -1308,7 +1319,7 @@ func (c *Cache) HIncrByFloat(key string, field string, inc float64) {
 	// }
 }
 
-func (c *Cache) ZAdd(key string, member any, score float64) {
+func (c *Cache) ZAdd(key string, member interface{}, score float64) {
 	if c.rdsCli == nil {
 		mlog.Error("redis don't have cluster client")
 		// return fmt.Errorf("redis don't have cluster client")
@@ -1336,56 +1347,7 @@ func (c *Cache) ZAdd(key string, member any, score float64) {
 	// }
 }
 
-func (c *Cache) ZCard(key string) int {
-	if c.rdsCli == nil {
-		mlog.Error("redis don't have cluster client")
-		// return fmt.Errorf("redis don't have cluster client")
-		return 0
-	}
-	if key == "" {
-		mlog.Error("invalid arg")
-		// return fmt.Errorf("invalid arg")
-		return 0
-	}
-	// if c.rdsCli != nil {
-	cmd := c.rdsCli.ZCard(context.Background(), key)
-	if cmd.Err() != nil {
-		mlog.Errorf("redis ZAdd(%s) failed:%v", key, cmd.Err())
-		// return fmt.Errorf("redis ZAdd(%s) failed:%v", key, cmd.Err())
-		return 0
-	}
-	// } else {
-	// 	cmd := c.rdsClusterCli.ZAdd(context.Background(), key, redis.Z{Score: score, Member: member})
-	// 	if cmd.Err() != nil {
-	// 		mlog.Errorf("redis ZAdd(%s) failed:%v", key, cmd.Err())
-	// 		// return fmt.Errorf("redis ZAdd(%s) failed:%v", key, cmd.Err())
-	// 		return
-	// 	}
-	// }
-	return int(cmd.Val())
-}
-
-func (c *Cache) ZRemRangeByScore(key string, min string, max string) {
-	if c.rdsCli == nil {
-		mlog.Error("redis don't have cluster client")
-		// return fmt.Errorf("redis don't have cluster client")
-		return
-	}
-	if key == "" {
-		mlog.Error("invalid arg")
-		// return fmt.Errorf("invalid arg")
-		return
-	}
-	// if c.rdsCli != nil {
-	cmd := c.rdsCli.ZRemRangeByScore(context.Background(), key, min, max)
-	if cmd.Err() != nil {
-		mlog.Errorf("redis ZAdd(%s) failed:%v", key, cmd.Err())
-		// return fmt.Errorf("redis ZAdd(%s) failed:%v", key, cmd.Err())
-		return
-	}
-}
-
-func (c *Cache) SAdd(key string, members ...any) {
+func (c *Cache) SAdd(key string, members ...interface{}) {
 	if c.rdsCli == nil {
 		mlog.Error("redis don't have cluster client")
 		// return fmt.Errorf("redis don't have cluster client")
@@ -1413,7 +1375,7 @@ func (c *Cache) SAdd(key string, members ...any) {
 	// }
 }
 
-func (c *Cache) SRem(key string, members ...any) error {
+func (c *Cache) SRem(key string, members ...interface{}) error {
 	if c.rdsCli == nil {
 		mlog.Errorf("redis don't have cluster client")
 		return fmt.Errorf("redis don't have cluster client")
@@ -1481,7 +1443,7 @@ func (c *Cache) SMembers(key string) []string {
 	return cmd.Val()
 }
 
-func (c *Cache) SIsMembers(key string, member any) bool {
+func (c *Cache) SIsMembers(key string, member interface{}) bool {
 	if c.rdsCli == nil {
 		mlog.Error("redis don't have cluster client")
 		// return false, fmt.Errorf("redis don't have cluster client")
@@ -1547,7 +1509,7 @@ func (c *Cache) Keys(patten string) []string {
 			// return nil, fmt.Errorf("redis get keys in ForEachMaster failed:%v", err)
 			return nil
 		}
-		keyMap.Range(func(key, val any) bool {
+		keyMap.Range(func(key, val interface{}) bool {
 			keys = append(keys, key.(string))
 			return true
 		})
@@ -1644,7 +1606,7 @@ func (c *Cache) Close() {
 	// }
 }
 
-func (c *Cache) Publish(channel string, message any) error {
+func (c *Cache) Publish(channel string, message interface{}) error {
 	if c.rdsCli == nil {
 		mlog.Error("redis don't have client")
 		return fmt.Errorf("redis don't have client")
@@ -1687,7 +1649,7 @@ func (c *Cache) Subscribe(topic string) (*redis.PubSub, error) {
 	return sub, nil
 }
 
-func (c *Cache) StreamAdd(streamName string, data map[string]any) (string, error) {
+func (c *Cache) StreamAdd(streamName string, data map[string]interface{}) (string, error) {
 
 	if c.rdsCli == nil {
 		mlog.Error("redis don't have cluster client")
@@ -2236,14 +2198,14 @@ func (c *Cache) XRevRangeN(stream, start, stop string, count int64) ([]redis.XMe
 	// if c.rdsCli != nil {
 	cmd = c.rdsCli.XRevRangeN(context.Background(), stream, start, stop, count)
 	if cmd.Err() != nil {
-		mlog.Errorf("redis XRevRangeN(%#v) failed:%v", []any{stream, start, stop, count}, cmd.Err())
-		return nil, fmt.Errorf("redis XRevRangeN(%#v) failed:%v", []any{stream, start, stop, count}, cmd.Err())
+		mlog.Errorf("redis XRevRangeN(%#v) failed:%v", []interface{}{stream, start, stop, count}, cmd.Err())
+		return nil, fmt.Errorf("redis XRevRangeN(%#v) failed:%v", []interface{}{stream, start, stop, count}, cmd.Err())
 	}
 	// } else {
 	// 	cmd = c.rdsClusterCli.XRevRangeN(context.Background(), stream, start, stop, count)
 	// 	if cmd.Err() != nil {
-	// 		mlog.Errorf("redis XRevRangeN(%#v) failed:%v", []any{stream, start, stop, count}, cmd.Err())
-	// 		return nil, fmt.Errorf("redis XRevRangeN(%#v) failed:%v", []any{stream, start, stop, count}, cmd.Err())
+	// 		mlog.Errorf("redis XRevRangeN(%#v) failed:%v", []interface{}{stream, start, stop, count}, cmd.Err())
+	// 		return nil, fmt.Errorf("redis XRevRangeN(%#v) failed:%v", []interface{}{stream, start, stop, count}, cmd.Err())
 	// 	}
 	// }
 	return cmd.Val(), nil
@@ -2258,14 +2220,14 @@ func (c *Cache) XTrimMaxLen(stream string, count int64) error {
 	// if c.rdsCli != nil {
 	cmd = c.rdsCli.XTrimMaxLen(context.Background(), stream, count)
 	if cmd.Err() != nil {
-		mlog.Errorf("redis XTrimMaxLen(%#v) failed:%v", []any{stream, count}, cmd.Err())
-		return fmt.Errorf("redis XTrimMaxLen(%#v) failed:%v", []any{stream, count}, cmd.Err())
+		mlog.Errorf("redis XTrimMaxLen(%#v) failed:%v", []interface{}{stream, count}, cmd.Err())
+		return fmt.Errorf("redis XTrimMaxLen(%#v) failed:%v", []interface{}{stream, count}, cmd.Err())
 	}
 	// } else {
 	// 	cmd = c.rdsClusterCli.XTrimMaxLen(context.Background(), stream, count)
 	// 	if cmd.Err() != nil {
-	// 		mlog.Errorf("redis XTrimMaxLen(%#v) failed:%v", []any{stream, count}, cmd.Err())
-	// 		return fmt.Errorf("redis XTrimMaxLen(%#v) failed:%v", []any{stream, count}, cmd.Err())
+	// 		mlog.Errorf("redis XTrimMaxLen(%#v) failed:%v", []interface{}{stream, count}, cmd.Err())
+	// 		return fmt.Errorf("redis XTrimMaxLen(%#v) failed:%v", []interface{}{stream, count}, cmd.Err())
 	// 	}
 	// }
 	return nil
@@ -2280,14 +2242,14 @@ func (c *Cache) XTrimMaxLenApprox(stream string, maxLen, limit int64) error {
 	// if c.rdsCli != nil {
 	cmd = c.rdsCli.XTrimMaxLenApprox(context.Background(), stream, maxLen, limit)
 	if cmd.Err() != nil {
-		mlog.Errorf("redis XTrimMaxLenApprox(%#v) failed:%v", []any{stream, maxLen, limit}, cmd.Err())
-		return fmt.Errorf("redis XTrimMaxLenApprox(%#v) failed:%v", []any{stream, maxLen, limit}, cmd.Err())
+		mlog.Errorf("redis XTrimMaxLenApprox(%#v) failed:%v", []interface{}{stream, maxLen, limit}, cmd.Err())
+		return fmt.Errorf("redis XTrimMaxLenApprox(%#v) failed:%v", []interface{}{stream, maxLen, limit}, cmd.Err())
 	}
 	// } else {
 	// 	cmd = c.rdsClusterCli.XTrimMaxLenApprox(context.Background(), stream, maxLen, limit)
 	// 	if cmd.Err() != nil {
-	// 		mlog.Errorf("redis XTrimMaxLenApprox(%#v) failed:%v", []any{stream, maxLen, limit}, cmd.Err())
-	// 		return fmt.Errorf("redis XTrimMaxLenApprox(%#v) failed:%v", []any{stream, maxLen, limit}, cmd.Err())
+	// 		mlog.Errorf("redis XTrimMaxLenApprox(%#v) failed:%v", []interface{}{stream, maxLen, limit}, cmd.Err())
+	// 		return fmt.Errorf("redis XTrimMaxLenApprox(%#v) failed:%v", []interface{}{stream, maxLen, limit}, cmd.Err())
 	// 	}
 	// }
 	return nil
@@ -2302,14 +2264,14 @@ func (c *Cache) XTrimMinID(stream, minID string) error {
 	// if c.rdsCli != nil {
 	cmd = c.rdsCli.XTrimMinID(context.Background(), stream, minID)
 	if cmd.Err() != nil {
-		mlog.Errorf("redis XTrimMinID(%#v) failed:%v", []any{stream, minID}, cmd.Err())
-		return fmt.Errorf("redis XTrimMinID(%#v) failed:%v", []any{stream, minID}, cmd.Err())
+		mlog.Errorf("redis XTrimMinID(%#v) failed:%v", []interface{}{stream, minID}, cmd.Err())
+		return fmt.Errorf("redis XTrimMinID(%#v) failed:%v", []interface{}{stream, minID}, cmd.Err())
 	}
 	// } else {
 	// 	cmd = c.rdsClusterCli.XTrimMinID(context.Background(), stream, minID)
 	// 	if cmd.Err() != nil {
-	// 		mlog.Errorf("redis XTrimMinID(%#v) failed:%v", []any{stream, minID}, cmd.Err())
-	// 		return fmt.Errorf("redis XTrimMinID(%#v) failed:%v", []any{stream, minID}, cmd.Err())
+	// 		mlog.Errorf("redis XTrimMinID(%#v) failed:%v", []interface{}{stream, minID}, cmd.Err())
+	// 		return fmt.Errorf("redis XTrimMinID(%#v) failed:%v", []interface{}{stream, minID}, cmd.Err())
 	// 	}
 	// }
 	return nil
@@ -2324,14 +2286,14 @@ func (c *Cache) XTrimMinIDApprox(stream, minID string, limit int64) error {
 	// if c.rdsCli != nil {
 	cmd = c.rdsCli.XTrimMinIDApprox(context.Background(), stream, minID, limit)
 	if cmd.Err() != nil {
-		mlog.Errorf("redis XTrimMinIDApprox(%#v) failed:%v", []any{stream, minID, limit}, cmd.Err())
-		return fmt.Errorf("redis XTrimMinIDApprox(%#v) failed:%v", []any{stream, minID, limit}, cmd.Err())
+		mlog.Errorf("redis XTrimMinIDApprox(%#v) failed:%v", []interface{}{stream, minID, limit}, cmd.Err())
+		return fmt.Errorf("redis XTrimMinIDApprox(%#v) failed:%v", []interface{}{stream, minID, limit}, cmd.Err())
 	}
 	// } else {
 	// 	cmd = c.rdsClusterCli.XTrimMinIDApprox(context.Background(), stream, minID, limit)
 	// 	if cmd.Err() != nil {
-	// 		mlog.Errorf("redis XTrimMinIDApprox(%#v) failed:%v", []any{stream, minID, limit}, cmd.Err())
-	// 		return fmt.Errorf("redis XTrimMinIDApprox(%#v) failed:%v", []any{stream, minID, limit}, cmd.Err())
+	// 		mlog.Errorf("redis XTrimMinIDApprox(%#v) failed:%v", []interface{}{stream, minID, limit}, cmd.Err())
+	// 		return fmt.Errorf("redis XTrimMinIDApprox(%#v) failed:%v", []interface{}{stream, minID, limit}, cmd.Err())
 	// 	}
 	// }
 	return nil

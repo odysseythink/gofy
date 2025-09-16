@@ -1,0 +1,5 @@
+redis:
+    db: 1
+    addr: 172.26.223.119:7001
+    password: "EnExByTMFAHxpj4zvnzR"
+    is_cluster: true

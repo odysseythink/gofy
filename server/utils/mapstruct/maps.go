@@ -2,7 +2,7 @@ package mapstruct
 
 import "mlib.com/mlog"
 
-func Get[T int | bool | string | map[string]any | float64 | []map[string]any | []string](val map[string]any, key string, default_val T) T {
+func Get[T int | bool | string | map[string]any | float64 | []map[string]any | []string | map[string][]string](val map[string]any, key string, default_val T) T {
 	if _, ok := val[key]; ok {
 		if _, ok := val[key].(T); ok {
 			return val[key].(T)
@@ -30,6 +30,47 @@ func Get[T int | bool | string | map[string]any | float64 | []map[string]any | [
 						} else {
 							mlog.Warningf("val[%s]=%#v is not string slice", key, val[key])
 							return default_val
+						}
+					}
+					return any(ret).(T)
+				}
+			case map[string][]string:
+				if _, ok := val[key].(map[string]any); ok {
+					ret := map[string][]string{}
+					for k, sv := range val[key].(map[string]any) {
+						if _, ok := sv.([]string); ok {
+							ret[k] = sv.([]string)
+						} else if _, ok := sv.([]any); ok {
+							for _, ssv := range sv.([]any) {
+								if _, ok := ssv.(string); ok {
+									if _, ok := ret[k]; ok {
+										ret[k] = make([]string, 0)
+									}
+									ret[k] = append(ret[k], ssv.(string))
+								} else {
+									mlog.Warningf("val[%s]=%#v is not map[string][]string", key, val[key])
+									return default_val
+								}
+							}
+						} else {
+							mlog.Warningf("val[%s]=%#v is not map[string][]string", key, val[key])
+							return default_val
+						}
+					}
+					return any(ret).(T)
+				} else if _, ok := val[key].(map[string][]any); ok {
+					ret := map[string][]string{}
+					for k, sv := range val[key].(map[string][]any) {
+						for _, ssv := range sv {
+							if _, ok := ssv.(string); ok {
+								if _, ok := ret[k]; ok {
+									ret[k] = make([]string, 0)
+								}
+								ret[k] = append(ret[k], ssv.(string))
+							} else {
+								mlog.Warningf("val[%s]=%#v is not map[string][]string", key, val[key])
+								return default_val
+							}
 						}
 					}
 					return any(ret).(T)

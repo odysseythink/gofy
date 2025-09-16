@@ -2,14 +2,14 @@ package cache
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"strings"
 	"sync"
 
+	"mlib.com/mlog"
+
 	"github.com/redis/go-redis/v9"
 	"mlib.com/confy"
-	"mlib.com/mlog"
 )
 
 type Cache struct {
@@ -18,25 +18,30 @@ type Cache struct {
 	rdsCli redis.UniversalClient
 }
 
+// type ClusterCache struct {
+// 	*redis.ClusterClient
+// }
+
+// type ICache interface {
+// 	Exist(key string) bool
+// }
+
+// var mRedisClusterClient *redis.ClusterClient
+
 func (m *Cache) validatorConfig() bool {
 	return true
 }
 
-func (m *Cache) Init(args ...any) error {
+func (m *Cache) Init(args ...interface{}) error {
 	if !confy.InConfig("redis") {
-		mlog.Errorf("don't exist redis config, return")
-		return errors.New("don't exist redis config, return")
+		mlog.Warningf("don't exist redis config, return")
+		return nil
 	}
 
 	if !m.validatorConfig() {
-		mlog.Errorf("redis config is invalid")
+		mlog.Warningf("redis config is invalid")
 		return fmt.Errorf("redis config is invalid")
 	}
-	//  = NewRedisClient(
-	//
-	// 	,
-	// 	confy.Get[bool]("redis.is_cluster"),
-	// 	)
 	if confy.Get[bool]("redis.is_cluster") {
 		addrs := strings.ReplaceAll(confy.Get[string]("redis.addr"), " ", "")
 		rdb := redis.NewClusterClient(&redis.ClusterOptions{
@@ -71,6 +76,7 @@ func (m *Cache) Init(args ...any) error {
 		mlog.Errorf("new redis client failed")
 		return fmt.Errorf("new redis client failed")
 	}
+
 	return nil
 
 }
@@ -80,8 +86,9 @@ func (m *Cache) RunOnce(ctx context.Context) error {
 }
 
 func (m *Cache) Destroy() {
+
 }
-func (m *Cache) UserData() any {
+func (m *Cache) UserData() interface{} {
 	return m
 }
 

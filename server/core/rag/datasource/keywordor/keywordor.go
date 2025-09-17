@@ -5,7 +5,7 @@
 
 // from core.rag.models.document import Document
 // from models.dataset import Dataset
-package keyword
+package keywordor
 
 import (
 	ragentities "mlib.com/gofy/server/entities/rag"

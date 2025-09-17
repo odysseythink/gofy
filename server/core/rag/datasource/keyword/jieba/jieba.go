@@ -13,15 +13,23 @@
 // from extensions.ext_storage import storage
 // from models.dataset import Dataset, DatasetKeywordTable, DocumentSegment
 package jieba
+
 import (
+	"maps"
 	"regexp"
 	"slices"
 	"strings"
 	"sync"
-    distributelock "mlib.com/gofy/server/utils/distribute_lock"
-    ragentities "mlib.com/gofy/server/entities/rag"
-"mlib.com/gofy/server/models"
+
+	uuid "github.com/satori/go.uuid"
+	"mlib.com/confy"
 	"mlib.com/gofy/server/core/rag/datasource/keywordor"
+	dbengine "mlib.com/gofy/server/db_engine"
+	ragentities "mlib.com/gofy/server/entities/rag"
+	"mlib.com/gofy/server/models"
+	distributelock "mlib.com/gofy/server/utils/distribute_lock"
+	"mlib.com/gofy/server/utils/mapstruct"
+	"mlib.com/mlog"
 )
 type KeywordTableConfig struct{
     MaxKeywordsPerChunk int `json:"max_keywords_per_chunk"` // 10
@@ -43,32 +51,52 @@ func New(dataset *models.Dataset) *Jieba{
         _config: NewKeywordTableConfig(),
     }
 }
-func (j *Jieba) _get_dataset_keyword_table() map[string]any{
+
+func (j *Jieba) _get_dataset_keyword_table() map[string][]string{
         dataset_keyword_table := j.Dataset.DatasetKeywordTable()
         if dataset_keyword_table != nil{
-            keyword_table_dict = dataset_keyword_table.KeywordTableDict()
-            if keyword_table_dict{
-                return dict(keyword_table_dict["__data__"]["table"])
+            keyword_table_dict := dataset_keyword_table.KeywordTableDict()
+            if len(keyword_table_dict) > 0{
+                return mapstruct.Get(mapstruct.Get(keyword_table_dict, "__data__", map[string]any{}), "table",map[string][]string{})
             }
         }else{
-            keyword_data_source_type = dify_config.KEYWORD_DATA_SOURCE_TYPE
-            dataset_keyword_table = DatasetKeywordTable(
-                dataset_id=j.Dataset.ID,
-                keyword_table="",
-                data_source_type=keyword_data_source_type,
-            )
+            keyword_data_source_type := confy.GetWithDefault[string]("keyword_data_source_type", "database")
+            dataset_keyword_table := &models.DatasetKeywordTable{
+                ID: uuid.NewV4().String(),
+                DatasetID:j.Dataset.ID,
+                KeywordTable:"",
+                DataSourceType:keyword_data_source_type,
+            }
             if keyword_data_source_type == "database"{
-                dataset_keyword_table.keyword_table = json.dumps(
-                    {
-                        "__type__": "keyword_table",
-                        "__data__": {"index_id": j.Dataset.ID, "summary": None, "table": {}},
-                    },
-                    cls=SetEncoder,
-                )
-            db.session.add(dataset_keyword_table)
-            db.session.commit()
-
-        return {}
+                bindata, _ := json.Marshal(map[string]any{
+                     "__type__": "keyword_table",
+                        "__data__": map[string]any{"index_id": j.Dataset.ID, "summary": nil, "table": map[string]any{}},
+                    })
+                    dataset_keyword_table.KeywordTable= string(bindata)
+                }
+            dbengine.Instance().DB.Create(dataset_keyword_table)
+            }
+        return map[string]any{}
+}
+func (j *Jieba) _update_segment_keywords(dataset_id  string, node_id  string, keywords  []string){
+        document_segment := new(models.DocumentSegment)
+        err := dbengine.Instance().DB.Model(&models.DocumentSegment{}).Where("dataset_id = ? and index_node_id = ?", dataset_id, node_id).First(document_segment).Error
+        if err != nil {
+            mlog.Errorf("get DocumentSegment failed:%v", err)
+            document_segment = nil
+        }
+        if document_segment != nil{
+            dbengine.Instance().DB.Updates(&models.DocumentSegment{ID: document_segment.ID, Keywords: datatypes.JSON(keywords)})
+        }
+}
+func (j *Jieba) _add_text_to_keyword_table(keyword_table  map[string]map[string]struct{}, id  string, keywords  []string)   map[string]map[string]struct{}{
+        for _,  keyword := range keywords{
+            if _, ok := keyword_table[keyword]; !ok {
+                keyword_table[keyword] = make(map[string]struct{})
+            }
+            keyword_table[keyword][id]=struct{}{}
+        }
+        return keyword_table
 
 }
 func (j *Jieba) Create(texts []*ragentities.Document, args ...any) keywordor.Keywordor{
@@ -76,24 +104,29 @@ func (j *Jieba) Create(texts []*ragentities.Document, args ...any) keywordor.Key
         
         if distributelock.Instance().TryLock(lock_name, 600*time.Miliseconds){
             keyword_table_handler := NewJiebaKeywordTableHandler()
-            keyword_table = j._get_dataset_keyword_table()
-            for text in texts{
-                keywords = keyword_table_handler.extract_keywords(
-                    text.page_content, j._config.max_keywords_per_chunk
+
+            keyword_table := j._get_dataset_keyword_table()
+            for _, text := range texts{
+                keywords := keyword_table_handler.ExtractKeywords(
+                    text.PageContent, j._config.MaxKeywordsPerChunk,
                 )
-                if text.metadata is not None{
-                    j._update_segment_keywords(j.Dataset.ID, text.metadata["doc_id"], list(keywords))
+                if len(text.Metadata) > 0{
+                   
+                    j._update_segment_keywords(j.Dataset.ID, mapstruct.Get(text.Metadata,"doc_id",""), slices.Sorted( maps.Keys(keywords)))
                     keyword_table = j._add_text_to_keyword_table(
-                        keyword_table or {}, text.metadata["doc_id"], list(keywords)
+                        keyword_table or {}, text.Metadata["doc_id"], list(keywords)
                     )
+                }
+            }
 
             j._save_dataset_keyword_table(keyword_table)
 
-            return self
-                }
+            return j
+        }
 
 }
-// func (j *Jieba) add_texts(self, texts: list[Document], **kwargs){
+// func (j *Jieba) add_texts(texts: list[Document], **kwargs){
+
 //         lock_name := "keyword_indexing_lock_"+j.Dataset.ID
 //         with redis_client.lock(lock_name, timeout=600){
 //             keyword_table_handler = JiebaKeywordTableHandler()
@@ -121,14 +154,16 @@ func (j *Jieba) Create(texts []*ragentities.Document, args ...any) keywordor.Key
 //             j._save_dataset_keyword_table(keyword_table)
 
 // }
-// func (j *Jieba) text_exists(self, id: str) -> bool{
+
+// func (j *Jieba) text_exists(id  string) -> bool{
 //         keyword_table = j._get_dataset_keyword_table()
 //         if keyword_table is None{
 //             return False
 //         return id in set.union(*keyword_table.values())
 
 // }
-// func (j *Jieba) delete_by_ids(self, ids: list[str]) -> None{
+
+// func (j *Jieba) delete_by_ids(ids  []string) -> None{
 //         lock_name := "keyword_indexing_lock_"+j.Dataset.ID
 //         with redis_client.lock(lock_name, timeout=600){
 //             keyword_table = j._get_dataset_keyword_table()
@@ -138,7 +173,8 @@ func (j *Jieba) Create(texts []*ragentities.Document, args ...any) keywordor.Key
 //             j._save_dataset_keyword_table(keyword_table)
 
 // }
-// func (j *Jieba) search(self, query: str, **kwargs: Any) -> list[Document]{
+
+// func (j *Jieba) search(query  string, **kwargs: Any) -> list[Document]{
 //         keyword_table = j._get_dataset_keyword_table()
 
 //         k = kwargs.get("top_k", 4)
@@ -182,7 +218,8 @@ func (j *Jieba) Create(texts []*ragentities.Document, args ...any) keywordor.Key
 //                     storage.delete(file_key)
 
 // }
-// func (j *Jieba) _save_dataset_keyword_table(self, keyword_table){
+
+// func (j *Jieba) _save_dataset_keyword_table(keyword_table){
 //         keyword_table_dict = {
 //             "__type__": "keyword_table",
 //             "__data__": {"index_id": j.Dataset.ID, "summary": None, "table": keyword_table},
@@ -200,15 +237,8 @@ func (j *Jieba) Create(texts []*ragentities.Document, args ...any) keywordor.Key
 
 // }
 
-// func (j *Jieba) _add_text_to_keyword_table(self, keyword_table: dict, id: str, keywords: list[str]) -> dict{
-//         for keyword in keywords{
-//             if keyword not in keyword_table{
-//                 keyword_table[keyword] = set()
-//             keyword_table[keyword].add(id)
-//         return keyword_table
 
-// }
-// func (j *Jieba) _delete_ids_from_keyword_table(self, keyword_table: dict, ids: list[str]) -> dict{
+// func (j *Jieba) _delete_ids_from_keyword_table(keyword_table  map[string]any, ids  []string)   map[string]any{
 //         // get set of ids that correspond to node
 //         node_idxs_to_delete = set(ids)
 
@@ -226,7 +256,8 @@ func (j *Jieba) Create(texts []*ragentities.Document, args ...any) keywordor.Key
 //         return keyword_table
 
 // }
-// func (j *Jieba) _retrieve_ids_by_query(self, keyword_table: dict, query: str, k: int = 4){
+
+// func (j *Jieba) _retrieve_ids_by_query(keyword_table  map[string]any, query  string, k: int = 4){
 //         keyword_table_handler = JiebaKeywordTableHandler()
 //         keywords = keyword_table_handler.extract_keywords(query)
 
@@ -246,26 +277,16 @@ func (j *Jieba) Create(texts []*ragentities.Document, args ...any) keywordor.Key
 //         return sorted_chunk_indices[:k]
 
 // }
-// func (j *Jieba) _update_segment_keywords(self, dataset_id: str, node_id: str, keywords: list[str]){
-//         document_segment = (
-//             db.session.query(DocumentSegment)
-//             .where(DocumentSegment.dataset_id == dataset_id, DocumentSegment.index_node_id == node_id)
-//             .first()
-//         )
-//         if document_segment{
-//             document_segment.keywords = keywords
-//             db.session.add(document_segment)
-//             db.session.commit()
 
-// }
-// func (j *Jieba) create_segment_keywords(self, node_id: str, keywords: list[str]){
+// func (j *Jieba) create_segment_keywords(node_id  string, keywords  []string){
 //         keyword_table = j._get_dataset_keyword_table()
 //         j._update_segment_keywords(j.Dataset.ID, node_id, keywords)
 //         keyword_table = j._add_text_to_keyword_table(keyword_table or {}, node_id, keywords)
 //         j._save_dataset_keyword_table(keyword_table)
 
 // }
-// func (j *Jieba) multi_create_segment_keywords(self, pre_segment_data_list: list){
+
+// func (j *Jieba) multi_create_segment_keywords(pre_segment_data_list: list){
 //         keyword_table_handler = JiebaKeywordTableHandler()
 //         keyword_table = j._get_dataset_keyword_table()
 //         for pre_segment_data in pre_segment_data_list{
@@ -284,14 +305,15 @@ func (j *Jieba) Create(texts []*ragentities.Document, args ...any) keywordor.Key
 //         j._save_dataset_keyword_table(keyword_table)
 
 // }
-// func (j *Jieba) update_segment_keywords_index(self, node_id: str, keywords: list[str]){
+
+// func (j *Jieba) update_segment_keywords_index(node_id  string, keywords  []string){
 //         keyword_table = j._get_dataset_keyword_table()
 //         keyword_table = j._add_text_to_keyword_table(keyword_table or {}, node_id, keywords)
 //         j._save_dataset_keyword_table(keyword_table)
 // }
 
 // class SetEncoder(json.JSONEncoder){
-//     def default(self, obj){
+//     def default(obj){
 //         if isinstance(obj, set){
 //             return list(obj)
 //         return super().default(obj)

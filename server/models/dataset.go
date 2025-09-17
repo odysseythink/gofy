@@ -823,50 +823,61 @@ type DatasetKeywordTable struct {
 func (DatasetKeywordTable) TableName() string {
 	return "dataset_keyword_tables"
 }
-        // class SetDecoder(json.JSONDecoder):
-        //     def __init__(self, *args, **kwargs):
-        //         super().__init__(object_hook=self.object_hook, *args, **kwargs)
 
-        //     def object_hook(self, dct):
-        //         if isinstance(dct, dict):
-        //             for keyword, node_idxs in dct.items():
-        //                 if isinstance(node_idxs, list):
-        //                     dct[keyword] = set(node_idxs)
-        //         return dct
-func (kt *DatasetKeywordTable)KeywordTableDict()map[string]any{
-        // get dataset
-        dataset := new(Dataset)
-		err := dbengine.Instance().DB.Model(&Dataset{}).Where("id=?", kt.DatasetID).First(dataset).Error
+// class SetDecoder(json.JSONDecoder):
+//     def __init__(self, *args, **kwargs):
+//         super().__init__(object_hook=self.object_hook, *args, **kwargs)
+
+// def object_hook(self, dct):
+//
+//	if isinstance(dct, dict):
+//	    for keyword, node_idxs in dct.items():
+//	        if isinstance(node_idxs, list):
+//	            dct[keyword] = set(node_idxs)
+//	return dct
+func (kt *DatasetKeywordTable) KeywordTableDict() map[string]any {
+	// get dataset
+	dataset := new(Dataset)
+	err := dbengine.Instance().DB.Model(&Dataset{}).Where("id=?", kt.DatasetID).First(dataset).Error
+	if err != nil {
+		mlog.Errorf("get Dataset failed:%v", err)
+		dataset = nil
+	}
+	if dataset == nil {
+		return nil
+	}
+	if kt.DataSourceType == "database" {
+		if kt.KeywordTable != "" {
+			var dict map[string]any
+			err := json.Unmarshal([]byte(kt.KeywordTable), &dict)
+			if err != nil {
+				mlog.Errorf("json.Unmarshal %s to dict failed:%v", kt.KeywordTable, err)
+				return nil
+			}
+			return dict
+		}
+	} else {
+		file_key := filepath.Join("keyword_files", dataset.TenantID, kt.DatasetID+".txt")
+		bindata, err := os.ReadFile(file_key)
 		if err != nil {
-			mlog.Errorf("get Dataset failed:%v", err)
-			dataset = nil
+			mlog.Errorf("load keyword table from file %s Failed:%v", file_key, err)
+			return nil
 		}
-        if  dataset == nil{
-            return nil
+		if len(bindata) > 0 {
+			var dict map[string]any
+			err := json.Unmarshal(bindata, &dict)
+			if err != nil {
+				mlog.Errorf("json.Unmarshal %s to dict failed:%v", string(bindata), err)
+				return nil
 			}
-        if kt.DataSourceType == "database"{
-			if kt.KeywordTable != "" {
-				var dict map[string]any
-				err := json.Unmarshal([]byte(kt.KeywordTable), &dict)
-				if err != nil {
-					mlog.Errorf("json.Unmarshal %s to dict failed:%v", kt.KeywordTable, err)
-					return nil
-				}
-				return dict
-			}
-        }else{
-            file_key := filepath.Join("keyword_files" , dataset.TenantID , kt.DatasetID + ".txt")
-			os.ReadFile(file_key)
-            try:
-                keyword_table_text = storage.load_once(file_key)
-                if keyword_table_text:
-                    return json.loads(keyword_table_text.decode("utf-8"), cls=SetDecoder)
-                return None
-            except Exception as e:
-                logging.exception("Failed to load keyword table from file: %s", file_key)
-                return None
+			return dict
+		} else {
+			return nil
 		}
+	}
+	return nil
 }
+
 // Embedding [...]
 type Embedding struct {
 	ID           string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`

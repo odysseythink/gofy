@@ -2,7 +2,7 @@ package mapstruct
 
 import "mlib.com/mlog"
 
-func Get[T int | bool | string | map[string]any | float64 | []map[string]any | []string | map[string][]string](val map[string]any, key string, default_val T) T {
+func Get[T int | bool | string | map[string]any | float64 | []map[string]any | []string | map[string][]string | [][]string](val map[string]any, key string, default_val T) T {
 	if _, ok := val[key]; ok {
 		if _, ok := val[key].(T); ok {
 			return val[key].(T)
@@ -71,6 +71,29 @@ func Get[T int | bool | string | map[string]any | float64 | []map[string]any | [
 								mlog.Warningf("val[%s]=%#v is not map[string][]string", key, val[key])
 								return default_val
 							}
+						}
+					}
+					return any(ret).(T)
+				}
+			case [][]string:
+				if _, ok := val[key].([]any); ok {
+					ret := make([][]string, len(val[key].([]any)))
+					for idx, sv := range val[key].([]any) {
+						if _, ok := sv.([]string); ok {
+							ret[idx] = sv.([]string)
+						} else if _, ok := sv.([]any); ok {
+							ret[idx] = make([]string, 0)
+							for _, ssv := range sv.([]any) {
+								if _, ok := ssv.(string); ok {
+									ret[idx] = append(ret[idx], ssv.(string))
+								} else {
+									mlog.Warningf("val[%s]=%#v is not string slice", key, val[key])
+									return default_val
+								}
+							}
+						} else {
+							mlog.Warningf("val[%s]=%#v is not map slice", key, val[key])
+							return default_val
 						}
 					}
 					return any(ret).(T)

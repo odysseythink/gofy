@@ -30,27 +30,27 @@ func NewJiebaKeywordTableHandler() *JiebaKeywordTableHandler {
 	})
 	return &JiebaKeywordTableHandler{jieba: jiebaInstance}
 }
-func (h *JiebaKeywordTableHandler) ExtractKeywords(text string, maxKeywordsPerChunk int) map[string]struct{} {
+func (h *JiebaKeywordTableHandler) ExtractKeywords(text string, maxKeywordsPerChunk int) []string {
 	tags := h.jieba.ExtractWithWeight(text, maxKeywordsPerChunk)
-	keywords := make(map[string]struct{}, len(tags))
+	keywords := make([]string, len(tags))
 	for _, tw := range tags {
-		keywords[tw.Word] = struct{}{}
+		keywords = append(keywords, tw.Word)
 	}
 	return h._expand_tokens_with_subtokens(keywords)
 }
 
-func (h *JiebaKeywordTableHandler) _expand_tokens_with_subtokens(tokens map[string]struct{}) map[string]struct{} {
-	result := make(map[string]struct{}, len(tokens)*2)
+func (h *JiebaKeywordTableHandler) _expand_tokens_with_subtokens(tokens []string) []string {
+	result := make([]string, len(tokens)*2)
 	re := regexp.MustCompile(`\w+`)
 
-	for tok := range tokens {
-		result[tok] = struct{}{}
+	for _, tok := range tokens {
+		result = append(result, tok)
 		sub := re.FindAllString(tok, -1)
 		if len(sub) > 1 {
 			for _, s := range sub {
 				s = strings.ToLower(s)
 				if !slices.Contains(STOPWORDS, s) {
-					result[s] = struct{}{}
+					result = append(result, s)
 				}
 			}
 		}

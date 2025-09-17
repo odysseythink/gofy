@@ -14,12 +14,12 @@ import (
 )
 
 type Keywordor interface {
-	Create(texts []*ragentities.Document, args ...any) Keywordor
-	AddTexts(texts []*ragentities.Document, args ...any)
+	Create(texts []*ragentities.Document, args map[string]any) Keywordor
+	AddTexts(texts []*ragentities.Document, args map[string]any)
 	TextExists(id string) bool
 	DeleteByIDs(ids []string)
 	Delete()
-	Search(query string, args ...any) []*ragentities.Document
+	Search(query string, args map[string]any) []*ragentities.Document
 }
 
 type BaseKeyword struct {

@@ -3,34 +3,82 @@ package datasource
 import (
 	"context"
 	"fmt"
+	"strings"
 	"sync"
 
 	"golang.org/x/sync/errgroup"
-	"mlib.com/gofy/server/core/exceptions"
+	jiebakeyword "mlib.com/gofy/server/core/rag/datasource/keyword/jieba"
 	ragentities "mlib.com/gofy/server/entities/rag"
+	retrievalenumtypes "mlib.com/gofy/server/enum_types/rag/retrieval"
 	"mlib.com/gofy/server/models"
 )
 
 type RetrievalService struct {
 }
 
-func (s *RetrievalService) keyword_search(
-        dataset *models.Dataset,
-        query string,
-        top_k int,
-        all_documents []*ragentities.Document,
+func escape_query_for_search(query string) string {
+	return strings.ReplaceAll(query, `"`, `\"`)
+}
+func (s *RetrievalService) KeywordSearch(
+	dataset *models.Dataset,
+	query string,
+	top_k int,
+	exps []error,
+	document_ids_filter []string,
+) []*ragentities.Document {
+	keyword := jiebakeyword.New(dataset)
+
+	documents := keyword.Search(
+		escape_query_for_search(query), map[string]any{"top_k": top_k, "document_ids_filter": document_ids_filter},
+	)
+	return documents
+}
+
+func (s *RetrievalService) EmbeddingSearch(
+	dataset *models.Dataset,
+	query string,
+	top_k int,
+        score_threshold float64,
+        reranking_model map[string]any,
+        retrieval_method string,
         exps []error,
         document_ids_filter []string,
     ){
-                keyword = Keyword(dataset=dataset)
 
-                documents = keyword.search(
-                    cls.escape_query_for_search(query), top_k=top_k, document_ids_filter=document_ids_filter
+
+                vector = Vector(dataset=dataset)
+                documents = vector.search_by_vector(
+                    query,
+                    search_type="similarity_score_threshold",
+                    top_k=top_k,
+                    score_threshold=score_threshold,
+                    filter={"group_id": [dataset.id]},
+                    document_ids_filter=document_ids_filter,
                 )
-                all_documents.extend(documents)
-            except Exception as e:
-                exceptions.append(str(e))
+
+                if documents:
+                    if (
+                        reranking_model
+                        and reranking_model.get("reranking_model_name")
+                        and reranking_model.get("reranking_provider_name")
+                        and retrieval_method == RetrievalMethod.SEMANTIC_SEARCH.value
+                    ):
+                        data_post_processor = DataPostProcessor(
+                            str(dataset.tenant_id), str(RerankMode.RERANKING_MODEL.value), reranking_model, None, False
+                        )
+                        all_documents.extend(
+                            data_post_processor.invoke(
+                                query=query,
+                                documents=documents,
+                                score_threshold=score_threshold,
+                                top_n=len(documents),
+                            )
+                        )
+                    else:
+                        all_documents.extend(documents)
 }
+}
+
 // Retrieve 等价于 Python retrieve
 func (s *RetrievalService) Retrieve(
 	ctx context.Context,
@@ -67,11 +115,11 @@ func (s *RetrievalService) Retrieve(
 	// 1. keyword search
 	if retrieval_method == "keyword_search" {
 		errGroup.Go(func() error {
-			docs, e := s.keywordSearch(ctx, dataset_id, query, topK, documentIDsFilter)
-			if e != nil {
-				return e
-			}
+			docs := s.KeywordSearch(dataset, query, topK, nil, document_ids_filter)
 			mu.Lock()
+			if all_documents == nil {
+				all_documents = make([]*ragentities.Document, 0)
+			}
 			all_documents = append(all_documents, docs...)
 			mu.Unlock()
 			return nil
@@ -79,7 +127,7 @@ func (s *RetrievalService) Retrieve(
 	}
 
 	// 2. semantic search
-	if isSupportSemanticSearch(retrieval_method) {
+	if retrievalenumtypes.RetrievalMethodType(retrieval_method).IsSupportSemanticSearch() {
 		errGroup.Go(func() error {
 			docs, e := s.embeddingSearch(ctx, dataset_id, query, topK, threshold, rerankingModel, documentIDsFilter)
 			if e != nil {

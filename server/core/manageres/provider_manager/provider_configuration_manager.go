@@ -18,7 +18,7 @@ import (
 	modelentities "mlib.com/gofy/server/entities/model"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	providerentities "mlib.com/gofy/server/entities/provider"
-	coreenumtypes "mlib.com/gofy/server/enum_types/core"
+	modelenumtypes "mlib.com/gofy/server/enum_types/model"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
 	"mlib.com/gofy/server/models"
@@ -522,7 +522,7 @@ func (mgr *ProviderConfigurationManager) GetProviderModels(
 		if only_active {
 			var new_provider_models []*modelentities.ModelWithProviderEntity
 			for _, m := range provider_models {
-				if m.Status == coreenumtypes.ModelStatus_ACTIVE {
+				if m.Status == modelenumtypes.ModelStatus_ACTIVE {
 					new_provider_models = append(new_provider_models, m)
 				}
 			}
@@ -572,12 +572,12 @@ func (mgr *ProviderConfigurationManager) _get_system_provider_models(
 	provider_models := []*modelentities.ModelWithProviderEntity{}
 	for _, model_type := range model_types {
 		for _, m := range provider_instance.Models(provider_instance, model_type) {
-			status := coreenumtypes.ModelStatus_ACTIVE
+			status := modelenumtypes.ModelStatus_ACTIVE
 			if _, ok := model_setting_map[m.ModelType]; ok {
 				if _, ok := model_setting_map[m.ModelType][m.Model]; ok {
 					model_setting := model_setting_map[m.ModelType][m.Model]
 					if !model_setting.Enabled {
-						status = coreenumtypes.ModelStatus_DISABLED
+						status = modelenumtypes.ModelStatus_DISABLED
 					}
 				}
 			}
@@ -642,12 +642,12 @@ func (mgr *ProviderConfigurationManager) _get_system_provider_models(
 						if !slices.Contains(model_types, custom_model_schema.ModelType) {
 							continue
 						}
-						status := coreenumtypes.ModelStatus_ACTIVE
+						status := modelenumtypes.ModelStatus_ACTIVE
 						if _, ok := model_setting_map[custom_model_schema.ModelType]; ok {
 							if _, ok := model_setting_map[custom_model_schema.ModelType][custom_model_schema.Model]; ok {
 								model_setting := model_setting_map[custom_model_schema.ModelType][custom_model_schema.Model]
 								if !model_setting.Enabled {
-									status = coreenumtypes.ModelStatus_DISABLED
+									status = modelenumtypes.ModelStatus_DISABLED
 								}
 							}
 						}
@@ -678,9 +678,9 @@ func (mgr *ProviderConfigurationManager) _get_system_provider_models(
 		}
 		for idx, model := range provider_models {
 			if model.ModelType == modelruntimeenumtypes.Model_LLM && !slices.Contains(restrict_model_names, model.Model) {
-				model.Status = coreenumtypes.ModelStatus_NO_PERMISSION
+				model.Status = modelenumtypes.ModelStatus_NO_PERMISSION
 			} else if !quota_configuration.IsValid {
-				model.Status = coreenumtypes.ModelStatus_QUOTA_EXCEEDED
+				model.Status = modelenumtypes.ModelStatus_QUOTA_EXCEEDED
 			}
 			provider_models[idx] = model
 		}
@@ -715,16 +715,16 @@ func (pm *ProviderConfigurationManager) _get_custom_provider_models(
 		}
 		models := provider_instance.Models(provider_instance, model_type)
 		for _, m := range models {
-			status := coreenumtypes.ModelStatus_NO_CONFIGURE
+			status := modelenumtypes.ModelStatus_NO_CONFIGURE
 			if len(credentials) > 0 {
-				status = coreenumtypes.ModelStatus_ACTIVE
+				status = modelenumtypes.ModelStatus_ACTIVE
 			}
 			load_balancing_enabled := false
 			if _, ok := model_setting_map[m.ModelType]; ok {
 				if _, ok := model_setting_map[m.ModelType][m.Model]; ok {
 					model_setting := model_setting_map[m.ModelType][m.Model]
 					if !model_setting.Enabled {
-						status = coreenumtypes.ModelStatus_DISABLED
+						status = modelenumtypes.ModelStatus_DISABLED
 					}
 					if len(model_setting.LoadBalancingConfigs) > 1 {
 						load_balancing_enabled = true
@@ -782,13 +782,13 @@ func (pm *ProviderConfigurationManager) _get_custom_provider_models(
 		if custom_model_schema == nil {
 			continue
 		}
-		status := coreenumtypes.ModelStatus_ACTIVE
+		status := modelenumtypes.ModelStatus_ACTIVE
 		load_balancing_enabled := false
 		if _, ok := model_setting_map[custom_model_schema.ModelType]; ok {
 			if _, ok := model_setting_map[custom_model_schema.ModelType][custom_model_schema.Model]; ok {
 				model_setting := model_setting_map[custom_model_schema.ModelType][custom_model_schema.Model]
 				if !model_setting.Enabled {
-					status = coreenumtypes.ModelStatus_DISABLED
+					status = modelenumtypes.ModelStatus_DISABLED
 				}
 				if len(model_setting.LoadBalancingConfigs) > 1 {
 					load_balancing_enabled = true

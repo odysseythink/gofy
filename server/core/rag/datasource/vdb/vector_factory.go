@@ -5,15 +5,17 @@ import (
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/rag/embedding"
 	dbengine "mlib.com/gofy/server/db_engine"
+	ragentities "mlib.com/gofy/server/entities/rag"
+	vectorenumtypes "mlib.com/gofy/server/enum_types/rag/vector"
 	"mlib.com/gofy/server/models"
 	"mlib.com/mlog"
 )
 
 type AbstractVectorFactory interface {
-	InitVector(dataset *models.Dataset, attributes []any, embeddings embedding.IEmbeddings) BaseVector
+	InitVector(dataset *models.Dataset, attributes []any, embeddings embedding.IEmbeddings) ragentities.IVector
 }
 
-func GenIndexStructDict(vector_type VectorType, collection_name string) map[string]any {
+func GenIndexStructDict(vector_type vectorenumtypes.VectorType, collection_name string) map[string]any {
 	return map[string]any{"type": vector_type, "vector_store": map[string]any{"class_prefix": collection_name}}
 }
 
@@ -21,7 +23,7 @@ type Vector struct {
 	_dataset          *models.Dataset
 	_embeddings       embedding.IEmbeddings
 	_attributes       []string
-	_vector_processor BaseVector
+	_vector_processor ragentities.IVector
 }
 
 func NewVector(dataset *models.Dataset, attributes []string) *Vector {
@@ -36,7 +38,7 @@ func NewVector(dataset *models.Dataset, attributes []string) *Vector {
 	v._vector_processor = v._init_vector()
 	return v
 }
-func (v *Vector) _init_vector() BaseVector {
+func (v *Vector) _init_vector() ragentities.IVector {
 	vector_type := confy.GetWithDefault[string]("vector_store", "")
 	index_struct_dict := v._dataset.IndexStructDict()
 	if len(index_struct_dict) > 0 {
@@ -54,7 +56,7 @@ func (v *Vector) _init_vector() BaseVector {
 				whitelist = nil
 			}
 			if whitelist != nil {
-				vector_type = string(Vector_TIDB_ON_QDRANT)
+				vector_type = string(vectorenumtypes.Vector_TIDB_ON_QDRANT)
 			}
 		}
 	}

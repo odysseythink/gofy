@@ -1,27 +1,25 @@
-package vdb
+package rag
 
-import (
-	ragentities "mlib.com/gofy/server/entities/rag"
-)
-
-type BaseVector interface {
+type IVector interface {
 	GetType() string
-	Create(texts []*ragentities.Document, embeddings [][]float64, kwargs ...any)
-	AddTexts(documents []*ragentities.Document, embeddings [][]float64, kwargs ...any)
+	Create(texts []*Document, embeddings [][]float64, kwargs ...any)
+	AddTexts(documents []*Document, embeddings [][]float64, kwargs ...any)
 	TextExists(id string) bool
 	DeleteByIDs(ids []string)
 	GetIDsByMetadataField(key string, value string)
 	DeleteByMetadataField(key string, value string)
-	SearchByVector(query_vector []float64, kwargs ...any) []*ragentities.Document
-	SearchByFullText(query string, kwargs ...any) []*ragentities.Document
+	SearchByVector(query_vector []float64, kwargs ...any) []*Document
+	SearchByFullText(query string, kwargs ...any) []*Document
 	Delete()
+	FilterDuplicateTexts(v IVector, texts []*Document) []*Document
+	GetUUIDs(texts []*Document) []string
 }
-type BaseVectorImpl struct {
+type BaseVector struct {
 	CollectionNname string `json:"collection_name"`
 }
 
-func (bv *BaseVectorImpl) _filter_duplicate_texts(v BaseVector, texts []*ragentities.Document) []*ragentities.Document {
-	new_text := []*ragentities.Document{}
+func (bv *BaseVector) FilterDuplicateTexts(v IVector, texts []*Document) []*Document {
+	new_text := []*Document{}
 	for _, text := range texts {
 		if len(text.Metadata) > 0 {
 			if _, ok := text.Metadata["doc_id"]; ok {
@@ -38,7 +36,7 @@ func (bv *BaseVectorImpl) _filter_duplicate_texts(v BaseVector, texts []*ragenti
 	return new_text
 }
 
-func (bv *BaseVectorImpl) _get_uuids(texts []*ragentities.Document) []string {
+func (bv *BaseVector) GetUUIDs(texts []*Document) []string {
 	ids := []string{}
 	for _, text := range texts {
 		if len(text.Metadata) > 0 {

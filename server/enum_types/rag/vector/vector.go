@@ -1,4 +1,4 @@
-package vdb
+package vector
 
 type VectorType string
 

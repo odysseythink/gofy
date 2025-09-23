@@ -12,7 +12,7 @@ import (
 
 // Account [...]
 type Account struct {
-	ID                string                  `gorm:"column:id;type:varchar(36);not null" json:"id"`
+	Model
 	Name              string                  `gorm:"column:name;type:varchar(255);not null" json:"name"`
 	Email             string                  `gorm:"column:email;type:varchar(255);not null" json:"email"`
 	Password          string                  `gorm:"column:password;type:varchar(255)" json:"password"`
@@ -25,8 +25,6 @@ type Account struct {
 	LastLoginIP       string                  `gorm:"column:last_login_ip;type:varchar(255)" json:"last_login_ip"`
 	Status            enumtypes.AccountStatus `gorm:"column:status;type:varchar(16);default:active" json:"status"`
 	InitializedAt     *time.Time              `gorm:"column:initialized_at;type:timestamp" json:"initialized_at"`
-	CreatedAt         *time.Time              `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt         *time.Time              `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
 	LastActiveAt      *time.Time              `gorm:"column:last_active_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"last_active_at"`
 	RememberMe        bool                    `json:"remember_me" form:"-" gorm:"-:all"`
 	InviteToken       string                  `json:"invite_token" form:"-" gorm:"-:all"`
@@ -132,13 +130,11 @@ func (acc *Account) IsDatasetOperator() bool {
 
 // Tenant [...]
 type Tenant struct {
-	ID               string                 `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	Model
 	Name             string                 `gorm:"column:name;type:varchar(255);not null" json:"name"`
 	EncryptPublicKey string                 `gorm:"column:encrypt_public_key;type:text" json:"encrypt_public_key"`
 	Plan             string                 `gorm:"column:plan;type:varchar(255);default:basic" json:"plan"`
 	Status           enumtypes.TenantStatus `gorm:"column:status;type:varchar(255);default:normal" json:"status"`
-	CreatedAt        *time.Time             `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt        *time.Time             `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
 	CustomConfig     string                 `gorm:"column:custom_config;type:text" json:"custom_config"`
 	CurrentRole      string                 `gorm:"-:all" json:"role"`
 	Current          bool                   `json:"current" form:"-" gorm:"-:all"`
@@ -180,16 +176,14 @@ func (t *Tenant) SetCustomConfigDict(value map[string]any) {
 
 // TenantAccountJoin [...]
 type TenantAccountJoin struct {
-	ID       string `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	Model
 	TenantID string `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
 	// JoinTenant *Tenant `json:"tenant" form:"tenant" gorm:"foreignKey:TenantID;references:ID;"`
 	AccountID string `gorm:"column:account_id;type:varchar(36);not null" json:"account_id"`
 	// JoinAccount *Account   `json:"account" form:"account" gorm:"foreignKey:AccountID;references:ID;"`
-	Role      string     `gorm:"column:role;type:varchar(16);default:normal" json:"role"`
-	InvitedBy string     `gorm:"column:invited_by;type:varchar(36)" json:"invited_by"`
-	CreatedAt *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
-	Current   bool       `gorm:"column:current;type:tinyint(1);not null;default:0" json:"current"`
+	Role      string `gorm:"column:role;type:varchar(16);default:normal" json:"role"`
+	InvitedBy string `gorm:"column:invited_by;type:varchar(36)" json:"invited_by"`
+	Current   bool   `gorm:"column:current;type:tinyint(1);not null;default:0" json:"current"`
 }
 
 // TableName get sql table name.获取数据库表名
@@ -199,13 +193,11 @@ func (TenantAccountJoin) TableName() string {
 
 // AccountIntegrate [...]
 type AccountIntegrate struct {
-	ID             string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
-	AccountID      string     `gorm:"column:account_id;type:varchar(36);not null" json:"account_id"`
-	Provider       string     `gorm:"column:provider;type:varchar(16);not null" json:"provider"`
-	OpenID         string     `gorm:"column:open_id;type:varchar(255);not null" json:"open_id"`
-	EncryptedToken string     `gorm:"column:encrypted_token;type:varchar(255);not null" json:"encrypted_token"`
-	CreatedAt      *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt      *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+	Model
+	AccountID      string `gorm:"column:account_id;type:varchar(36);not null" json:"account_id"`
+	Provider       string `gorm:"column:provider;type:varchar(16);not null" json:"provider"`
+	OpenID         string `gorm:"column:open_id;type:varchar(255);not null" json:"open_id"`
+	EncryptedToken string `gorm:"column:encrypted_token;type:varchar(255);not null" json:"encrypted_token"`
 }
 
 // TableName get sql table name.获取数据库表名
@@ -259,7 +251,7 @@ func (TenantPluginPermission) TableName() string {
 }
 
 type TenantPluginAutoUpgradeStrategy struct {
-	ID                string                                         `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	Model
 	TenantID          string                                         `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
 	StrategySetting   TenantPluginAutoUpgradeStrategySettingType     `gorm:"column:strategy_setting;type:varchar(16);not null" json:"strategy_setting"`
 	UpgradeTimeOfDay  int                                            `gorm:"column:upgrade_time_of_day;type:int;not null" json:"upgrade_time_of_day"` // seconds of the day
@@ -268,8 +260,6 @@ type TenantPluginAutoUpgradeStrategy struct {
 	ExcludePluginList []string                                       `gorm:"-" json:"exclude_plugin_list"`
 	IncludePlugins    datatypes.JSON                                 `gorm:"column:include_plugins;type:json" json:"include_plugins"` // plugin_id (author/name)
 	IncludePluginList []string                                       `gorm:"-" json:"include_plugin_list"`
-	CreatedAt         *time.Time                                     `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt         *time.Time                                     `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
 
 func (TenantPluginAutoUpgradeStrategy) TableName() string {

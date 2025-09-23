@@ -165,7 +165,7 @@ func toURL(f *File) (string, error) {
 // 		TransferMethod: FILE_TRANSFER_METHOD_REMOTE_URL,
 // 		RemoteURL:     "https://example.com/file.jpg",
 // 		StorageKey:    "path/to/storage",
-// 		RelatedID:     uuid.New().String(),
+// 		RelatedID:     uuid.NewV4().String(),
 // 		Extension:     ".jpg",
 // 	}
 

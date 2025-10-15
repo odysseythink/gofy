@@ -31,6 +31,7 @@ func (c *Cluster) Init(args ...any) error {
 		mlog.Errorf("unsupported provider=%s", provider_name)
 		return fmt.Errorf("unsupported provider=%s", provider_name)
 	}
-	c.subsMgr.Register(&c.server, []mrun.ModuleMgrOption{mrun.NewPriorityModuleMgrOption(1)}, c.service_discovery_provider, args[0])
+	new_args := append([]any{c.service_discovery_provider}, args...)
+	c.subsMgr.Register(&c.server, []mrun.ModuleMgrOption{mrun.NewPriorityModuleMgrOption(1)}, new_args...)
 	return c.subsMgr.Init()
 }

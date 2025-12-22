@@ -27,7 +27,7 @@ import (
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/utils"
 	"mlib.com/mlog"
-	"mlib.com/mrun"
+	"mlib.com/mrun/fleets"
 )
 
 type GraphEngine struct {
@@ -257,7 +257,7 @@ func (ge *GraphEngine) _run_parallel_branches(
 				continue
 			}
 			futures.Add(1)
-			mrun.WorkerSubmit(func() {
+			fleets.Submit(func() {
 				parallel_num++
 				ge._run_parallel_node(q, parallel_id, edge.TargetNodeID, in_parallel_id, parallel_start_node_id, handle_exceptions)
 				futures.Done()

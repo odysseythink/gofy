@@ -275,7 +275,7 @@ func (n *ParameterExtractorNode) _get_function_calling_prompt_template(
 	memory_str := ""
 	instruction := variable_pool.ConvertTemplate(node_data.Instruction).Text()
 
-	if mem != nil && node_data.Memory != nil && node_data.Memory.Window != nil {
+	if mem != nil && node_data.Memory != nil {
 		memory_str = mem.GetHistoryPromptText("", "", max_token_limit, node_data.Memory.Window.Size)
 	}
 	if model_mode == modelruntimeentities.LLMMode_CHAT {
@@ -304,7 +304,7 @@ func (n *ParameterExtractorNode) _get_prompt_engineering_prompt_template(
 	memory_str := ""
 	instruction := variable_pool.ConvertTemplate(node_data.Instruction).Text()
 
-	if mem != nil && node_data.Memory != nil && node_data.Memory.Window != nil {
+	if mem != nil && node_data.Memory != nil {
 		memory_str = mem.GetHistoryPromptText("", "", max_token_limit, node_data.Memory.Window.Size)
 	}
 	if model_mode == modelruntimeentities.LLMMode_CHAT {

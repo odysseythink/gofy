@@ -5,7 +5,6 @@ import (
 	"iter"
 
 	"mlib.com/confy"
-	achatgenerator "mlib.com/gofy/server/core/app/generatores/advanced_chat"
 	wfgenerator "mlib.com/gofy/server/core/app/generatores/workflow"
 	"mlib.com/gofy/server/core/exceptions"
 	appenumtypes "mlib.com/gofy/server/enum_types/app"
@@ -119,27 +118,7 @@ func (s *AppGenerateService) Generate(
 		}
 
 	case models.AppMode_ADVANCED_CHAT:
-		wf := s.getWorkflow(app_model, invoke_from)
-		switch realuser := user.(type) {
-		case *models.Account:
-			return achatgenerator.New[*models.Account]().Generate(
-				app_model,
-				wf,
-				realuser,
-				args,
-				invoke_from,
-				streaming,
-			)
-		case *models.EndUser:
-			return achatgenerator.New[*models.EndUser]().Generate(
-				app_model,
-				wf,
-				realuser,
-				args,
-				invoke_from,
-				streaming,
-			)
-		}
+
 	case models.AppMode_AGENT_CHAT:
 
 	}

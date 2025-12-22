@@ -4,6 +4,7 @@ import (
 	"time"
 
 	basenodesentities "mlib.com/gofy/server/entities/nodes/base"
+	ragentities "mlib.com/gofy/server/entities/rag"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 )
 
@@ -113,8 +114,8 @@ func (e *NodeRunStreamChunkEvent) EventName() string {
 // NodeRunRetrieverResourceEvent is triggered when a node run retrieves resources.
 type NodeRunRetrieverResourceEvent struct {
 	*BaseNodeEvent
-	RetrieverResources []map[string]any `json:"retriever_resources"`
-	Context            string           `json:"context"`
+	RetrieverResources []*ragentities.RetrievalSourceMetadata `json:"retriever_resources"`
+	Context            string                                 `json:"context"`
 }
 
 func (e *NodeRunRetrieverResourceEvent) EventName() string {

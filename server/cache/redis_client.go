@@ -1347,6 +1347,45 @@ func (c *Cache) ZAdd(key string, member interface{}, score float64) {
 	// }
 }
 
+func (c *Cache) ZRemRangeByScore(key string, min, max string) {
+	if c.rdsCli == nil {
+		mlog.Error("redis don't have cluster client")
+		// return fmt.Errorf("redis don't have cluster client")
+		return
+	}
+	if key == "" {
+		mlog.Error("invalid arg")
+		// return fmt.Errorf("invalid arg")
+		return
+	}
+	// if c.rdsCli != nil {
+	cmd := c.rdsCli.ZRemRangeByScore(context.Background(), key, min, max)
+	if cmd.Err() != nil {
+		mlog.Errorf("redis ZRemRangeByScore(%s) failed:%v", key, cmd.Err())
+		// return fmt.Errorf("redis ZAdd(%s) failed:%v", key, cmd.Err())
+		return
+	}
+}
+func (c *Cache) ZCard(key string) int64 {
+	if c.rdsCli == nil {
+		mlog.Error("redis don't have cluster client")
+		// return fmt.Errorf("redis don't have cluster client")
+		return 0
+	}
+	if key == "" {
+		mlog.Error("invalid arg")
+		// return fmt.Errorf("invalid arg")
+		return 0
+	}
+	// if c.rdsCli != nil {
+	cmd := c.rdsCli.ZCard(context.Background(), key)
+	if cmd.Err() != nil {
+		mlog.Errorf("redis ZCard(%s) failed:%v", key, cmd.Err())
+		// return fmt.Errorf("redis ZAdd(%s) failed:%v", key, cmd.Err())
+		return 0
+	}
+	return cmd.Val()
+}
 func (c *Cache) SAdd(key string, members ...interface{}) {
 	if c.rdsCli == nil {
 		mlog.Error("redis don't have cluster client")

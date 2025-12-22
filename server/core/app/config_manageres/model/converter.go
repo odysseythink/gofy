@@ -7,7 +7,7 @@ import (
 	providermanager "mlib.com/gofy/server/core/manageres/provider_manager"
 	appconfigentities "mlib.com/gofy/server/entities/app/config"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	coreenumtypes "mlib.com/gofy/server/enum_types/core"
+	modelenumtypes "mlib.com/gofy/server/enum_types/model"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 )
 
@@ -52,11 +52,11 @@ func (converter *ModelConfigConverter) Convert(app_config *appconfigentities.Eas
 	if provider_model == nil {
 		panic(exceptions.NewValueError(fmt.Sprintf("Model {%s} not exist.", model_name)))
 	}
-	if provider_model.Status == coreenumtypes.ModelStatus_NO_CONFIGURE {
+	if provider_model.Status == modelenumtypes.ModelStatus_NO_CONFIGURE {
 		panic(exceptions.NewProviderTokenNotInitError(fmt.Sprintf("Model {%s} credentials is not initialized.", model_name)))
-	} else if provider_model.Status == coreenumtypes.ModelStatus_NO_PERMISSION {
+	} else if provider_model.Status == modelenumtypes.ModelStatus_NO_PERMISSION {
 		panic(exceptions.NewModelCurrentlyNotSupportError(fmt.Sprintf("Gofy Hosted OpenAI {%s} currently not support.", model_name)))
-	} else if provider_model.Status == coreenumtypes.ModelStatus_QUOTA_EXCEEDED {
+	} else if provider_model.Status == modelenumtypes.ModelStatus_QUOTA_EXCEEDED {
 		panic(exceptions.NewQuotaExceededError(fmt.Sprintf("Model provider {%s} quota exceeded.", provider_name)))
 	}
 	// model config

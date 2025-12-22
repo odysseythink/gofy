@@ -4,6 +4,7 @@ import (
 	"time"
 
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	ragentities "mlib.com/gofy/server/entities/rag"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
 	"mlib.com/gofy/server/models"
 )
@@ -39,8 +40,8 @@ func (e *RunStreamChunkEvent) Event() NodeEventType {
 }
 
 type RunRetrieverResourceEvent struct {
-	RetrieverResources []map[string]any `json:"retriever_resources"`
-	Context            string           `json:"context"`
+	RetrieverResources []*ragentities.RetrievalSourceMetadata `json:"retriever_resources"`
+	Context            string                                 `json:"context"`
 }
 
 func (e *RunRetrieverResourceEvent) Event() NodeEventType {

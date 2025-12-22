@@ -26,6 +26,7 @@ import (
 	nodesevententities "mlib.com/gofy/server/entities/nodes/event"
 	llmnodesentities "mlib.com/gofy/server/entities/nodes/llm"
 	promptentities "mlib.com/gofy/server/entities/prompt"
+	ragentities "mlib.com/gofy/server/entities/rag"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
 	modelenumtypes "mlib.com/gofy/server/enum_types/model"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
@@ -492,33 +493,29 @@ func InvokeLLM(
 	return _handle_invoke_result(node_id, invoke_result)
 }
 
-func _convert_to_original_retriever_resource(context_dict map[string]any) map[string]any {
+func _convert_to_original_retriever_resource(context_dict map[string]any) *ragentities.RetrievalSourceMetadata {
 	if _, ok := context_dict["metadata"]; ok {
 		if metadata, ok := context_dict["metadata"].(map[string]any); ok {
 			if _, ok := metadata["_source"]; ok {
 				if _, ok := metadata["_source"].(string); ok && metadata["_source"].(string) == "knowledge" {
-					return map[string]any{
-						"position":         metadata["position"],
-						"dataset_id":       metadata["dataset_id"],
-						"dataset_name":     metadata["dataset_name"],
-						"document_id":      metadata["document_id"],
-						"document_name":    metadata["document_name"],
-						"data_source_type": metadata["document_data_source_type"],
-						"segment_id":       metadata["segment_id"],
-						"retriever_from":   metadata["retriever_from"],
-						"score":            metadata["score"],
-						"hit_count":        metadata["segment_hit_count"],
-						"word_count":       metadata["segment_word_count"],
-						"segment_position": metadata["segment_position"],
-						"index_node_hash":  metadata["segment_index_node_hash"],
-						"content":          context_dict["content"],
-						"page":             metadata["page"],
+					rsm := &ragentities.RetrievalSourceMetadata{}
+					bindata, _ := json.Marshal(metadata)
+					err := json.Unmarshal(bindata, rsm)
+					if err != nil {
+						mlog.Error("json unmarshal failed:%v", err)
+						return nil
 					}
+
+					rsm.DataSourceType = metadata["document_data_source_type"].(string)
+					rsm.HitCount = metadata["segment_hit_count"].(int)
+					rsm.WordCount = metadata["segment_word_count"].(int)
+					rsm.IndexNodeHash = metadata["segment_index_node_hash"].(string)
+					return rsm
+
 				}
 			}
 		}
 	}
-
 	return nil
 }
 
@@ -539,7 +536,7 @@ func _fetch_context(n *LLMNode, node_data *llmnodesentities.LLMNodeData) iter.Se
 				}
 			case *variables.ArrayStringVariable:
 				context_str := ""
-				original_retriever_resource := []map[string]any{}
+				original_retriever_resource := []*ragentities.RetrievalSourceMetadata{}
 				for _, item := range real_segment.Value {
 					context_str += item + "\n"
 				}
@@ -548,7 +545,7 @@ func _fetch_context(n *LLMNode, node_data *llmnodesentities.LLMNodeData) iter.Se
 				}
 			case *variables.ArrayObjectVariable:
 				context_str := ""
-				original_retriever_resource := []map[string]any{}
+				original_retriever_resource := []*ragentities.RetrievalSourceMetadata{}
 				for _, item := range real_segment.Value {
 					if _, ok := item["content"]; !ok {
 						mlog.Errorf("Invalid context structure: %#v", item)
@@ -563,7 +560,7 @@ func _fetch_context(n *LLMNode, node_data *llmnodesentities.LLMNodeData) iter.Se
 					context_str += item["content"].(string) + "\n"
 
 					retriever_resource := _convert_to_original_retriever_resource(item)
-					if len(retriever_resource) > 0 {
+					if retriever_resource != nil {
 						original_retriever_resource = append(original_retriever_resource, retriever_resource)
 					}
 

@@ -120,23 +120,6 @@ type ModelConfigEntity struct {
 	Stop       []string       `json:"stop"`
 }
 
-// AdvancedChatMessageEntity represents advanced chat message entity
-type AdvancedChatMessageEntity struct {
-	Text string                                 `json:"text"`
-	Role modelruntimeentities.PromptMessageRole `json:"role"`
-}
-
-// AdvancedChatPromptTemplateEntity represents advanced chat prompt template entity
-type AdvancedChatPromptTemplateEntity struct {
-	Messages []AdvancedChatMessageEntity `json:"messages"`
-}
-
-// AdvancedCompletionPromptTemplateEntity represents advanced completion prompt template entity
-type AdvancedCompletionPromptTemplateEntity struct {
-	Prompt     string            `json:"prompt"`
-	RolePrefix *RolePrefixEntity `json:"role_prefix,omitempty"`
-}
-
 // RolePrefixEntity represents role prefix entity
 type RolePrefixEntity struct {
 	User      string `json:"user"`
@@ -145,10 +128,8 @@ type RolePrefixEntity struct {
 
 // PromptTemplateEntity represents prompt template entity
 type PromptTemplateEntity struct {
-	PromptType                       appconfigenumtypes.PromptType           `json:"prompt_type"`
-	SimplePromptTemplate             string                                  `json:"simple_prompt_template,omitempty"`
-	AdvancedChatPromptTemplate       *AdvancedChatPromptTemplateEntity       `json:"advanced_chat_prompt_template,omitempty"`
-	AdvancedCompletionPromptTemplate *AdvancedCompletionPromptTemplateEntity `json:"advanced_completion_prompt_template,omitempty"`
+	PromptType           appconfigenumtypes.PromptType `json:"prompt_type"`
+	SimplePromptTemplate string                        `json:"simple_prompt_template,omitempty"`
 }
 
 // VariableEntity represents variable entity

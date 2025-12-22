@@ -16,12 +16,11 @@ const (
 type PromptType string
 
 const (
-	Prompt_SIMPLE   PromptType = "simple"
-	Prompt_ADVANCED PromptType = "advanced"
+	Prompt_SIMPLE PromptType = "simple"
 )
 
 func ValidatePromptType(val string) bool {
-	return PromptType(val) == Prompt_SIMPLE || PromptType(val) == Prompt_ADVANCED
+	return PromptType(val) == Prompt_SIMPLE
 }
 
 // RetrieveStrategy represents retrieve strategy

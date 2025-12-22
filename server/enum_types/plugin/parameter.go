@@ -7,10 +7,10 @@ import (
 	"strconv"
 	"strings"
 
+	"mlib.com/confy/cast"
 	"mlib.com/gofy/server/core/exceptions"
 	parameterenumtypes "mlib.com/gofy/server/enum_types/parameter"
 	"mlib.com/gofy/server/utils"
-	"mlib.com/mconfig/cast"
 	"mlib.com/mlog"
 )
 

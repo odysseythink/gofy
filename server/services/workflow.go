@@ -8,7 +8,6 @@ import (
 	"time"
 
 	uuid "github.com/satori/go.uuid"
-	advancedchatcfgmgr "mlib.com/gofy/server/core/app/config_manageres/advanced_chat"
 	workflowcfgmgr "mlib.com/gofy/server/core/app/config_manageres/workflow"
 	"mlib.com/gofy/server/core/exceptions"
 	wfexceptions "mlib.com/gofy/server/core/exceptions/workflow"
@@ -83,11 +82,7 @@ func (s *WorkflowService) GetPublishedWorkflow(app *models.App) *models.Workflow
 }
 
 func (s *WorkflowService) validate_features_structure(app_model *models.App, features map[string]any) map[string]any {
-	if app_model.Mode == models.AppMode_ADVANCED_CHAT {
-		return advancedchatcfgmgr.New().ConfigValidate(
-			app_model.TenantID, features, true,
-		)
-	} else if app_model.Mode == models.AppMode_WORKFLOW {
+	if app_model.Mode == models.AppMode_WORKFLOW {
 		return workflowcfgmgr.New().ConfigValidate(
 			app_model.TenantID, features, true,
 		)

@@ -65,7 +65,12 @@ func (s *AccountService) CreateAccount(
 		timezone = "UTC"
 	}
 	account := &models.Account{
-		ID:                uuid.NewV4().String(),
+		Model: models.Model{
+			ID:        uuid.NewV4().String(),
+			CreatedAt: &now,
+			UpdatedAt: &now,
+		},
+
 		Name:              name,
 		Email:             email,
 		InterfaceLanguage: interface_language,
@@ -73,8 +78,6 @@ func (s *AccountService) CreateAccount(
 		Timezone:          timezone,
 		LastLoginAt:       &now,
 		InitializedAt:     &now,
-		CreatedAt:         &now,
-		UpdatedAt:         &now,
 		LastActiveAt:      &now,
 	}
 
@@ -343,7 +346,7 @@ func (s *AccountService) LoadUser(account_id string) (*models.Account, error) {
 		} else {
 			result.Tenant.CurrentRole = result.Role
 			account.SetCurrentTenant(&result.Tenant)
-			dbengine.Instance().DB.Updates(&models.TenantAccountJoin{ID: result.TaID, Current: true})
+			dbengine.Instance().DB.Updates(&models.TenantAccountJoin{Model: models.Model{ID: result.TaID}, Current: true})
 		}
 	} else {
 		result.Tenant.CurrentRole = result.Role

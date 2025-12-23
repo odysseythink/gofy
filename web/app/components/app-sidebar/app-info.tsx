@@ -155,7 +155,7 @@ const AppInfo = ({ expand, onlyShowDetail = false, openState = false, onDetailEx
   const exportCheck = async () => {
     if (!appDetail)
       return
-    if (appDetail.mode !== 'workflow' && appDetail.mode !== 'advanced-chat') {
+    if (appDetail.mode !== 'workflow') {
       onExport()
       return
     }
@@ -224,7 +224,7 @@ const AppInfo = ({ expand, onlyShowDetail = false, openState = false, onDetailEx
       icon: <RiFileDownloadLine />,
       onClick: exportCheck,
     },
-    (appDetail.mode !== 'agent-chat' && (appDetail.mode === 'advanced-chat' || appDetail.mode === 'workflow')) ? {
+    ((appDetail.mode === 'workflow')) ? {
       id: 'import',
       title: t('workflow.common.importDSL'),
       icon: <RiFileUploadLine />,
@@ -232,16 +232,6 @@ const AppInfo = ({ expand, onlyShowDetail = false, openState = false, onDetailEx
         setOpen(false)
         onDetailExpand?.(false)
         setShowImportDSLModal(true)
-      },
-    } : undefined,
-    (appDetail.mode !== 'agent-chat' && (appDetail.mode === 'completion' || appDetail.mode === 'chat')) ? {
-      id: 'switch',
-      title: t('app.switch'),
-      icon: <RiExchange2Line />,
-      onClick: () => {
-        setOpen(false)
-        onDetailExpand?.(false)
-        setShowSwitchModal(true)
       },
     } : undefined,
   ].filter((op): op is Operation => Boolean(op))

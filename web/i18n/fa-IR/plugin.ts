@@ -221,7 +221,7 @@ const translation = {
   metadata: {
     title: 'پلاگین ها',
   },
-  difyVersionNotCompatible: 'نسخه فعلی دیفی با این پلاگین سازگار نیست، لطفاً به نسخه حداقل مورد نیاز به‌روزرسانی کنید: {{minimalDifyVersion}}',
+  difyVersionNotCompatible: 'نسخه فعلی دیفی با این پلاگین سازگار نیست، لطفاً به نسخه حداقل مورد نیاز به‌روزرسانی کنید: {{minimalGofyVersion}}',
   requestAPlugin: 'درخواست یک افزونه',
   publishPlugins: 'انتشار افزونه ها',
   auth: {

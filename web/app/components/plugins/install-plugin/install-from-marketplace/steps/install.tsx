@@ -121,7 +121,7 @@ const Installed: FC<Props> = ({
 
   const { langGeniusVersionInfo } = useAppContext()
   const { data: pluginDeclaration } = usePluginDeclarationFromMarketPlace(uniqueIdentifier)
-  const isDifyVersionCompatible = useMemo(() => {
+  const isGofyVersionCompatible = useMemo(() => {
     if (!pluginDeclaration || !langGeniusVersionInfo.current_version) return true
     return gte(langGeniusVersionInfo.current_version, pluginDeclaration?.manifest.meta.minimum_dify_version ?? '0.0.0')
   }, [langGeniusVersionInfo.current_version, pluginDeclaration])
@@ -132,9 +132,9 @@ const Installed: FC<Props> = ({
       <div className='flex flex-col items-start justify-center gap-4 self-stretch px-6 py-3'>
         <div className='system-md-regular text-text-secondary'>
           <p>{t(`${i18nPrefix}.readyToInstall`)}</p>
-          {!isDifyVersionCompatible && (
+          {!isGofyVersionCompatible && (
             <p className='system-md-regular text-text-warning'>
-              {t('plugin.difyVersionNotCompatible', { minimalDifyVersion: pluginDeclaration?.manifest.meta.minimum_dify_version })}
+              {t('plugin.difyVersionNotCompatible', { minimalGofyVersion: pluginDeclaration?.manifest.meta.minimum_dify_version })}
             </p>
           )}
         </div>

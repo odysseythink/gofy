@@ -76,7 +76,7 @@ const translation = {
       title: 'Límites de Cuota de Anotación',
       tooltip: 'Edición manual y anotación de respuestas proporciona habilidades de respuesta a preguntas personalizadas y de alta calidad para aplicaciones (aplicable solo en aplicaciones de chat).',
     },
-    ragAPIRequestTooltip: 'Se refiere al número de llamadas API que invocan solo las capacidades de procesamiento de base de conocimientos de Dify.',
+    ragAPIRequestTooltip: 'Se refiere al número de llamadas API que invocan solo las capacidades de procesamiento de base de conocimientos de Gofy.',
     receiptInfo: 'Solo el propietario del equipo y el administrador del equipo pueden suscribirse y ver la información de facturación.',
     priceTip: 'por espacio de trabajo/',
     teamMember_one: '{{count, número}} Miembro del Equipo',
@@ -96,7 +96,7 @@ const translation = {
     documents: '{{count,number}} Documentos de Conocimiento',
     documentsRequestQuota: '{{count,number}}/min Límite de tasa de solicitud de conocimiento',
     freeTrialTipPrefix: 'Regístrate y obtén un',
-    apiRateLimitTooltip: 'El límite de tasa de la API se aplica a todas las solicitudes realizadas a través de la API de Dify, incluidos la generación de texto, las conversaciones de chat, las ejecuciones de flujo de trabajo y el procesamiento de documentos.',
+    apiRateLimitTooltip: 'El límite de tasa de la API se aplica a todas las solicitudes realizadas a través de la API de Gofy, incluidos la generación de texto, las conversaciones de chat, las ejecuciones de flujo de trabajo y el procesamiento de documentos.',
     documentsRequestQuotaTooltip: 'Especifica el número total de acciones que un espacio de trabajo puede realizar por minuto dentro de la base de conocimientos, incluyendo la creación, eliminación, actualización de conjuntos de datos, carga de documentos, modificaciones, archivo y consultas a la base de conocimientos. Esta métrica se utiliza para evaluar el rendimiento de las solicitudes a la base de conocimientos. Por ejemplo, si un usuario de Sandbox realiza 10 pruebas consecutivas en un minuto, su espacio de trabajo será temporalmente restringido de realizar las siguientes acciones durante el siguiente minuto: creación de conjuntos de datos, eliminación, actualizaciones y carga o modificaciones de documentos.',
   },
   plans: {
@@ -124,12 +124,12 @@ const translation = {
       includesTitle: 'Todo en el plan Equipo, más:',
       features: {
         0: 'Soluciones de implementación escalables de nivel empresarial',
-        7: 'Actualizaciones y Mantenimiento por Dify Oficialmente',
+        7: 'Actualizaciones y Mantenimiento por Gofy Oficialmente',
         8: 'Soporte Técnico Profesional',
         3: 'Múltiples Espacios de Trabajo y Gestión Empresarial',
         1: 'Autorización de Licencia Comercial',
         2: 'Características Exclusivas de la Empresa',
-        5: 'SLA negociados por Dify Partners',
+        5: 'SLA negociados por Gofy Partners',
         4: 'SSO',
         6: 'Seguridad y Controles Avanzados',
       },
@@ -141,7 +141,7 @@ const translation = {
     community: {
       features: {
         0: 'Todas las características principales se lanzaron bajo el repositorio público',
-        2: 'Cumple con la Licencia de Código Abierto de Dify',
+        2: 'Cumple con la Licencia de Código Abierto de Gofy',
         1: 'Espacio de trabajo único',
       },
       includesTitle: 'Características gratuitas:',

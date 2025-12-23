@@ -79,7 +79,7 @@ const AppNav = () => {
             return `/app/${app.id}/overview`
           }
           else {
-            if (app.mode === 'workflow' || app.mode === 'advanced-chat')
+            if (app.mode === 'workflow')
               return `/app/${app.id}/workflow`
             else
               return `/app/${app.id}/configuration`

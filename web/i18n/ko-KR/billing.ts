@@ -82,7 +82,7 @@ const translation = {
         '수동으로 편집 및 응답 주석 달기로 앱의 사용자 정의 가능한 고품질 질의응답 기능을 제공합니다 (채팅 앱에만 해당).',
     },
     ragAPIRequestTooltip:
-      'Dify 의 지식베이스 처리 기능을 호출하는 API 호출 수를 나타냅니다.',
+      'Gofy 의 지식베이스 처리 기능을 호출하는 API 호출 수를 나타냅니다.',
     receiptInfo: '팀 소유자 및 팀 관리자만 구독 및 청구 정보를 볼 수 있습니다',
     annotationQuota: 'Annotation Quota(주석 할당량)',
     documentsUploadQuota: '문서 업로드 할당량',
@@ -103,7 +103,7 @@ const translation = {
     teamMember_one: '{{count,number}} 팀원',
     priceTip: '작업 공간당/',
     apiRateLimitTooltip:
-      'Dify API 를 통한 모든 요청에는 API 요금 한도가 적용되며, 여기에는 텍스트 생성, 채팅 대화, 워크플로 실행 및 문서 처리가 포함됩니다.',
+      'Gofy API 를 통한 모든 요청에는 API 요금 한도가 적용되며, 여기에는 텍스트 생성, 채팅 대화, 워크플로 실행 및 문서 처리가 포함됩니다.',
     documentsRequestQuota: '{{count,number}}/분 지식 요청 비율 제한',
     documentsTooltip:
       '지식 데이터 소스에서 가져올 수 있는 문서 수에 대한 쿼터.',
@@ -140,7 +140,7 @@ const translation = {
         1: '상업적 라이선스 승인',
         3: '다중 작업 공간 및 기업 관리',
         4: 'SSO',
-        5: 'Dify 파트너에 의해 협상된 SLA',
+        5: 'Gofy 파트너에 의해 협상된 SLA',
         6: '고급 보안 및 제어',
         0: '기업급 확장 가능한 배포 솔루션',
         7: '디피 공식 업데이트 및 유지 관리',
@@ -154,7 +154,7 @@ const translation = {
     community: {
       features: {
         0: '모든 핵심 기능이 공개 저장소에 릴리스됨',
-        2: 'Dify 오픈 소스 라이선스를 준수합니다.',
+        2: 'Gofy 오픈 소스 라이선스를 준수합니다.',
         1: '단일 작업 공간',
       },
       btnText: '커뮤니티 시작하기',

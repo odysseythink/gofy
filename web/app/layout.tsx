@@ -60,7 +60,7 @@ const LocaleLayout = async ({
       </head>
       <body
         className="color-scheme h-full select-auto"
-        {...datasetMap}
+        // {...datasetMap}
       >
         <ThemeProvider
           attribute='data-theme'

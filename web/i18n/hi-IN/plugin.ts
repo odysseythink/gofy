@@ -193,7 +193,7 @@ const translation = {
     difyMarketplace: 'डिफाई मार्केटप्लेस',
     sortBy: 'काला शहर',
     discover: 'खोजें',
-    partnerTip: 'Dify भागीदार द्वारा सत्यापित',
+    partnerTip: 'Gofy भागीदार द्वारा सत्यापित',
     verifiedTip: 'डिफाई द्वारा सत्यापित',
   },
   task: {
@@ -221,7 +221,7 @@ const translation = {
   metadata: {
     title: 'प्लगइन्स',
   },
-  difyVersionNotCompatible: 'वर्तमान डिफाई संस्करण इस प्लगइन के साथ संगत नहीं है, कृपया आवश्यक न्यूनतम संस्करण में अपग्रेड करें: {{minimalDifyVersion}}',
+  difyVersionNotCompatible: 'वर्तमान डिफाई संस्करण इस प्लगइन के साथ संगत नहीं है, कृपया आवश्यक न्यूनतम संस्करण में अपग्रेड करें: {{minimalGofyVersion}}',
   requestAPlugin: 'एक प्लगइन का अनुरोध करें',
   publishPlugins: 'प्लगइन प्रकाशित करें',
   auth: {

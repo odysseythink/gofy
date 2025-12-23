@@ -9,7 +9,7 @@ export const getRedirection = (
     redirectionFunc(`/app/${app.id}/overview`)
   }
   else {
-    if (app.mode === 'workflow' || app.mode === 'advanced-chat')
+    if (app.mode === 'workflow')
       redirectionFunc(`/app/${app.id}/workflow`)
     else
       redirectionFunc(`/app/${app.id}/configuration`)

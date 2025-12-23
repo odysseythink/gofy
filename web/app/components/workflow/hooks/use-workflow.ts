@@ -50,9 +50,7 @@ import { basePath } from '@/utils/var'
 import { canFindTool } from '@/utils'
 
 export const useIsChatMode = () => {
-  const appDetail = useAppStore(s => s.appDetail)
-
-  return appDetail?.mode === 'advanced-chat'
+  return false
 }
 
 export const useWorkflow = () => {

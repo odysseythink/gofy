@@ -43,7 +43,7 @@ function MCPServiceCard({
   const [showConfirmDelete, setShowConfirmDelete] = useState(false)
   const [showMCPServerModal, setShowMCPServerModal] = useState(false)
 
-  const isAdvancedApp = appInfo?.mode === 'advanced-chat' || appInfo?.mode === 'workflow'
+  const isAdvancedApp = appInfo?.mode === 'workflow'
   const isBasicApp = !isAdvancedApp
   const { data: currentWorkflow } = useAppWorkflow(isAdvancedApp ? appId : '')
   const [basicAppConfig, setBasicAppConfig] = useState<any>({})

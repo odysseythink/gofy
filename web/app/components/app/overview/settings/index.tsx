@@ -328,7 +328,7 @@ const SettingsModal: FC<ISettingsModalProps> = ({
             <div className='flex items-center justify-between'>
               <div className={cn('system-sm-semibold py-1 text-text-secondary')}>{t(`${prefixSettings}.workflow.subTitle`)}</div>
               <Switch
-                disabled={!(appInfo.mode === 'workflow' || appInfo.mode === 'advanced-chat')}
+                disabled={!(appInfo.mode === 'workflow')}
                 defaultValue={inputInfo.show_workflow_steps}
                 onChange={v => setInputInfo({ ...inputInfo, show_workflow_steps: v })}
               />
@@ -398,7 +398,7 @@ const SettingsModal: FC<ISettingsModalProps> = ({
                 <p className={cn('body-xs-regular pb-0.5 text-text-tertiary')}>
                   <Trans
                     i18nKey={`${prefixSettings}.more.privacyPolicyTip`}
-                    components={{ privacyPolicyLink: <Link href={'https://dify.ai/privacy'} target='_blank' rel='noopener noreferrer' className='text-text-accent' /> }}
+                    components={{ privacyPolicyLink: <Link href={'https://gofy.ai/privacy'} target='_blank' rel='noopener noreferrer' className='text-text-accent' /> }}
                   />
                 </p>
                 <Input

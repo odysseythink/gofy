@@ -433,7 +433,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 
     <Properties>
       <Property name='message_id' type='str' key='message_id'>
-        Dify 生成的文本消息，那么直接传递生成的message-id 即可，后台会通过 message_id 查找相应的内容直接合成语音信息。如果同时传 message_id 和 text，优先使用 message_id。
+        Gofy 生成的文本消息，那么直接传递生成的message-id 即可，后台会通过 message_id 查找相应的内容直接合成语音信息。如果同时传 message_id 和 text，优先使用 message_id。
       </Property>
       <Property name='text' type='str' key='text'>
         语音生成内容。如果没有传 message-id的话，则会使用这个字段的内容
@@ -445,7 +445,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   </Col>
   <Col sticky>
 
-    <CodeGroup title="Request" tag="POST" label="/text-to-audio" targetCode={`curl -o text-to-audio.mp3 -X POST '${props.appDetail.api_base_url}/text-to-audio' \\\n--header 'Authorization: Bearer {api_key}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290",\n    "text": "你好Dify",\n    "user": "abc-123"\n}'`}>
+    <CodeGroup title="Request" tag="POST" label="/text-to-audio" targetCode={`curl -o text-to-audio.mp3 -X POST '${props.appDetail.api_base_url}/text-to-audio' \\\n--header 'Authorization: Bearer {api_key}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290",\n    "text": "你好Gofy",\n    "user": "abc-123"\n}'`}>
 
     ```bash {{ title: 'cURL' }}
     curl -o text-to-audio.mp3 -X POST '${props.appDetail.api_base_url}/text-to-audio' \
@@ -453,7 +453,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     --header 'Content-Type: application/json' \
     --data-raw '{
         "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290",
-        "text": "你好Dify",
+        "text": "你好Gofy",
         "user": "abc-123",
         "streaming": false
     }'
@@ -505,7 +505,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
         "tag2"
       ],
       "mode": "chat",
-      "author_name": "Dify"
+      "author_name": "Gofy"
     }
     ```
     </CodeGroup>
@@ -730,7 +730,7 @@ ___
         {
           "id": "69d48372-ad81-4c75-9c46-2ce197b4d402",
           "question": "What is your name?",
-          "answer": "I am Dify.",
+          "answer": "I am Gofy.",
           "hit_count": 0,
           "created_at": 1735625869
         }
@@ -769,7 +769,7 @@ ___
       title="Request"
       tag="POST"
       label="/apps/annotations"
-      targetCode={`curl --location --request POST '${props.apiBaseUrl}/apps/annotations' \\\n--header 'Authorization: Bearer {api_key}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{"question": "What is your name?","answer": "I am Dify."}'`}
+      targetCode={`curl --location --request POST '${props.apiBaseUrl}/apps/annotations' \\\n--header 'Authorization: Bearer {api_key}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{"question": "What is your name?","answer": "I am Gofy."}'`}
     >
     ```bash {{ title: 'cURL' }}
     curl --location --request POST '${props.apiBaseUrl}/apps/annotations' \
@@ -777,7 +777,7 @@ ___
     --header 'Content-Type: application/json' \
     --data-raw '{
         "question": "What is your name?",
-        "answer": "I am Dify."
+        "answer": "I am Gofy."
     }'
     ```
     </CodeGroup>
@@ -787,7 +787,7 @@ ___
     {
       "id": "69d48372-ad81-4c75-9c46-2ce197b4d402",
       "question": "What is your name?",
-      "answer": "I am Dify.",
+      "answer": "I am Gofy.",
       "hit_count": 0,
       "created_at": 1735625869
     }
@@ -823,7 +823,7 @@ ___
       title="Request"
       tag="PUT"
       label="/apps/annotations/{annotation_id}"
-      targetCode={`curl --location --request PUT '${props.apiBaseUrl}/apps/annotations/{annotation_id}' \\\n--header 'Authorization: Bearer {api_key}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{"question": "What is your name?","answer": "I am Dify."}'`}
+      targetCode={`curl --location --request PUT '${props.apiBaseUrl}/apps/annotations/{annotation_id}' \\\n--header 'Authorization: Bearer {api_key}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{"question": "What is your name?","answer": "I am Gofy."}'`}
     >
     ```bash {{ title: 'cURL' }}
     curl --location --request PUT '${props.apiBaseUrl}/apps/annotations/{annotation_id}' \
@@ -831,7 +831,7 @@ ___
     --header 'Content-Type: application/json' \
     --data-raw '{
         "question": "What is your name?",
-        "answer": "I am Dify."
+        "answer": "I am Gofy."
     }'
     ```
     </CodeGroup>
@@ -841,7 +841,7 @@ ___
     {
       "id": "69d48372-ad81-4c75-9c46-2ce197b4d402",
       "question": "What is your name?",
-      "answer": "I am Dify.",
+      "answer": "I am Gofy.",
       "hit_count": 0,
       "created_at": 1735625869
     }

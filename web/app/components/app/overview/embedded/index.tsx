@@ -38,7 +38,7 @@ const OPTION_MAP = {
   scripts: {
     getContent: (url: string, token: string, primaryColor: string, isTestEnv?: boolean) =>
       `<script>
- window.difyChatbotConfig = {
+ window.gofyChatbotConfig = {
   token: '${token}'${isTestEnv
         ? `,
   isDev: true`
@@ -62,10 +62,10 @@ const OPTION_MAP = {
  defer>
 </script>
 <style>
-  #dify-chatbot-bubble-button {
+  #gofy-chatbot-bubble-button {
     background-color: ${primaryColor} !important;
   }
-  #dify-chatbot-bubble-window {
+  #gofy-chatbot-bubble-window {
     width: 24rem !important;
     height: 40rem !important;
   }
@@ -116,7 +116,7 @@ const Embedded = ({ siteInfo, isShow, onClose, appBaseUrl, accessToken, classNam
   }
 
   const navigateToChromeUrl = () => {
-    window.open('https://chrome.google.com/webstore/detail/dify-chatbot/ceehdapohffmjmkdcifjofadiaoeggaf', '_blank', 'noopener,noreferrer')
+    window.open('https://chrome.google.com/webstore/detail/gofy-chatbot/ceehdapohffmjmkdcifjofadiaoeggaf', '_blank', 'noopener,noreferrer')
   }
 
   useEffect(() => {

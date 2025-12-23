@@ -176,7 +176,7 @@ const translation = {
     },
     aliyun: {
       title: 'Cloud Monitor',
-      description: 'The fully-managed and maintenance-free observability platform provided by Alibaba Cloud, enables out-of-the-box monitoring, tracing, and evaluation of Dify applications.',
+      description: 'The fully-managed and maintenance-free observability platform provided by Alibaba Cloud, enables out-of-the-box monitoring, tracing, and evaluation of Gofy applications.',
     },
     inUse: 'In use',
     configProvider: {

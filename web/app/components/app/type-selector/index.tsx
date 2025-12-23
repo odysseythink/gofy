@@ -15,7 +15,7 @@ export type AppSelectorProps = {
   onChange: (value: AppSelectorProps['value']) => void
 }
 
-const allTypes: AppMode[] = ['workflow', 'advanced-chat', 'chat', 'agent-chat', 'completion']
+const allTypes: AppMode[] = ['workflow']
 
 const AppTypeSelector = ({ value, onChange }: AppSelectorProps) => {
   const [open, setOpen] = useState(false)
@@ -75,29 +75,9 @@ type AppTypeIconProps = {
 export const AppTypeIcon = React.memo(({ type, className, wrapperClassName, style }: AppTypeIconProps) => {
   const wrapperClassNames = cn('inline-flex h-5 w-5 items-center justify-center rounded-md border border-divider-regular', wrapperClassName)
   const iconClassNames = cn('h-3.5 w-3.5 text-components-avatar-shape-fill-stop-100', className)
-  if (type === 'chat') {
-    return <div style={style} className={cn(wrapperClassNames, 'bg-components-icon-bg-blue-solid')}>
-      <ChatBot className={iconClassNames} />
-    </div>
-  }
-  if (type === 'agent-chat') {
-    return <div style={style} className={cn(wrapperClassNames, 'bg-components-icon-bg-violet-solid')}>
-      <Logic className={iconClassNames} />
-    </div>
-  }
-  if (type === 'advanced-chat') {
-    return <div style={style} className={cn(wrapperClassNames, 'bg-components-icon-bg-blue-light-solid')}>
-      <BubbleTextMod className={iconClassNames} />
-    </div>
-  }
   if (type === 'workflow') {
     return <div style={style} className={cn(wrapperClassNames, 'bg-components-icon-bg-indigo-solid')}>
       <RiExchange2Fill className={iconClassNames} />
-    </div>
-  }
-  if (type === 'completion') {
-    return <div style={style} className={cn(wrapperClassNames, 'bg-components-icon-bg-teal-solid')}>
-      <ListSparkle className={iconClassNames} />
     </div>
   }
   return null

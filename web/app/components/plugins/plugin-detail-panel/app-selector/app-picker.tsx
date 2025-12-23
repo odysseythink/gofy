@@ -118,14 +118,6 @@ const AppPicker: FC<Props> = ({
 
   const getAppType = (app: App) => {
     switch (app.mode) {
-      case 'advanced-chat':
-        return 'chatflow'
-      case 'agent-chat':
-        return 'agent'
-      case 'chat':
-        return 'chat'
-      case 'completion':
-        return 'completion'
       case 'workflow':
         return 'workflow'
     }

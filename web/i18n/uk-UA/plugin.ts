@@ -190,11 +190,11 @@ const translation = {
     sortBy: 'Чорне місто',
     pluginsResult: 'Результати {{num}}',
     empower: 'Розширюйте можливості розробки штучного інтелекту',
-    difyMarketplace: 'Dify Marketplace',
+    difyMarketplace: 'Gofy Marketplace',
     viewMore: 'Дивитись більше',
     noPluginFound: 'Плагін не знайдено',
-    verifiedTip: 'Перевірено Dify',
-    partnerTip: 'Перевірено партнером Dify',
+    verifiedTip: 'Перевірено Gofy',
+    partnerTip: 'Перевірено партнером Gofy',
   },
   task: {
     installingWithError: 'Не вдалося встановити плагіни {{installingLength}}, успіх {{successLength}}, {{errorLength}}',
@@ -221,7 +221,7 @@ const translation = {
   metadata: {
     title: 'Плагіни',
   },
-  difyVersionNotCompatible: 'Поточна версія Dify не сумісна з цим плагіном, будь ласка, оновіть до мінімальної версії: {{minimalDifyVersion}}',
+  difyVersionNotCompatible: 'Поточна версія Gofy не сумісна з цим плагіном, будь ласка, оновіть до мінімальної версії: {{minimalGofyVersion}}',
   requestAPlugin: 'Запросити плагін',
   publishPlugins: 'Публікація плагінів',
   auth: {

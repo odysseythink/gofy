@@ -3,7 +3,7 @@ const translation = {
   toVerifiedTip: {
     front: 'You are now eligible for Education Verified status. Please enter your education information below to complete the process and receive an',
     coupon: 'exclusive 100% coupon',
-    end: 'for the Dify Professional Plan.',
+    end: 'for the Gofy Professional Plan.',
   },
   currentSigned: 'CURRENTLY SIGNED IN AS',
   form: {
@@ -30,17 +30,17 @@ const translation = {
       },
       option: {
         age: 'I confirm I am at least 18 years old',
-        inSchool: 'I confirm I am enrolled or employed at the institution provided. Dify may request proof of enrollment/employment. If I misrepresent my eligibility, I agree to pay any fees initially waived based on my education status.',
+        inSchool: 'I confirm I am enrolled or employed at the institution provided. Gofy may request proof of enrollment/employment. If I misrepresent my eligibility, I agree to pay any fees initially waived based on my education status.',
       },
     },
   },
   submit: 'Submit',
   submitError: 'Form submission failed. Please try again later.',
   learn: 'Learn how to get education verified',
-  successTitle: 'You Have Got Dify Education Verified',
-  successContent: 'We have issued a 100% discount coupon for the Dify Professional plan to your account. The coupon is valid for one year, please use it within the validity period.',
-  rejectTitle: 'Your Dify Educational Verification Has Been Rejected',
-  rejectContent: 'Unfortunately, you are not eligible for Education Verified status and therefore cannot receive the exclusive 100% coupon for the Dify Professional Plan if you use this email address.',
+  successTitle: 'You Have Got Gofy Education Verified',
+  successContent: 'We have issued a 100% discount coupon for the Gofy Professional plan to your account. The coupon is valid for one year, please use it within the validity period.',
+  rejectTitle: 'Your Gofy Educational Verification Has Been Rejected',
+  rejectContent: 'Unfortunately, you are not eligible for Education Verified status and therefore cannot receive the exclusive 100% coupon for the Gofy Professional Plan if you use this email address.',
   emailLabel: 'Your current email',
 }
 

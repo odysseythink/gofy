@@ -122,30 +122,6 @@ const Doc = ({ appDetail }: IDocProps) => {
           )}
       </div>
       <article className={cn('prose-xl prose', theme === Theme.dark && 'prose-invert')} >
-        {(appDetail?.mode === 'chat' || appDetail?.mode === 'agent-chat') && (
-          (() => {
-            switch (locale) {
-              case LanguagesSupported[1]:
-                return <TemplateChatZh appDetail={appDetail} variables={variables} inputs={inputs} />
-              case LanguagesSupported[7]:
-                return <TemplateChatJa appDetail={appDetail} variables={variables} inputs={inputs} />
-              default:
-                return <TemplateChatEn appDetail={appDetail} variables={variables} inputs={inputs} />
-            }
-          })()
-        )}
-        {appDetail?.mode === 'advanced-chat' && (
-          (() => {
-            switch (locale) {
-              case LanguagesSupported[1]:
-                return <TemplateAdvancedChatZh appDetail={appDetail} variables={variables} inputs={inputs} />
-              case LanguagesSupported[7]:
-                return <TemplateAdvancedChatJa appDetail={appDetail} variables={variables} inputs={inputs} />
-              default:
-                return <TemplateAdvancedChatEn appDetail={appDetail} variables={variables} inputs={inputs} />
-            }
-          })()
-        )}
         {appDetail?.mode === 'workflow' && (
           (() => {
             switch (locale) {
@@ -155,18 +131,6 @@ const Doc = ({ appDetail }: IDocProps) => {
                 return <TemplateWorkflowJa appDetail={appDetail} variables={variables} inputs={inputs} />
               default:
                 return <TemplateWorkflowEn appDetail={appDetail} variables={variables} inputs={inputs} />
-            }
-          })()
-        )}
-        {appDetail?.mode === 'completion' && (
-          (() => {
-            switch (locale) {
-              case LanguagesSupported[1]:
-                return <TemplateZh appDetail={appDetail} variables={variables} inputs={inputs} />
-              case LanguagesSupported[7]:
-                return <TemplateJa appDetail={appDetail} variables={variables} inputs={inputs} />
-              default:
-                return <TemplateEn appDetail={appDetail} variables={variables} inputs={inputs} />
             }
           })()
         )}

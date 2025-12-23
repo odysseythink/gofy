@@ -59,7 +59,7 @@ export type VariableInput = {
 /**
  * App modes
  */
-export const AppModes = ['advanced-chat', 'agent-chat', 'chat', 'completion', 'workflow'] as const
+export const AppModes = ['workflow'] as const
 export type AppMode = typeof AppModes[number]
 
 /**

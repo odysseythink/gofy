@@ -153,14 +153,6 @@ type AppTypeLabelProps = {
 export function AppTypeLabel({ type, className }: AppTypeLabelProps) {
   const { t } = useTranslation()
   let label = ''
-  if (type === 'chat')
-    label = t('app.typeSelector.chatbot')
-  if (type === 'agent-chat')
-    label = t('app.typeSelector.agent')
-  if (type === 'completion')
-    label = t('app.typeSelector.completion')
-  if (type === 'advanced-chat')
-    label = t('app.typeSelector.advanced')
   if (type === 'workflow')
     label = t('app.typeSelector.workflow')
 

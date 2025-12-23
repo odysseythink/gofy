@@ -30,7 +30,7 @@ const AppInputsPanel = ({
 }: Props) => {
   const { t } = useTranslation()
   const inputsRef = useRef<any>(value?.inputs || {})
-  const isBasicApp = appDetail.mode !== 'advanced-chat' && appDetail.mode !== 'workflow'
+  const isBasicApp = appDetail.mode !== 'workflow'
   const { data: fileUploadConfig } = useFileUploadConfig()
   const { data: currentApp, isFetching: isAppLoading } = useAppDetail(appDetail.id)
   const { data: currentWorkflow, isFetching: isWorkflowLoading } = useAppWorkflow(isBasicApp ? '' : appDetail.id)

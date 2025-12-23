@@ -42,7 +42,7 @@ function CreateApp({ onClose, onSuccess, onCreateFromTemplate }: CreateAppProps)
   const { push } = useRouter()
   const { notify } = useContext(ToastContext)
 
-  const [appMode, setAppMode] = useState<AppMode>('advanced-chat')
+  const [appMode, setAppMode] = useState<AppMode>('workflow')
   const [appIcon, setAppIcon] = useState<AppIconSelection>({ type: 'emoji', icon: '🤖', background: '#FFEAD5' })
   const [showAppIconPicker, setShowAppIconPicker] = useState(false)
   const [name, setName] = useState('')
@@ -118,16 +118,6 @@ function CreateApp({ onClose, onSuccess, onCreateFromTemplate }: CreateAppProps)
                   onClick={() => {
                     setAppMode('workflow')
                   }} />
-                <AppTypeCard
-                  active={appMode === 'advanced-chat'}
-                  title={t('app.types.advanced')}
-                  description={t('app.newApp.advancedShortDescription')}
-                  icon={<div className='flex h-6 w-6 items-center justify-center rounded-md bg-components-icon-bg-blue-light-solid'>
-                    <BubbleTextMod className='h-4 w-4 text-components-avatar-shape-fill-stop-100' />
-                  </div>}
-                  onClick={() => {
-                    setAppMode('advanced-chat')
-                  }} />
               </div>
             </div>
             <div>
@@ -142,36 +132,7 @@ function CreateApp({ onClose, onSuccess, onCreateFromTemplate }: CreateAppProps)
               </div>
               {isAppTypeExpanded && (
                 <div className='flex flex-row gap-2'>
-                  <AppTypeCard
-                    active={appMode === 'chat'}
-                    title={t('app.types.chatbot')}
-                    description={t('app.newApp.chatbotShortDescription')}
-                    icon={<div className='flex h-6 w-6 items-center justify-center rounded-md bg-components-icon-bg-blue-solid'>
-                      <ChatBot className='h-4 w-4 text-components-avatar-shape-fill-stop-100' />
-                    </div>}
-                    onClick={() => {
-                      setAppMode('chat')
-                    }} />
-                  <AppTypeCard
-                    active={appMode === 'agent-chat'}
-                    title={t('app.types.agent')}
-                    description={t('app.newApp.agentShortDescription')}
-                    icon={<div className='flex h-6 w-6 items-center justify-center rounded-md bg-components-icon-bg-violet-solid'>
-                      <Logic className='h-4 w-4 text-components-avatar-shape-fill-stop-100' />
-                    </div>}
-                    onClick={() => {
-                      setAppMode('agent-chat')
-                    }} />
-                  <AppTypeCard
-                    active={appMode === 'completion'}
-                    title={t('app.newApp.completeApp')}
-                    description={t('app.newApp.completionShortDescription')}
-                    icon={<div className='flex h-6 w-6 items-center justify-center rounded-md bg-components-icon-bg-teal-solid'>
-                      <ListSparkle className='h-4 w-4 text-components-avatar-shape-fill-stop-100' />
-                    </div>}
-                    onClick={() => {
-                      setAppMode('completion')
-                    }} />
+                  
                 </div>
               )}
             </div>
@@ -246,10 +207,6 @@ function CreateApp({ onClose, onSuccess, onCreateFromTemplate }: CreateAppProps)
           <AppPreview mode={appMode} />
           <div className='absolute left-0 right-0 border-b border-b-divider-subtle'></div>
           <div className='flex h-[448px] w-[664px] items-center justify-center' style={{ background: 'repeating-linear-gradient(135deg, transparent, transparent 2px, rgba(16,24,40,0.04) 4px,transparent 3px, transparent 6px)' }}>
-            <AppScreenShot show={appMode === 'chat'} mode='chat' />
-            <AppScreenShot show={appMode === 'advanced-chat'} mode='advanced-chat' />
-            <AppScreenShot show={appMode === 'agent-chat'} mode='agent-chat' />
-            <AppScreenShot show={appMode === 'completion'} mode='completion' />
             <AppScreenShot show={appMode === 'workflow'} mode='workflow' />
           </div>
           <div className='absolute left-0 right-0 border-b border-b-divider-subtle'></div>
@@ -304,32 +261,6 @@ function AppPreview({ mode }: { mode: AppMode }) {
   const { t } = useTranslation()
   const docLink = useDocLink()
   const modeToPreviewInfoMap = {
-    'chat': {
-      title: t('app.types.chatbot'),
-      description: t('app.newApp.chatbotUserDescription'),
-      link: docLink('/guides/application-orchestrate/chatbot-application'),
-    },
-    'advanced-chat': {
-      title: t('app.types.advanced'),
-      description: t('app.newApp.advancedUserDescription'),
-      link: docLink('/guides/workflow/README', {
-        'zh-Hans': '/guides/workflow/readme',
-        'ja-JP': '/guides/workflow/concepts',
-      }),
-    },
-    'agent-chat': {
-      title: t('app.types.agent'),
-      description: t('app.newApp.agentUserDescription'),
-      link: docLink('/guides/application-orchestrate/agent'),
-    },
-    'completion': {
-      title: t('app.newApp.completeApp'),
-      description: t('app.newApp.completionUserDescription'),
-      link: docLink('/guides/application-orchestrate/text-generator', {
-        'zh-Hans': '/guides/application-orchestrate/readme',
-        'ja-JP': '/guides/application-orchestrate/README',
-      }),
-    },
     'workflow': {
       title: t('app.types.workflow'),
       description: t('app.newApp.workflowUserDescription'),
@@ -352,10 +283,6 @@ function AppPreview({ mode }: { mode: AppMode }) {
 function AppScreenShot({ mode, show }: { mode: AppMode; show: boolean }) {
   const { theme } = useTheme()
   const modeToImageMap = {
-    'chat': 'Chatbot',
-    'advanced-chat': 'Chatflow',
-    'agent-chat': 'Agent',
-    'completion': 'TextGenerator',
     'workflow': 'Workflow',
   }
   return <picture>

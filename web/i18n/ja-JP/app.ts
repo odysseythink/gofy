@@ -182,7 +182,7 @@ const translation = {
     },
     aliyun: {
       title: 'クラウドモニター',
-      description: 'Alibaba Cloud が提供する完全管理型でメンテナンスフリーの可観測性プラットフォームは、Dify アプリケーションの即時監視、トレース、評価を可能にします。',
+      description: 'Alibaba Cloud が提供する完全管理型でメンテナンスフリーの可観測性プラットフォームは、Gofy アプリケーションの即時監視、トレース、評価を可能にします。',
     },
   },
   answerIcon: {

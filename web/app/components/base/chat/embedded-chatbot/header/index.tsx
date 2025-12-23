@@ -11,7 +11,7 @@ import Tooltip from '@/app/components/base/tooltip'
 import ActionButton from '@/app/components/base/action-button'
 import Divider from '@/app/components/base/divider'
 import ViewFormDropdown from '@/app/components/base/chat/embedded-chatbot/inputs-form/view-form-dropdown'
-import DifyLogo from '@/app/components/base/logo/dify-logo'
+import GofyLogo from '@/app/components/base/logo/gofy-logo'
 import cn from '@/utils/classnames'
 import { useGlobalPublicStore } from '@/context/global-public-context'
 
@@ -47,13 +47,13 @@ const Header: FC<IHeaderProps> = ({
 
   const handleMessageReceived = useCallback((event: MessageEvent) => {
     let currentParentOrigin = parentOrigin
-    if (!currentParentOrigin && event.data.type === 'dify-chatbot-config') {
+    if (!currentParentOrigin && event.data.type === 'gofy-chatbot-config') {
       currentParentOrigin = event.origin
       setParentOrigin(event.origin)
     }
     if (event.origin !== currentParentOrigin)
       return
-    if (event.data.type === 'dify-chatbot-config')
+    if (event.data.type === 'gofy-chatbot-config')
       setShowToggleExpandButton(event.data.payload.isToggledByButton && !event.data.payload.isDraggable)
   }, [parentOrigin])
 
@@ -63,7 +63,7 @@ const Header: FC<IHeaderProps> = ({
     const listener = (event: MessageEvent) => handleMessageReceived(event)
     window.addEventListener('message', listener)
 
-    window.parent.postMessage({ type: 'dify-chatbot-iframe-ready' }, '*')
+    window.parent.postMessage({ type: 'gofy-chatbot-iframe-ready' }, '*')
 
     return () => window.removeEventListener('message', listener)
   }, [isIframe, handleMessageReceived])
@@ -72,7 +72,7 @@ const Header: FC<IHeaderProps> = ({
     if (!isIframe || !showToggleExpandButton) return
     setExpanded(!expanded)
     window.parent.postMessage({
-      type: 'dify-chatbot-expand-change',
+      type: 'gofy-chatbot-expand-change',
     }, parentOrigin)
   }, [isIframe, parentOrigin, showToggleExpandButton, expanded])
 
@@ -92,7 +92,7 @@ const Header: FC<IHeaderProps> = ({
                     ? <img src={systemFeatures.branding.workspace_logo} alt='logo' className='block h-5 w-auto' />
                     : appData?.custom_config?.replace_webapp_logo
                       ? <img src={`${appData?.custom_config?.replace_webapp_logo}`} alt='logo' className='block h-5 w-auto' />
-                      : <DifyLogo size='small' />
+                      : <GofyLogo size='small' />
                 }
               </div>
             )}

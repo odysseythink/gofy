@@ -15,10 +15,6 @@ type ILikedItemProps = {
 }
 
 const appTypeMap = {
-  'chat': 'Chatbot',
-  'completion': 'Completion',
-  'agent-chat': 'Agent',
-  'advanced-chat': 'Chatflow',
   'workflow': 'Workflow',
 }
 

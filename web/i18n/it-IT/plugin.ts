@@ -185,7 +185,7 @@ const translation = {
       mostPopular: 'I più popolari',
     },
     moreFrom: 'Altro da Marketplace',
-    difyMarketplace: 'Mercato Dify',
+    difyMarketplace: 'Mercato Gofy',
     discover: 'Scoprire',
     pluginsResult: '{{num}} risultati',
     noPluginFound: 'Nessun plug-in trovato',
@@ -193,8 +193,8 @@ const translation = {
     sortBy: 'Ordina per',
     and: 'e',
     viewMore: 'Vedi di più',
-    verifiedTip: 'Verificato da Dify',
-    partnerTip: 'Verificato da un partner Dify',
+    verifiedTip: 'Verificato da Gofy',
+    partnerTip: 'Verificato da un partner Gofy',
   },
   task: {
     clearAll: 'Cancella tutto',
@@ -221,7 +221,7 @@ const translation = {
   metadata: {
     title: 'Plugin',
   },
-  difyVersionNotCompatible: 'L\'attuale versione di Dify non è compatibile con questo plugin, si prega di aggiornare alla versione minima richiesta: {{minimalDifyVersion}}',
+  difyVersionNotCompatible: 'L\'attuale versione di Gofy non è compatibile con questo plugin, si prega di aggiornare alla versione minima richiesta: {{minimalGofyVersion}}',
   requestAPlugin: 'Richiedi un plugin',
   publishPlugins: 'Pubblicare plugin',
   auth: {

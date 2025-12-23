@@ -1,6 +1,6 @@
 /** this file is used to embed the chatbot in a website
- * the difyChatbotConfig should be defined in the html file before this script is included
- * the difyChatbotConfig should contain the token of the chatbot
+ * the gofyChatbotConfig should be defined in the html file before this script is included
+ * the gofyChatbotConfig should contain the token of the chatbot
  * the token can be found in the chatbot settings page
  */
 
@@ -8,9 +8,9 @@
 
 (function () {
   // Constants for DOM element IDs and configuration key
-  const configKey = "difyChatbotConfig";
-  const buttonId = "dify-chatbot-bubble-button";
-  const iframeId = "dify-chatbot-bubble-window";
+  const configKey = "gofyChatbotConfig";
+  const buttonId = "gofy-chatbot-bubble-button";
+  const iframeId = "gofy-chatbot-bubble-window";
   const config = window[configKey];
   let isExpanded = false;
 
@@ -30,8 +30,8 @@
     flex-direction: column;
     justify-content: space-between;
     top: unset;
-    right: var(--${buttonId}-right, 1rem); /* Align with dify-chatbot-bubble-button. */
-    bottom: var(--${buttonId}-bottom, 1rem); /* Align with dify-chatbot-bubble-button. */
+    right: var(--${buttonId}-right, 1rem); /* Align with gofy-chatbot-bubble-button. */
+    bottom: var(--${buttonId}-bottom, 1rem); /* Align with gofy-chatbot-bubble-button. */
     left: unset;
     width: 24rem;
     max-width: calc(100vw - 2rem);
@@ -52,8 +52,8 @@
     flex-direction: column;
     justify-content: space-between;
     top: unset;
-    right: var(--${buttonId}-right, 1rem); /* Align with dify-chatbot-bubble-button. */
-    bottom: var(--${buttonId}-bottom, 1rem); /* Align with dify-chatbot-bubble-button. */
+    right: var(--${buttonId}-right, 1rem); /* Align with gofy-chatbot-bubble-button. */
+    bottom: var(--${buttonId}-bottom, 1rem); /* Align with gofy-chatbot-bubble-button. */
     left: unset;
     min-width: 24rem;
     width: 48%;

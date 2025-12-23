@@ -151,9 +151,6 @@ const useAdvancedPromptConfig = ({
 
           else
             draft.prompt.text = completionPromptConfig.prompt?.text.replace(PRE_PROMPT_PLACEHOLDER_TEXT, toReplacePrePrompt)
-
-          if (['advanced-chat', 'agent-chat', 'chat'].includes(appMode) && completionPromptConfig.conversation_histories_role.assistant_prefix && completionPromptConfig.conversation_histories_role.user_prefix)
-            draft.conversation_histories_role = completionPromptConfig.conversation_histories_role
         })
         setCompletionPromptConfig(newPromptConfig)
         if (!completionParams.stop || completionParams.stop.length === 0) {

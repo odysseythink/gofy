@@ -7,7 +7,7 @@ import Modal from '@/app/components/base/modal'
 import Button from '@/app/components/base/button'
 import type { LangGeniusVersionResponse } from '@/models/common'
 import { IS_CE_EDITION } from '@/config'
-import DifyLogo from '@/app/components/base/logo/dify-logo'
+import GofyLogo from '@/app/components/base/logo/gofy-logo'
 import { noop } from 'lodash-es'
 import { useGlobalPublicStore } from '@/context/global-public-context'
 
@@ -41,7 +41,7 @@ export default function AccountAbout({
               className='block h-7 w-auto object-contain'
               alt='logo'
             />
-            : <DifyLogo size='large' className='mx-auto' />}
+            : <GofyLogo size='large' className='mx-auto' />}
 
           <div className='text-center text-xs font-normal text-text-tertiary'>Version {langGeniusVersionInfo?.current_version}</div>
           <div className='flex flex-col items-center gap-2 text-center text-xs font-normal text-text-secondary'>

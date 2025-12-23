@@ -8,7 +8,7 @@ import {
   useEmbeddedChatbotContext,
 } from './context'
 import { useEmbeddedChatbot } from './hooks'
-import { isDify } from './utils'
+import { isGofy } from './utils'
 import { useThemeContext } from './theme/theme-context'
 import { CssTransform } from './theme/utils'
 import useBreakpoints, { MediaType } from '@/hooks/use-breakpoints'
@@ -16,7 +16,7 @@ import Loading from '@/app/components/base/loading'
 import LogoHeader from '@/app/components/base/logo/logo-embedded-chat-header'
 import Header from '@/app/components/base/chat/embedded-chatbot/header'
 import ChatWrapper from '@/app/components/base/chat/embedded-chatbot/chat-wrapper'
-import DifyLogo from '@/app/components/base/logo/dify-logo'
+import GofyLogo from '@/app/components/base/logo/gofy-logo'
 import cn from '@/utils/classnames'
 import useDocumentTitle from '@/hooks/use-document-title'
 import { useGlobalPublicStore } from '@/context/global-public-context'
@@ -37,7 +37,7 @@ const Chatbot = () => {
   const customConfig = appData?.custom_config
   const site = appData?.site
 
-  const difyIcon = <LogoHeader />
+  const gofyIcon = <LogoHeader />
 
   useEffect(() => {
     themeBuilder?.buildTheme(site?.chat_color_theme, site?.chat_color_theme_inverted)
@@ -58,7 +58,7 @@ const Chatbot = () => {
           isMobile={isMobile}
           allowResetChat={allowResetChat}
           title={site?.title || ''}
-          customerIcon={isDify() ? difyIcon : ''}
+          customerIcon={isGofy() ? gofyIcon : ''}
           theme={themeBuilder?.theme}
           onCreateNewChat={handleNewConversation}
         />
@@ -84,7 +84,7 @@ const Chatbot = () => {
                   ? <img src={systemFeatures.branding.workspace_logo} alt='logo' className='block h-5 w-auto' />
                   : appData?.custom_config?.replace_webapp_logo
                     ? <img src={`${appData?.custom_config?.replace_webapp_logo}`} alt='logo' className='block h-5 w-auto' />
-                    : <DifyLogo size='small' />
+                    : <GofyLogo size='small' />
               }
             </div>
           )}

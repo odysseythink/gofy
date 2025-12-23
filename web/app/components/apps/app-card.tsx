@@ -166,7 +166,7 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
   }
 
   const exportCheck = async () => {
-    if (app.mode !== 'workflow' && app.mode !== 'advanced-chat') {
+    if (app.mode !== 'workflow') {
       onExport()
       return
     }

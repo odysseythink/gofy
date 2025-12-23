@@ -77,7 +77,7 @@ const SwitchAppModal = ({ show, appDetail, inAppDetail = false, onSuccess, onClo
         isCurrentWorkspaceEditor,
         {
           id: newAppID,
-          mode: appDetail.mode === 'completion' ? 'workflow' : 'advanced-chat',
+          mode: 'workflow',
         },
         removeOriginal ? replace : push,
       )

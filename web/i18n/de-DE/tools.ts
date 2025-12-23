@@ -9,7 +9,7 @@ const translation = {
   },
   contribute: {
     line1: 'Ich interessiere mich dafür, ',
-    line2: 'Werkzeuge zu Dify beizutragen.',
+    line2: 'Werkzeuge zu Gofy beizutragen.',
     viewGuide: 'Leitfaden anzeigen',
   },
   author: 'Von',
@@ -164,7 +164,7 @@ const translation = {
     },
   },
   toolNameUsageTip: 'Name des Tool-Aufrufs für die Argumentation und Aufforderung des Agenten',
-  customToolTip: 'Erfahren Sie mehr über benutzerdefinierte Dify-Tools',
+  customToolTip: 'Erfahren Sie mehr über benutzerdefinierte Gofy-Tools',
   openInStudio: 'In Studio öffnen',
   noTools: 'Keine Werkzeuge gefunden',
   copyToolName: 'Name kopieren',

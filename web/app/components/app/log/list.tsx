@@ -345,14 +345,14 @@ function DetailPanel({ detail, onFeedback }: IDetailPanel) {
   const fetchInitiated = useRef(false)
 
   useEffect(() => {
-    if (appDetail?.id && detail.id && appDetail?.mode !== 'completion' && !fetchInitiated.current) {
+    if (appDetail?.id && detail.id && !fetchInitiated.current) {
       fetchInitiated.current = true
       fetchData()
     }
   }, [appDetail?.id, detail.id, appDetail?.mode, fetchData])
 
-  const isChatMode = appDetail?.mode !== 'completion'
-  const isAdvanced = appDetail?.mode === 'advanced-chat'
+  const isChatMode = false
+  const isAdvanced = false
 
   const varList = (detail.model_config as any).user_input_form?.map((item: any) => {
     const itemContent = item[Object.keys(item)[0]]
@@ -649,8 +649,8 @@ const ConversationList: FC<IConversationList> = ({ logs, appDetail, onRefresh })
 
   const [showDrawer, setShowDrawer] = useState<boolean>(false) // Whether to display the chat details drawer
   const [currentConversation, setCurrentConversation] = useState<ChatConversationGeneralDetail | CompletionConversationGeneralDetail | undefined>() // Currently selected conversation
-  const isChatMode = appDetail.mode !== 'completion' // Whether the app is a chat app
-  const isChatflow = appDetail.mode === 'advanced-chat' // Whether the app is a chatflow app
+  const isChatMode = false // Whether the app is a chat app
+  const isChatflow = false // Whether the app is a chatflow app
   const { setShowPromptLogModal, setShowAgentLogModal, setShowMessageLogModal } = useAppStore(useShallow(state => ({
     setShowPromptLogModal: state.setShowPromptLogModal,
     setShowAgentLogModal: state.setShowAgentLogModal,

@@ -39,11 +39,11 @@ export const singleNodeRun = (appId: string, nodeId: string, params: object) => 
 }
 
 export const getIterationSingleNodeRunUrl = (isChatFlow: boolean, appId: string, nodeId: string) => {
-  return `apps/${appId}/${isChatFlow ? 'advanced-chat/' : ''}workflows/draft/iteration/nodes/${nodeId}/run`
+  return `apps/${appId}/${ ''}workflows/draft/iteration/nodes/${nodeId}/run`
 }
 
 export const getLoopSingleNodeRunUrl = (isChatFlow: boolean, appId: string, nodeId: string) => {
-  return `apps/${appId}/${isChatFlow ? 'advanced-chat/' : ''}workflows/draft/loop/nodes/${nodeId}/run`
+  return `apps/${appId}/${''}workflows/draft/loop/nodes/${nodeId}/run`
 }
 
 export const fetchPublishedWorkflow: Fetcher<FetchWorkflowDraftResponse, string> = (url) => {

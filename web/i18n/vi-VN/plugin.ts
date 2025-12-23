@@ -186,15 +186,15 @@ const translation = {
     },
     empower: 'Hỗ trợ phát triển AI của bạn',
     viewMore: 'Xem thêm',
-    difyMarketplace: 'Thị trường Dify',
+    difyMarketplace: 'Thị trường Gofy',
     discover: 'Khám phá',
     pluginsResult: '{{num}} kết quả',
     moreFrom: 'Các ứng dụng khác từ Marketplace',
     sortBy: 'Thành phố đen',
     noPluginFound: 'Không tìm thấy plugin nào',
     and: 'và',
-    verifiedTip: 'Được xác nhận bởi Dify',
-    partnerTip: 'Được xác nhận bởi một đối tác của Dify',
+    verifiedTip: 'Được xác nhận bởi Gofy',
+    partnerTip: 'Được xác nhận bởi một đối tác của Gofy',
   },
   task: {
     installingWithError: 'Cài đặt {{installingLength}} plugins, {{successLength}} thành công, {{errorLength}} không thành công',
@@ -221,7 +221,7 @@ const translation = {
   metadata: {
     title: 'Plugin',
   },
-  difyVersionNotCompatible: 'Phiên bản Dify hiện tại không tương thích với plugin này, vui lòng nâng cấp lên phiên bản tối thiểu cần thiết: {{minimalDifyVersion}}',
+  difyVersionNotCompatible: 'Phiên bản Gofy hiện tại không tương thích với plugin này, vui lòng nâng cấp lên phiên bản tối thiểu cần thiết: {{minimalGofyVersion}}',
   requestAPlugin: 'Yêu cầu một plugin',
   publishPlugins: 'Xuất bản plugin',
   auth: {

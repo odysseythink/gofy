@@ -181,7 +181,7 @@ const translation = {
     },
     aliyun: {
       title: 'Monitor Chmury',
-      description: 'W pełni zarządzana i wolna od konserwacji platforma obserwowalności oferowana przez Alibaba Cloud umożliwia gotowe monitorowanie, śledzenie i oceny aplikacji Dify.',
+      description: 'W pełni zarządzana i wolna od konserwacji platforma obserwowalności oferowana przez Alibaba Cloud umożliwia gotowe monitorowanie, śledzenie i oceny aplikacji Gofy.',
     },
   },
   answerIcon: {

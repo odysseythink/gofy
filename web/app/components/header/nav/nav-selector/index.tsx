@@ -11,7 +11,6 @@ import { useRouter } from 'next/navigation'
 import { debounce } from 'lodash-es'
 import cn from '@/utils/classnames'
 import AppIcon from '@/app/components/base/app-icon'
-import { AiText, ChatBot, CuteRobot } from '@/app/components/base/icons/src/vender/solid/communication'
 import { Route } from '@/app/components/base/icons/src/vender/solid/mapsAndTravel'
 import { useAppContext } from '@/context/app-context'
 import { useStore as useAppStore } from '@/app/components/app/store'
@@ -89,18 +88,6 @@ const NavSelector = ({ curNav, navs, createText, isApp, onCreate, onLoadmore }: 
                           <span className={cn(
                             'absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded border-[0.5px] border-[rgba(0,0,0,0.02)] bg-white p-0.5 shadow-sm',
                           )}>
-                            {nav.mode === 'advanced-chat' && (
-                              <ChatBot className='h-2.5 w-2.5 text-[#1570EF]' />
-                            )}
-                            {nav.mode === 'agent-chat' && (
-                              <CuteRobot className='h-2.5 w-2.5 text-indigo-600' />
-                            )}
-                            {nav.mode === 'chat' && (
-                              <ChatBot className='h-2.5 w-2.5 text-[#1570EF]' />
-                            )}
-                            {nav.mode === 'completion' && (
-                              <AiText className='h-2.5 w-2.5 text-[#0E9384]' />
-                            )}
                             {nav.mode === 'workflow' && (
                               <Route className='h-2.5 w-2.5 text-[#f79009]' />
                             )}

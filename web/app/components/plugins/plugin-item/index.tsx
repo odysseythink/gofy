@@ -66,7 +66,7 @@ const PluginItem: FC<Props> = ({
 
   const { langGeniusVersionInfo } = useAppContext()
 
-  const isDifyVersionCompatible = useMemo(() => {
+  const isGofyVersionCompatible = useMemo(() => {
     if (!langGeniusVersionInfo.current_version)
       return true
     return gte(langGeniusVersionInfo.current_version, declarationMeta.minimum_dify_version ?? '0.0.0')
@@ -113,8 +113,8 @@ const PluginItem: FC<Props> = ({
             <div className='flex h-5 items-center'>
               <Title title={title} />
               {verified && <RiVerifiedBadgeLine className='ml-0.5 h-4 w-4 shrink-0 text-text-accent' />}
-              {!isDifyVersionCompatible && <Tooltip popupContent={
-                t('plugin.difyVersionNotCompatible', { minimalDifyVersion: declarationMeta.minimum_dify_version })
+              {!isGofyVersionCompatible && <Tooltip popupContent={
+                t('plugin.difyVersionNotCompatible', { minimalGofyVersion: declarationMeta.minimum_dify_version })
               }><RiErrorWarningLine color='red' className='ml-0.5 h-4 w-4 shrink-0 text-text-accent' /></Tooltip>}
               <Badge className='ml-1 shrink-0'
                 text={source === PluginSource.github ? plugin.meta!.version : plugin.version}

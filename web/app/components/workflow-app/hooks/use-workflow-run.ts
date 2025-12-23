@@ -153,8 +153,6 @@ export const useWorkflowRun = () => {
     const isInWorkflowDebug = appDetail?.mode === 'workflow'
 
     let url = ''
-    if (appDetail?.mode === 'advanced-chat')
-      url = `/apps/${appDetail.id}/advanced-chat/workflows/draft/run`
 
     if (isInWorkflowDebug)
       url = `/apps/${appDetail.id}/workflows/draft/run`

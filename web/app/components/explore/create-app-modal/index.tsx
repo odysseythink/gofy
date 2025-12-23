@@ -158,18 +158,6 @@ const CreateAppModal = ({
             />
           </div>
           {/* answer icon */}
-          {isEditModal && (appMode === 'chat' || appMode === 'advanced-chat' || appMode === 'agent-chat') && (
-            <div className='pt-2'>
-              <div className='flex items-center justify-between'>
-                <div className='py-2 text-sm font-medium leading-[20px] text-text-primary'>{t('app.answerIcon.title')}</div>
-                <Switch
-                  defaultValue={useIconAsAnswerIcon}
-                  onChange={v => setUseIconAsAnswerIcon(v)}
-                />
-              </div>
-              <p className='body-xs-regular text-text-tertiary'>{t('app.answerIcon.descriptionInExplore')}</p>
-            </div>
-          )}
           {isEditModal && (
             <div className='pt-2'>
               <div className='mb-2 mt-2 text-sm font-medium leading-[20px] text-text-primary'>{t('app.maxActiveRequests')}</div>

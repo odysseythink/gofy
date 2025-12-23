@@ -29,7 +29,7 @@ const Config: FC = () => {
     setModelConfig,
     setPrevPromptConfig,
   } = useContext(ConfigContext)
-  const isChatApp = ['advanced-chat', 'agent-chat', 'chat'].includes(mode)
+  const isChatApp = false
   const formattingChangedDispatcher = useFormattingChangedDispatcher()
 
   const promptTemplate = modelConfig.configs.prompt_template

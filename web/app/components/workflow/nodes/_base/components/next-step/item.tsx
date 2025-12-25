@@ -12,7 +12,6 @@ import BlockIcon from '@/app/components/workflow/block-icon'
 import {
   useNodesInteractions,
   useNodesReadOnly,
-  useToolIcon,
 } from '@/app/components/workflow/hooks'
 import Button from '@/app/components/base/button'
 import cn from '@/utils/classnames'
@@ -31,7 +30,6 @@ const Item = ({
   const [open, setOpen] = useState(false)
   const { nodesReadOnly } = useNodesReadOnly()
   const { handleNodeSelect } = useNodesInteractions()
-  const toolIcon = useToolIcon(data)
 
   const handleOpenChange = useCallback((v: boolean) => {
     setOpen(v)
@@ -43,7 +41,7 @@ const Item = ({
     >
       <BlockIcon
         type={data.type}
-        toolIcon={toolIcon}
+        toolIcon={''}
         className='mr-1.5 shrink-0'
       />
       <div

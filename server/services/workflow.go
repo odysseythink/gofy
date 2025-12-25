@@ -358,3 +358,15 @@ func (s *WorkflowService) PublishWorkflow(app *models.App, account *models.Accou
 	// return new workflow
 	return wf
 }
+
+func (s *WorkflowService) IsWorkflowExist(app_model *models.App) bool {
+	var cnt int64
+	err := dbengine.Instance().DB.Model(&models.Workflow{}).Where("tenant_id = ? and app_id = ? and version = ?", app_model.TenantID,
+		app_model.ID,
+		models.WORKFLOW_VERSION_DRAFT).Count(&cnt).Error
+	if err != nil {
+		mlog.Errorf("get workflow by app %s failed:%v", app_model.ID, err)
+		return false
+	}
+	return cnt > 0
+}

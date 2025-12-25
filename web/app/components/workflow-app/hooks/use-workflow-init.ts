@@ -111,7 +111,6 @@ export const useWorkflowInit = () => {
   useEffect(() => {
     if (data) {
       workflowStore.getState().setDraftUpdatedAt(data.updated_at)
-      workflowStore.getState().setToolPublished(data.tool_published)
     }
   }, [data, workflowStore])
 

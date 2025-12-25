@@ -14,13 +14,11 @@ import { BlockEnum } from '../types'
 import { RetryLogTrigger } from './retry-log'
 import { IterationLogTrigger } from './iteration-log'
 import { LoopLogTrigger } from './loop-log'
-import { AgentLogTrigger } from './agent-log'
 import cn from '@/utils/classnames'
 import StatusContainer from '@/app/components/workflow/run/status-container'
 import CodeEditor from '@/app/components/workflow/nodes/_base/components/editor/code-editor'
 import { CodeLanguage } from '@/app/components/workflow/nodes/code/types'
 import type {
-  AgentLogItemWithChildren,
   IterationDurationMap,
   LoopDurationMap,
   LoopVariableMap,
@@ -41,7 +39,6 @@ type Props = {
   onShowIterationDetail?: (detail: NodeTracing[][], iterDurationMap: IterationDurationMap) => void
   onShowLoopDetail?: (detail: NodeTracing[][], loopDurationMap: LoopDurationMap, loopVariableMap: LoopVariableMap) => void
   onShowRetryDetail?: (detail: NodeTracing[]) => void
-  onShowAgentOrToolLog?: (detail?: AgentLogItemWithChildren) => void
   notShowIterationNav?: boolean
   notShowLoopNav?: boolean
 }
@@ -56,7 +53,6 @@ const NodePanel: FC<Props> = ({
   onShowIterationDetail,
   onShowLoopDetail,
   onShowRetryDetail,
-  onShowAgentOrToolLog,
   notShowIterationNav,
   notShowLoopNav,
 }) => {
@@ -93,8 +89,6 @@ const NodePanel: FC<Props> = ({
   const isIterationNode = nodeInfo.node_type === BlockEnum.Iteration && !!nodeInfo.details?.length
   const isLoopNode = nodeInfo.node_type === BlockEnum.Loop && !!nodeInfo.details?.length
   const isRetryNode = hasRetryNode(nodeInfo.node_type) && !!nodeInfo.retryDetail?.length
-  const isAgentNode = nodeInfo.node_type === BlockEnum.Agent && !!nodeInfo.agentLog?.length
-  const isToolNode = nodeInfo.node_type === BlockEnum.Tool && !!nodeInfo.agentLog?.length
 
   const inputsTitle = useMemo(() => {
     let text = t('workflow.common.input')
@@ -186,14 +180,6 @@ const NodePanel: FC<Props> = ({
                 onShowRetryResultList={onShowRetryDetail}
               />
             )}
-            {
-              (isAgentNode || isToolNode) && onShowAgentOrToolLog && (
-                <AgentLogTrigger
-                  nodeInfo={nodeInfo}
-                  onShowAgentOrToolLog={onShowAgentOrToolLog}
-                />
-              )
-            }
             <div className={cn('mb-1', hideInfo && '!px-2 !py-0.5')}>
               {(nodeInfo.status === 'stopped') && (
                 <StatusContainer status='stopped'>

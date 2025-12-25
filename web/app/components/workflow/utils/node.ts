@@ -136,7 +136,7 @@ export const getTopLeftNodePosition = (nodes: Node[]) => {
 }
 
 export const hasRetryNode = (nodeType?: BlockEnum) => {
-  return nodeType === BlockEnum.LLM || nodeType === BlockEnum.Tool || nodeType === BlockEnum.HttpRequest || nodeType === BlockEnum.Code
+  return nodeType === BlockEnum.LLM || nodeType === BlockEnum.HttpRequest || nodeType === BlockEnum.Code
 }
 
 export const getNodeCustomTypeByNodeDataType = (nodeType: BlockEnum) => {

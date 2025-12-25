@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"mlib.com/gofy/server/core/exceptions"
+	_ "mlib.com/gofy/server/core/model_runtime/model_provides/ladder"
 	_ "mlib.com/gofy/server/core/model_runtime/model_provides/tongyi"
 	schemavalidators "mlib.com/gofy/server/core/model_runtime/schema_validators"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"

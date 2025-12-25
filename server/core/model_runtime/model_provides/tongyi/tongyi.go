@@ -6,6 +6,7 @@ import (
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	"mlib.com/gofy/server/global"
+	"mlib.com/mlog"
 )
 
 func init() {
@@ -32,7 +33,7 @@ func (provider *TongyiProvide) ValidateProviderCredentials(credentials map[strin
 	*/
 	// try:
 	model_instance := provider.GetModelInstance(modelruntimeenumtypes.Model_LLM)
-
+	mlog.Debug("validate credentials qwen-turbo")
 	// Use `qwen-turbo` model for validate,
 	model_instance.ValidateCredentials("qwen-turbo", credentials)
 

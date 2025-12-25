@@ -62,7 +62,7 @@ const ToolCallItem: FC<Props> = ({ toolCall, isLLM = false, isFinal, tokens, obs
               !collapseState && 'rotate-90',
             )}
           />
-          <BlockIcon className={cn('mr-2 shrink-0')} type={isLLM ? BlockEnum.LLM : BlockEnum.Tool} toolIcon={toolCall.tool_icon} />
+          <BlockIcon className={cn('mr-2 shrink-0')} type={BlockEnum.LLM} toolIcon={toolCall.tool_icon} />
           <div className={cn(
             'grow truncate text-[13px] font-semibold leading-[16px] text-text-secondary',
           )} title={toolName}>{toolName}</div>

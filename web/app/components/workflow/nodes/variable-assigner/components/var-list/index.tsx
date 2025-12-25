@@ -7,7 +7,7 @@ import RemoveButton from '../../../_base/components/remove-button'
 import ListNoDataPlaceholder from '../../../_base/components/list-no-data-placeholder'
 import VarReferencePicker from '@/app/components/workflow/nodes/_base/components/variable/var-reference-picker'
 import type { ValueSelector, Var } from '@/app/components/workflow/types'
-import { VarType as VarKindType } from '@/app/components/workflow/nodes/tool/types'
+import { VarType as VarKindType } from '@/types/workflow'
 import { noop } from 'lodash-es'
 
 type Props = {

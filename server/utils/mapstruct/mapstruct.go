@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"mlib.com/confy/cast"
+	"mlib.com/mlog"
 )
 
 const (
@@ -519,4 +520,40 @@ func MapToStruct(src map[string]any, dst any) error {
 		}
 	}
 	return nil
+}
+
+func GetFromMap[V cast.Basic](dict map[string]any, key string) (V, bool) {
+	var empty_result V
+	if len(dict) == 0 {
+		return empty_result, false
+	}
+	if _, ok := dict[key]; !ok {
+		return empty_result, false
+	}
+	val, err := cast.ToE[V](dict[key])
+	if err != nil {
+		mlog.Errorf("cast %#v to type of %#v failed:%v", dict[key], empty_result, err)
+		return empty_result, false
+	}
+	return val, true
+}
+func GetSliceFromMap[V any](dict map[string]any, key string) ([]V, bool) {
+	if len(dict) == 0 {
+		return nil, false
+	}
+	if _, ok := dict[key]; !ok || dict[key] == nil {
+		return nil, false
+	}
+	bindata, err := json.Marshal(dict[key])
+	if err != nil {
+		mlog.Errorf("json marshal %#v failed:%v", dict[key], err)
+		return nil, false
+	}
+	res := make([]V, 0)
+	err = json.Unmarshal(bindata, &res)
+	if err != nil {
+		mlog.Errorf("json Unmarshal %#v failed:%v", dict[key], err)
+		return nil, false
+	}
+	return res, true
 }

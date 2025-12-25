@@ -6,7 +6,6 @@ import { useTabs } from './hooks'
 import type { ToolDefaultValue } from './types'
 import { TabsEnum } from './types'
 import Blocks from './blocks'
-import AllTools from './all-tools'
 import cn from '@/utils/classnames'
 
 export type TabsProps = {
@@ -69,21 +68,6 @@ const Tabs: FC<TabsProps> = ({
               availableBlocksTypes={availableBlocksTypes}
             />
           </div>
-        )
-      }
-      {
-        activeTab === TabsEnum.Tools && (
-          <AllTools
-            searchText={searchText}
-            onSelect={onSelect}
-            tags={tags}
-            canNotSelectMultiple
-            buildInTools={buildInTools || []}
-            customTools={customTools || []}
-            workflowTools={workflowTools || []}
-            mcpTools={mcpTools || []}
-            canChooseMCPTool
-          />
         )
       }
     </div>

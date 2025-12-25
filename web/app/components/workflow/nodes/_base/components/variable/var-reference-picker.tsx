@@ -34,7 +34,7 @@ import {
   useIsChatMode,
   useWorkflowVariables,
 } from '@/app/components/workflow/hooks'
-import { VarType as VarKindType } from '@/app/components/workflow/nodes/tool/types'
+import { VarType as VarKindType } from '@/types/workflow'
 import TypeSelector from '@/app/components/workflow/nodes/_base/components/selector'
 import AddButton from '@/app/components/base/button/add-button'
 import Badge from '@/app/components/base/badge'
@@ -341,7 +341,7 @@ const VarReferencePicker: FC<Props> = ({
       const data = await fetchDynamicOptions()
       setDynamicOptions(data?.options || [])
     }
- finally {
+    finally {
       setIsLoading(false)
     }
   }

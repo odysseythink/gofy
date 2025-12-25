@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { RiArrowDownSLine } from '@remixicon/react'
 import { capitalize } from 'lodash-es'
 import { useBoolean } from 'ahooks'
-import { VarType as NumberVarType } from '../../tool/types'
+import { VarType as NumberVarType } from '@/types/workflow'
 import VariableTag from '../../_base/components/variable-tag'
 import {
   PortalToFollowElem,

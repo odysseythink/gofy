@@ -15,7 +15,6 @@ export const useNodeHelpLink = (nodeType: BlockEnum) => {
         [BlockEnum.End]: 'end',
         [BlockEnum.Answer]: 'answer',
         [BlockEnum.LLM]: 'llm',
-        [BlockEnum.KnowledgeRetrieval]: 'knowledge-retrieval',
         [BlockEnum.QuestionClassifier]: 'question-classifier',
         [BlockEnum.IfElse]: 'ifelse',
         [BlockEnum.Code]: 'code',
@@ -27,10 +26,8 @@ export const useNodeHelpLink = (nodeType: BlockEnum) => {
         [BlockEnum.Loop]: 'loop',
         [BlockEnum.ParameterExtractor]: 'parameter-extractor',
         [BlockEnum.HttpRequest]: 'http-request',
-        [BlockEnum.Tool]: 'tools',
         [BlockEnum.DocExtractor]: 'doc-extractor',
         [BlockEnum.ListFilter]: 'list-operator',
-        [BlockEnum.Agent]: 'agent',
       }
     }
 
@@ -39,7 +36,6 @@ export const useNodeHelpLink = (nodeType: BlockEnum) => {
       [BlockEnum.End]: 'end',
       [BlockEnum.Answer]: 'answer',
       [BlockEnum.LLM]: 'llm',
-      [BlockEnum.KnowledgeRetrieval]: 'knowledge-retrieval',
       [BlockEnum.QuestionClassifier]: 'question-classifier',
       [BlockEnum.IfElse]: 'ifelse',
       [BlockEnum.Code]: 'code',
@@ -51,10 +47,8 @@ export const useNodeHelpLink = (nodeType: BlockEnum) => {
       [BlockEnum.Loop]: 'loop',
       [BlockEnum.ParameterExtractor]: 'parameter-extractor',
       [BlockEnum.HttpRequest]: 'http-request',
-      [BlockEnum.Tool]: 'tools',
       [BlockEnum.DocExtractor]: 'doc-extractor',
       [BlockEnum.ListFilter]: 'list-operator',
-      [BlockEnum.Agent]: 'agent',
     }
   }, [language]) as Record<string, string>
 

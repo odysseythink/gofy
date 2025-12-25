@@ -8,6 +8,7 @@ import (
 
 	"google.golang.org/grpc/peer"
 	"mlib.com/confy"
+	"mlib.com/gofy/server/constants"
 	"mlib.com/gofy/server/core/exceptions"
 	appexceptions "mlib.com/gofy/server/core/exceptions/app"
 	httpexceptions "mlib.com/gofy/server/core/exceptions/http"
@@ -553,4 +554,407 @@ func (s *AdminService) WorkflowPublished(ctx context.Context, in *pbapi.Workflow
 	}
 	out.CreatedAt = created_at
 	return
+}
+func (s *AdminService) GetWorkflowDraftVariableList(ctx context.Context, in *pbapi.GetWorkflowDraftVariableListRequest) (out *pbapi.GetWorkflowDraftVariableListReply, err error) {
+	p, _ := peer.FromContext(ctx)
+	mlog.Infof("remote[%s] admin.GetWorkflowDraftVariableList call:%#v", p.Addr.String(), in)
+
+	out = &pbapi.GetWorkflowDraftVariableListReply{}
+	if in.AppId == "" {
+		mlog.Error("missing app id")
+		out.Exp = exceptions.NewInvalidArgsPbHttpExp("missing app id")
+		return
+	}
+
+	// Get current user for authorization
+	current_user, exp := services.ServiceGroupApp.Account.LoadLoggedInAccount(in.UserId)
+	if exp != nil {
+		mlog.Errorf("load user(%s) failed:%v", in.UserId, exp.Error())
+		out.Exp = exceptions.NewAccountNotInitializedPbHttpExp(fmt.Sprintf("load user(%s) failed:%v", in.UserId, exp.Error()))
+		return
+	}
+	if !current_user.IsEditor() {
+		mlog.Errorf("current user(%#v) is not editor", current_user)
+		out.Exp = exceptions.NewForbiddenPbHttpExp(fmt.Sprintf("current user(%#v) is not editor", current_user))
+		return
+	}
+
+	func() {
+		defer func() {
+			if r := recover(); r != nil {
+				if exp, ok := r.(httpexceptions.HTTPException); ok {
+					out.Exp = exp.ToPbHttpException(exp)
+				} else if exp, ok := r.(error); ok {
+					out.Exp = exceptions.NewInternalServerPbHttpExp(exp.Error())
+				} else {
+					panic(r)
+				}
+			}
+		}()
+		app_model := services.ServiceGroupApp.App.GetAppModel(in.AppId, current_user, nil)
+
+		// Check if workflow exists
+		workflowExist := services.ServiceGroupApp.Workflow.IsWorkflowExist(app_model)
+		if !workflowExist {
+			mlog.Error("draft workflow not exist")
+			out.Exp = exceptions.NewDraftWorkflowNotExistPbHttpExp("")
+			return
+		}
+
+		// Use the new Go service to get draft variables
+		workflowVars, total, err := services.ServiceGroupApp.WorkflowDraftVariable.ListVariablesWithoutValues(in.AppId, int(in.Page), int(in.Limit))
+		if err != nil {
+			mlog.Errorf("failed to get workflow draft variables: %v", err)
+			out.Exp = exceptions.NewInternalServerPbHttpExp(fmt.Sprintf("failed to get workflow draft variables: %v", err))
+			return
+		}
+
+		// Convert to proto response format
+		items := make([]*pbapi.PK_WORKFLOW_DRAFT_VARIABLE_WITHOUT_VALUE_FIELDS, 0)
+		for _, variable := range workflowVars {
+			item := &pbapi.PK_WORKFLOW_DRAFT_VARIABLE_WITHOUT_VALUE_FIELDS{
+				Id:          variable.ID,
+				Type:        string(variable.GetVariableType()),
+				Name:        variable.Name,
+				Description: variable.Description,
+				Selector:    []string{variable.NodeID, variable.Name},
+				ValueType:   variable.ValueType,
+				Edited:      variable.LastEditedAt != nil,
+				Visible:     variable.Visible,
+			}
+			items = append(items, item)
+		}
+
+		out.Items = items
+		out.Total = total
+	}()
+
+	if out.Exp != nil {
+		return
+	}
+
+	return out, nil
+}
+func (s *AdminService) GetWorkflowDraftVariable(ctx context.Context, in *pbapi.GetWorkflowDraftVariableRequest) (out *pbapi.GetWorkflowDraftVariableReply, err error) {
+	p, _ := peer.FromContext(ctx)
+	mlog.Infof("remote[%s] admin.GetWorkflowDraftVariable call:%#v", p.Addr.String(), in)
+
+	out = &pbapi.GetWorkflowDraftVariableReply{}
+	if in.AppId == "" {
+		mlog.Error("missing app id")
+		out.Exp = exceptions.NewInvalidArgsPbHttpExp("missing app id")
+		return
+	}
+	if in.VariableId == "" {
+		mlog.Error("missing variable id")
+		out.Exp = exceptions.NewInvalidArgsPbHttpExp("missing variable id")
+		return
+	}
+
+	func() {
+		defer func() {
+			if r := recover(); r != nil {
+				if exp, ok := r.(httpexceptions.HTTPException); ok {
+					out.Exp = exp.ToPbHttpException(exp)
+				} else if exp, ok := r.(error); ok {
+					out.Exp = exceptions.NewInternalServerPbHttpExp(exp.Error())
+				} else {
+					panic(r)
+				}
+			}
+		}()
+
+		variable, err := services.ServiceGroupApp.WorkflowDraftVariable.GetVariable(in.VariableId)
+
+		if err != nil || variable == nil {
+			mlog.Error("find variable %s failed:%v", in.VariableId, err)
+			panic(exceptions.NewValueError(fmt.Sprintf("variable not found, id={%s}", in.VariableId)))
+		}
+		if variable.AppID != in.AppId {
+			mlog.Error("find variable %s failed:%v", in.VariableId, err)
+			panic(exceptions.NewValueError(fmt.Sprintf("variable not found, id={%s}", in.VariableId)))
+		}
+		var value any
+		seg, _ := variable.GetValue()
+		if seg != nil {
+			value = seg.GetValue()
+		}
+		item := map[string]any{
+			"id":          variable.ID,
+			"type":        string(variable.GetVariableType()),
+			"name":        variable.Name,
+			"description": variable.Description,
+			"selector":    []string{variable.NodeID, variable.Name},
+			"valueType":   variable.ValueType,
+			"edited":      variable.LastEditedAt != nil,
+			"visible":     variable.Visible,
+			"value":       value,
+		}
+		bindata, _ := json.Marshal(item)
+		out.VarStr = string(bindata)
+	}()
+
+	if out.Exp != nil {
+		return
+	}
+	return out, nil
+}
+func (s *AdminService) GetWorkflowDraftSysVariableList(ctx context.Context, in *pbapi.GetWorkflowDraftVariableListRequest) (out *pbapi.GetWorkflowDraftVariableListReply, err error) {
+	p, _ := peer.FromContext(ctx)
+	mlog.Infof("remote[%s] admin.GetWorkflowDraftSysVariableList call:%#v", p.Addr.String(), in)
+
+	out = &pbapi.GetWorkflowDraftVariableListReply{}
+	if in.AppId == "" {
+		mlog.Error("missing app id")
+		out.Exp = exceptions.NewInvalidArgsPbHttpExp("missing app id")
+		return
+	}
+
+	// Get current user for authorization
+	current_user, exp := services.ServiceGroupApp.Account.LoadLoggedInAccount(in.UserId)
+	if exp != nil {
+		mlog.Errorf("load user(%s) failed:%v", in.UserId, exp.Error())
+		out.Exp = exceptions.NewAccountNotInitializedPbHttpExp(fmt.Sprintf("load user(%s) failed:%v", in.UserId, exp.Error()))
+		return
+	}
+	if !current_user.IsEditor() {
+		mlog.Errorf("current user(%#v) is not editor", current_user)
+		out.Exp = exceptions.NewForbiddenPbHttpExp(fmt.Sprintf("current user(%#v) is not editor", current_user))
+		return
+	}
+
+	func() {
+		defer func() {
+			if r := recover(); r != nil {
+				if exp, ok := r.(httpexceptions.HTTPException); ok {
+					out.Exp = exp.ToPbHttpException(exp)
+				} else if exp, ok := r.(error); ok {
+					out.Exp = exceptions.NewInternalServerPbHttpExp(exp.Error())
+				} else {
+					panic(r)
+				}
+			}
+		}()
+		app_model := services.ServiceGroupApp.App.GetAppModel(in.AppId, current_user, nil)
+
+		variables, err := services.ServiceGroupApp.WorkflowDraftVariable.GetVariableList(app_model, constants.SYSTEM_VARIABLE_NODE_ID)
+		if err != nil {
+			panic(err)
+		}
+		items := make([]map[string]any, 0)
+		for _, variable := range variables {
+			var value any
+			seg, _ := variable.GetValue()
+			if seg != nil {
+				value = seg.GetValue()
+			}
+			item := map[string]any{
+				"id":          variable.ID,
+				"type":        string(variable.GetVariableType()),
+				"name":        variable.Name,
+				"description": variable.Description,
+				"selector":    []string{variable.NodeID, variable.Name},
+				"valueType":   variable.ValueType,
+				"edited":      variable.LastEditedAt != nil,
+				"visible":     variable.Visible,
+				"value":       value,
+			}
+			items = append(items, item)
+		}
+		bindata, _ := json.Marshal(items)
+		out.ItemsStr = string(bindata)
+	}()
+
+	if out.Exp != nil {
+		return
+	}
+
+	return out, nil
+}
+
+func (s *AdminService) GetWorkflowDraftConversationVariableList(ctx context.Context, in *pbapi.GetWorkflowDraftVariableListRequest) (out *pbapi.GetWorkflowDraftVariableListReply, err error) {
+	p, _ := peer.FromContext(ctx)
+	mlog.Infof("remote[%s] admin.GetWorkflowDraftConversationVariableList call:%#v", p.Addr.String(), in)
+
+	out = &pbapi.GetWorkflowDraftVariableListReply{}
+	if in.AppId == "" {
+		mlog.Error("missing app id")
+		out.Exp = exceptions.NewInvalidArgsPbHttpExp("missing app id")
+		return
+	}
+
+	// Get current user for authorization
+	current_user, exp := services.ServiceGroupApp.Account.LoadLoggedInAccount(in.UserId)
+	if exp != nil {
+		mlog.Errorf("load user(%s) failed:%v", in.UserId, exp.Error())
+		out.Exp = exceptions.NewAccountNotInitializedPbHttpExp(fmt.Sprintf("load user(%s) failed:%v", in.UserId, exp.Error()))
+		return
+	}
+	if !current_user.IsEditor() {
+		mlog.Errorf("current user(%#v) is not editor", current_user)
+		out.Exp = exceptions.NewForbiddenPbHttpExp(fmt.Sprintf("current user(%#v) is not editor", current_user))
+		return
+	}
+
+	func() {
+		defer func() {
+			if r := recover(); r != nil {
+				if exp, ok := r.(httpexceptions.HTTPException); ok {
+					out.Exp = exp.ToPbHttpException(exp)
+				} else if exp, ok := r.(error); ok {
+					out.Exp = exceptions.NewInternalServerPbHttpExp(exp.Error())
+				} else {
+					panic(r)
+				}
+			}
+		}()
+		app_model := services.ServiceGroupApp.App.GetAppModel(in.AppId, current_user, nil)
+
+		draftWf := services.ServiceGroupApp.Workflow.GetDraftWorkflow(app_model)
+		if draftWf == nil {
+			mlog.Errorf("draft workflow not found, id={%s}", app_model.ID)
+			panic(exceptions.NewValueError(fmt.Sprintf("draft workflow not found, id={%s}", app_model.ID)))
+		}
+		err := services.ServiceGroupApp.WorkflowDraftVariable.PrefillConversationVariableDefaultValues(draftWf)
+		if err != nil {
+			panic(err)
+		}
+		variables, err := services.ServiceGroupApp.WorkflowDraftVariable.GetVariableList(app_model, constants.CONVERSATION_VARIABLE_NODE_ID)
+		if err != nil {
+			panic(err)
+		}
+		items := make([]map[string]any, 0)
+		for _, variable := range variables {
+			var value any
+			seg, _ := variable.GetValue()
+			if seg != nil {
+				value = seg.GetValue()
+			}
+			item := map[string]any{
+				"id":          variable.ID,
+				"type":        string(variable.GetVariableType()),
+				"name":        variable.Name,
+				"description": variable.Description,
+				"selector":    []string{variable.NodeID, variable.Name},
+				"valueType":   variable.ValueType,
+				"edited":      variable.LastEditedAt != nil,
+				"visible":     variable.Visible,
+				"value":       value,
+			}
+			items = append(items, item)
+		}
+		bindata, _ := json.Marshal(items)
+		out.ItemsStr = string(bindata)
+	}()
+
+	if out.Exp != nil {
+		return
+	}
+
+	return out, nil
+}
+func (s *AdminService) GetWorkflowDraftEnvVariableList(ctx context.Context, in *pbapi.GetWorkflowDraftVariableListRequest) (out *pbapi.GetWorkflowDraftVariableListReply, err error) {
+	p, _ := peer.FromContext(ctx)
+	mlog.Infof("remote[%s] admin.GetWorkflowDraftEnvVariableList call:%#v", p.Addr.String(), in)
+
+	out = &pbapi.GetWorkflowDraftVariableListReply{}
+	if in.AppId == "" {
+		mlog.Error("missing app id")
+		out.Exp = exceptions.NewInvalidArgsPbHttpExp("missing app id")
+		return
+	}
+
+	// Get current user for authorization
+	current_user, exp := services.ServiceGroupApp.Account.LoadLoggedInAccount(in.UserId)
+	if exp != nil {
+		mlog.Errorf("load user(%s) failed:%v", in.UserId, exp.Error())
+		out.Exp = exceptions.NewAccountNotInitializedPbHttpExp(fmt.Sprintf("load user(%s) failed:%v", in.UserId, exp.Error()))
+		return
+	}
+	if !current_user.IsEditor() {
+		mlog.Errorf("current user(%#v) is not editor", current_user)
+		out.Exp = exceptions.NewForbiddenPbHttpExp(fmt.Sprintf("current user(%#v) is not editor", current_user))
+		return
+	}
+
+	func() {
+		defer func() {
+			if r := recover(); r != nil {
+				if exp, ok := r.(httpexceptions.HTTPException); ok {
+					out.Exp = exp.ToPbHttpException(exp)
+				} else if exp, ok := r.(error); ok {
+					out.Exp = exceptions.NewInternalServerPbHttpExp(exp.Error())
+				} else {
+					panic(r)
+				}
+			}
+		}()
+		app_model := services.ServiceGroupApp.App.GetAppModel(in.AppId, current_user, nil)
+
+		draftWf := services.ServiceGroupApp.Workflow.GetDraftWorkflow(app_model)
+		if draftWf == nil {
+			mlog.Errorf("draft workflow not found, id={%s}", app_model.ID)
+			panic(exceptions.NewValueError(fmt.Sprintf("draft workflow not found, id={%s}", app_model.ID)))
+		}
+        workflow_service = WorkflowService()
+        workflow = workflow_service.get_draft_workflow(app_model=app_model)
+        if workflow is None:
+            raise DraftWorkflowNotExist()
+
+        env_vars = workflow.environment_variables
+        env_vars_list = []
+        for v in env_vars:
+            env_vars_list.append(
+                {
+                    "id": v.id,
+                    "type": "env",
+                    "name": v.name,
+                    "description": v.description,
+                    "selector": v.selector,
+                    "value_type": v.value_type.exposed_type().value,
+                    "value": v.value,
+                    # Do not track edited for env vars.
+                    "edited": False,
+                    "visible": True,
+                    "editable": True,
+                }
+            )
+
+		err := services.ServiceGroupApp.WorkflowDraftVariable.PrefillConversationVariableDefaultValues(draftWf)
+		if err != nil {
+			panic(err)
+		}
+		variables, err := services.ServiceGroupApp.WorkflowDraftVariable.GetVariableList(app_model, constants.CONVERSATION_VARIABLE_NODE_ID)
+		if err != nil {
+			panic(err)
+		}
+		items := make([]map[string]any, 0)
+		for _, variable := range variables {
+			var value any
+			seg, _ := variable.GetValue()
+			if seg != nil {
+				value = seg.GetValue()
+			}
+			item := map[string]any{
+				"id":          variable.ID,
+				"type":        string(variable.GetVariableType()),
+				"name":        variable.Name,
+				"description": variable.Description,
+				"selector":    []string{variable.NodeID, variable.Name},
+				"valueType":   variable.ValueType,
+				"edited":      variable.LastEditedAt != nil,
+				"visible":     variable.Visible,
+				"value":       value,
+			}
+			items = append(items, item)
+		}
+		bindata, _ := json.Marshal(items)
+		out.ItemsStr = string(bindata)
+	}()
+
+	if out.Exp != nil {
+		return
+	}
+
+	return out, nil
 }

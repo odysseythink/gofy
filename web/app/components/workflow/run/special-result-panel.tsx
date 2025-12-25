@@ -1,7 +1,7 @@
 import { RetryResultPanel } from './retry-log'
 import { IterationResultPanel } from './iteration-log'
 import { LoopResultPanel } from './loop-log'
-import { AgentResultPanel } from './agent-log'
+// import { AgentResultPanel } from './agent-log'
 import type {
   AgentLogItemWithChildren,
   IterationDurationMap,
@@ -82,7 +82,7 @@ const SpecialResultPanel = ({
           />
         )
       }
-      {
+      {/* {
         !!agentOrToolLogItemStack?.length && agentOrToolLogListMap && handleShowAgentOrToolLog && (
           <AgentResultPanel
             agentOrToolLogItemStack={agentOrToolLogItemStack}
@@ -90,7 +90,7 @@ const SpecialResultPanel = ({
             onShowAgentOrToolLog={handleShowAgentOrToolLog}
           />
         )
-      }
+      } */}
     </div>
   )
 }

@@ -2,17 +2,22 @@ package models
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"reflect"
 	"time"
 
+	uuid "github.com/satori/go.uuid"
 	"mlib.com/confy/cast"
+	"mlib.com/gofy/server/constants"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/variables"
 	dbengine "mlib.com/gofy/server/db_engine"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
+	variableenumtypes "mlib.com/gofy/server/enum_types/variable"
 	variablefactory "mlib.com/gofy/server/factories/variable_factory"
 	"mlib.com/gofy/server/libs/helper"
+	variablestypes "mlib.com/gofy/server/types/variables"
 	"mlib.com/gofy/server/utils/validate"
 	"mlib.com/mlog"
 )
@@ -142,6 +147,11 @@ const (
 	//         if mode.value == value:
 	//             return mode
 	//     raise ValueError(f"invalid workflow node execution status value {value}")
+)
+
+const (
+	WORKFLOW_VERSION_DRAFT     = "draft"
+	WORKFLOW_VERSION_PUBLISHED = "published"
 )
 
 // Workflow [...]
@@ -872,4 +882,300 @@ type WorkflowConversationVariable struct {
 // TableName get sql table name.获取数据库表名
 func (WorkflowConversationVariable) TableName() string {
 	return "workflow_conversation_variable"
+}
+
+// DraftVariableType represents the type of draft variable
+type DraftVariableType string
+
+const (
+	DraftVariable_CONVERSATION DraftVariableType = "conversation"
+	DraftVariable_SYS          DraftVariableType = "sys"
+	DraftVariable_NODE         DraftVariableType = "node"
+)
+
+// WorkflowDraftVariable record variables and outputs generated during
+// debugging worfklow or chatflow.
+//
+// IMPORTANT: This model maintains multiple invariant rules that must be preserved.
+// Do not instantiate this class directly with the constructor.
+//
+// Instead, use the factory methods (`NewConversationVariable`, `NewSysVariable`,
+// `NewNodeVariable`) defined below to ensure all invariants are properly maintained.
+type WorkflowDraftVariable struct {
+	// id is the unique identifier of a draft variable.
+	ID string `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+
+	CreatedAt *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+
+	UpdatedAt *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+
+	// "`app_id` maps to the `id` field in the `model.App` model."
+	AppID string `gorm:"column:app_id;type:varchar(36);not null" json:"app_id"`
+
+	// `last_edited_at` records when the value of a given draft variable
+	// is edited.
+	//
+	// If it's not edited after creation, its value is `nil`.
+	LastEditedAt *time.Time `gorm:"column:last_edited_at;type:timestamp" json:"last_edited_at"`
+
+	// The `node_id` field is special.
+	//
+	// If the variable is a conversation variable or a system variable, then the value of `node_id`
+	// is `conversation` or `sys`, respective.
+	//
+	// Otherwise, if the variable is a variable belonging to a specific node, the value of `_node_id` is
+	// the identity of correspond node in graph definition. An example of node id is `"1745769620734"`.
+	//
+	// However, there's one caveat. The id of the first "Answer" node in chatflow is "answer". (Other
+	// "Answer" node conform the rules above.)
+	NodeID string `gorm:"column:node_id;type:varchar(255);not null" json:"node_id"`
+
+	// From `VARIABLE_PATTERN`, we may conclude that the length of a top level variable is less than
+	// 80 chars.
+	//
+	// ref: api/core/workflow/entities/variable_pool.py:18
+	Name        string `gorm:"column:name;type:varchar(255);not null" json:"name"`
+	Description string `gorm:"column:description;type:varchar(255);not null;default:''" json:"description"`
+
+	Selector []string `gorm:"serializer:json;column:selector" json:"selector"`
+
+	// The data type of this variable's value
+	ValueType string `gorm:"column:value_type;type:varchar(20);not null" json:"value_type"`
+
+	// The variable's value serialized as a JSON string
+	Value string `gorm:"column:value;type:text;not null" json:"value"`
+
+	// Controls whether the variable should be displayed in the variable inspection panel
+	Visible bool `gorm:"column:visible;type:boolean;not null;default:true" json:"visible"`
+
+	// Determines whether this variable can be modified by users
+	Editable bool `gorm:"column:editable;type:boolean;not null;default:false" json:"editable"`
+
+	// The `node_execution_id` field identifies the workflow node execution that created this variable.
+	// It corresponds to the `id` field in the `WorkflowNodeExecutionModel` model.
+	//
+	// This field is not `None` for system variables and node variables, and is  `None`
+	// for conversation variables.
+	NodeExecutionID *string `gorm:"column:node_execution_id;type:varchar(36)" json:"node_execution_id"`
+
+	// Cache for deserialized value
+	//
+	// NOTE(QuantumGhost): This field serves two purposes:
+	//
+	// 1. Caches deserialized values to reduce repeated parsing costs
+	// 2. Allows modification of the deserialized value after retrieval,
+	//    particularly important for `File`` variables which require database
+	//    lookups to obtain storage_key and other metadata
+	//
+	// Use double underscore prefix for better encapsulation,
+	// making this attribute harder to access from outside the class.
+	__value variablestypes.Segmenter `gorm:"-" json:"-"`
+}
+
+// TableName returns the database table name
+func (WorkflowDraftVariable) TableName() string {
+	return "workflow_draft_variables"
+}
+
+// LoadValue deserializes the value into a Variable object
+func (w *WorkflowDraftVariable) LoadValue() (variablestypes.Segmenter, error) {
+	var valueData any
+	err := json.Unmarshal([]byte(w.Value), &valueData)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal value: %v", err)
+	}
+
+	// Build segment with type
+	segment, err := w.BuildSegmentWithType(variableenumtypes.SegmentType(w.ValueType), valueData)
+	if err != nil {
+		return nil, err
+	}
+
+	return segment, nil
+}
+
+// BuildSegmentWithType builds a segment with the specified type
+func (w *WorkflowDraftVariable) BuildSegmentWithType(segmentType variableenumtypes.SegmentType, value any) (variablestypes.Segmenter, error) {
+	// Use the factory for other types
+	seg := variablestypes.BuildSegment(value, segmentType)
+	if seg == nil {
+		mlog.Error("can't build segment")
+		return nil, errors.New("can't build segment")
+	}
+	return seg, nil
+}
+
+// GetValue returns the deserialized value, using cache if available
+func (w *WorkflowDraftVariable) GetValue() (variablestypes.Segmenter, error) {
+	if w.__value != nil {
+		return w.__value, nil
+	}
+
+	value, err := w.LoadValue()
+	if err != nil {
+		return nil, err
+	}
+
+	w.__value = value
+	return value, nil
+}
+
+// SetName updates the name and selector
+func (w *WorkflowDraftVariable) SetName(name string) {
+	w.Name = name
+	w.Selector = []string{w.NodeID, name}
+}
+
+// SetValue updates the value and value type
+func (w *WorkflowDraftVariable) SetValue(value variablestypes.Segmenter) error {
+	// Serialize value to JSON
+	valueJSON, err := json.Marshal(value)
+	if err != nil {
+		return fmt.Errorf("failed to marshal value: %v", err)
+	}
+
+	w.__value = value
+	w.Value = string(valueJSON)
+	w.ValueType = string(value.ValueType())
+	return nil
+}
+
+// GetNodeID returns the node ID if this is a node variable
+func (w *WorkflowDraftVariable) GetNodeID() *string {
+	if w.GetVariableType() == DraftVariable_NODE {
+		return &w.NodeID
+	}
+	return nil
+}
+
+// GetVariableType returns the type of this variable
+func (w *WorkflowDraftVariable) GetVariableType() DraftVariableType {
+	switch w.NodeID {
+	case string(DraftVariable_CONVERSATION):
+		return DraftVariable_CONVERSATION
+	case string(DraftVariable_SYS):
+		return DraftVariable_SYS
+	default:
+		return DraftVariable_NODE
+	}
+}
+
+// IsEdited returns true if the variable has been edited
+func (w *WorkflowDraftVariable) IsEdited() bool {
+	return w.LastEditedAt != nil
+}
+
+// NewWorkflowDraftVariable creates a new workflow draft variable with common fields
+func NewWorkflowDraftVariable(
+	appID string,
+	nodeID string,
+	name string,
+	value variablestypes.Segmenter,
+	nodeExecutionID *string,
+	description string,
+) (*WorkflowDraftVariable, error) {
+	now := time.Now()
+
+	// Serialize value to JSON
+	valueJSON, err := json.Marshal(value.ToObject())
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal value: %v", err)
+	}
+
+	// Build selector
+	selector := []string{nodeID, name}
+
+	variable := &WorkflowDraftVariable{
+		ID:              uuid.NewV4().String(),
+		CreatedAt:       &now,
+		UpdatedAt:       &now,
+		Description:     description,
+		AppID:           appID,
+		NodeID:          nodeID,
+		Name:            name,
+		Selector:        selector,
+		ValueType:       string(value.ValueType()),
+		Value:           string(valueJSON),
+		Visible:         true,
+		Editable:        false,
+		NodeExecutionID: nodeExecutionID,
+		__value:         value,
+	}
+
+	return variable, nil
+}
+
+// NewConversationVariable creates a new conversation variable
+func NewConversationVariable(
+	appID string,
+	name string,
+	value variablestypes.Segmenter,
+	description string,
+) (*WorkflowDraftVariable, error) {
+	variable, err := NewWorkflowDraftVariable(
+		appID,
+		constants.CONVERSATION_VARIABLE_NODE_ID,
+		name,
+		value,
+		nil, // node_execution_id is None for conversation variables
+		description,
+	)
+	if err != nil {
+		return nil, err
+	}
+	variable.Editable = true
+	return variable, nil
+}
+
+// NewSysVariable creates a new system variable
+func NewSysVariable(
+	appID string,
+	name string,
+	value variablestypes.Segmenter,
+	nodeExecutionID string,
+	editable bool,
+) (*WorkflowDraftVariable, error) {
+	variable, err := NewWorkflowDraftVariable(
+		appID,
+		constants.SYSTEM_VARIABLE_NODE_ID,
+		name,
+		value,
+		&nodeExecutionID,
+		"", // description
+	)
+	if err != nil {
+		return nil, err
+	}
+	variable.Editable = editable
+	return variable, nil
+}
+
+// NewNodeVariable creates a new node variable
+func NewNodeVariable(
+	appID string,
+	nodeID string,
+	name string,
+	value variablestypes.Segmenter,
+	nodeExecutionID string,
+	visible bool,
+	editable bool,
+) (*WorkflowDraftVariable, error) {
+	variable, err := NewWorkflowDraftVariable(
+		appID,
+		nodeID,
+		name,
+		value,
+		&nodeExecutionID,
+		"", // description
+	)
+	if err != nil {
+		return nil, err
+	}
+	variable.Visible = visible
+	variable.Editable = editable
+	return variable, nil
+}
+
+func ConvertValuesToJsonSerializableObject(value variablestypes.Segmenter) any {
+	return value.GetValue()
 }

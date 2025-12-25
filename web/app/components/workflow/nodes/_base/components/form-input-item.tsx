@@ -4,7 +4,7 @@ import type { ToolVarInputs } from '@/app/components/workflow/nodes/tool/types'
 import type { CredentialFormSchema } from '@/app/components/header/account-setting/model-provider-page/declarations'
 import { useLanguage } from '@/app/components/header/account-setting/model-provider-page/hooks'
 import { FormTypeEnum } from '@/app/components/header/account-setting/model-provider-page/declarations'
-import { VarType as VarKindType } from '@/app/components/workflow/nodes/tool/types'
+import { VarType as VarKindType } from '@/types/workflow'
 import { VarType } from '@/app/components/workflow/types'
 
 import type { ToolWithProvider, ValueSelector, Var } from '@/app/components/workflow/types'
@@ -183,7 +183,7 @@ const FormInputItem: FC<Props> = ({
   return (
     <div className={cn('gap-1', !(isShowJSONEditor && isConstant) && 'flex')}>
       {showTypeSwitch && (
-        <FormInputTypeSwitch value={varInput?.type || VarKindType.constant} onChange={handleTypeChange}/>
+        <FormInputTypeSwitch value={varInput?.type || VarKindType.constant} onChange={handleTypeChange} />
       )}
       {isString && (
         <MixedVariableTextInput

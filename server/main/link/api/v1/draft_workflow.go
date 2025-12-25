@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -577,6 +578,424 @@ func (api *DraftWorkflowApi) SetPublished(c *gin.Context) {
 				response.PbHttpException(c, pbrsp.Exp)
 			} else {
 				c.JSON(http.StatusOK, gin.H{"result": "success", "created_at": pbrsp.CreatedAt})
+			}
+			return
+		}
+	} else {
+		mlog.Errorf("get rpc client failed")
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"result": "fail",
+			"data":   "internal server error",
+		})
+		return
+	}
+}
+func (api *DraftWorkflowApi) GetVariable(c *gin.Context) {
+	rawuser, _ := c.Get("current_user")
+	acc := rawuser.(*models.Account)
+	app_id := c.Param("app_id")
+	if app_id == "" {
+		mlog.Error("invalid app_id")
+		response.InvalidArgError(c)
+		return
+	}
+	variableID := c.Param("variable_id")
+	if variableID == "" {
+		mlog.Error("invalid variable_id")
+		response.InvalidArgError(c)
+		return
+	}
+	// # The role of the current user in the ta table must be admin, owner, or editor
+	if !acc.IsEditor() {
+		mlog.Errorf("forbiden")
+		response.Forbidden(c)
+		return
+	}
+
+	conn := cluster.Instance().GetRpcClientByModule("admin")
+	if conn != nil {
+		pbrsp, err := pbapi.NewAdminClient(conn).GetWorkflowDraftVariable(c, &pbapi.GetWorkflowDraftVariableRequest{UserId: acc.ID, AppId: app_id, VariableId: variableID})
+		if err != nil {
+			mlog.Errorf("remote call GetWorkflowDraftVariable failed:%v", err)
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"data":    "remote call GetWorkflowDraftVariable failed",
+				"code":    "internal_server_error",
+				"status":  500,
+				"items":   nil,
+				"total":   0,
+				"message": "remote call GetWorkflowDraftVariable failed.",
+			})
+			return
+		} else {
+			mlog.Infof("remote call GetWorkflowDraftVariable return:%#v", pbrsp)
+			if pbrsp.Exp != nil {
+				response.PbHttpException(c, pbrsp.Exp)
+			} else {
+				var varObj map[string]any
+				err := json.Unmarshal([]byte(pbrsp.VarStr), &varObj)
+				if err != nil {
+					mlog.Errorf("json unmarshal failed:%v", err)
+					c.JSON(http.StatusInternalServerError, gin.H{
+						"result": "fail",
+						"data":   "json unmarshal failed",
+					})
+					return
+				}
+
+				c.JSON(http.StatusOK, varObj)
+				return
+			}
+			return
+		}
+	} else {
+		mlog.Errorf("get rpc client failed")
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"result": "fail",
+			"data":   "internal server error",
+		})
+		return
+	}
+}
+func (api *DraftWorkflowApi) UpdateVariable(c *gin.Context) {
+	rawuser, _ := c.Get("current_user")
+	acc := rawuser.(*models.Account)
+	app_id := c.Param("app_id")
+	if app_id == "" {
+		mlog.Error("invalid app_id")
+		response.InvalidArgError(c)
+		return
+	}
+
+	// # The role of the current user in the ta table must be admin, owner, or editor
+	if !acc.IsEditor() {
+		mlog.Errorf("forbiden")
+		response.Forbidden(c)
+		return
+	}
+
+	conn := cluster.Instance().GetRpcClientByModule("admin")
+	if conn != nil {
+		pbrsp, err := pbapi.NewAdminClient(conn).GetWorkflowDraft(c, &pbapi.GetWorkflowDraftRequest{AccountId: acc.ID, AppId: app_id})
+		if err != nil {
+			mlog.Errorf("remote call GetWorkflowDraft failed:%v", err)
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"result": "fail",
+				"data":   "remote call GetWorkflowDraft failed",
+			})
+			return
+		} else {
+			mlog.Infof("remote call GetWorkflowDraft return:%#v", pbrsp)
+			if pbrsp.Exp != nil {
+				response.PbHttpException(c, pbrsp.Exp)
+			} else {
+				if pbrsp.WorkflowResponseStr == "" {
+					mlog.Error("查询失败!")
+					c.JSON(http.StatusInternalServerError, gin.H{
+						"result": "fail",
+						"data":   "internal server error",
+					})
+				} else {
+					c.JSON(http.StatusOK, response.NewWorkflowResponse(pbrsp.WorkflowResponseStr))
+				}
+			}
+			return
+		}
+	} else {
+		mlog.Errorf("get rpc client failed")
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"result": "fail",
+			"data":   "internal server error",
+		})
+		return
+	}
+}
+
+func (api *DraftWorkflowApi) ListVariable(c *gin.Context) {
+	rawuser, _ := c.Get("current_user")
+	acc := rawuser.(*models.Account)
+	app_id := c.Param("app_id")
+	if app_id == "" {
+		mlog.Error("invalid app_id")
+		response.InvalidArgError(c)
+		return
+	}
+	pageStr := c.DefaultQuery("page", "1")
+	page, err := strconv.Atoi(pageStr)
+	if err != nil {
+		mlog.Errorf("invalid page: %v", err)
+		response.InvalidArgError(c)
+		return
+	}
+	limitStr := c.DefaultQuery("limit", "10")
+	limit, err := strconv.Atoi(limitStr)
+	if err != nil {
+		mlog.Errorf("invalid limit: %v", err)
+		response.InvalidArgError(c)
+		return
+	}
+
+	// # The role of the current user in the ta table must be admin, owner, or editor
+	if !acc.IsEditor() {
+		mlog.Errorf("forbiden")
+		response.Forbidden(c)
+		return
+	}
+
+	conn := cluster.Instance().GetRpcClientByModule("admin")
+	if conn != nil {
+		pbrsp, err := pbapi.NewAdminClient(conn).GetWorkflowDraftVariableList(c, &pbapi.GetWorkflowDraftVariableListRequest{UserId: acc.ID, AppId: app_id, Page: int32(page), Limit: int32(limit)})
+		if err != nil {
+			mlog.Errorf("remote call GetWorkflowDraftVariableList failed:%v", err)
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"data":    "remote call GetWorkflowDraftVariableList failed",
+				"code":    "internal_server_error",
+				"status":  500,
+				"items":   nil,
+				"total":   0,
+				"message": "remote call GetWorkflowDraftVariableList failed.",
+			})
+			return
+		} else {
+			mlog.Infof("remote call GetWorkflowDraftVariableList return:%#v", pbrsp)
+			if pbrsp.Exp != nil {
+				response.PbHttpException(c, pbrsp.Exp)
+			} else {
+				c.JSON(http.StatusOK, gin.H{
+					"items": pbrsp.Items,
+					"total": pbrsp.Total,
+				})
+				return
+			}
+			return
+		}
+	} else {
+		mlog.Errorf("get rpc client failed")
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"result": "fail",
+			"data":   "internal server error",
+		})
+		return
+	}
+}
+
+func (api *DraftWorkflowApi) ListSysVariable(c *gin.Context) {
+	rawuser, _ := c.Get("current_user")
+	acc := rawuser.(*models.Account)
+	app_id := c.Param("app_id")
+	if app_id == "" {
+		mlog.Error("invalid app_id")
+		response.InvalidArgError(c)
+		return
+	}
+	pageStr := c.DefaultQuery("page", "1")
+	page, err := strconv.Atoi(pageStr)
+	if err != nil {
+		mlog.Errorf("invalid page: %v", err)
+		response.InvalidArgError(c)
+		return
+	}
+	limitStr := c.DefaultQuery("limit", "10")
+	limit, err := strconv.Atoi(limitStr)
+	if err != nil {
+		mlog.Errorf("invalid limit: %v", err)
+		response.InvalidArgError(c)
+		return
+	}
+
+	// # The role of the current user in the ta table must be admin, owner, or editor
+	if !acc.IsEditor() {
+		mlog.Errorf("forbiden")
+		response.Forbidden(c)
+		return
+	}
+
+	conn := cluster.Instance().GetRpcClientByModule("admin")
+	if conn != nil {
+		pbrsp, err := pbapi.NewAdminClient(conn).GetWorkflowDraftSysVariableList(c, &pbapi.GetWorkflowDraftVariableListRequest{UserId: acc.ID, AppId: app_id, Page: int32(page), Limit: int32(limit)})
+		if err != nil {
+			mlog.Errorf("remote call GetWorkflowDraftVariableList failed:%v", err)
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"data":    "remote call GetWorkflowDraftVariableList failed",
+				"code":    "internal_server_error",
+				"status":  500,
+				"items":   nil,
+				"total":   0,
+				"message": "remote call GetWorkflowDraftVariableList failed.",
+			})
+			return
+		} else {
+			mlog.Infof("remote call GetWorkflowDraftVariableList return:%#v", pbrsp)
+			if pbrsp.Exp != nil {
+				response.PbHttpException(c, pbrsp.Exp)
+			} else {
+				varObj := []map[string]any{}
+				err := json.Unmarshal([]byte(pbrsp.ItemsStr), &varObj)
+				if err != nil {
+					mlog.Errorf("json unmarshal failed:%v", err)
+					c.JSON(http.StatusInternalServerError, gin.H{
+						"result": "fail",
+						"data":   "json unmarshal failed",
+					})
+					return
+				}
+				c.JSON(http.StatusOK, gin.H{
+					"items": varObj,
+				})
+				return
+			}
+			return
+		}
+	} else {
+		mlog.Errorf("get rpc client failed")
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"result": "fail",
+			"data":   "internal server error",
+		})
+		return
+	}
+}
+
+func (api *DraftWorkflowApi) ListConversationVariable(c *gin.Context) {
+	rawuser, _ := c.Get("current_user")
+	acc := rawuser.(*models.Account)
+	app_id := c.Param("app_id")
+	if app_id == "" {
+		mlog.Error("invalid app_id")
+		response.InvalidArgError(c)
+		return
+	}
+	pageStr := c.DefaultQuery("page", "1")
+	page, err := strconv.Atoi(pageStr)
+	if err != nil {
+		mlog.Errorf("invalid page: %v", err)
+		response.InvalidArgError(c)
+		return
+	}
+	limitStr := c.DefaultQuery("limit", "10")
+	limit, err := strconv.Atoi(limitStr)
+	if err != nil {
+		mlog.Errorf("invalid limit: %v", err)
+		response.InvalidArgError(c)
+		return
+	}
+
+	// # The role of the current user in the ta table must be admin, owner, or editor
+	if !acc.IsEditor() {
+		mlog.Errorf("forbiden")
+		response.Forbidden(c)
+		return
+	}
+
+	conn := cluster.Instance().GetRpcClientByModule("admin")
+	if conn != nil {
+		pbrsp, err := pbapi.NewAdminClient(conn).GetWorkflowDraftSysVariableList(c, &pbapi.GetWorkflowDraftVariableListRequest{UserId: acc.ID, AppId: app_id, Page: int32(page), Limit: int32(limit)})
+		if err != nil {
+			mlog.Errorf("remote call GetWorkflowDraftVariableList failed:%v", err)
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"data":    "remote call GetWorkflowDraftVariableList failed",
+				"code":    "internal_server_error",
+				"status":  500,
+				"items":   nil,
+				"total":   0,
+				"message": "remote call GetWorkflowDraftVariableList failed.",
+			})
+			return
+		} else {
+			mlog.Infof("remote call GetWorkflowDraftVariableList return:%#v", pbrsp)
+			if pbrsp.Exp != nil {
+				response.PbHttpException(c, pbrsp.Exp)
+			} else {
+				varObj := []map[string]any{}
+				err := json.Unmarshal([]byte(pbrsp.ItemsStr), &varObj)
+				if err != nil {
+					mlog.Errorf("json unmarshal failed:%v", err)
+					c.JSON(http.StatusInternalServerError, gin.H{
+						"result": "fail",
+						"data":   "json unmarshal failed",
+					})
+					return
+				}
+				c.JSON(http.StatusOK, gin.H{
+					"items": varObj,
+				})
+				return
+			}
+			return
+		}
+	} else {
+		mlog.Errorf("get rpc client failed")
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"result": "fail",
+			"data":   "internal server error",
+		})
+		return
+	}
+}
+
+func (api *DraftWorkflowApi) ListEnvironmentVariable(c *gin.Context) {
+	rawuser, _ := c.Get("current_user")
+	acc := rawuser.(*models.Account)
+	app_id := c.Param("app_id")
+	if app_id == "" {
+		mlog.Error("invalid app_id")
+		response.InvalidArgError(c)
+		return
+	}
+	pageStr := c.DefaultQuery("page", "1")
+	page, err := strconv.Atoi(pageStr)
+	if err != nil {
+		mlog.Errorf("invalid page: %v", err)
+		response.InvalidArgError(c)
+		return
+	}
+	limitStr := c.DefaultQuery("limit", "10")
+	limit, err := strconv.Atoi(limitStr)
+	if err != nil {
+		mlog.Errorf("invalid limit: %v", err)
+		response.InvalidArgError(c)
+		return
+	}
+
+	// # The role of the current user in the ta table must be admin, owner, or editor
+	if !acc.IsEditor() {
+		mlog.Errorf("forbiden")
+		response.Forbidden(c)
+		return
+	}
+
+	conn := cluster.Instance().GetRpcClientByModule("admin")
+	if conn != nil {
+		pbrsp, err := pbapi.NewAdminClient(conn).GetWorkflowDraftSysVariableList(c, &pbapi.GetWorkflowDraftVariableListRequest{UserId: acc.ID, AppId: app_id, Page: int32(page), Limit: int32(limit)})
+		if err != nil {
+			mlog.Errorf("remote call GetWorkflowDraftVariableList failed:%v", err)
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"data":    "remote call GetWorkflowDraftVariableList failed",
+				"code":    "internal_server_error",
+				"status":  500,
+				"items":   nil,
+				"total":   0,
+				"message": "remote call GetWorkflowDraftVariableList failed.",
+			})
+			return
+		} else {
+			mlog.Infof("remote call GetWorkflowDraftVariableList return:%#v", pbrsp)
+			if pbrsp.Exp != nil {
+				response.PbHttpException(c, pbrsp.Exp)
+			} else {
+				varObj := []map[string]any{}
+				err := json.Unmarshal([]byte(pbrsp.ItemsStr), &varObj)
+				if err != nil {
+					mlog.Errorf("json unmarshal failed:%v", err)
+					c.JSON(http.StatusInternalServerError, gin.H{
+						"result": "fail",
+						"data":   "json unmarshal failed",
+					})
+					return
+				}
+				c.JSON(http.StatusOK, gin.H{
+					"items": varObj,
+				})
+				return
 			}
 			return
 		}

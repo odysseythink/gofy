@@ -1,0 +1,159 @@
+provider: ladder
+label:
+  zh_Hans: 云梯
+  en_US: LADDER
+icon_small:
+  en_US: icon_s_en.png
+icon_large:
+  zh_Hans: icon_l_zh.png
+  en_US: icon_l_en.png
+background: "#EFF1FE"
+help:
+  title:
+    en_US: Get your API key from bytedance
+    zh_Hans: 从字节获取 API Key
+  url:
+    en_US: https://bailian.console.aliyun.com/?apiKey=1#/api-key
+supported_model_types:
+  - llm
+configurate_methods:
+  - predefined-model
+  - customizable-model
+provider_credential_schema:
+  credential_form_schemas:
+    - variable: user_id
+      label:
+        zh_Hans: user id
+        en_US: user id
+      type: text-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入您的 user id
+        en_US: Enter your user id
+    - variable: account_id
+      label:
+        zh_Hans: account id
+        en_US: account id
+      type: text-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入您的 account id
+        en_US: Enter your account id
+    - variable: secret_key
+      label:
+        zh_Hans: secret key
+        en_US: secret key
+      type: text-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入您的 secret key
+        en_US: Enter your secret key  
+    - variable: app_id
+      label:
+        zh_Hans: app id
+        en_US: app id
+      type: text-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入您的 app id
+        en_US: Enter your app id   
+    - variable: agent_id
+      label:
+        zh_Hans: agent id
+        en_US: agent id
+      type: text-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入您的 agent id
+        en_US: Enter your agent id          
+model_credential_schema:
+  model:
+    label:
+      en_US: Model Name
+      zh_Hans: 模型名称
+    placeholder:
+      en_US: Enter your model name
+      zh_Hans: 输入模型名称
+  credential_form_schemas:
+    - variable: user_id
+      label:
+        zh_Hans: user id
+        en_US: user id
+      type: text-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入您的 user id
+        en_US: Enter your user id
+    - variable: account_id
+      label:
+        zh_Hans: account id
+        en_US: account id
+      type: text-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入您的 account id
+        en_US: Enter your account id
+    - variable: secret_key
+      label:
+        zh_Hans: secret key
+        en_US: secret key
+      type: text-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入您的 secret key
+        en_US: Enter your secret key  
+    - variable: app_id
+      label:
+        zh_Hans: app id
+        en_US: app id
+      type: text-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入您的 app id
+        en_US: Enter your app id   
+    - variable: agent_id
+      label:
+        zh_Hans: agent id
+        en_US: agent id
+      type: text-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入您的 agent id
+        en_US: Enter your agent id  
+    - variable: context_size
+      label:
+        zh_Hans: 模型上下文长度
+        en_US: Model context size
+      required: true
+      type: text-input
+      default: '4096'
+      placeholder:
+        zh_Hans: 在此输入您的模型上下文长度
+        en_US: Enter your Model context size
+    - variable: max_tokens
+      label:
+        zh_Hans: 最大 token 上限
+        en_US: Upper bound for max tokens
+      default: '4096'
+      type: text-input
+      show_on:
+        - variable: __model_type
+          value: llm
+    - variable: function_calling_type
+      label:
+        en_US: Function calling
+      type: select
+      required: false
+      default: no_call
+      options:
+        - value: no_call
+          label:
+            en_US: Not Support
+            zh_Hans: 不支持
+        - value: function_call
+          label:
+            en_US: Support
+            zh_Hans: 支持
+      show_on:
+        - variable: __model_type
+          value: llm

@@ -1,6 +1,6 @@
 import type { ToolCredential, ToolParameter } from '../types'
 import { FormTypeEnum } from '@/app/components/header/account-setting/model-provider-page/declarations'
-import { VarType as VarKindType } from '@/app/components/workflow/nodes/tool/types'
+import { VarType as VarKindType } from '@/types/workflow'
 
 export const toType = (type: string) => {
   switch (type) {
@@ -150,13 +150,13 @@ export const getConfiguredValue = (value: Record<string, any>, formSchemas: { va
 }
 
 const getVarKindType = (type: FormTypeEnum) => {
-    if (type === FormTypeEnum.file || type === FormTypeEnum.files)
-      return VarKindType.variable
-    if (type === FormTypeEnum.select || type === FormTypeEnum.boolean || type === FormTypeEnum.textNumber)
-      return VarKindType.constant
-    if (type === FormTypeEnum.textInput || type === FormTypeEnum.secretInput)
-      return VarKindType.mixed
-  }
+  if (type === FormTypeEnum.file || type === FormTypeEnum.files)
+    return VarKindType.variable
+  if (type === FormTypeEnum.select || type === FormTypeEnum.boolean || type === FormTypeEnum.textNumber)
+    return VarKindType.constant
+  if (type === FormTypeEnum.textInput || type === FormTypeEnum.secretInput)
+    return VarKindType.mixed
+}
 
 export const generateAgentToolValue = (value: Record<string, any>, formSchemas: { variable: string; default?: any; type: string }[], isReasoning = false) => {
   const newValues = {} as any

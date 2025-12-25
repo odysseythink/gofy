@@ -83,6 +83,11 @@ service admin {
   rpc DelTagBinding(DelTagBindingRequest) returns (DelTagBindingReply) {}  
   rpc GetCodeBasedExtension(GetCodeBasedExtensionRequest) returns (GetCodeBasedExtensionReply) {}
   rpc RuleGenerate(RuleGenerateRequest) returns (RuleGenerateReply) {}
+  rpc GetWorkflowDraftVariable(GetWorkflowDraftVariableRequest) returns (GetWorkflowDraftVariableReply) {}
+  rpc GetWorkflowDraftVariableList(GetWorkflowDraftVariableListRequest) returns (GetWorkflowDraftVariableListReply) {}
+  rpc GetWorkflowDraftSysVariableList(GetWorkflowDraftVariableListRequest) returns (GetWorkflowDraftVariableListReply) {}
+  rpc GetWorkflowDraftConversationVariableList(GetWorkflowDraftVariableListRequest) returns (GetWorkflowDraftVariableListReply) {}
+  rpc GetWorkflowDraftEnvVariableList(GetWorkflowDraftVariableListRequest) returns (GetWorkflowDraftVariableListReply) {}
 }
 
 message LoginRequest {
@@ -170,8 +175,8 @@ message GetFileUploadConfigReply {
 
 message ListAppsRequest {
   string account_id = 1;
-	int32 page = 2;   // 页码
-	int32 limit = 3;// 每页大小
+	int32 page = 2; // 页码
+	int32 limit = 3; // 每页大小
 	string   mode = 4; // "chat", "workflow", "agent-chat", "channel", "all"
 	string   name = 5;
 	repeated string tag_ids = 6;
@@ -844,4 +849,37 @@ message RuleGenerateRequest {
 message RuleGenerateReply {
   exceptions.HTTPException exp = 1;
   string rules_dict_str = 2;
+}
+
+message GetWorkflowDraftVariableRequest {
+  string user_id = 1;
+  string app_id = 2;
+  string variable_id = 3;
+}
+message GetWorkflowDraftVariableReply {
+  exceptions.HTTPException exp = 1;
+  string var_str = 2;
+}
+message GetWorkflowDraftVariableListRequest {
+  string user_id = 1;
+  string app_id = 2;
+  int32 page = 3;
+  int32 limit = 4;
+}
+message GetWorkflowDraftVariableListReply {
+  exceptions.HTTPException exp = 1;
+  repeated PK_WORKFLOW_DRAFT_VARIABLE_WITHOUT_VALUE_FIELDS items = 2;
+  int64 total = 3;
+  string itemsStr = 4;
+}
+
+message PK_WORKFLOW_DRAFT_VARIABLE_WITHOUT_VALUE_FIELDS {
+    string id = 1;
+    string type = 2;
+    string name = 3;
+    string description = 4;
+    repeated string selector = 5;
+    string value_type = 6;
+    bool edited = 7;
+    bool visible = 8;
 }

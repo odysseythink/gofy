@@ -21,10 +21,8 @@ import Button from '../../base/button'
 import MembersPage from './members-page'
 import LanguagePage from './language-page'
 import ApiBasedExtensionPage from './api-based-extension-page'
-import DataSourcePage from './data-source-page'
 import ModelProviderPage from './model-provider-page'
 import cn from '@/utils/classnames'
-import BillingPage from '@/app/components/billing/billing-page'
 import CustomPage from '@/app/components/custom/custom-page'
 import useBreakpoints, { MediaType } from '@/hooks/use-breakpoints'
 import { useProviderContext } from '@/context/provider-context'
@@ -73,20 +71,6 @@ export default function AccountSetting({
         name: t('common.settings.members'),
         icon: <RiGroup2Line className={iconClassName} />,
         activeIcon: <RiGroup2Fill className={iconClassName} />,
-      },
-      {
-        // Use key false to hide this item
-        key: enableBilling ? 'billing' : false,
-        name: t('common.settings.billing'),
-        description: t('billing.plansCommon.receiptInfo'),
-        icon: <RiMoneyDollarCircleLine className={iconClassName} />,
-        activeIcon: <RiMoneyDollarCircleFill className={iconClassName} />,
-      },
-      {
-        key: 'data-source',
-        name: t('common.settings.dataSource'),
-        icon: <RiDatabase2Line className={iconClassName} />,
-        activeIcon: <RiDatabase2Fill className={iconClassName} />,
       },
       {
         key: 'api-based-extension',
@@ -215,8 +199,6 @@ export default function AccountSetting({
             <div className='px-4 pt-2 sm:px-8'>
               {activeMenu === 'provider' && <ModelProviderPage searchText={searchValue} />}
               {activeMenu === 'members' && <MembersPage />}
-              {activeMenu === 'billing' && <BillingPage />}
-              {activeMenu === 'data-source' && <DataSourcePage />}
               {activeMenu === 'api-based-extension' && <ApiBasedExtensionPage />}
               {activeMenu === 'custom' && <CustomPage />}
               {activeMenu === 'language' && <LanguagePage />}

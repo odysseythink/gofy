@@ -36,7 +36,6 @@ import {
 } from './types'
 import {
   useEdgesInteractions,
-  useFetchToolsData,
   useNodesInteractions,
   useNodesReadOnly,
   useNodesSyncDraft,
@@ -79,7 +78,6 @@ import {
 } from './constants'
 import { WorkflowHistoryProvider } from './workflow-history-store'
 import { useEventEmitterContextContext } from '@/context/event-emitter'
-import DatasetsDetailProvider from './datasets-detail-store/provider'
 import { HooksStoreContextProvider } from './hooks-store'
 import type { Shape as HooksStoreShape } from './hooks-store'
 import dynamic from 'next/dynamic'
@@ -233,13 +231,7 @@ export const Workflow: FC<WorkflowProps> = memo(({
       })
     }
   })
-  const { handleFetchAllTools } = useFetchToolsData()
-  useEffect(() => {
-    handleFetchAllTools('builtin')
-    handleFetchAllTools('custom')
-    handleFetchAllTools('workflow')
-    handleFetchAllTools('mcp')
-  }, [handleFetchAllTools])
+
 
   const {
     handleNodeDragStart,
@@ -413,9 +405,7 @@ const WorkflowWithDefaultContext = ({
       <WorkflowHistoryProvider
         nodes={nodes}
         edges={edges} >
-        <DatasetsDetailProvider nodes={nodes}>
           {children}
-        </DatasetsDetailProvider>
       </WorkflowHistoryProvider>
     </ReactFlowProvider>
   )

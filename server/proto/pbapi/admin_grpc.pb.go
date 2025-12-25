@@ -19,79 +19,84 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Admin_Login_FullMethodName                          = "/pbapi.admin/Login"
-	Admin_Logout_FullMethodName                         = "/pbapi.admin/Logout"
-	Admin_GetSetupStatus_FullMethodName                 = "/pbapi.admin/GetSetupStatus"
-	Admin_Setup_FullMethodName                          = "/pbapi.admin/Setup"
-	Admin_GetSystemFeatures_FullMethodName              = "/pbapi.admin/GetSystemFeatures"
-	Admin_GetFeatures_FullMethodName                    = "/pbapi.admin/GetFeatures"
-	Admin_GetVersion_FullMethodName                     = "/pbapi.admin/GetVersion"
-	Admin_GetFileUploadConfig_FullMethodName            = "/pbapi.admin/GetFileUploadConfig"
-	Admin_ListApps_FullMethodName                       = "/pbapi.admin/ListApps"
-	Admin_FindApp_FullMethodName                        = "/pbapi.admin/FindApp"
-	Admin_UpdateApp_FullMethodName                      = "/pbapi.admin/UpdateApp"
-	Admin_DeleteApp_FullMethodName                      = "/pbapi.admin/DeleteApp"
-	Admin_CreateApp_FullMethodName                      = "/pbapi.admin/CreateApp"
-	Admin_ImportApp_FullMethodName                      = "/pbapi.admin/ImportApp"
-	Admin_GetWorkflowAppLogList_FullMethodName          = "/pbapi.admin/GetWorkflowAppLogList"
-	Admin_SetAppName_FullMethodName                     = "/pbapi.admin/SetAppName"
-	Admin_SetAppIcon_FullMethodName                     = "/pbapi.admin/SetAppIcon"
-	Admin_CopyApp_FullMethodName                        = "/pbapi.admin/CopyApp"
-	Admin_ExportApp_FullMethodName                      = "/pbapi.admin/ExportApp"
-	Admin_AppUpdateSiteStatus_FullMethodName            = "/pbapi.admin/AppUpdateSiteStatus"
-	Admin_AppUpdateApiStatus_FullMethodName             = "/pbapi.admin/AppUpdateApiStatus"
-	Admin_AppGetTrace_FullMethodName                    = "/pbapi.admin/AppGetTrace"
-	Admin_AppSetTrace_FullMethodName                    = "/pbapi.admin/AppSetTrace"
-	Admin_GetTraceAppConfig_FullMethodName              = "/pbapi.admin/GetTraceAppConfig"
-	Admin_GetWorkflowDraft_FullMethodName               = "/pbapi.admin/GetWorkflowDraft"
-	Admin_WorkflowSyncDraft_FullMethodName              = "/pbapi.admin/WorkflowSyncDraft"
-	Admin_WorkflowNodeRun_FullMethodName                = "/pbapi.admin/WorkflowNodeRun"
-	Admin_GetWorkflowConfig_FullMethodName              = "/pbapi.admin/GetWorkflowConfig"
-	Admin_GetWorkflowDefaultBlockConfigs_FullMethodName = "/pbapi.admin/GetWorkflowDefaultBlockConfigs"
-	Admin_GetWorkflowDefaultBlockConfig_FullMethodName  = "/pbapi.admin/GetWorkflowDefaultBlockConfig"
-	Admin_GetWorkflowPublished_FullMethodName           = "/pbapi.admin/GetWorkflowPublished"
-	Admin_WorkflowPublished_FullMethodName              = "/pbapi.admin/WorkflowPublished"
-	Admin_GetChatConversationPagination_FullMethodName  = "/pbapi.admin/GetChatConversationPagination"
-	Admin_ChatConversationDetail_FullMethodName         = "/pbapi.admin/ChatConversationDetail"
-	Admin_DelChatConversation_FullMethodName            = "/pbapi.admin/DelChatConversation"
-	Admin_Statistic_FullMethodName                      = "/pbapi.admin/Statistic"
-	Admin_GetSuggestedQuestionMessage_FullMethodName    = "/pbapi.admin/GetSuggestedQuestionMessage"
-	Admin_ChatMessageList_FullMethodName                = "/pbapi.admin/ChatMessageList"
-	Admin_MessageFeedback_FullMethodName                = "/pbapi.admin/MessageFeedback"
-	Admin_SetMessageAnnotation_FullMethodName           = "/pbapi.admin/SetMessageAnnotation"
-	Admin_MessageAnnotationCount_FullMethodName         = "/pbapi.admin/MessageAnnotationCount"
-	Admin_GetMessage_FullMethodName                     = "/pbapi.admin/GetMessage"
-	Admin_GetAccountProfile_FullMethodName              = "/pbapi.admin/GetAccountProfile"
-	Admin_UpdateAccount_FullMethodName                  = "/pbapi.admin/UpdateAccount"
-	Admin_GetApiKeyList_FullMethodName                  = "/pbapi.admin/GetApiKeyList"
-	Admin_GenerateApiKey_FullMethodName                 = "/pbapi.admin/GenerateApiKey"
-	Admin_DelApiKey_FullMethodName                      = "/pbapi.admin/DelApiKey"
-	Admin_AppWorkflowRunList_FullMethodName             = "/pbapi.admin/AppWorkflowRunList"
-	Admin_GetWorkflowRunDetail_FullMethodName           = "/pbapi.admin/GetWorkflowRunDetail"
-	Admin_GetWorkspaceList_FullMethodName               = "/pbapi.admin/GetWorkspaceList"
-	Admin_SetDefaultModel_FullMethodName                = "/pbapi.admin/SetDefaultModel"
-	Admin_GetDefaultModel_FullMethodName                = "/pbapi.admin/GetDefaultModel"
-	Admin_GetTenantList_FullMethodName                  = "/pbapi.admin/GetTenantList"
-	Admin_GetCurrentTenant_FullMethodName               = "/pbapi.admin/GetCurrentTenant"
-	Admin_GetModelProviderList_FullMethodName           = "/pbapi.admin/GetModelProviderList"
-	Admin_UpdateModelProvider_FullMethodName            = "/pbapi.admin/UpdateModelProvider"
-	Admin_DelModelProvider_FullMethodName               = "/pbapi.admin/DelModelProvider"
-	Admin_GetModelProviderModel_FullMethodName          = "/pbapi.admin/GetModelProviderModel"
-	Admin_SetModelProviderModel_FullMethodName          = "/pbapi.admin/SetModelProviderModel"
-	Admin_EnableModelProviderModel_FullMethodName       = "/pbapi.admin/EnableModelProviderModel"
-	Admin_GetModelProviderCredentials_FullMethodName    = "/pbapi.admin/GetModelProviderCredentials"
-	Admin_GetModelParameterRules_FullMethodName         = "/pbapi.admin/GetModelParameterRules"
-	Admin_GetAvailableModelProvider_FullMethodName      = "/pbapi.admin/GetAvailableModelProvider"
-	Admin_GetMemberList_FullMethodName                  = "/pbapi.admin/GetMemberList"
-	Admin_GetDatasetRetrievalSetting_FullMethodName     = "/pbapi.admin/GetDatasetRetrievalSetting"
-	Admin_GetTagList_FullMethodName                     = "/pbapi.admin/GetTagList"
-	Admin_AddTag_FullMethodName                         = "/pbapi.admin/AddTag"
-	Admin_UpdateTag_FullMethodName                      = "/pbapi.admin/UpdateTag"
-	Admin_DelTag_FullMethodName                         = "/pbapi.admin/DelTag"
-	Admin_AddTagBinding_FullMethodName                  = "/pbapi.admin/AddTagBinding"
-	Admin_DelTagBinding_FullMethodName                  = "/pbapi.admin/DelTagBinding"
-	Admin_GetCodeBasedExtension_FullMethodName          = "/pbapi.admin/GetCodeBasedExtension"
-	Admin_RuleGenerate_FullMethodName                   = "/pbapi.admin/RuleGenerate"
+	Admin_Login_FullMethodName                                    = "/pbapi.admin/Login"
+	Admin_Logout_FullMethodName                                   = "/pbapi.admin/Logout"
+	Admin_GetSetupStatus_FullMethodName                           = "/pbapi.admin/GetSetupStatus"
+	Admin_Setup_FullMethodName                                    = "/pbapi.admin/Setup"
+	Admin_GetSystemFeatures_FullMethodName                        = "/pbapi.admin/GetSystemFeatures"
+	Admin_GetFeatures_FullMethodName                              = "/pbapi.admin/GetFeatures"
+	Admin_GetVersion_FullMethodName                               = "/pbapi.admin/GetVersion"
+	Admin_GetFileUploadConfig_FullMethodName                      = "/pbapi.admin/GetFileUploadConfig"
+	Admin_ListApps_FullMethodName                                 = "/pbapi.admin/ListApps"
+	Admin_FindApp_FullMethodName                                  = "/pbapi.admin/FindApp"
+	Admin_UpdateApp_FullMethodName                                = "/pbapi.admin/UpdateApp"
+	Admin_DeleteApp_FullMethodName                                = "/pbapi.admin/DeleteApp"
+	Admin_CreateApp_FullMethodName                                = "/pbapi.admin/CreateApp"
+	Admin_ImportApp_FullMethodName                                = "/pbapi.admin/ImportApp"
+	Admin_GetWorkflowAppLogList_FullMethodName                    = "/pbapi.admin/GetWorkflowAppLogList"
+	Admin_SetAppName_FullMethodName                               = "/pbapi.admin/SetAppName"
+	Admin_SetAppIcon_FullMethodName                               = "/pbapi.admin/SetAppIcon"
+	Admin_CopyApp_FullMethodName                                  = "/pbapi.admin/CopyApp"
+	Admin_ExportApp_FullMethodName                                = "/pbapi.admin/ExportApp"
+	Admin_AppUpdateSiteStatus_FullMethodName                      = "/pbapi.admin/AppUpdateSiteStatus"
+	Admin_AppUpdateApiStatus_FullMethodName                       = "/pbapi.admin/AppUpdateApiStatus"
+	Admin_AppGetTrace_FullMethodName                              = "/pbapi.admin/AppGetTrace"
+	Admin_AppSetTrace_FullMethodName                              = "/pbapi.admin/AppSetTrace"
+	Admin_GetTraceAppConfig_FullMethodName                        = "/pbapi.admin/GetTraceAppConfig"
+	Admin_GetWorkflowDraft_FullMethodName                         = "/pbapi.admin/GetWorkflowDraft"
+	Admin_WorkflowSyncDraft_FullMethodName                        = "/pbapi.admin/WorkflowSyncDraft"
+	Admin_WorkflowNodeRun_FullMethodName                          = "/pbapi.admin/WorkflowNodeRun"
+	Admin_GetWorkflowConfig_FullMethodName                        = "/pbapi.admin/GetWorkflowConfig"
+	Admin_GetWorkflowDefaultBlockConfigs_FullMethodName           = "/pbapi.admin/GetWorkflowDefaultBlockConfigs"
+	Admin_GetWorkflowDefaultBlockConfig_FullMethodName            = "/pbapi.admin/GetWorkflowDefaultBlockConfig"
+	Admin_GetWorkflowPublished_FullMethodName                     = "/pbapi.admin/GetWorkflowPublished"
+	Admin_WorkflowPublished_FullMethodName                        = "/pbapi.admin/WorkflowPublished"
+	Admin_GetChatConversationPagination_FullMethodName            = "/pbapi.admin/GetChatConversationPagination"
+	Admin_ChatConversationDetail_FullMethodName                   = "/pbapi.admin/ChatConversationDetail"
+	Admin_DelChatConversation_FullMethodName                      = "/pbapi.admin/DelChatConversation"
+	Admin_Statistic_FullMethodName                                = "/pbapi.admin/Statistic"
+	Admin_GetSuggestedQuestionMessage_FullMethodName              = "/pbapi.admin/GetSuggestedQuestionMessage"
+	Admin_ChatMessageList_FullMethodName                          = "/pbapi.admin/ChatMessageList"
+	Admin_MessageFeedback_FullMethodName                          = "/pbapi.admin/MessageFeedback"
+	Admin_SetMessageAnnotation_FullMethodName                     = "/pbapi.admin/SetMessageAnnotation"
+	Admin_MessageAnnotationCount_FullMethodName                   = "/pbapi.admin/MessageAnnotationCount"
+	Admin_GetMessage_FullMethodName                               = "/pbapi.admin/GetMessage"
+	Admin_GetAccountProfile_FullMethodName                        = "/pbapi.admin/GetAccountProfile"
+	Admin_UpdateAccount_FullMethodName                            = "/pbapi.admin/UpdateAccount"
+	Admin_GetApiKeyList_FullMethodName                            = "/pbapi.admin/GetApiKeyList"
+	Admin_GenerateApiKey_FullMethodName                           = "/pbapi.admin/GenerateApiKey"
+	Admin_DelApiKey_FullMethodName                                = "/pbapi.admin/DelApiKey"
+	Admin_AppWorkflowRunList_FullMethodName                       = "/pbapi.admin/AppWorkflowRunList"
+	Admin_GetWorkflowRunDetail_FullMethodName                     = "/pbapi.admin/GetWorkflowRunDetail"
+	Admin_GetWorkspaceList_FullMethodName                         = "/pbapi.admin/GetWorkspaceList"
+	Admin_SetDefaultModel_FullMethodName                          = "/pbapi.admin/SetDefaultModel"
+	Admin_GetDefaultModel_FullMethodName                          = "/pbapi.admin/GetDefaultModel"
+	Admin_GetTenantList_FullMethodName                            = "/pbapi.admin/GetTenantList"
+	Admin_GetCurrentTenant_FullMethodName                         = "/pbapi.admin/GetCurrentTenant"
+	Admin_GetModelProviderList_FullMethodName                     = "/pbapi.admin/GetModelProviderList"
+	Admin_UpdateModelProvider_FullMethodName                      = "/pbapi.admin/UpdateModelProvider"
+	Admin_DelModelProvider_FullMethodName                         = "/pbapi.admin/DelModelProvider"
+	Admin_GetModelProviderModel_FullMethodName                    = "/pbapi.admin/GetModelProviderModel"
+	Admin_SetModelProviderModel_FullMethodName                    = "/pbapi.admin/SetModelProviderModel"
+	Admin_EnableModelProviderModel_FullMethodName                 = "/pbapi.admin/EnableModelProviderModel"
+	Admin_GetModelProviderCredentials_FullMethodName              = "/pbapi.admin/GetModelProviderCredentials"
+	Admin_GetModelParameterRules_FullMethodName                   = "/pbapi.admin/GetModelParameterRules"
+	Admin_GetAvailableModelProvider_FullMethodName                = "/pbapi.admin/GetAvailableModelProvider"
+	Admin_GetMemberList_FullMethodName                            = "/pbapi.admin/GetMemberList"
+	Admin_GetDatasetRetrievalSetting_FullMethodName               = "/pbapi.admin/GetDatasetRetrievalSetting"
+	Admin_GetTagList_FullMethodName                               = "/pbapi.admin/GetTagList"
+	Admin_AddTag_FullMethodName                                   = "/pbapi.admin/AddTag"
+	Admin_UpdateTag_FullMethodName                                = "/pbapi.admin/UpdateTag"
+	Admin_DelTag_FullMethodName                                   = "/pbapi.admin/DelTag"
+	Admin_AddTagBinding_FullMethodName                            = "/pbapi.admin/AddTagBinding"
+	Admin_DelTagBinding_FullMethodName                            = "/pbapi.admin/DelTagBinding"
+	Admin_GetCodeBasedExtension_FullMethodName                    = "/pbapi.admin/GetCodeBasedExtension"
+	Admin_RuleGenerate_FullMethodName                             = "/pbapi.admin/RuleGenerate"
+	Admin_GetWorkflowDraftVariable_FullMethodName                 = "/pbapi.admin/GetWorkflowDraftVariable"
+	Admin_GetWorkflowDraftVariableList_FullMethodName             = "/pbapi.admin/GetWorkflowDraftVariableList"
+	Admin_GetWorkflowDraftSysVariableList_FullMethodName          = "/pbapi.admin/GetWorkflowDraftSysVariableList"
+	Admin_GetWorkflowDraftConversationVariableList_FullMethodName = "/pbapi.admin/GetWorkflowDraftConversationVariableList"
+	Admin_GetWorkflowDraftEnvVariableList_FullMethodName          = "/pbapi.admin/GetWorkflowDraftEnvVariableList"
 )
 
 // AdminClient is the client API for Admin service.
@@ -172,6 +177,11 @@ type AdminClient interface {
 	DelTagBinding(ctx context.Context, in *DelTagBindingRequest, opts ...grpc.CallOption) (*DelTagBindingReply, error)
 	GetCodeBasedExtension(ctx context.Context, in *GetCodeBasedExtensionRequest, opts ...grpc.CallOption) (*GetCodeBasedExtensionReply, error)
 	RuleGenerate(ctx context.Context, in *RuleGenerateRequest, opts ...grpc.CallOption) (*RuleGenerateReply, error)
+	GetWorkflowDraftVariable(ctx context.Context, in *GetWorkflowDraftVariableRequest, opts ...grpc.CallOption) (*GetWorkflowDraftVariableReply, error)
+	GetWorkflowDraftVariableList(ctx context.Context, in *GetWorkflowDraftVariableListRequest, opts ...grpc.CallOption) (*GetWorkflowDraftVariableListReply, error)
+	GetWorkflowDraftSysVariableList(ctx context.Context, in *GetWorkflowDraftVariableListRequest, opts ...grpc.CallOption) (*GetWorkflowDraftVariableListReply, error)
+	GetWorkflowDraftConversationVariableList(ctx context.Context, in *GetWorkflowDraftVariableListRequest, opts ...grpc.CallOption) (*GetWorkflowDraftVariableListReply, error)
+	GetWorkflowDraftEnvVariableList(ctx context.Context, in *GetWorkflowDraftVariableListRequest, opts ...grpc.CallOption) (*GetWorkflowDraftVariableListReply, error)
 }
 
 type adminClient struct {
@@ -912,6 +922,56 @@ func (c *adminClient) RuleGenerate(ctx context.Context, in *RuleGenerateRequest,
 	return out, nil
 }
 
+func (c *adminClient) GetWorkflowDraftVariable(ctx context.Context, in *GetWorkflowDraftVariableRequest, opts ...grpc.CallOption) (*GetWorkflowDraftVariableReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetWorkflowDraftVariableReply)
+	err := c.cc.Invoke(ctx, Admin_GetWorkflowDraftVariable_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminClient) GetWorkflowDraftVariableList(ctx context.Context, in *GetWorkflowDraftVariableListRequest, opts ...grpc.CallOption) (*GetWorkflowDraftVariableListReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetWorkflowDraftVariableListReply)
+	err := c.cc.Invoke(ctx, Admin_GetWorkflowDraftVariableList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminClient) GetWorkflowDraftSysVariableList(ctx context.Context, in *GetWorkflowDraftVariableListRequest, opts ...grpc.CallOption) (*GetWorkflowDraftVariableListReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetWorkflowDraftVariableListReply)
+	err := c.cc.Invoke(ctx, Admin_GetWorkflowDraftSysVariableList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminClient) GetWorkflowDraftConversationVariableList(ctx context.Context, in *GetWorkflowDraftVariableListRequest, opts ...grpc.CallOption) (*GetWorkflowDraftVariableListReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetWorkflowDraftVariableListReply)
+	err := c.cc.Invoke(ctx, Admin_GetWorkflowDraftConversationVariableList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminClient) GetWorkflowDraftEnvVariableList(ctx context.Context, in *GetWorkflowDraftVariableListRequest, opts ...grpc.CallOption) (*GetWorkflowDraftVariableListReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetWorkflowDraftVariableListReply)
+	err := c.cc.Invoke(ctx, Admin_GetWorkflowDraftEnvVariableList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AdminServer is the server API for Admin service.
 // All implementations must embed UnimplementedAdminServer
 // for forward compatibility.
@@ -990,6 +1050,11 @@ type AdminServer interface {
 	DelTagBinding(context.Context, *DelTagBindingRequest) (*DelTagBindingReply, error)
 	GetCodeBasedExtension(context.Context, *GetCodeBasedExtensionRequest) (*GetCodeBasedExtensionReply, error)
 	RuleGenerate(context.Context, *RuleGenerateRequest) (*RuleGenerateReply, error)
+	GetWorkflowDraftVariable(context.Context, *GetWorkflowDraftVariableRequest) (*GetWorkflowDraftVariableReply, error)
+	GetWorkflowDraftVariableList(context.Context, *GetWorkflowDraftVariableListRequest) (*GetWorkflowDraftVariableListReply, error)
+	GetWorkflowDraftSysVariableList(context.Context, *GetWorkflowDraftVariableListRequest) (*GetWorkflowDraftVariableListReply, error)
+	GetWorkflowDraftConversationVariableList(context.Context, *GetWorkflowDraftVariableListRequest) (*GetWorkflowDraftVariableListReply, error)
+	GetWorkflowDraftEnvVariableList(context.Context, *GetWorkflowDraftVariableListRequest) (*GetWorkflowDraftVariableListReply, error)
 	mustEmbedUnimplementedAdminServer()
 }
 
@@ -1218,6 +1283,21 @@ func (UnimplementedAdminServer) GetCodeBasedExtension(context.Context, *GetCodeB
 }
 func (UnimplementedAdminServer) RuleGenerate(context.Context, *RuleGenerateRequest) (*RuleGenerateReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RuleGenerate not implemented")
+}
+func (UnimplementedAdminServer) GetWorkflowDraftVariable(context.Context, *GetWorkflowDraftVariableRequest) (*GetWorkflowDraftVariableReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWorkflowDraftVariable not implemented")
+}
+func (UnimplementedAdminServer) GetWorkflowDraftVariableList(context.Context, *GetWorkflowDraftVariableListRequest) (*GetWorkflowDraftVariableListReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWorkflowDraftVariableList not implemented")
+}
+func (UnimplementedAdminServer) GetWorkflowDraftSysVariableList(context.Context, *GetWorkflowDraftVariableListRequest) (*GetWorkflowDraftVariableListReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWorkflowDraftSysVariableList not implemented")
+}
+func (UnimplementedAdminServer) GetWorkflowDraftConversationVariableList(context.Context, *GetWorkflowDraftVariableListRequest) (*GetWorkflowDraftVariableListReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWorkflowDraftConversationVariableList not implemented")
+}
+func (UnimplementedAdminServer) GetWorkflowDraftEnvVariableList(context.Context, *GetWorkflowDraftVariableListRequest) (*GetWorkflowDraftVariableListReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWorkflowDraftEnvVariableList not implemented")
 }
 func (UnimplementedAdminServer) mustEmbedUnimplementedAdminServer() {}
 func (UnimplementedAdminServer) testEmbeddedByValue()               {}
@@ -2557,6 +2637,96 @@ func _Admin_RuleGenerate_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Admin_GetWorkflowDraftVariable_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWorkflowDraftVariableRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).GetWorkflowDraftVariable(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Admin_GetWorkflowDraftVariable_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).GetWorkflowDraftVariable(ctx, req.(*GetWorkflowDraftVariableRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Admin_GetWorkflowDraftVariableList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWorkflowDraftVariableListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).GetWorkflowDraftVariableList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Admin_GetWorkflowDraftVariableList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).GetWorkflowDraftVariableList(ctx, req.(*GetWorkflowDraftVariableListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Admin_GetWorkflowDraftSysVariableList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWorkflowDraftVariableListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).GetWorkflowDraftSysVariableList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Admin_GetWorkflowDraftSysVariableList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).GetWorkflowDraftSysVariableList(ctx, req.(*GetWorkflowDraftVariableListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Admin_GetWorkflowDraftConversationVariableList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWorkflowDraftVariableListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).GetWorkflowDraftConversationVariableList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Admin_GetWorkflowDraftConversationVariableList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).GetWorkflowDraftConversationVariableList(ctx, req.(*GetWorkflowDraftVariableListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Admin_GetWorkflowDraftEnvVariableList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWorkflowDraftVariableListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).GetWorkflowDraftEnvVariableList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Admin_GetWorkflowDraftEnvVariableList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).GetWorkflowDraftEnvVariableList(ctx, req.(*GetWorkflowDraftVariableListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Admin_ServiceDesc is the grpc.ServiceDesc for Admin service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2855,6 +3025,26 @@ var Admin_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RuleGenerate",
 			Handler:    _Admin_RuleGenerate_Handler,
+		},
+		{
+			MethodName: "GetWorkflowDraftVariable",
+			Handler:    _Admin_GetWorkflowDraftVariable_Handler,
+		},
+		{
+			MethodName: "GetWorkflowDraftVariableList",
+			Handler:    _Admin_GetWorkflowDraftVariableList_Handler,
+		},
+		{
+			MethodName: "GetWorkflowDraftSysVariableList",
+			Handler:    _Admin_GetWorkflowDraftSysVariableList_Handler,
+		},
+		{
+			MethodName: "GetWorkflowDraftConversationVariableList",
+			Handler:    _Admin_GetWorkflowDraftConversationVariableList_Handler,
+		},
+		{
+			MethodName: "GetWorkflowDraftEnvVariableList",
+			Handler:    _Admin_GetWorkflowDraftEnvVariableList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

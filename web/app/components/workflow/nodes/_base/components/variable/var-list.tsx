@@ -7,7 +7,7 @@ import RemoveButton from '../remove-button'
 import VarReferencePicker from './var-reference-picker'
 import Input from '@/app/components/base/input'
 import type { ValueSelector, Var, Variable } from '@/app/components/workflow/types'
-import { VarType as VarKindType } from '@/app/components/workflow/nodes/tool/types'
+import { VarType as VarKindType } from '@/types/workflow'
 import { checkKeys, replaceSpaceWithUnderscreInVarNameInput } from '@/utils/var'
 import Toast from '@/app/components/base/toast'
 import { ReactSortable } from 'react-sortablejs'
@@ -157,7 +157,7 @@ const VarList: FC<Props> = ({
               isSupportFileVar={isSupportFileVar}
             />
             {!readonly && (
-              <RemoveButton onClick={handleVarRemove(index)}/>
+              <RemoveButton onClick={handleVarRemove(index)} />
             )}
             {canDrag && <RiDraggable className={cn(
               'handle absolute -left-4 top-2.5 hidden h-3 w-3 cursor-pointer text-text-quaternary',

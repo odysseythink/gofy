@@ -802,13 +802,6 @@ func (api *DraftWorkflowApi) ListSysVariable(c *gin.Context) {
 		return
 	}
 
-	// # The role of the current user in the ta table must be admin, owner, or editor
-	if !acc.IsEditor() {
-		mlog.Errorf("forbiden")
-		response.Forbidden(c)
-		return
-	}
-
 	conn := cluster.Instance().GetRpcClientByModule("admin")
 	if conn != nil {
 		pbrsp, err := pbapi.NewAdminClient(conn).GetWorkflowDraftSysVariableList(c, &pbapi.GetWorkflowDraftVariableListRequest{UserId: acc.ID, AppId: app_id, Page: int32(page), Limit: int32(limit)})
@@ -864,44 +857,23 @@ func (api *DraftWorkflowApi) ListConversationVariable(c *gin.Context) {
 		response.InvalidArgError(c)
 		return
 	}
-	pageStr := c.DefaultQuery("page", "1")
-	page, err := strconv.Atoi(pageStr)
-	if err != nil {
-		mlog.Errorf("invalid page: %v", err)
-		response.InvalidArgError(c)
-		return
-	}
-	limitStr := c.DefaultQuery("limit", "10")
-	limit, err := strconv.Atoi(limitStr)
-	if err != nil {
-		mlog.Errorf("invalid limit: %v", err)
-		response.InvalidArgError(c)
-		return
-	}
-
-	// # The role of the current user in the ta table must be admin, owner, or editor
-	if !acc.IsEditor() {
-		mlog.Errorf("forbiden")
-		response.Forbidden(c)
-		return
-	}
 
 	conn := cluster.Instance().GetRpcClientByModule("admin")
 	if conn != nil {
-		pbrsp, err := pbapi.NewAdminClient(conn).GetWorkflowDraftSysVariableList(c, &pbapi.GetWorkflowDraftVariableListRequest{UserId: acc.ID, AppId: app_id, Page: int32(page), Limit: int32(limit)})
+		pbrsp, err := pbapi.NewAdminClient(conn).GetWorkflowDraftConversationVariableList(c, &pbapi.GetWorkflowDraftVariableListRequest{UserId: acc.ID, AppId: app_id})
 		if err != nil {
-			mlog.Errorf("remote call GetWorkflowDraftVariableList failed:%v", err)
+			mlog.Errorf("remote call GetWorkflowDraftConversationVariableList failed:%v", err)
 			c.JSON(http.StatusInternalServerError, gin.H{
-				"data":    "remote call GetWorkflowDraftVariableList failed",
+				"data":    "remote call GetWorkflowDraftConversationVariableList failed",
 				"code":    "internal_server_error",
 				"status":  500,
 				"items":   nil,
 				"total":   0,
-				"message": "remote call GetWorkflowDraftVariableList failed.",
+				"message": "remote call GetWorkflowDraftConversationVariableList failed.",
 			})
 			return
 		} else {
-			mlog.Infof("remote call GetWorkflowDraftVariableList return:%#v", pbrsp)
+			mlog.Infof("remote call GetWorkflowDraftConversationVariableList return:%#v", pbrsp)
 			if pbrsp.Exp != nil {
 				response.PbHttpException(c, pbrsp.Exp)
 			} else {
@@ -941,44 +913,23 @@ func (api *DraftWorkflowApi) ListEnvironmentVariable(c *gin.Context) {
 		response.InvalidArgError(c)
 		return
 	}
-	pageStr := c.DefaultQuery("page", "1")
-	page, err := strconv.Atoi(pageStr)
-	if err != nil {
-		mlog.Errorf("invalid page: %v", err)
-		response.InvalidArgError(c)
-		return
-	}
-	limitStr := c.DefaultQuery("limit", "10")
-	limit, err := strconv.Atoi(limitStr)
-	if err != nil {
-		mlog.Errorf("invalid limit: %v", err)
-		response.InvalidArgError(c)
-		return
-	}
-
-	// # The role of the current user in the ta table must be admin, owner, or editor
-	if !acc.IsEditor() {
-		mlog.Errorf("forbiden")
-		response.Forbidden(c)
-		return
-	}
 
 	conn := cluster.Instance().GetRpcClientByModule("admin")
 	if conn != nil {
-		pbrsp, err := pbapi.NewAdminClient(conn).GetWorkflowDraftSysVariableList(c, &pbapi.GetWorkflowDraftVariableListRequest{UserId: acc.ID, AppId: app_id, Page: int32(page), Limit: int32(limit)})
+		pbrsp, err := pbapi.NewAdminClient(conn).GetWorkflowDraftEnvVariableList(c, &pbapi.GetWorkflowDraftVariableListRequest{UserId: acc.ID, AppId: app_id})
 		if err != nil {
-			mlog.Errorf("remote call GetWorkflowDraftVariableList failed:%v", err)
+			mlog.Errorf("remote call GetWorkflowDraftEnvVariableList failed:%v", err)
 			c.JSON(http.StatusInternalServerError, gin.H{
-				"data":    "remote call GetWorkflowDraftVariableList failed",
+				"data":    "remote call GetWorkflowDraftEnvVariableList failed",
 				"code":    "internal_server_error",
 				"status":  500,
 				"items":   nil,
 				"total":   0,
-				"message": "remote call GetWorkflowDraftVariableList failed.",
+				"message": "remote call GetWorkflowDraftEnvVariableList failed.",
 			})
 			return
 		} else {
-			mlog.Infof("remote call GetWorkflowDraftVariableList return:%#v", pbrsp)
+			mlog.Infof("remote call GetWorkflowDraftEnvVariableList return:%#v", pbrsp)
 			if pbrsp.Exp != nil {
 				response.PbHttpException(c, pbrsp.Exp)
 			} else {

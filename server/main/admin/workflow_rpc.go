@@ -896,59 +896,29 @@ func (s *AdminService) GetWorkflowDraftEnvVariableList(ctx context.Context, in *
 			mlog.Errorf("draft workflow not found, id={%s}", app_model.ID)
 			panic(exceptions.NewValueError(fmt.Sprintf("draft workflow not found, id={%s}", app_model.ID)))
 		}
-        workflow_service = WorkflowService()
-        workflow = workflow_service.get_draft_workflow(app_model=app_model)
-        if workflow is None:
-            raise DraftWorkflowNotExist()
+		wf := services.ServiceGroupApp.Workflow.GetDraftWorkflow(app_model)
+		if wf == nil {
+			panic(httpexceptions.NewDraftWorkflowNotExist())
+		}
+		env_vars := wf.GetEnvironmentVariables()
+		env_vars_list := []map[string]any{}
+		for _, v := range env_vars {
+			env_vars_list = append(env_vars_list, map[string]any{
+				"id":          v.GetID(),
+				"type":        "env",
+				"name":        v.GetName(),
+				"description": v.GetDescription(),
+				"selector":    v.GetSelector(),
+				"value_type":  v.ValueType(),
+				"value":       v.GetValue(),
+				// Do not track edited for env vars.
+				"edited":   false,
+				"visible":  true,
+				"editable": true,
+			})
+		}
 
-        env_vars = workflow.environment_variables
-        env_vars_list = []
-        for v in env_vars:
-            env_vars_list.append(
-                {
-                    "id": v.id,
-                    "type": "env",
-                    "name": v.name,
-                    "description": v.description,
-                    "selector": v.selector,
-                    "value_type": v.value_type.exposed_type().value,
-                    "value": v.value,
-                    # Do not track edited for env vars.
-                    "edited": False,
-                    "visible": True,
-                    "editable": True,
-                }
-            )
-
-		err := services.ServiceGroupApp.WorkflowDraftVariable.PrefillConversationVariableDefaultValues(draftWf)
-		if err != nil {
-			panic(err)
-		}
-		variables, err := services.ServiceGroupApp.WorkflowDraftVariable.GetVariableList(app_model, constants.CONVERSATION_VARIABLE_NODE_ID)
-		if err != nil {
-			panic(err)
-		}
-		items := make([]map[string]any, 0)
-		for _, variable := range variables {
-			var value any
-			seg, _ := variable.GetValue()
-			if seg != nil {
-				value = seg.GetValue()
-			}
-			item := map[string]any{
-				"id":          variable.ID,
-				"type":        string(variable.GetVariableType()),
-				"name":        variable.Name,
-				"description": variable.Description,
-				"selector":    []string{variable.NodeID, variable.Name},
-				"valueType":   variable.ValueType,
-				"edited":      variable.LastEditedAt != nil,
-				"visible":     variable.Visible,
-				"value":       value,
-			}
-			items = append(items, item)
-		}
-		bindata, _ := json.Marshal(items)
+		bindata, _ := json.Marshal(env_vars_list)
 		out.ItemsStr = string(bindata)
 	}()
 

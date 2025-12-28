@@ -20,7 +20,6 @@ import { useTranslation } from 'react-i18next'
 import NextStep from '../next-step'
 import PanelOperator from '../panel-operator'
 import NodePosition from '@/app/components/workflow/nodes/_base/components/node-position'
-import HelpLink from '../help-link'
 import {
   DescriptionInput,
   TitleInput,
@@ -37,7 +36,6 @@ import {
   useNodeDataUpdate,
   useNodesInteractions,
   useNodesReadOnly,
-  useToolIcon,
   useWorkflowHistory,
 } from '@/app/components/workflow/hooks'
 import {
@@ -143,7 +141,6 @@ const BasePanel: FC<BasePanelProps> = ({
   const { handleNodeSelect } = useNodesInteractions()
   const { nodesReadOnly } = useNodesReadOnly()
   const { availableNextBlocks } = useAvailableBlocks(data.type, data.isInIteration, data.isInLoop)
-  const toolIcon = useToolIcon(data)
 
   const { saveStateToHistory } = useWorkflowHistory()
 
@@ -169,11 +166,11 @@ const BasePanel: FC<BasePanelProps> = ({
   const [isPaused, setIsPaused] = useState(false)
 
   useEffect(() => {
-    if(data._singleRunningStatus === NodeRunningStatus.Running) {
+    if (data._singleRunningStatus === NodeRunningStatus.Running) {
       hasClickRunning.current = true
       setIsPaused(false)
     }
-    else if(data._isSingleRun && data._singleRunningStatus === undefined && hasClickRunning) {
+    else if (data._isSingleRun && data._singleRunningStatus === undefined && hasClickRunning) {
       setIsPaused(true)
       hasClickRunning.current = false
     }
@@ -227,31 +224,15 @@ const BasePanel: FC<BasePanelProps> = ({
 
   const logParams = useLogs()
   const passedLogParams = (() => {
-    if ([BlockEnum.Tool, BlockEnum.Agent, BlockEnum.Iteration, BlockEnum.Loop].includes(data.type))
+    if ([BlockEnum.Iteration, BlockEnum.Loop].includes(data.type))
       return logParams
 
     return {}
   })()
 
-  const buildInTools = useStore(s => s.buildInTools)
-  const currCollection = useMemo(() => {
-    return buildInTools.find(item => canFindTool(item.id, data.provider_id))
-  }, [buildInTools, data.provider_id])
-  const showPluginAuth = useMemo(() => {
-    return data.type === BlockEnum.Tool && currCollection?.allow_delete
-  }, [currCollection, data.type])
-  const handleAuthorizationItemClick = useCallback((credential_id: string) => {
-    handleNodeDataUpdateWithSyncDraft({
-      id,
-      data: {
-        credential_id,
-      },
-    })
-  }, [handleNodeDataUpdateWithSyncDraft, id])
-
-  if(logParams.showSpecialResultPanel) {
+  if (logParams.showSpecialResultPanel) {
     return (
-    <div className={cn(
+      <div className={cn(
         'relative mr-1  h-full',
       )}>
         <div
@@ -323,7 +304,7 @@ const BasePanel: FC<BasePanelProps> = ({
             <BlockIcon
               className='mr-1 shrink-0'
               type={data.type}
-              toolIcon={toolIcon}
+              toolIcon={''}
               size='md'
             />
             <TitleInput
@@ -341,7 +322,7 @@ const BasePanel: FC<BasePanelProps> = ({
                     <div
                       className='mr-1 flex h-6 w-6 cursor-pointer items-center justify-center rounded-md hover:bg-state-base-hover'
                       onClick={() => {
-                        if(isSingleRunning) {
+                        if (isSingleRunning) {
                           handleNodeDataUpdate({
                             id,
                             data: {
@@ -357,14 +338,13 @@ const BasePanel: FC<BasePanelProps> = ({
                     >
                       {
                         isSingleRunning ? <Stop className='h-4 w-4 text-text-tertiary' />
-                        : <RiPlayLargeLine className='h-4 w-4 text-text-tertiary' />
+                          : <RiPlayLargeLine className='h-4 w-4 text-text-tertiary' />
                       }
                     </div>
                   </Tooltip>
                 )
               }
               <NodePosition nodeId={id}></NodePosition>
-              <HelpLink nodeType={data.type} />
               <PanelOperator id={id} data={data} showHelpLink={false} />
               <div className='mx-3 h-3.5 w-[1px] bg-divider-regular' />
               <div
@@ -381,42 +361,12 @@ const BasePanel: FC<BasePanelProps> = ({
               onChange={handleDescriptionChange}
             />
           </div>
-          {
-            showPluginAuth && (
-              <PluginAuth
-                className='px-4 pb-2'
-                pluginPayload={{
-                  provider: currCollection?.name || '',
-                  category: AuthCategory.tool,
-                }}
-              >
-                <div className='flex items-center justify-between pl-4 pr-3'>
-                  <Tab
-                    value={tabType}
-                    onChange={setTabType}
-                  />
-                  <AuthorizedInNode
-                    pluginPayload={{
-                      provider: currCollection?.name || '',
-                      category: AuthCategory.tool,
-                    }}
-                    onAuthorizationItemClick={handleAuthorizationItemClick}
-                    credentialId={data.credential_id}
-                  />
-                </div>
-              </PluginAuth>
-            )
-          }
-          {
-            !showPluginAuth && (
-              <div className='flex items-center justify-between pl-4 pr-3'>
-                <Tab
-                  value={tabType}
-                  onChange={setTabType}
-                />
-              </div>
-            )
-          }
+          <div className='flex items-center justify-between pl-4 pr-3'>
+            <Tab
+              value={tabType}
+              onChange={setTabType}
+            />
+          </div>
           <Split />
         </div>
 

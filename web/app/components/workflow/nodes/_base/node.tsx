@@ -23,7 +23,6 @@ import {
 } from '../../types'
 import {
   useNodesReadOnly,
-  useToolIcon,
 } from '../../hooks'
 import {
   hasErrorHandleNode,
@@ -32,7 +31,6 @@ import {
 import { useNodeIterationInteractions } from '../iteration/use-interactions'
 import { useNodeLoopInteractions } from '../loop/use-interactions'
 import type { IterationNodeType } from '../iteration/types'
-import CopyID from '../tool/components/copy-id'
 import {
   NodeSourceHandle,
   NodeTargetHandle,
@@ -64,7 +62,6 @@ const BaseNode: FC<BaseNodeProps> = ({
   const { nodesReadOnly } = useNodesReadOnly()
   const { handleNodeIterationChildSizeChange } = useNodeIterationInteractions()
   const { handleNodeLoopChildSizeChange } = useNodeLoopInteractions()
-  const toolIcon = useToolIcon(data)
 
   useEffect(() => {
     if (nodeRef.current && data.selected && data.isInIteration) {
@@ -231,7 +228,7 @@ const BaseNode: FC<BaseNodeProps> = ({
             className='mr-2 shrink-0'
             type={data.type}
             size='md'
-            toolIcon={toolIcon}
+            toolIcon={''}
           />
           <div
             title={data.title}
@@ -323,11 +320,6 @@ const BaseNode: FC<BaseNodeProps> = ({
             </div>
           )
         }
-        {data.type === BlockEnum.Tool && data.provider_type === ToolTypeEnum.MCP && (
-          <div className='px-3 pb-2'>
-            <CopyID content={data.provider_id || ''} />
-          </div>
-        )}
       </div>
     </div>
   )

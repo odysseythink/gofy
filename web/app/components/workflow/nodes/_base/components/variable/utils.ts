@@ -4,13 +4,10 @@ import type { CodeNodeType } from '../../../code/types'
 import type { EndNodeType } from '../../../end/types'
 import type { AnswerNodeType } from '../../../answer/types'
 import { type LLMNodeType, type StructuredOutput, Type } from '../../../llm/types'
-import type { KnowledgeRetrievalNodeType } from '../../../knowledge-retrieval/types'
 import type { IfElseNodeType } from '../../../if-else/types'
 import type { TemplateTransformNodeType } from '../../../template-transform/types'
 import type { QuestionClassifierNodeType } from '../../../question-classifier/types'
 import type { HttpNodeType } from '../../../http/types'
-import { VarType as ToolVarType } from '../../../tool/types'
-import type { ToolNodeType } from '../../../tool/types'
 import type { ParameterExtractorNodeType } from '../../../parameter-extractor/types'
 import type { IterationNodeType } from '../../../iteration/types'
 import type { LoopNodeType } from '../../../loop/types'
@@ -25,17 +22,15 @@ import type { Field as StructField } from '@/app/components/workflow/nodes/llm/t
 
 import {
   HTTP_REQUEST_OUTPUT_STRUCT,
-  KNOWLEDGE_RETRIEVAL_OUTPUT_STRUCT,
+  // KNOWLEDGE_RETRIEVAL_OUTPUT_STRUCT,
   LLM_OUTPUT_STRUCT,
   PARAMETER_EXTRACTOR_COMMON_STRUCT,
   QUESTION_CLASSIFIER_OUTPUT_STRUCT,
   SUPPORT_OUTPUT_VARS_NODE,
   TEMPLATE_TRANSFORM_OUTPUT_STRUCT,
-  TOOL_OUTPUT_STRUCT,
 } from '@/app/components/workflow/constants'
 import type { PromptItem } from '@/models/debug'
 import { VAR_REGEX } from '@/config'
-import type { AgentNodeType } from '../../../agent/types'
 
 export const isSystemVar = (valueSelector: ValueSelector) => {
   return valueSelector[0] === 'sys' || valueSelector[1] === 'sys'
@@ -286,10 +281,6 @@ const formatItem = (
 
       break
     }
-    case BlockEnum.KnowledgeRetrieval: {
-      res.vars = KNOWLEDGE_RETRIEVAL_OUTPUT_STRUCT
-      break
-    }
 
     case BlockEnum.Code: {
       const {
@@ -380,40 +371,6 @@ const formatItem = (
       break
     }
 
-    case BlockEnum.Tool: {
-      const {
-        output_schema,
-      } = data as ToolNodeType
-      if (!output_schema) {
-        res.vars = TOOL_OUTPUT_STRUCT
-      }
-      else {
-        const outputSchema: any[] = []
-        Object.keys(output_schema.properties).forEach((outputKey) => {
-          const output = output_schema.properties[outputKey]
-          const dataType = output.type
-          outputSchema.push({
-            variable: outputKey,
-            type: dataType === 'array'
-              ? `array[${output.items?.type.slice(0, 1).toLocaleLowerCase()}${output.items?.type.slice(1)}]`
-              : `${output.type.slice(0, 1).toLocaleLowerCase()}${output.type.slice(1)}`,
-            description: output.description,
-            children: output.type === 'object' ? {
-              schema: {
-                type: 'object',
-                properties: output.properties,
-              },
-            } : undefined,
-          })
-        })
-        res.vars = [
-          ...TOOL_OUTPUT_STRUCT,
-          ...outputSchema,
-        ]
-      }
-      break
-    }
-
     case BlockEnum.ParameterExtractor: {
       res.vars = [
         ...((data as ParameterExtractorNodeType).parameters || []).map((p) => {
@@ -479,25 +436,6 @@ const formatItem = (
           variable: 'last_record',
           type: (data as ListFilterNodeType).item_var_type,
         },
-      ]
-      break
-    }
-
-    case BlockEnum.Agent: {
-      const payload = data as AgentNodeType
-      const outputs: Var[] = []
-      Object.keys(payload.output_schema?.properties || {}).forEach((outputKey) => {
-        const output = payload.output_schema.properties[outputKey]
-        outputs.push({
-          variable: outputKey,
-          type: output.type === 'array'
-            ? `Array[${output.items?.type.slice(0, 1).toLocaleUpperCase()}${output.items?.type.slice(1)}]` as VarType
-            : `${output.type.slice(0, 1).toLocaleUpperCase()}${output.type.slice(1)}` as VarType,
-        })
-      })
-      res.vars = [
-        ...outputs,
-        ...TOOL_OUTPUT_STRUCT,
       ]
       break
     }
@@ -677,9 +615,9 @@ const getIterationItemType = ({
       curr = Array.isArray(curr) ? curr.find(v => v.variable === key) : []
 
       if (isLast)
-      arrayType = curr?.type
+        arrayType = curr?.type
       else if (curr?.type === VarType.object || curr?.type === VarType.file)
-      curr = curr.children || []
+        curr = curr.children || []
     }
   }
 
@@ -1014,10 +952,6 @@ export const getNodeUsedVars = (node: Node): ValueSelector[] => {
       res = [...inputVars, ...contextVar]
       break
     }
-    case BlockEnum.KnowledgeRetrieval: {
-      res = [(data as KnowledgeRetrievalNodeType).query_variable_selector]
-      break
-    }
     case BlockEnum.IfElse: {
       res = (data as IfElseNodeType).conditions?.map((c) => {
         return c.variable_selector || []
@@ -1050,13 +984,6 @@ export const getNodeUsedVars = (node: Node): ValueSelector[] => {
     case BlockEnum.HttpRequest: {
       const payload = data as HttpNodeType
       res = matchNotSystemVars([payload.url, payload.headers, payload.params, typeof payload.body.data === 'string' ? payload.body.data : payload.body.data.map(d => d.value).join('')])
-      break
-    }
-    case BlockEnum.Tool: {
-      const payload = data as ToolNodeType
-      const mixVars = matchNotSystemVars(Object.keys(payload.tool_parameters)?.filter(key => payload.tool_parameters[key].type === ToolVarType.mixed).map(key => payload.tool_parameters[key].value) as string[])
-      const vars = Object.keys(payload.tool_parameters).filter(key => payload.tool_parameters[key].type === ToolVarType.variable).map(key => payload.tool_parameters[key].value as string) || []
-      res = [...(mixVars as ValueSelector[]), ...(vars as any)]
       break
     }
 
@@ -1096,20 +1023,6 @@ export const getNodeUsedVars = (node: Node): ValueSelector[] => {
       break
     }
 
-    case BlockEnum.Agent: {
-      const payload = data as AgentNodeType
-      const valueSelectors: ValueSelector[] = []
-      if (!payload.agent_parameters)
-        break
-
-      Object.keys(payload.agent_parameters || {}).forEach((key) => {
-        const { value } = payload.agent_parameters![key]
-        if (typeof value === 'string')
-          valueSelectors.push(...matchNotSystemVars([value]))
-      })
-      res = valueSelectors
-      break
-    }
   }
   return res || []
 }
@@ -1126,10 +1039,6 @@ export const getNodeUsedVarPassToServerKey = (node: Node, valueSelector: ValueSe
       if (payload.context?.variable_selector.join('.') === valueSelector.join('.'))
         res.push('#context#')
 
-      break
-    }
-    case BlockEnum.KnowledgeRetrieval: {
-      res = 'query'
       break
     }
     case BlockEnum.IfElse: {
@@ -1155,11 +1064,6 @@ export const getNodeUsedVarPassToServerKey = (node: Node, valueSelector: ValueSe
       break
     }
     case BlockEnum.HttpRequest: {
-      res = `#${valueSelector.join('.')}#`
-      break
-    }
-
-    case BlockEnum.Tool: {
       res = `#${valueSelector.join('.')}#`
       break
     }
@@ -1244,12 +1148,6 @@ export const updateNodeVars = (oldNode: Node, oldVarSelector: ValueSelector, new
 
         break
       }
-      case BlockEnum.KnowledgeRetrieval: {
-        const payload = data as KnowledgeRetrievalNodeType
-        if (payload.query_variable_selector.join('.') === oldVarSelector.join('.'))
-          payload.query_variable_selector = newVarSelector
-        break
-      }
       case BlockEnum.IfElse: {
         const payload = data as IfElseNodeType
         if (payload.conditions) {
@@ -1303,30 +1201,6 @@ export const updateNodeVars = (oldNode: Node, oldVarSelector: ValueSelector, new
             return {
               ...d,
               value: replaceOldVarInText(d.value || '', oldVarSelector, newVarSelector),
-            }
-          })
-        }
-        break
-      }
-      case BlockEnum.Tool: {
-        const payload = data as ToolNodeType
-        const hasShouldRenameVar = Object.keys(payload.tool_parameters)?.filter(key => payload.tool_parameters[key].type !== ToolVarType.constant)
-        if (hasShouldRenameVar) {
-          Object.keys(payload.tool_parameters).forEach((key) => {
-            const value = payload.tool_parameters[key]
-            const { type } = value
-            if (type === ToolVarType.variable) {
-              payload.tool_parameters[key] = {
-                ...value,
-                value: newVarSelector,
-              }
-            }
-
-            if (type === ToolVarType.mixed) {
-              payload.tool_parameters[key] = {
-                ...value,
-                value: replaceOldVarInText(payload.tool_parameters[key].value as string, oldVarSelector, newVarSelector),
-              }
             }
           })
         }
@@ -1460,11 +1334,6 @@ export const getNodeOutputVars = (node: Node, isChatMode: boolean): ValueSelecto
       break
     }
 
-    case BlockEnum.KnowledgeRetrieval: {
-      varsToValueSelectorList(KNOWLEDGE_RETRIEVAL_OUTPUT_STRUCT, [id], res)
-      break
-    }
-
     case BlockEnum.Code: {
       const {
         outputs,
@@ -1497,11 +1366,6 @@ export const getNodeOutputVars = (node: Node, isChatMode: boolean): ValueSelecto
 
     case BlockEnum.VariableAggregator: {
       res.push([id, 'output'])
-      break
-    }
-
-    case BlockEnum.Tool: {
-      varsToValueSelectorList(TOOL_OUTPUT_STRUCT, [id], res)
       break
     }
 

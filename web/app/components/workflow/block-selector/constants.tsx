@@ -16,11 +16,6 @@ export const BLOCKS: Block[] = [
   },
   {
     classification: BlockClassificationEnum.Default,
-    type: BlockEnum.KnowledgeRetrieval,
-    title: 'Knowledge Retrieval',
-  },
-  {
-    classification: BlockClassificationEnum.Default,
     type: BlockEnum.End,
     title: 'End',
   },
@@ -94,11 +89,6 @@ export const BLOCKS: Block[] = [
     classification: BlockClassificationEnum.Utilities,
     type: BlockEnum.ListFilter,
     title: 'List Filter',
-  },
-  {
-    classification: BlockClassificationEnum.Default,
-    type: BlockEnum.Agent,
-    title: 'Agent',
   },
 ]
 

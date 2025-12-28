@@ -6,6 +6,12 @@ import type { BeforeRunFormProps } from '@/app/components/workflow/nodes/_base/c
 import type { SpecialResultPanelProps } from '@/app/components/workflow/run/special-result-panel'
 import type { MutableRefObject } from 'react'
 
+export enum VarType {
+  variable = 'variable',
+  constant = 'constant',
+  mixed = 'mixed',
+}
+
 export type AgentLogItem = {
   node_execution_id: string,
   id: string,

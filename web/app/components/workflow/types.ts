@@ -6,7 +6,7 @@ import type {
 } from 'reactflow'
 import type { Resolution, TransferMethod } from '@/types/app'
 import type { ToolDefaultValue } from '@/app/components/workflow/block-selector/types'
-import type { VarType as VarKindType } from '@/app/components/workflow/nodes/tool/types'
+import { VarType as VarKindType } from '@/types/workflow'
 import type { FileResponse, NodeTracing, PanelProps } from '@/types/workflow'
 import type { Collection, Tool } from '@/app/components/tools/types'
 import type { ChatVarType } from '@/app/components/workflow/panel/chat-variable-panel/type'
@@ -23,7 +23,6 @@ export enum BlockEnum {
   End = 'end',
   Answer = 'answer',
   LLM = 'llm',
-  KnowledgeRetrieval = 'knowledge-retrieval',
   QuestionClassifier = 'question-classifier',
   IfElse = 'if-else',
   Code = 'code',
@@ -31,14 +30,12 @@ export enum BlockEnum {
   HttpRequest = 'http-request',
   VariableAssigner = 'variable-assigner',
   VariableAggregator = 'variable-aggregator',
-  Tool = 'tool',
   ParameterExtractor = 'parameter-extractor',
   Iteration = 'iteration',
   DocExtractor = 'document-extractor',
   ListFilter = 'list-operator',
   IterationStart = 'iteration-start',
   Assigner = 'assigner', // is now named as VariableAssigner
-  Agent = 'agent',
   Loop = 'loop',
   LoopStart = 'loop-start',
   LoopEnd = 'loop-end',

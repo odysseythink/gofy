@@ -152,6 +152,13 @@ func InitRouters() *gin.Engine {
 		authapiRouter.GET("apps/:app_id/workflows/default-workflow-block-configs/:block_type", v1.ApiGroupApp.DraftWorkflowApi.DefaultBlockConfig)
 		authapiRouter.GET("apps/:app_id/workflows/publish", v1.ApiGroupApp.DraftWorkflowApi.GetPublished)
 		authapiRouter.POST("apps/:app_id/workflows/publish", v1.ApiGroupApp.DraftWorkflowApi.SetPublished)
+		authapiRouter.GET("apps/:app_id/workflows/draft/variables", v1.ApiGroupApp.DraftWorkflowApi.ListVariable)
+		authapiRouter.GET("apps/:app_id/workflows/draft/variables/:variable_id", v1.ApiGroupApp.DraftWorkflowApi.GetVariable)
+		authapiRouter.PATCH("apps/:app_id/workflows/draft/variables/:variable_id", v1.ApiGroupApp.DraftWorkflowApi.UpdateVariable)
+		// api.add_resource(VariableResetApi, "/apps/:app_id/workflows/draft/variables/:variable_id/reset")
+		authapiRouter.GET("apps/:app_id/workflows/draft/system-variables", v1.ApiGroupApp.DraftWorkflowApi.ListSysVariable)
+		authapiRouter.GET("apps/:app_id/workflows/draft/conversation-variables", v1.ApiGroupApp.DraftWorkflowApi.ListConversationVariable)
+		authapiRouter.GET("apps/:app_id/workflows/draft/environment-variables", v1.ApiGroupApp.DraftWorkflowApi.ListEnvironmentVariable)
 
 		authapiRouter.GET("apps/:app_id/api-keys", v1.ApiGroupApp.ApiKeyApi.GetApiKeyListResource)
 		authapiRouter.POST("apps/:app_id/api-keys", v1.ApiGroupApp.ApiKeyApi.SetApiKeyListResource)

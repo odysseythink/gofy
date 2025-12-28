@@ -244,7 +244,7 @@ func (m *TongyiLargeLanguageModel) ValidateCredentials(model string, credentials
 	   :param credentials: model credentials
 	   :return
 	*/
-
+	mlog.Debugf("validate model %s with credentials %v", model, credentials)
 	m.generate(
 		model,
 		credentials,

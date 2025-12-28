@@ -2,7 +2,6 @@ import type { FC } from 'react'
 import { memo } from 'react'
 import { BlockEnum } from './types'
 import {
-  Agent,
   Answer,
   Assigner,
   Code,
@@ -12,7 +11,6 @@ import {
   Http,
   IfElse,
   Iteration,
-  KnowledgeRetrieval,
   ListFilter,
   Llm,
   Loop,
@@ -44,13 +42,11 @@ const getIcon = (type: BlockEnum, className: string) => {
     [BlockEnum.IfElse]: <IfElse className={className} />,
     [BlockEnum.HttpRequest]: <Http className={className} />,
     [BlockEnum.Answer]: <Answer className={className} />,
-    [BlockEnum.KnowledgeRetrieval]: <KnowledgeRetrieval className={className} />,
     [BlockEnum.QuestionClassifier]: <QuestionClassifier className={className} />,
     [BlockEnum.TemplateTransform]: <TemplatingTransform className={className} />,
     [BlockEnum.VariableAssigner]: <VariableX className={className} />,
     [BlockEnum.VariableAggregator]: <VariableX className={className} />,
     [BlockEnum.Assigner]: <Assigner className={className} />,
-    [BlockEnum.Tool]: <VariableX className={className} />,
     [BlockEnum.IterationStart]: <VariableX className={className} />,
     [BlockEnum.Iteration]: <Iteration className={className} />,
     [BlockEnum.LoopStart]: <VariableX className={className} />,
@@ -59,7 +55,6 @@ const getIcon = (type: BlockEnum, className: string) => {
     [BlockEnum.ParameterExtractor]: <ParameterExtractor className={className} />,
     [BlockEnum.DocExtractor]: <DocsExtractor className={className} />,
     [BlockEnum.ListFilter]: <ListFilter className={className} />,
-    [BlockEnum.Agent]: <Agent className={className} />,
   }[type]
 }
 const ICON_CONTAINER_BG_COLOR_MAP: Record<string, string> = {
@@ -73,7 +68,6 @@ const ICON_CONTAINER_BG_COLOR_MAP: Record<string, string> = {
   [BlockEnum.LoopEnd]: 'bg-util-colors-warning-warning-500',
   [BlockEnum.HttpRequest]: 'bg-util-colors-violet-violet-500',
   [BlockEnum.Answer]: 'bg-util-colors-warning-warning-500',
-  [BlockEnum.KnowledgeRetrieval]: 'bg-util-colors-green-green-500',
   [BlockEnum.QuestionClassifier]: 'bg-util-colors-green-green-500',
   [BlockEnum.TemplateTransform]: 'bg-util-colors-blue-blue-500',
   [BlockEnum.VariableAssigner]: 'bg-util-colors-blue-blue-500',
@@ -82,7 +76,6 @@ const ICON_CONTAINER_BG_COLOR_MAP: Record<string, string> = {
   [BlockEnum.ParameterExtractor]: 'bg-util-colors-blue-blue-500',
   [BlockEnum.DocExtractor]: 'bg-util-colors-green-green-500',
   [BlockEnum.ListFilter]: 'bg-util-colors-cyan-cyan-500',
-  [BlockEnum.Agent]: 'bg-util-colors-indigo-indigo-500',
 }
 const BlockIcon: FC<BlockIconProps> = ({
   type,
@@ -100,33 +93,8 @@ const BlockIcon: FC<BlockIconProps> = ({
     `}
     >
       {
-        type !== BlockEnum.Tool && (
+        (
           getIcon(type, size === 'xs' ? 'w-3 h-3' : 'w-3.5 h-3.5')
-        )
-      }
-      {
-        type === BlockEnum.Tool && toolIcon && (
-          <>
-            {
-              typeof toolIcon === 'string'
-                ? (
-                  <div
-                    className='h-full w-full shrink-0 rounded-md bg-cover bg-center'
-                    style={{
-                      backgroundImage: `url(${toolIcon})`,
-                    }}
-                  ></div>
-                )
-                : (
-                  <AppIcon
-                    className='!h-full !w-full shrink-0'
-                    size='tiny'
-                    icon={toolIcon?.content}
-                    background={toolIcon?.background}
-                  />
-                )
-            }
-          </>
         )
       }
     </div>

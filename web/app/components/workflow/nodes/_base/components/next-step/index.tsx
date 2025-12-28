@@ -6,7 +6,6 @@ import {
   getOutgoers,
   useStore,
 } from 'reactflow'
-import { useToolIcon } from '../../../../hooks'
 import BlockIcon from '../../../../block-icon'
 import type {
   Node,
@@ -25,7 +24,6 @@ const NextStep = ({
 }: NextStepProps) => {
   const { t } = useTranslation()
   const data = selectedNode.data
-  const toolIcon = useToolIcon(data)
   const branches = useMemo(() => {
     return data._targetBranches || []
   }, [data])
@@ -93,7 +91,7 @@ const NextStep = ({
       <div className='relative flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border-[0.5px] border-divider-regular bg-background-default shadow-xs'>
         <BlockIcon
           type={selectedNode!.data.type}
-          toolIcon={toolIcon}
+          toolIcon={''}
         />
       </div>
       <Line

@@ -21,18 +21,15 @@ import type { LoopNodeType } from '../nodes/loop/types'
 
 export const canRunBySingle = (nodeType: BlockEnum, isChildNode: boolean) => {
   // child node means in iteration or loop. Set value to iteration(or loop) may cause variable not exit problem in backend.
-  if(isChildNode && nodeType === BlockEnum.Assigner)
+  if (isChildNode && nodeType === BlockEnum.Assigner)
     return false
   return nodeType === BlockEnum.LLM
-    || nodeType === BlockEnum.KnowledgeRetrieval
     || nodeType === BlockEnum.Code
     || nodeType === BlockEnum.TemplateTransform
     || nodeType === BlockEnum.QuestionClassifier
     || nodeType === BlockEnum.HttpRequest
-    || nodeType === BlockEnum.Tool
     || nodeType === BlockEnum.ParameterExtractor
     || nodeType === BlockEnum.Iteration
-    || nodeType === BlockEnum.Agent
     || nodeType === BlockEnum.DocExtractor
     || nodeType === BlockEnum.Loop
     || nodeType === BlockEnum.Start
@@ -332,5 +329,5 @@ export const getParallelInfo = (nodes: Node[], edges: Edge[], parentNodeId?: str
 }
 
 export const hasErrorHandleNode = (nodeType?: BlockEnum) => {
-  return nodeType === BlockEnum.LLM || nodeType === BlockEnum.Tool || nodeType === BlockEnum.HttpRequest || nodeType === BlockEnum.Code
+  return nodeType === BlockEnum.LLM || nodeType === BlockEnum.HttpRequest || nodeType === BlockEnum.Code
 }

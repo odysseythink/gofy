@@ -737,11 +737,11 @@ export const useNodesInteractions = () => {
           newNode.data.loop_id = parentNode.id
           newNode.zIndex = LOOP_CHILDREN_Z_INDEX
         }
-        if (isInIteration && (newNode.data.type === BlockEnum.Answer || newNode.data.type === BlockEnum.Tool || newNode.data.type === BlockEnum.Assigner)) {
+        if (isInIteration && (newNode.data.type === BlockEnum.Answer || newNode.data.type === BlockEnum.Assigner)) {
           const iterNodeData: IterationNodeType = parentNode.data
           iterNodeData._isShowTips = true
         }
-        if (isInLoop && (newNode.data.type === BlockEnum.Answer || newNode.data.type === BlockEnum.Tool || newNode.data.type === BlockEnum.Assigner)) {
+        if (isInLoop && (newNode.data.type === BlockEnum.Answer || newNode.data.type === BlockEnum.Assigner)) {
           const iterNodeData: IterationNodeType = parentNode.data
           iterNodeData._isShowTips = true
         }

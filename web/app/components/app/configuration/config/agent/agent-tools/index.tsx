@@ -26,7 +26,7 @@ import { AlertTriangle } from '@/app/components/base/icons/src/vender/solid/aler
 import Tooltip from '@/app/components/base/tooltip'
 import { DefaultToolIcon } from '@/app/components/base/icons/src/public/other'
 import cn from '@/utils/classnames'
-import ToolPicker from '@/app/components/workflow/block-selector/tool-picker'
+// import ToolPicker from '@/app/components/workflow/block-selector/tool-picker'
 import type { ToolDefaultValue, ToolValue } from '@/app/components/workflow/block-selector/types'
 import { canFindTool } from '@/utils'
 import { useAllBuiltInTools, useAllCustomTools, useAllMCPTools, useAllWorkflowTools } from '@/service/use-tools'
@@ -161,7 +161,7 @@ const AgentTools: FC = () => {
             {tools.length < MAX_TOOLS_NUM && (
               <>
                 <div className='ml-3 mr-1 h-3.5 w-px bg-divider-regular'></div>
-                <ToolPicker
+                {/* <ToolPicker
                   trigger={<OperationBtn type="add" />}
                   isShow={isShowChooseTool}
                   onShowChange={setIsShowChooseTool}
@@ -171,7 +171,7 @@ const AgentTools: FC = () => {
                   onSelectMultiple={handleSelectMultipleTool}
                   selectedTools={tools as unknown as ToolValue[]}
                   canChooseMCPTool
-                />
+                /> */}
               </>
             )}
           </div>

@@ -52,20 +52,6 @@ export const getDefaultValue = (data: CommonNodeType) => {
     ]
   }
 
-  if (type === BlockEnum.Tool) {
-    return [
-      {
-        key: 'text',
-        type: VarType.string,
-        value: getDefaultValueByType(VarType.string),
-      },
-      {
-        key: 'json',
-        type: VarType.arrayObject,
-        value: getDefaultValueByType(VarType.arrayObject),
-      },
-    ]
-  }
 
   if (type === BlockEnum.Code) {
     const { outputs } = data as CodeNodeType

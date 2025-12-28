@@ -13,6 +13,7 @@ type ServiceGroup struct {
 	ModelProvide          *ModelProvideService
 	Workflow              *WorkflowService
 	WorkflowRun           *WorkflowRunService
+	WorkflowDraftVariable *WorkflowDraftVariableService
 	Tools                 *ToolsService
 	Register              *RegisterService
 	DifySetup             *DifySetupService
@@ -54,6 +55,7 @@ var ServiceGroupApp = ServiceGroup{
 	ModelLoadBalancing:    &ModelLoadBalancingService{},
 	ProviderConfiguration: &ProviderConfigurationService{},
 	WorkflowRun:           &WorkflowRunService{},
+	WorkflowDraftVariable: &WorkflowDraftVariableService{},
 	ApiKey:                &ApiKeyService{},
 	Dataset:               &DatasetService{},
 	WorkflowAppLog:        &WorkflowAppLogService{},

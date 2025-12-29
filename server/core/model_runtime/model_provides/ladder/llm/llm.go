@@ -26,6 +26,7 @@ import (
 	dashscopeexception "mlib.com/gofy/server/core/exceptions/dashscope"
 	modelruntimeexceptions "mlib.com/gofy/server/core/exceptions/model_runtime"
 	"mlib.com/gofy/server/core/model_runtime/model_provides/base"
+	modelruntime "mlib.com/gofy/server/entities/model_runtime"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	commontypes "mlib.com/gofy/server/types/common"
@@ -430,7 +431,11 @@ func (m *LadderLargeLanguageModel) generate_call(
 			"model_name": model,
 		}
 		if len(prompt_messages) > 1 && prompt_messages[1].Role() == modelruntimeentities.PromptMessageRole_USER {
-			tmp["user_prompt"] = prompt_messages[1].GetContent()
+			mlog.Debugf("----user prompt message=%#v", prompt_messages[1])
+			mlog.Debugf("----user prompt message content=%#v", prompt_messages[1].GetContent())
+			if content, ok := prompt_messages[1].GetContent().((*modelruntime.TextPromptMessageContent)); ok {
+				tmp["user_prompt"] = content.Data()
+			}
 		}
 		bindata, _ := json.Marshal(tmp)
 		agent_dynamic_variables := map[string]string{credentials["agent_id"].(string): string(bindata)}

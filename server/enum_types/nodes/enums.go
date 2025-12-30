@@ -21,6 +21,7 @@ const (
 	Node_VARIABLE_AGGREGATOR        NodeType = "variable-aggregator"
 	Node_LEGACY_VARIABLE_AGGREGATOR NodeType = "variable-assigner" // TODO: Merge this into VARIABLE_AGGREGATOR in the database.
 	Node_LOOP                       NodeType = "loop"
+	Node_LOOP_START                 NodeType = "loop-start" // Fake start node for loop.
 	Node_ITERATION                  NodeType = "iteration"
 	Node_ITERATION_START            NodeType = "iteration-start" // Fake start node for iteration.
 	Node_PARAMETER_EXTRACTOR        NodeType = "parameter-extractor"
@@ -44,6 +45,7 @@ func (n NodeType) Valid() bool {
 		n == Node_VARIABLE_AGGREGATOR ||
 		n == Node_LEGACY_VARIABLE_AGGREGATOR ||
 		n == Node_LOOP ||
+		n == Node_LOOP_START ||
 		n == Node_ITERATION ||
 		n == Node_ITERATION_START ||
 		n == Node_PARAMETER_EXTRACTOR ||

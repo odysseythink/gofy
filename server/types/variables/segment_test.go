@@ -50,7 +50,7 @@ func TestSegmentImplementation(t *testing.T) {
 	// Test ArrayStringSegment
 	strArr := []string{"a", "b", "c"}
 	arrStrSeg := NewArrayStringSegment(strArr)
-	if arrStrSeg.ValueType() != variableenumtypes.Segment_ARRAYSTRING {
+	if arrStrSeg.ValueType() != variableenumtypes.Segment_ARRAY_STRING {
 		t.Errorf("Expected ARRAY_STRING segment type, got %v", arrStrSeg.ValueType())
 	}
 

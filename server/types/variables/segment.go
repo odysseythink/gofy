@@ -278,7 +278,7 @@ func (s *ArrayAnySegment) Markdown() string {
 
 // ValueType returns the segment type
 func (s *ArrayAnySegment) ValueType() variableenumtypes.SegmentType {
-	return variableenumtypes.Segment_ARRAYANY
+	return variableenumtypes.Segment_ARRAY_ANY
 }
 
 // ArrayStringSegment represents an array of strings segment
@@ -307,7 +307,7 @@ func (s *ArrayStringSegment) Text() string {
 
 // ValueType returns the segment type
 func (s *ArrayStringSegment) ValueType() variableenumtypes.SegmentType {
-	return variableenumtypes.Segment_ARRAYSTRING
+	return variableenumtypes.Segment_ARRAY_STRING
 }
 
 // ArrayNumberSegment represents an array of numbers segment
@@ -324,7 +324,7 @@ func NewArrayNumberSegment[T []int | []int16 | []int32 | []int64 | []uint | []ui
 
 // ValueType returns the segment type
 func (s *ArrayNumberSegment[T]) ValueType() variableenumtypes.SegmentType {
-	return variableenumtypes.Segment_ARRAYNUMBER
+	return variableenumtypes.Segment_ARRAY_NUMBER
 }
 
 // ArrayObjectSegment represents an array of objects segment
@@ -341,7 +341,7 @@ func NewArrayObjectSegment(value []map[string]any) *ArrayObjectSegment {
 
 // ValueType returns the segment type
 func (s *ArrayObjectSegment) ValueType() variableenumtypes.SegmentType {
-	return variableenumtypes.Segment_ARRAYOBJECT
+	return variableenumtypes.Segment_ARRAY_OBJECT
 }
 
 // GetSegmentDiscriminator returns the segment type discriminator
@@ -453,7 +453,7 @@ func BuildSegment(value any, segmentType variableenumtypes.SegmentType) Segmente
 			mlog.Error("value {%#v} is not match segment type(%s)", value, segmentType)
 			return nil
 		}
-	case variableenumtypes.Segment_ARRAYANY:
+	case variableenumtypes.Segment_ARRAY_ANY:
 		switch realVal := value.(type) {
 		case []any:
 			return NewArrayAnySegment(realVal)
@@ -533,7 +533,7 @@ func BuildSegment(value any, segmentType variableenumtypes.SegmentType) Segmente
 			mlog.Error("value {%#v} is not match segment type(%s)", value, segmentType)
 			return nil
 		}
-	case variableenumtypes.Segment_ARRAYSTRING:
+	case variableenumtypes.Segment_ARRAY_STRING:
 		switch realVal := value.(type) {
 		case []any:
 			tmp := []string{}
@@ -551,7 +551,7 @@ func BuildSegment(value any, segmentType variableenumtypes.SegmentType) Segmente
 			mlog.Error("value {%#v} is not match segment type(%s)", value, segmentType)
 			return nil
 		}
-	case variableenumtypes.Segment_ARRAYNUMBER:
+	case variableenumtypes.Segment_ARRAY_NUMBER:
 		switch realVal := value.(type) {
 		case []any:
 			if len(realVal) == 0 {
@@ -888,7 +888,7 @@ func BuildSegment(value any, segmentType variableenumtypes.SegmentType) Segmente
 			mlog.Error("value {%#v} is not match segment type(%s)", value, segmentType)
 			return nil
 		}
-	case variableenumtypes.Segment_ARRAYOBJECT:
+	case variableenumtypes.Segment_ARRAY_OBJECT:
 		switch realVal := value.(type) {
 		case []any:
 			tmp := []map[string]any{}

@@ -26,7 +26,7 @@ import (
 
 // GenericNodeData represents the generic node data type.
 type GenericNodeData interface {
-	*start.StartNodeData | *end.EndNodeData | *answer.AnswerNodeData | *code.CodeNodeData | *documentextractor.DocumentExtractorNodeData | *httprequest.HttpRequestNodeData | *ifelse.IfElseNodeData | *iteration.IterationNodeData | *knowledgeretrieval.KnowledgeRetrievalNodeData | *listoperator.ListOperatorNodeData | *llm.LLMNodeData | *loop.LoopNodeData | *parameterextractor.ParameterExtractorNodeData | *templatetransform.TemplateTransformNodeData | *variableaggregator.VariableAggregatorNodeData | *variableassigner.VariableAssignerNodeData | *questionclassifier.QuestionClassifierNodeData | *tool.ToolNodeData | *base.BaseNodeData
+	*start.StartNodeData | *end.EndNodeData | *answer.AnswerNodeData | *code.CodeNodeData | *documentextractor.DocumentExtractorNodeData | *httprequest.HttpRequestNodeData | *ifelse.IfElseNodeData | *iteration.IterationNodeData | *knowledgeretrieval.KnowledgeRetrievalNodeData | *listoperator.ListOperatorNodeData | *llm.LLMNodeData | *loop.LoopNodeData | *loop.LoopStartNodeData | *parameterextractor.ParameterExtractorNodeData | *templatetransform.TemplateTransformNodeData | *variableaggregator.VariableAggregatorNodeData | *variableassigner.VariableAssignerNodeData | *questionclassifier.QuestionClassifierNodeData | *tool.ToolNodeData | *base.BaseNodeData
 }
 
 func NewNodeDataByNodeType(node_type nodesenumtypes.NodeType) any {
@@ -57,6 +57,8 @@ func NewNodeDataByNodeType(node_type nodesenumtypes.NodeType) any {
 		return new(variableaggregator.VariableAggregatorNodeData)
 	case nodesenumtypes.Node_LOOP:
 		return new(loop.LoopNodeData)
+	case nodesenumtypes.Node_LOOP_START:
+		return new(loop.LoopStartNodeData)
 	case nodesenumtypes.Node_ITERATION:
 		return new(iteration.IterationNodeData)
 	case nodesenumtypes.Node_PARAMETER_EXTRACTOR:

@@ -3,6 +3,7 @@ package loop
 import (
 	"iter"
 
+	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
 	loopnodesentities "mlib.com/gofy/server/entities/nodes/loop"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
@@ -32,4 +33,7 @@ func NewLoopEndNode() *LoopEndNode {
 	return &LoopEndNode{
 		BaseNode: &base.BaseNode[*loopnodesentities.LoopEndNodeData]{},
 	}
+}
+func init() {
+	nodesconstants.Regist(NewLoopEndNode())
 }

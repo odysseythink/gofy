@@ -3,6 +3,7 @@ package iteration
 import (
 	"iter"
 
+	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
 	iterationnodesentities "mlib.com/gofy/server/entities/nodes/iteration"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
@@ -32,4 +33,7 @@ func New() *IterationNode {
 	return &IterationNode{
 		BaseNode: &base.BaseNode[*iterationnodesentities.IterationNodeData]{},
 	}
+}
+func init() {
+	nodesconstants.Regist(New())
 }

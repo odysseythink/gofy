@@ -3,6 +3,7 @@ package tool
 import (
 	"iter"
 
+	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
 	toolnodesentities "mlib.com/gofy/server/entities/nodes/tool"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
@@ -33,4 +34,7 @@ func New() *ToolNode {
 	return &ToolNode{
 		BaseNode: &base.BaseNode[*toolnodesentities.ToolNodeData]{},
 	}
+}
+func init() {
+	nodesconstants.Regist(New())
 }

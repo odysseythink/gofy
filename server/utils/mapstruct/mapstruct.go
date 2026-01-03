@@ -386,8 +386,26 @@ func StrStrMapToStruct(src map[string]string, dst any) error {
 	}
 	return nil
 }
-
-func MapToStruct(src map[string]any, dst any) error {
+func MapToStruct1[T any](src map[string]any) (T, error) {
+	var empty_val T
+	if len(src) == 0 {
+		log.Printf("empty src")
+		return empty_val, errors.New("empty src")
+	}
+	t := reflect.TypeOf(empty_val)
+	if t.Kind() != reflect.Pointer || t.Elem().Kind() != reflect.Struct {
+		log.Printf("dst must be a struct pointer")
+		return empty_val, errors.New("dst must be a struct pointer")
+	}
+	bindata, _ := json.Marshal(src)
+	err := json.Unmarshal(bindata, empty_val)
+	if err != nil {
+		log.Printf("json unmarshal(%s) to type{%#v} failed:%v", string(bindata), empty_val, err)
+		return empty_val, fmt.Errorf("json unmarshal(%s) to type{%#v} failed:%v", string(bindata), empty_val, err)
+	}
+	return empty_val, nil
+}
+func MapToStruct[T any](src map[string]any, dst T) error {
 	if src == nil {
 		log.Printf("empty src")
 		return errors.New("empty src")

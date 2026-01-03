@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	uuid "github.com/satori/go.uuid"
+	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
 	penodesexceptions "mlib.com/gofy/server/core/exceptions/nodes/parameter_extractor"
 	"mlib.com/gofy/server/core/file"
 	modelmanager "mlib.com/gofy/server/core/manageres/model_manager"
@@ -980,4 +981,7 @@ func New() *ParameterExtractorNode {
 	return &ParameterExtractorNode{
 		BaseNode: &base.BaseNode[*penodesentities.ParameterExtractorNodeData]{},
 	}
+}
+func init() {
+	nodesconstants.Regist(New())
 }

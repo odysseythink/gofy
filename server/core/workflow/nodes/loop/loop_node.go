@@ -2,7 +2,7 @@ package loop
 
 import (
 	"iter"
-
+nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/workflow/graph"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
@@ -61,12 +61,12 @@ func (n *LoopNode) ExtractVariableSelectorToVariableMapping(graph_config map[str
             // from core.workflow.nodes.node_mapping import NODE_TYPE_CLASSES_MAPPING
 
             node_type := nodesenumtypes.NodeType(mapstruct.Get(mapstruct.Get(sub_node_config,"data", map[string]any{}),"type", ""))
-            if node_type not in NODE_TYPE_CLASSES_MAPPING:
+            if _, ok:=nodesconstants.NODE_TYPE_CLASSES_MAPPING[node_type]; !ok {
                 continue
-            node_version = sub_node_config.get("data", {}).get("version", "1")
-            node_cls = NODE_TYPE_CLASSES_MAPPING[node_type][node_version]
+                }
+            node_cls := nodesconstants.NODE_TYPE_CLASSES_MAPPING[node_type][nodesconstants.LATEST_VERSION]
 
-            sub_node_variable_mapping = node_cls.extract_variable_selector_to_variable_mapping(
+            sub_node_variable_mapping = node_cls.ExtractVariableSelectorToVariableMapping(
                 graph_config=graph_config, config=sub_node_config
             )
             sub_node_variable_mapping = cast(dict[str, Sequence[str]], sub_node_variable_mapping)
@@ -479,5 +479,8 @@ func New() *LoopNode {
 //             event.route_node_state.node_run_result.metadata = metadata
 //     return event
 
+func init() {
+	nodesconstants.Regist(New())
+}
 
 

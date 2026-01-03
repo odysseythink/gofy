@@ -3,6 +3,7 @@ package documentextractor
 import (
 	"iter"
 
+	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
 	documentextractornodesentities "mlib.com/gofy/server/entities/nodes/document_extractor"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
@@ -34,4 +35,7 @@ func New() *DocumentExtractorNode {
 	return &DocumentExtractorNode{
 		BaseNode: &base.BaseNode[*documentextractornodesentities.DocumentExtractorNodeData]{},
 	}
+}
+func init() {
+	nodesconstants.Regist(New())
 }

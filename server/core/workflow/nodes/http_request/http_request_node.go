@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"mlib.com/confy"
+	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
 	variabletemplateparser "mlib.com/gofy/server/core/workflow/utils/variable_template_parser"
@@ -196,4 +197,7 @@ func New() *HttpRequestNode {
 	return &HttpRequestNode{
 		BaseNode: &base.BaseNode[*httprequestnodesentities.HttpRequestNodeData]{},
 	}
+}
+func init() {
+	nodesconstants.Regist(New())
 }

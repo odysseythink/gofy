@@ -5,6 +5,7 @@ import (
 	"iter"
 
 	"mlib.com/confy"
+	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
 	codeexecutor "mlib.com/gofy/server/core/helper/code_executor"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
 	templatetransformnodesentities "mlib.com/gofy/server/entities/nodes/template_transform"
@@ -113,4 +114,7 @@ func New() *TemplateTransformNode {
 	return &TemplateTransformNode{
 		BaseNode: &base.BaseNode[*templatetransformnodesentities.TemplateTransformNodeData]{},
 	}
+}
+func init() {
+	nodesconstants.Regist(New())
 }

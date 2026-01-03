@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"mlib.com/confy"
+	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
 	codenodesexceptions "mlib.com/gofy/server/core/exceptions/nodes/code"
 	codeexecutor "mlib.com/gofy/server/core/helper/code_executor"
 	python3codeexecutor "mlib.com/gofy/server/core/helper/code_executor/template_transformer/python3"
@@ -383,4 +384,7 @@ func New() *CodeNode {
 	return &CodeNode{
 		BaseNode: &base.BaseNode[*codenodesentities.CodeNodeData]{},
 	}
+}
+func init() {
+	nodesconstants.Regist(New())
 }

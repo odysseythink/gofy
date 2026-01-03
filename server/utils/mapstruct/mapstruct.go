@@ -537,6 +537,7 @@ func GetFromMap[V cast.Basic](dict map[string]any, key string) (V, bool) {
 	}
 	return val, true
 }
+
 func GetSliceFromMap[V any](dict map[string]any, key string) ([]V, bool) {
 	if len(dict) == 0 {
 		return nil, false

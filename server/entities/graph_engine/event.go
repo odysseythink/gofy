@@ -294,7 +294,68 @@ func (e *IterationRunFailedEvent) EventName() string {
 	return "iteration_run_failed_event"
 }
 
+// ##########################################
+//  Loop Events
+// ##########################################
+
+// BaseLoopEvent is a base event for loop-related events.
+type BaseLoopEvent struct {
+	LoopID                    string                          `json:"loop_id"`
+	LoopNodeID                string                          `json:"loop_node_id"`
+	LoopNodeType              nodesenumtypes.NodeType         `json:"loop_node_type"`
+	LoopNodeData              *basenodesentities.BaseNodeData `json:"loop_node_data"`
+	ParallelID                string                          `json:"parallel_id"`
+	ParallelStartNodeID       string                          `json:"parallel_start_node_id"`
+	ParentParallelID          string                          `json:"parent_parallel_id"`
+	ParentParallelStartNodeID string                          `json:"parent_parallel_start_node_id"`
+	ParallelModeRunID         string                          `json:"parallel_mode_run_id"`
+}
+
+func (e *BaseLoopEvent) EventName() string {
+	return "base_loop_event"
+}
+
+// LoopRunStartedEvent is triggered when a loop run starts.
+type LoopRunStartedEvent struct {
+	*BaseLoopEvent
+	StartAt           time.Time      `json:"start_at"`
+	Inputs            map[string]any `json:"inputs"`
+	Metadata          map[string]any `json:"metadata"`
+	PredecessorNodeID string         `json:"predecessor_node_id"`
+}
+
+// LoopRunNextEvent is triggered when a loop proceeds to the next step.
+type LoopRunNextEvent struct {
+	*BaseLoopEvent
+	Index         int     `json:"index"`
+	PreLoopOutput any     `json:"pre_loop_output"`
+	Duration      float64 `json:"duration"`
+}
+
+// LoopRunSucceededEvent is triggered when a loop run succeeds.
+type LoopRunSucceededEvent struct {
+	*BaseLoopEvent
+	StartAt         time.Time          `json:"start_at"`
+	Inputs          map[string]any     `json:"inputs"`
+	Outputs         map[string]any     `json:"outputs"`
+	Metadata        map[string]any     `json:"metadata"`
+	Steps           int                `json:"steps"`
+	LoopDurationMap map[string]float64 `json:"loop_duration_map"`
+	LoopVariableMap map[string]any     `json:"loop_variable_map"`
+}
+
+// LoopRunFailedEvent is triggered when a loop run fails.
+type LoopRunFailedEvent struct {
+	*BaseLoopEvent
+	StartAt  time.Time      `json:"start_at"`
+	Inputs   map[string]any `json:"inputs"`
+	Outputs  map[string]any `json:"outputs"`
+	Metadata map[string]any `json:"metadata"`
+	Steps    int            `json:"steps"`
+	Error    string         `json:"error"`
+}
+
 // InNodeEvent represents events that can occur within a node.
 type InNodeEvent interface {
-	BaseNodeEvent | BaseParallelBranchEvent | BaseIterationEvent
+	BaseNodeEvent | BaseParallelBranchEvent | BaseIterationEvent | BaseLoopEvent
 }

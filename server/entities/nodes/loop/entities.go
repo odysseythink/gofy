@@ -41,13 +41,13 @@ const (
 type LoopVariableData struct {
 	Label     string                   `json:"label"`
 	VarType   varenumtypes.SegmentType `json:"var_type"`
-	ValueType ValueType                `json:"value_type"`
-	Value     any                      `json:"value,omitempty"`
+	ValueType ValueType                `json:"value_type"`      //"variable", "constant"
+	Value     any                      `json:"value,omitempty"` //Any | list[str]
 }
 
 // LoopNodeData represents answer node data
 type LoopNodeData struct {
-	*basenodesentities.BaseNodeData
+	*basenodesentities.BaseLoopNodeData
 
 	LoopCount       int                           `json:"loop_count"`
 	BreakConditions []condition.Condition         `json:"break_conditions,omitempty"`
@@ -73,6 +73,7 @@ type LoopStateMetaData struct {
 
 // LoopState represents loop state.
 type LoopState struct {
+	*basenodesentities.BaseLoopState
 	Outputs       []any              `json:"outputs,omitempty"`
 	CurrentOutput any                `json:"current_output,omitempty"`
 	MetaData      *LoopStateMetaData `json:"metadata,omitempty"`

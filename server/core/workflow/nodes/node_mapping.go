@@ -47,10 +47,6 @@ import (
 	"mlib.com/mlog"
 )
 
-const (
-	LATEST_VERSION = "latest"
-)
-
 var (
 	NODE_TYPE_CLASSES_MAPPING = map[nodesenumtypes.NodeType]map[string]base.Noder{
 		nodesenumtypes.Node_START: {
@@ -173,6 +169,10 @@ func ExtractVariableSelectorToVariableMappingByNoder(graph_config map[string]any
 		}
 	} else if specific_noder, ok := any(noder).(base.SpecificNoder[*loopnodesentities.LoopNodeData]); ok {
 		if real_node_data, ok := noder.GetNodeData().(*loopnodesentities.LoopNodeData); ok {
+			return specific_noder.ExtractVariableSelectorToVariableMapping(graph_config, node_id, real_node_data)
+		}
+	} else if specific_noder, ok := any(noder).(base.SpecificNoder[*loopnodesentities.LoopStartNodeData]); ok {
+		if real_node_data, ok := noder.GetNodeData().(*loopnodesentities.LoopStartNodeData); ok {
 			return specific_noder.ExtractVariableSelectorToVariableMapping(graph_config, node_id, real_node_data)
 		}
 	} else if specific_noder, ok := any(noder).(base.SpecificNoder[*iterationnodesentities.IterationNodeData]); ok {

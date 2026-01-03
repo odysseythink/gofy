@@ -393,6 +393,22 @@ func BuildSegment(value any, segmentType variableenumtypes.SegmentType) Segmente
 			return NewFloatSegment(realVal)
 		case float64:
 			return NewFloatSegment(realVal)
+		case string:
+			var tmp1 int
+			err := json.Unmarshal([]byte(realVal), &tmp1)
+			if err != nil {
+				mlog.Error("json unmarshal failed:%v", err)
+				var tmp2 float64
+				err := json.Unmarshal([]byte(realVal), &tmp2)
+				if err != nil {
+					mlog.Error("json unmarshal failed:%v", err)
+					return nil
+				} else {
+					return NewFloatSegment(tmp2)
+				}
+			} else {
+				return NewIntegerSegment(tmp1)
+			}
 		default:
 			mlog.Error("value {%#v} is not match segment type(%s)", value, segmentType)
 			return nil
@@ -415,6 +431,15 @@ func BuildSegment(value any, segmentType variableenumtypes.SegmentType) Segmente
 			return NewIntegerSegment(realVal)
 		case uint64:
 			return NewIntegerSegment(realVal)
+		case string:
+			var tmp1 int
+			err := json.Unmarshal([]byte(realVal), &tmp1)
+			if err != nil {
+				mlog.Error("json unmarshal failed:%v", err)
+				return nil
+			} else {
+				return NewIntegerSegment(tmp1)
+			}
 		default:
 			mlog.Error("value {%#v} is not match segment type(%s)", value, segmentType)
 			return nil
@@ -425,6 +450,15 @@ func BuildSegment(value any, segmentType variableenumtypes.SegmentType) Segmente
 			return NewFloatSegment(realVal)
 		case float64:
 			return NewFloatSegment(realVal)
+		case string:
+			var tmp1 float64
+			err := json.Unmarshal([]byte(realVal), &tmp1)
+			if err != nil {
+				mlog.Error("json unmarshal failed:%v", err)
+				return nil
+			} else {
+				return NewFloatSegment(tmp1)
+			}
 		default:
 			mlog.Error("value {%#v} is not match segment type(%s)", value, segmentType)
 			return nil
@@ -441,6 +475,15 @@ func BuildSegment(value any, segmentType variableenumtypes.SegmentType) Segmente
 		switch realVal := value.(type) {
 		case map[string]any:
 			return NewObjectSegment(realVal)
+		case string:
+			var tmp1 map[string]any
+			err := json.Unmarshal([]byte(realVal), &tmp1)
+			if err != nil {
+				mlog.Error("json unmarshal failed:%v", err)
+				return nil
+			} else {
+				return NewObjectSegment(tmp1)
+			}
 		default:
 			mlog.Error("value {%#v} is not match segment type(%s)", value, segmentType)
 			return nil
@@ -529,6 +572,15 @@ func BuildSegment(value any, segmentType variableenumtypes.SegmentType) Segmente
 				tmp = append(tmp, item)
 			}
 			return NewArrayAnySegment(tmp)
+		case string:
+			var tmp1 []any
+			err := json.Unmarshal([]byte(realVal), &tmp1)
+			if err != nil {
+				mlog.Error("json unmarshal failed:%v", err)
+				return nil
+			} else {
+				return NewArrayAnySegment(tmp1)
+			}
 		default:
 			mlog.Error("value {%#v} is not match segment type(%s)", value, segmentType)
 			return nil
@@ -547,6 +599,15 @@ func BuildSegment(value any, segmentType variableenumtypes.SegmentType) Segmente
 			return NewArrayStringSegment(tmp)
 		case []string:
 			return NewArrayStringSegment(realVal)
+		case string:
+			var tmp1 []string
+			err := json.Unmarshal([]byte(realVal), &tmp1)
+			if err != nil {
+				mlog.Error("json unmarshal failed:%v", err)
+				return nil
+			} else {
+				return NewArrayStringSegment(tmp1)
+			}
 		default:
 			mlog.Error("value {%#v} is not match segment type(%s)", value, segmentType)
 			return nil
@@ -884,6 +945,22 @@ func BuildSegment(value any, segmentType variableenumtypes.SegmentType) Segmente
 			return NewArrayNumberSegment(realVal)
 		case []float64:
 			return NewArrayNumberSegment(realVal)
+		case string:
+			var tmp1 []int
+			err := json.Unmarshal([]byte(realVal), &tmp1)
+			if err != nil {
+				mlog.Error("json unmarshal failed:%v", err)
+				var tmp2 []float64
+				err := json.Unmarshal([]byte(realVal), &tmp2)
+				if err != nil {
+					mlog.Error("json unmarshal failed:%v", err)
+					return nil
+				} else {
+					return NewArrayNumberSegment(tmp2)
+				}
+			} else {
+				return NewArrayNumberSegment(tmp1)
+			}
 		default:
 			mlog.Error("value {%#v} is not match segment type(%s)", value, segmentType)
 			return nil
@@ -902,6 +979,15 @@ func BuildSegment(value any, segmentType variableenumtypes.SegmentType) Segmente
 			return NewArrayObjectSegment(tmp)
 		case []map[string]any:
 			return NewArrayObjectSegment(realVal)
+		case string:
+			var tmp1 []map[string]any
+			err := json.Unmarshal([]byte(realVal), &tmp1)
+			if err != nil {
+				mlog.Error("json unmarshal failed:%v", err)
+				return nil
+			} else {
+				return NewArrayObjectSegment(tmp1)
+			}
 		default:
 			mlog.Error("value {%#v} is not match segment type(%s)", value, segmentType)
 			return nil

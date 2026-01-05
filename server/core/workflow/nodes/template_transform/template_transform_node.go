@@ -6,6 +6,7 @@ import (
 
 	"mlib.com/confy"
 	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
+	"mlib.com/gofy/server/core/exceptions"
 	codeexecutor "mlib.com/gofy/server/core/helper/code_executor"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
 	templatetransformnodesentities "mlib.com/gofy/server/entities/nodes/template_transform"
@@ -13,6 +14,7 @@ import (
 	codeexecutorenumtypes "mlib.com/gofy/server/enum_types/code_executor"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 	"mlib.com/gofy/server/models"
+	"mlib.com/gofy/server/utils/mapstruct"
 	"mlib.com/mlog"
 )
 
@@ -102,10 +104,20 @@ func (n *TemplateTransformNode) Run() (*workflowentities.NodeRunResult, iter.Seq
 
 	return result, nil
 }
+func (n *TemplateTransformNode) ExtractVarSelectorToVarMapping(
+	graph_config map[string]any,
+	node_id string,
+	node_data map[string]any,
+) map[string][]string {
+	typed_node_data, err := mapstruct.MapToStruct1[*templatetransformnodesentities.TemplateTransformNodeData](node_data)
+	if err != nil {
+		mlog.Error("convert node data to AnswerNodeData failed:%v", err)
+		panic(exceptions.NewValueError("convert node data to AnswerNodeData failed"))
+	}
+	mlog.Debug("node_data=", typed_node_data)
 
-func (n *TemplateTransformNode) ExtractVariableSelectorToVariableMapping(graph_config map[string]any, node_id string, node_data *templatetransformnodesentities.TemplateTransformNodeData) map[string][]string {
 	ret := map[string][]string{}
-	for _, variable_selector := range node_data.Variables {
+	for _, variable_selector := range typed_node_data.Variables {
 		ret[node_id+"."+variable_selector.Variable] = variable_selector.ValueSelector
 	}
 	return ret

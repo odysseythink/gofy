@@ -5,11 +5,14 @@ import (
 	"strings"
 
 	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
+	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
 	variableaggregatornodesentities "mlib.com/gofy/server/entities/nodes/variable_aggregator"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 	"mlib.com/gofy/server/models"
+	"mlib.com/gofy/server/utils/mapstruct"
+	"mlib.com/mlog"
 )
 
 type VariableAggregatorNode struct {
@@ -55,8 +58,17 @@ func (n *VariableAggregatorNode) Run() (*workflowentities.NodeRunResult, iter.Se
 		Inputs:  inputs,
 	}, nil
 }
-
-func (n *VariableAggregatorNode) ExtractVariableSelectorToVariableMapping(graph_config map[string]any, node_id string, node_data *variableaggregatornodesentities.VariableAggregatorNodeData) map[string][]string {
+func (n *VariableAggregatorNode) ExtractVarSelectorToVarMapping(
+	graph_config map[string]any,
+	node_id string,
+	node_data map[string]any,
+) map[string][]string {
+	typed_node_data, err := mapstruct.MapToStruct1[*variableaggregatornodesentities.VariableAggregatorNodeData](node_data)
+	if err != nil {
+		mlog.Error("convert node data to AnswerNodeData failed:%v", err)
+		panic(exceptions.NewValueError("convert node data to AnswerNodeData failed"))
+	}
+	mlog.Debug("node_data=", typed_node_data)
 
 	return map[string][]string{}
 }

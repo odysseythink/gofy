@@ -20,7 +20,6 @@ import (
 )
 
 type AnswerNode struct {
-	answer string
 	*base.BaseNode[*answernodesentities.AnswerNodeData]
 }
 
@@ -60,7 +59,7 @@ func (n *AnswerNode) Run() (*workflowentities.NodeRunResult, iter.Seq[any]) {
 	}, nil
 }
 
-func (n *AnswerNode) ExtractVarSelectorToVarMapping1(
+func (n *AnswerNode) ExtractVarSelectorToVarMapping(
 	graph_config map[string]any,
 	node_id string,
 	node_data map[string]any,

@@ -9,6 +9,7 @@ import (
 
 	uuid "github.com/satori/go.uuid"
 	"mlib.com/confy"
+	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/file"
 	"mlib.com/gofy/server/models"
@@ -218,7 +219,7 @@ func (wfe *WorkflowEntry) SingleStepRun(
 		"",
 		node_type,
 	)
-	variable_mapping := nodes.ExtractVariableSelectorToVariableMappingByNoder(wf.GraphDict(), node_instance.GetNodeID(), node_instance)
+	variable_mapping := nodesconstants.ExtractVarSelectorToVarMapping(wf.GraphDict(), node_config)
 
 	if variable_mapping == nil {
 		variable_mapping = make(map[string][]string)

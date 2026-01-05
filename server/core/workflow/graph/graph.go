@@ -17,6 +17,7 @@ import (
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 
 	uuid "github.com/satori/go.uuid"
+	"mlib.com/gofy/server/utils/mapstruct"
 	"mlib.com/gofy/server/utils/validate"
 	"mlib.com/mlog"
 )
@@ -160,15 +161,9 @@ func NewGraph(graph_config map[string]any, root_node_id string) *Graph {
 	if root_node_id == "" {
 		// if no root node id, use the START type node as root node
 		for _, node_config := range root_node_configs {
-			if data, ok := node_config["data"].(map[string]any); ok {
-				if _, ok := data["type"]; ok {
-					if _, ok := data["type"].(string); ok {
-						if data["type"].(string) == string(nodesenumtypes.Node_START) {
-							root_node_id = node_config["id"].(string)
-							break
-						}
-					}
-				}
+			if mapstruct.Get(mapstruct.Get(node_config, "data", map[string]any{}), "type", "") == string(nodesenumtypes.Node_START) {
+				root_node_id = node_config["id"].(string)
+				break
 			}
 		}
 	}

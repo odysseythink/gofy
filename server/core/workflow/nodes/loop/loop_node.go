@@ -1,8 +1,11 @@
 package loop
 
 import (
+	"fmt"
 	"iter"
-nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
+	"slices"
+
+	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/workflow/graph"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
@@ -10,7 +13,9 @@ nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 	"mlib.com/gofy/server/models"
+	"mlib.com/gofy/server/utils"
 	"mlib.com/gofy/server/utils/mapstruct"
+	"mlib.com/mlog"
 )
 
 type LoopNode struct {
@@ -27,74 +32,88 @@ func (n *LoopNode) Run() (*workflowentities.NodeRunResult, iter.Seq[any]) {
 		Status: models.WorkflowNodeExecutionStatus_SUCCEEDED,
 	}, nil
 }
+func (n *LoopNode) ExtractVarSelectorToVarMapping(
+	graph_config map[string]any,
+	node_id string,
+	node_data map[string]any,
+) map[string][]string {
+	// Create typed NodeData from dict
+	// typed_node_data = LoopNodeData.model_validate(node_data)
+	typed_node_data, err := mapstruct.MapToStruct1[*loopnodesentities.LoopNodeData](node_data)
+	if err != nil {
+		mlog.Error("convert node data to AnswerNodeData failed:%v", err)
+		panic(exceptions.NewValueError("convert node data to AnswerNodeData failed"))
+	}
+	mlog.Debug("node_data=", typed_node_data)
 
-func (n *LoopNode) ExtractVariableSelectorToVariableMapping(graph_config map[string]any, node_id string, node_data *loopnodesentities.LoopNodeData) map[string][]string {
-    // Create typed NodeData from dict
-    // typed_node_data = LoopNodeData.model_validate(node_data)
+	variable_mapping := map[string][]string{}
 
-    variable_mapping := map[string][]string{}
+	// init graph
+	loop_graph := graph.NewGraph(graph_config, node_data.StartNodeID)
 
-    // init graph
-    loop_graph := graph.NewGraph(graph_config, node_data.StartNodeID)
-
-    if loop_graph == nil{
-        panic (exceptions.NewValueError("loop graph not found"))
-}
-    for sub_node_id, sub_node_config := range loop_graph.NodeIDConfigMapping{
-        if mapstruct.Get(mapstruct.Get(sub_node_config,"data", map[string]any{}),"loop_id", "") != node_id{
-            continue
-        }
-        var sub_node_variable_mapping map[string][]string
-        // variable selector to variable mapping
+	if loop_graph == nil {
+		panic(exceptions.NewValueError("loop graph not found"))
+	}
+	for sub_node_id, sub_node_config := range loop_graph.NodeIDConfigMapping {
+		if mapstruct.Get(mapstruct.Get(sub_node_config, "data", map[string]any{}), "loop_id", "") != node_id {
+			continue
+		}
+		var sub_node_variable_mapping map[string][]string
+		// variable selector to variable mapping
 		func() {
 			defer func() {
 				if r := recover(); r != nil {
 					mlog.Errorf("panic recover:%v\n%s", r, utils.GetCurrentGoroutineStack())
 					if real_exp, ok := r.(*exceptions.NotImplementedError); ok {
 						sub_node_variable_mapping = map[string][]string{}
-					}  else {
+					} else {
 						panic(r)
 					}
 				}
 			}()
-            // Get node class
-            // from core.workflow.nodes.node_mapping import NODE_TYPE_CLASSES_MAPPING
+			// Get node class
+			// from core.workflow.nodes.node_mapping import NODE_TYPE_CLASSES_MAPPING
 
-            node_type := nodesenumtypes.NodeType(mapstruct.Get(mapstruct.Get(sub_node_config,"data", map[string]any{}),"type", ""))
-            if _, ok:=nodesconstants.NODE_TYPE_CLASSES_MAPPING[node_type]; !ok {
-                continue
-                }
-            node_cls := nodesconstants.NODE_TYPE_CLASSES_MAPPING[node_type][nodesconstants.LATEST_VERSION]
+			node_type := nodesenumtypes.NodeType(mapstruct.Get(mapstruct.Get(sub_node_config, "data", map[string]any{}), "type", ""))
+			if _, ok := nodesconstants.NODE_TYPE_CLASSES_MAPPING[node_type]; !ok {
+				continue
+			}
+			node_cls := nodesconstants.NODE_TYPE_CLASSES_MAPPING[node_type][nodesconstants.LATEST_VERSION]
 
-            sub_node_variable_mapping = node_cls.ExtractVariableSelectorToVariableMapping(
-                graph_config=graph_config, config=sub_node_config
-            )
-            sub_node_variable_mapping = cast(dict[str, Sequence[str]], sub_node_variable_mapping)
-        }()
+			sub_node_variable_mapping = node_cls.ExtractVarSelectorToVarMapping(
+				graph_config, "", sub_node_config,
+			)
+		}()
 
-        // remove loop variables
-        sub_node_variable_mapping = {
-            sub_node_id + "." + key: value
-            for key, value in sub_node_variable_mapping.items()
-            if value[0] != node_id
-        }
+		// remove loop variables
+		new_sub_node_variable_mapping := map[string][]string{}
+		for key, value := range sub_node_variable_mapping {
+			if value[0] != node_id {
+				new_sub_node_variable_mapping[sub_node_id+"."+key] = value
+			}
+		}
+		for k, v := range new_sub_node_variable_mapping {
+			variable_mapping[k] = v
+		}
+	}
+	for _, loop_variable := range typed_node_data.LoopVariables {
+		if loop_variable.ValueType == loopnodesentities.Value_Variable {
+			if loop_variable.Value == nil {
+				panic(exceptions.NewValueError("Loop variable value must be provided for variable type"))
+			}
+			// add loop variable to variable mapping
+			variable_mapping[fmt.Sprintf("%s.%s", node_id, loop_variable.Label)] = loop_variable.Value.([]string)
+		}
+	}
+	// remove variable out from loop
+	new_variable_mapping := map[string][]string{}
+	for k, v := range variable_mapping {
+		if !slices.Contains(loop_graph.NodeIDs, v[0]) {
+			new_variable_mapping[k] = v
+		}
+	}
 
-        variable_mapping.update(sub_node_variable_mapping)
-    }
-    for loop_variable in typed_node_data.loop_variables or []:
-        if loop_variable.value_type == "variable":
-            assert loop_variable.value is not None, "Loop variable value must be provided for variable type"
-            // add loop variable to variable mapping
-            selector = loop_variable.value
-            variable_mapping[f"{node_id}.{loop_variable.label}"] = selector
-
-    // remove variable out from loop
-    variable_mapping = {
-        key: value for key, value in variable_mapping.items() if value[0] not in loop_graph.node_ids
-    }
-
-    return variable_mapping
-	return map[string][]string{}
+	return new_variable_mapping
 }
 func New() *LoopNode {
 	return &LoopNode{
@@ -482,5 +501,3 @@ func New() *LoopNode {
 func init() {
 	nodesconstants.Regist(New())
 }
-
-

@@ -3,15 +3,14 @@ package workflowbased
 import (
 	"slices"
 
+	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
 	"mlib.com/gofy/server/core/app/runner/base"
 	"mlib.com/gofy/server/core/exceptions"
 	coreworkflow "mlib.com/gofy/server/core/workflow"
 	"mlib.com/gofy/server/core/workflow/graph"
-	"mlib.com/gofy/server/core/workflow/nodes"
 	dbengine "mlib.com/gofy/server/db_engine"
 	appqueueentities "mlib.com/gofy/server/entities/app/queue"
 	graphengineentities "mlib.com/gofy/server/entities/graph_engine"
-	nodesentities "mlib.com/gofy/server/entities/nodes"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
 	appenumtypes "mlib.com/gofy/server/enum_types/app"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
@@ -187,6 +186,7 @@ func (r *WorkflowBasedAppRunner[T]) GetGraphAndVariablePoolOfSingleIteration(
 			}
 		}
 	}
+	mlog.Debug("node type=", node_type)
 	if _, ok := iteration_node_config["id"]; ok {
 		if _, ok := iteration_node_config["id"].(string); ok {
 			node_id = iteration_node_config["id"].(string)
@@ -206,7 +206,7 @@ func (r *WorkflowBasedAppRunner[T]) GetGraphAndVariablePoolOfSingleIteration(
 	// init variable pool
 	variable_pool := workflowentities.NewVariablePool(nil, nil, wf.GetEnvironmentVariables(), nil)
 
-	variable_mapping := nodes.ExtractVariableSelectorToVariableMapping(wf.GraphDict(), node_id, nodesentities.NewNodeDataByNodeType(node_type))
+	variable_mapping := nodesconstants.ExtractVarSelectorToVarMapping(wf.GraphDict(), iteration_node_config)
 
 	(&coreworkflow.WorkflowEntry{}).MappingUserInputsToVariablePool(
 		variable_mapping,

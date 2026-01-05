@@ -14,6 +14,7 @@ import (
 	workflowentities "mlib.com/gofy/server/entities/workflow"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 	"mlib.com/gofy/server/models"
+	"mlib.com/gofy/server/utils/mapstruct"
 	"mlib.com/mlog"
 )
 
@@ -121,15 +122,23 @@ func (n *HttpRequestNode) GetDefaultConfig(filters map[string]any) map[string]an
 		},
 	}
 }
-
-func (n *HttpRequestNode) ExtractVariableSelectorToVariableMapping(graph_config map[string]any, node_id string, node_data *httprequestnodesentities.HttpRequestNodeData) map[string][]string {
+func (n *HttpRequestNode) ExtractVarSelectorToVarMapping(
+	graph_config map[string]any,
+	node_id string,
+	node_data map[string]any,
+) map[string][]string {
+	typed_node_data, err := mapstruct.MapToStruct1[*httprequestnodesentities.HttpRequestNodeData](node_data)
+	if err != nil {
+		mlog.Error("convert node data to AnswerNodeData failed:%v", err)
+		panic(exceptions.NewValueError("convert node data to AnswerNodeData failed"))
+	}
 	selectors := []*workflowentities.VariableSelector{}
-	selectors = append(selectors, variabletemplateparser.ExtractSelectorsFromTemplate(node_data.URL)...)
-	selectors = append(selectors, variabletemplateparser.ExtractSelectorsFromTemplate(node_data.Headers)...)
-	selectors = append(selectors, variabletemplateparser.ExtractSelectorsFromTemplate(node_data.Params)...)
-	if node_data.Body != nil {
-		body_type := node_data.Body.Type
-		data := node_data.Body.Data
+	selectors = append(selectors, variabletemplateparser.ExtractSelectorsFromTemplate(typed_node_data.URL)...)
+	selectors = append(selectors, variabletemplateparser.ExtractSelectorsFromTemplate(typed_node_data.Headers)...)
+	selectors = append(selectors, variabletemplateparser.ExtractSelectorsFromTemplate(typed_node_data.Params)...)
+	if typed_node_data.Body != nil {
+		body_type := typed_node_data.Body.Type
+		data := typed_node_data.Body.Data
 		switch body_type {
 		case "binary":
 			if len(data) != 1 {

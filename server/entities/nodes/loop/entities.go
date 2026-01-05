@@ -33,8 +33,8 @@ func _is_valid_var_type(segType varenumtypes.SegmentType) (varenumtypes.SegmentT
 type ValueType string
 
 const (
-	ValueTypeVariable ValueType = "variable"
-	ValueTypeConstant ValueType = "constant"
+	Value_Variable ValueType = "variable"
+	Value_Constant ValueType = "constant"
 )
 
 // LoopVariableData represents loop variable data.

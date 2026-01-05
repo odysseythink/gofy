@@ -31,6 +31,7 @@ import (
 	workflowenumtypes "mlib.com/gofy/server/enum_types/workflow"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/utils"
+	"mlib.com/gofy/server/utils/mapstruct"
 	"mlib.com/mlog"
 )
 
@@ -214,12 +215,21 @@ func (n *QuestionClassifierNode) Run() (*workflowentities.NodeRunResult, iter.Se
 	mlog.Debugf("------res=%#v", res)
 	return res, nil
 }
-
-func (n *QuestionClassifierNode) ExtractVariableSelectorToVariableMapping(graph_config map[string]any, node_id string, node_data *qcfnodesentities.QuestionClassifierNodeData) map[string][]string {
-	variable_mapping := map[string][]string{"query": node_data.QueryVariableSelector}
+func (n *QuestionClassifierNode) ExtractVarSelectorToVarMapping(
+	graph_config map[string]any,
+	node_id string,
+	node_data map[string]any,
+) map[string][]string {
+	typed_node_data, err := mapstruct.MapToStruct1[*qcfnodesentities.QuestionClassifierNodeData](node_data)
+	if err != nil {
+		mlog.Error("convert node data to AnswerNodeData failed:%v", err)
+		panic(exceptions.NewValueError("convert node data to AnswerNodeData failed"))
+	}
+	mlog.Debug("node_data=", typed_node_data)
+	variable_mapping := map[string][]string{"query": typed_node_data.QueryVariableSelector}
 	variable_selectors := []*workflowentities.VariableSelector{}
-	if node_data.Instruction != "" {
-		variable_template_parser := variabletemplateparser.NewVariableTemplateParser(node_data.Instruction)
+	if typed_node_data.Instruction != "" {
+		variable_template_parser := variabletemplateparser.NewVariableTemplateParser(typed_node_data.Instruction)
 		variable_selectors = append(variable_selectors, variable_template_parser.ExtractVariableSelectors()...)
 	}
 	for _, variable_selector := range variable_selectors {

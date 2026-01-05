@@ -12,6 +12,7 @@ import (
 
 	uuid "github.com/satori/go.uuid"
 	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
+	"mlib.com/gofy/server/core/exceptions"
 	penodesexceptions "mlib.com/gofy/server/core/exceptions/nodes/parameter_extractor"
 	"mlib.com/gofy/server/core/file"
 	modelmanager "mlib.com/gofy/server/core/manageres/model_manager"
@@ -31,6 +32,7 @@ import (
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 	workflowenumtypes "mlib.com/gofy/server/enum_types/workflow"
 	"mlib.com/gofy/server/models"
+	"mlib.com/gofy/server/utils/mapstruct"
 	"mlib.com/mlog"
 )
 
@@ -213,13 +215,22 @@ func (n *ParameterExtractorNode) Run() (*workflowentities.NodeRunResult, iter.Se
 		LLmUsage: usage,
 	}, nil
 }
-
-func (n *ParameterExtractorNode) ExtractVariableSelectorToVariableMapping(graph_config map[string]any, node_id string, node_data *penodesentities.ParameterExtractorNodeData) map[string][]string {
+func (n *ParameterExtractorNode) ExtractVarSelectorToVarMapping(
+	graph_config map[string]any,
+	node_id string,
+	node_data map[string]any,
+) map[string][]string {
+	typed_node_data, err := mapstruct.MapToStruct1[*penodesentities.ParameterExtractorNodeData](node_data)
+	if err != nil {
+		mlog.Error("convert node data to AnswerNodeData failed:%v", err)
+		panic(exceptions.NewValueError("convert node data to AnswerNodeData failed"))
+	}
+	mlog.Debug("node_data=", typed_node_data)
 	// FIXME: fix the type error later
-	variable_mapping := map[string][]string{"query": node_data.Query}
+	variable_mapping := map[string][]string{"query": typed_node_data.Query}
 
-	if node_data.Instruction != "" {
-		selectors := variabletemplateparser.ExtractSelectorsFromTemplate(node_data.Instruction)
+	if typed_node_data.Instruction != "" {
+		selectors := variabletemplateparser.ExtractSelectorsFromTemplate(typed_node_data.Instruction)
 		for _, selector := range selectors {
 			variable_mapping[selector.Variable] = selector.ValueSelector
 		}

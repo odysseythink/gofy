@@ -5,11 +5,14 @@ import (
 
 	"mlib.com/gofy/server/constants"
 	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
+	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
 	startnodesentities "mlib.com/gofy/server/entities/nodes/start"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 	"mlib.com/gofy/server/models"
+	"mlib.com/gofy/server/utils/mapstruct"
+	"mlib.com/mlog"
 )
 
 type StartNode struct {
@@ -35,8 +38,17 @@ func (n *StartNode) Run() (*workflowentities.NodeRunResult, iter.Seq[any]) {
 		Outputs: node_inputs,
 	}, nil
 }
-
-func (n *StartNode) ExtractVariableSelectorToVariableMapping(graph_config map[string]any, node_id string, node_data *startnodesentities.StartNodeData) map[string][]string {
+func (n *StartNode) ExtractVarSelectorToVarMapping(
+	graph_config map[string]any,
+	node_id string,
+	node_data map[string]any,
+) map[string][]string {
+	typed_node_data, err := mapstruct.MapToStruct1[*startnodesentities.StartNodeData](node_data)
+	if err != nil {
+		mlog.Error("convert node data to AnswerNodeData failed:%v", err)
+		panic(exceptions.NewValueError("convert node data to AnswerNodeData failed"))
+	}
+	mlog.Debug("node_data=", typed_node_data)
 
 	return map[string][]string{}
 }

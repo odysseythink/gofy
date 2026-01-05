@@ -8,6 +8,7 @@ import (
 
 	"mlib.com/confy"
 	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
+	"mlib.com/gofy/server/core/exceptions"
 	codenodesexceptions "mlib.com/gofy/server/core/exceptions/nodes/code"
 	codeexecutor "mlib.com/gofy/server/core/helper/code_executor"
 	python3codeexecutor "mlib.com/gofy/server/core/helper/code_executor/template_transformer/python3"
@@ -17,6 +18,7 @@ import (
 	codeexecutorenumtypes "mlib.com/gofy/server/enum_types/code_executor"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 	"mlib.com/gofy/server/models"
+	"mlib.com/gofy/server/utils/mapstruct"
 	"mlib.com/mlog"
 )
 
@@ -111,8 +113,11 @@ func (n *CodeNode) GetDefaultConfig(filters map[string]any) map[string]any {
 		return nil
 	}
 }
-
-func (n *CodeNode) ExtractVariableSelectorToVariableMapping(graph_config map[string]any, node_id string, node_data *codenodesentities.CodeNodeData) map[string][]string {
+func (n *CodeNode) ExtractVarSelectorToVarMapping(
+	graph_config map[string]any,
+	node_id string,
+	node_data map[string]any,
+) map[string][]string {
 	/*
 		Extract variable selector to variable mapping
 		:param graph_config: graph config
@@ -120,8 +125,14 @@ func (n *CodeNode) ExtractVariableSelectorToVariableMapping(graph_config map[str
 		:param node_data: node data
 		:return:
 	*/
+	typed_node_data, err := mapstruct.MapToStruct1[*codenodesentities.CodeNodeData](node_data)
+	if err != nil {
+		mlog.Error("convert node data to AnswerNodeData failed:%v", err)
+		panic(exceptions.NewValueError("convert node data to AnswerNodeData failed"))
+	}
+
 	res := map[string][]string{}
-	for _, variable_selector := range node_data.Variables {
+	for _, variable_selector := range typed_node_data.Variables {
 		res[node_id+"."+variable_selector.Variable] = variable_selector.ValueSelector
 	}
 	return res

@@ -38,7 +38,11 @@ func (n *EndNode) Run() (*workflowentities.NodeRunResult, iter.Seq[any]) {
 	}, nil
 }
 
-func (n *EndNode) ExtractVariableSelectorToVariableMapping(graph_config map[string]any, node_id string, node_data *endnodesentities.EndNodeData) map[string][]string {
+func (n *EndNode) ExtractVarSelectorToVarMapping(
+	graph_config map[string]any,
+	node_id string,
+	node_data map[string]any,
+) map[string][]string {
 	return map[string][]string{}
 }
 

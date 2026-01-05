@@ -25,8 +25,11 @@ func (n *DocumentExtractorNode) Run() (*workflowentities.NodeRunResult, iter.Seq
 		Status: models.WorkflowNodeExecutionStatus_SUCCEEDED,
 	}, nil
 }
-
-func (n *DocumentExtractorNode) ExtractVariableSelectorToVariableMapping(graph_config map[string]any, node_id string, node_data *documentextractornodesentities.DocumentExtractorNodeData) map[string][]string {
+func (n *DocumentExtractorNode) ExtractVarSelectorToVarMapping(
+	graph_config map[string]any,
+	node_id string,
+	node_data map[string]any,
+) map[string][]string {
 
 	return map[string][]string{}
 }

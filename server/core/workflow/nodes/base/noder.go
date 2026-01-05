@@ -53,11 +53,6 @@ type Noder interface {
 	Run() (*workflowentities.NodeRunResult, iter.Seq[any])
 	RunIter(Noder) iter.Seq[any]
 	ExtractVarSelectorToVarMapping(
-		Noder,
-		graph_config map[string]any,
-		config map[string]any,
-	) map[string][]string
-	ExtractVarSelectorToVarMapping1(
 		graph_config map[string]any,
 		node_id string,
 		node_data map[string]any,

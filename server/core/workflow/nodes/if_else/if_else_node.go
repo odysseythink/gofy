@@ -4,6 +4,7 @@ import (
 	"iter"
 
 	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
+	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
 	"mlib.com/gofy/server/core/workflow/utils/condition"
 	ifelsenodesentities "mlib.com/gofy/server/entities/nodes/if_else"
@@ -11,6 +12,7 @@ import (
 	conditionentities "mlib.com/gofy/server/entities/workflow/condition"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 	"mlib.com/gofy/server/models"
+	"mlib.com/gofy/server/utils/mapstruct"
 	"mlib.com/mlog"
 )
 
@@ -120,9 +122,17 @@ func (n *IfElseNode) Run() (run_result *workflowentities.NodeRunResult, run_stre
 
 	return run_result, nil
 }
-
-func (n *IfElseNode) ExtractVariableSelectorToVariableMapping(graph_config map[string]any, node_id string, node_data *ifelsenodesentities.IfElseNodeData) map[string][]string {
-
+func (n *IfElseNode) ExtractVarSelectorToVarMapping(
+	graph_config map[string]any,
+	node_id string,
+	node_data map[string]any,
+) map[string][]string {
+	typed_node_data, err := mapstruct.MapToStruct1[*ifelsenodesentities.IfElseNodeData](node_data)
+	if err != nil {
+		mlog.Error("convert node data to AnswerNodeData failed:%v", err)
+		panic(exceptions.NewValueError("convert node data to AnswerNodeData failed"))
+	}
+	mlog.Debug("node_data=", typed_node_data)
 	return map[string][]string{}
 }
 func New() *IfElseNode {

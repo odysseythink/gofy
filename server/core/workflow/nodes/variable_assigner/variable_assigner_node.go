@@ -6,6 +6,7 @@ import (
 
 	"mlib.com/gofy/server/constants"
 	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
+	"mlib.com/gofy/server/core/exceptions"
 	varassignernodesexceptions "mlib.com/gofy/server/core/exceptions/nodes/variable_assigner"
 	"mlib.com/gofy/server/core/variables"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
@@ -16,6 +17,7 @@ import (
 	variableenumtypes "mlib.com/gofy/server/enum_types/variable"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/utils"
+	"mlib.com/gofy/server/utils/mapstruct"
 	"mlib.com/mlog"
 )
 
@@ -193,8 +195,17 @@ func (n *VariableAssignerNode) Run() (*workflowentities.NodeRunResult, iter.Seq[
 		ProcessData: process_data,
 	}, nil
 }
-
-func (n *VariableAssignerNode) ExtractVariableSelectorToVariableMapping(graph_config map[string]any, node_id string, node_data *variableassignernodesentities.VariableAssignerNodeData) map[string][]string {
+func (n *VariableAssignerNode) ExtractVarSelectorToVarMapping(
+	graph_config map[string]any,
+	node_id string,
+	node_data map[string]any,
+) map[string][]string {
+	typed_node_data, err := mapstruct.MapToStruct1[*variableassignernodesentities.VariableAssignerNodeData](node_data)
+	if err != nil {
+		mlog.Error("convert node data to AnswerNodeData failed:%v", err)
+		panic(exceptions.NewValueError("convert node data to AnswerNodeData failed"))
+	}
+	mlog.Debug("node_data=", typed_node_data)
 
 	return map[string][]string{}
 }

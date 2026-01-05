@@ -37,6 +37,7 @@ import (
 	workflowenumtypes "mlib.com/gofy/server/enum_types/workflow"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/utils"
+	"mlib.com/gofy/server/utils/mapstruct"
 	"mlib.com/mlog"
 )
 
@@ -296,9 +297,18 @@ func (n *LLMNode) Run() (*workflowentities.NodeRunResult, iter.Seq[any]) {
 	// 	Status: models.WorkflowNodeExecutionStatus_SUCCEEDED,
 	// }, nil, nil
 }
-
-func (n *LLMNode) ExtractVariableSelectorToVariableMapping(graph_config map[string]any, node_id string, node_data *llmnodesentities.LLMNodeData) map[string][]string {
-	prompt_template := node_data.PromptTemplate
+func (n *LLMNode) ExtractVarSelectorToVarMapping(
+	graph_config map[string]any,
+	node_id string,
+	node_data map[string]any,
+) map[string][]string {
+	typed_node_data, err := mapstruct.MapToStruct1[*llmnodesentities.LLMNodeData](node_data)
+	if err != nil {
+		mlog.Error("convert node data to AnswerNodeData failed:%v", err)
+		panic(exceptions.NewValueError("convert node data to AnswerNodeData failed"))
+	}
+	mlog.Debug("node_data=", typed_node_data)
+	prompt_template := typed_node_data.PromptTemplate
 	mlog.Debugf("------node_data=%#v", node_data)
 	mlog.Debugf("------prompt_template=%#v", prompt_template)
 	variable_selectors := []*workflowentities.VariableSelector{}
@@ -319,20 +329,20 @@ func (n *LLMNode) ExtractVariableSelectorToVariableMapping(graph_config map[stri
 	for _, variable_selector := range variable_selectors {
 		variable_mapping[variable_selector.Variable] = variable_selector.ValueSelector
 	}
-	mem := node_data.Memory
+	mem := typed_node_data.Memory
 	if mem != nil && mem.QueryPromptTemplate != "" {
 		query_variable_selectors := variabletemplateparserutils.NewVariableTemplateParser(mem.QueryPromptTemplate).ExtractVariableSelectors()
 		for _, variable_selector := range query_variable_selectors {
 			variable_mapping[variable_selector.Variable] = variable_selector.ValueSelector
 		}
 	}
-	if node_data.Context.Enabled {
-		variable_mapping["#context#"] = node_data.Context.VariableSelector
+	if typed_node_data.Context.Enabled {
+		variable_mapping["#context#"] = typed_node_data.Context.VariableSelector
 	}
-	if node_data.Vision.Enabled {
+	if typed_node_data.Vision.Enabled {
 		variable_mapping["#files#"] = []string{"sys", string(workflowenumtypes.SystemVariableKey_FILES)}
 	}
-	if node_data.Memory != nil {
+	if typed_node_data.Memory != nil {
 		variable_mapping["#sys.query#"] = []string{"sys", string(workflowenumtypes.SystemVariableKey_QUERY)}
 	}
 	// if node_data.PromptConfig{

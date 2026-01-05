@@ -17,6 +17,25 @@ const (
 	DEFAULT_TIME_LAYOUT = "2006-01-02 15:04:05.000"
 )
 
+func StructToMap1(obj any) map[string]any {
+	if obj == nil {
+		log.Printf("[E]obj is missing")
+		return nil
+	}
+	t := reflect.TypeOf(obj)
+	if !(t.Kind() == reflect.Pointer && t.Elem().Kind() == reflect.Struct) && !(t.Kind() == reflect.Struct) {
+		log.Printf("[E]obj(%#v\n) must be struct or struct pointer", obj)
+		return nil
+	}
+	bindata, _ := json.Marshal(obj)
+	ret := map[string]any{}
+	err := json.Unmarshal(bindata, &ret)
+	if err != nil {
+		log.Printf("[E]json unmarshal obj(%#v\n) failed:%v", string(bindata), err)
+		return nil
+	}
+	return ret
+}
 func Status2Map(obj any) map[string]any {
 	t := reflect.TypeOf(obj)
 	v := reflect.ValueOf(obj)

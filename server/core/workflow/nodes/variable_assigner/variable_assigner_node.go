@@ -5,6 +5,7 @@ import (
 	"iter"
 
 	"mlib.com/gofy/server/constants"
+	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
 	varassignernodesexceptions "mlib.com/gofy/server/core/exceptions/nodes/variable_assigner"
 	"mlib.com/gofy/server/core/variables"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
@@ -458,4 +459,7 @@ func New() *VariableAssignerNode {
 	return &VariableAssignerNode{
 		BaseNode: &base.BaseNode[*variableassignernodesentities.VariableAssignerNodeData]{},
 	}
+}
+func init() {
+	nodesconstants.Regist(New())
 }

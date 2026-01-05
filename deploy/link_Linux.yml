@@ -1,0 +1,186 @@
+ServerCom:
+    # 业务模块名称
+    ModuleName: link
+cluster:    
+    port: 11000
+    req_modules: "link,admin"
+    service_discovery_provide: "etcd"
+etcd:
+    ROOTKEY: "lanyoubot-e96b9f03-dev"
+    user_name: "root"
+    password: Mb2018!@#
+    endpoints: "http://192.168.0.107:2359,http://192.168.0.107:2369,http://192.168.0.107:2379"
+ZooKeeper:
+    HOST: "172.26.175.87:2181,172.26.175.88:2181,172.26.175.89:2181"
+    ROOTKEY: "lanyoubot-e96b9f03-dev"
+    CLUSTER: "/HDDC"
+    TIMEOUT: 3000
+captcha:
+    key-long: 6
+    img-width: 240
+    img-height: 80
+cors:
+    mode: strict-whitelist
+    whitelist:
+        - allow-origin: example1.com
+          allow-methods: POST, GET
+          allow-headers: Content-Type,AccessToken,X-CSRF-Token, Authorization, Token,X-Token,X-User-Id
+          expose-headers: Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Content-Type
+          allow-credentials: true
+        - allow-origin: example2.com
+          allow-methods: GET, POST
+          allow-headers: content-type
+          expose-headers: Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Content-Type
+          allow-credentials: true
+excel:
+    dir: ./resource/excel/
+jwt:
+    signing-key: 2e7d5506-70e6-4019-b438-ce1356fadac2
+    expires-time: 7d
+    buffer-time: 1d
+    issuer: qmPlus
+local:
+    path: uploads/file
+    store-path: uploads/file
+mysql:
+    path: 192.168.0.107
+    port: "3306"
+    config: charset=utf8mb4&parseTime=True&loc=Local
+    db-name: dify
+    username: dify
+    password: "123456"
+    prefix: ""
+    singular: false
+    engine: ""
+    max-idle-conns: 10
+    max-open-conns: 100
+    log-mode: info
+    log-zap: false
+redis:
+    db: 0
+    addr: 192.168.0.107:6379
+    password: 123456
+    is_cluster: false
+system:
+    env: public
+    addr: 5001
+    db-type: mysql
+    oss-type: local
+    use-multipoint: false
+    use-redis: false
+    iplimit-count: 15000
+    iplimit-time: 3600
+# Console API base URL
+CONSOLE_API_URL: "http://172.26.228.36:5001"
+CONSOLE_WEB_URL: "http://172.26.228.36:3000"
+# Service API base URL
+service_api_url: "http://172.26.228.36:5001"
+# Web APP base URL
+APP_WEB_URL: "http://172.26.228.36:3000"
+# Files URL
+FILES_URL: "http://172.26.228.36:5001"
+EDITION: "SELF_HOSTED"
+SECRET_KEY: "YqK3FapQWkWMlLiPCvqMWaTT822rfs8MVEnDbM4w0LjJbP/BOwH4jt9S"
+ENTERPRISE_ENABLED: false
+CURRENT_VERSION: "0.15.3"
+vector_store: "weaviate"
+login_lockout_duration: 86400
+enable_email_password_login: true
+# Refresh token expiration time in days
+refresh_token_expire_days: 30
+workflow_parallel_depth_limit: 3
+upload: 
+    file_size_limit: 15
+    file_batch_limit: 5
+    image_file_size_limit: 10
+    video_file_size_limit: 100
+    audio_file_size_limit: 50
+    workflow_file_limit: 10
+FILES_ACCESS_TIMEOUT: 300    
+# Model configuration
+MULTIMODAL_SEND_FORMAT: "base64"
+PROMPT_GENERATION_MAX_TOKENS: 512
+CODE_GENERATION_MAX_TOKENS: 1024
+# Workflow runtime configuration
+workflow:
+    max_execution_steps: 500
+    max_execution_time: 1200
+    call_max_depth: 5
+    max_variable_size: 204800
+    parallel_depth_limit: 3
+WORKFLOW_MAX_EXECUTION_STEPS: 500
+WORKFLOW_MAX_EXECUTION_TIME: 1200
+WORKFLOW_CALL_MAX_DEPTH: 5
+WORKFLOW_PARALLEL_DEPTH_LIMIT: 3
+MAX_VARIABLE_SIZE: 204800
+http_node_config:
+    max_connect_timeout: 300
+    max_read_timeout: 600
+    max_write_timeout: 600
+    max_binary_size: 10485760
+    max_text_size: 1048576
+app_config: 
+    max_active_requests: 0
+    max_execution_time: 1200
+moderation:
+    buffer_size: 300
+# CODE EXECUTION CONFIGURATION
+code_execution_config:
+    endpoint: "http://127.0.0.1:8194"
+    api_key: "dify-sandbox"
+    max_number: 9223372036854775807
+    min_number: -9223372036854775808
+    max_string_length: 80000
+    template_transform_max_lenght: 80000
+    max_string_array_length: 30
+    max_object_array_length: 30
+    max_number_array_length: 1000    
+    max_precision: 20
+    max_depth: 5
+    connect_timeout: 10.0
+    read_timeout: 60.0
+    write_timeout: 10.0 
+ssrf:   
+    proxy_http_url: 
+    proxy_https_url: 
+    default_max_retries: 3
+    default_time_out: 5
+    default_connect_time_out: 5
+    default_read_time_out: 5
+    default_write_time_out: 5   
+position_config:
+    provider_pins: ""
+    provider_includes: ""
+    provider_excludes: ""
+    tool_pins: ""
+    tool_includes: ""
+    tool_excludes: ""    
+hosted_azure_openai_config:
+    enable: false
+    api_key: ""
+    api_base: ""
+    quota_limit: 200
+hosted_openai_config:
+    trial_enable: false
+    api_key: ""
+    api_base: ""
+    api_organization: ""
+    quota_limit: 200
+    trial_models: "gpt-3.5-turbo,gpt-3.5-turbo-1106,gpt-3.5-turbo-instruct,gpt-3.5-turbo-16k,gpt-3.5-turbo-16k-0613,gpt-3.5-turbo-0613,gpt-3.5-turbo-0125,text-davinci-003"
+    paid_enable: false
+    paid_models: "gpt-4,gpt-4-turbo-preview,gpt-4-turbo-2024-04-09,gpt-4-1106-preview,gpt-4-0125-preview,gpt-3.5-turbo,gpt-3.5-turbo-16k,gpt-3.5-turbo-16k-0613,gpt-3.5-turbo-1106,gpt-3.5-turbo-0613,gpt-3.5-turbo-0125,gpt-3.5-turbo-instruct,text-davinci-003"
+hosted_anthropic_config:
+    trial_enable: false
+    api_key: ""
+    api_base: ""
+    quota_limit: 200   
+    paid_enable: false 
+hosted_minmax_config:
+    enable: false    
+hosted_spark_config:
+    enable: false     
+hosted_zhipu_ai_config:
+    enable: false        
+hosted_moderation_config:
+    enable: false  
+    providers: ""        

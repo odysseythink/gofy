@@ -4,6 +4,7 @@ import (
 	"iter"
 	"strings"
 
+	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
 	variableaggregatornodesentities "mlib.com/gofy/server/entities/nodes/variable_aggregator"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
@@ -63,4 +64,7 @@ func New() *VariableAggregatorNode {
 	return &VariableAggregatorNode{
 		BaseNode: &base.BaseNode[*variableaggregatornodesentities.VariableAggregatorNodeData]{},
 	}
+}
+func init() {
+	nodesconstants.Regist(New())
 }

@@ -3,6 +3,8 @@ package answer
 import (
 	"iter"
 
+	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
+	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/file"
 	"mlib.com/gofy/server/core/variables"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
@@ -13,6 +15,7 @@ import (
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 	answernodesenumtypes "mlib.com/gofy/server/enum_types/nodes/answer"
 	"mlib.com/gofy/server/models"
+	"mlib.com/gofy/server/utils/mapstruct"
 	"mlib.com/mlog"
 )
 
@@ -57,8 +60,18 @@ func (n *AnswerNode) Run() (*workflowentities.NodeRunResult, iter.Seq[any]) {
 	}, nil
 }
 
-func (n *AnswerNode) ExtractVariableSelectorToVariableMapping(graph_config map[string]any, node_id string, node_data *answernodesentities.AnswerNodeData) map[string][]string {
-	variable_template_parser := variabletemplateparser.NewVariableTemplateParser(node_data.Answer)
+func (n *AnswerNode) ExtractVarSelectorToVarMapping1(
+	graph_config map[string]any,
+	node_id string,
+	node_data map[string]any,
+) map[string][]string {
+	typed_node_data, err := mapstruct.MapToStruct1[*answernodesentities.AnswerNodeData](node_data)
+	if err != nil {
+		mlog.Error("convert node data to AnswerNodeData failed:%v", err)
+		panic(exceptions.NewValueError("convert node data to AnswerNodeData failed"))
+	}
+
+	variable_template_parser := variabletemplateparser.NewVariableTemplateParser(typed_node_data.Answer)
 	variable_selectors := variable_template_parser.ExtractVariableSelectors()
 
 	variable_mapping := map[string][]string{}
@@ -72,4 +85,7 @@ func New() *AnswerNode {
 	return &AnswerNode{
 		BaseNode: &base.BaseNode[*answernodesentities.AnswerNodeData]{},
 	}
+}
+func init() {
+	nodesconstants.Regist(New())
 }

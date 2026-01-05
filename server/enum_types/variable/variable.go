@@ -65,20 +65,20 @@ const (
 type SegmentType string
 
 const (
-	Segment_NUMBER      SegmentType = "number"
-	Segment_INTEGER     SegmentType = "integer"
-	Segment_FLOAT       SegmentType = "float"
-	Segment_STRING      SegmentType = "string"
-	Segment_OBJECT      SegmentType = "object"
-	Segment_SECRET      SegmentType = "secret"
-	Segment_FILE        SegmentType = "file"
-	Segment_ARRAYANY    SegmentType = "array[any]"
-	Segment_ARRAYSTRING SegmentType = "array[string]"
-	Segment_ARRAYNUMBER SegmentType = "array[number]"
-	Segment_ARRAYOBJECT SegmentType = "array[object]"
-	Segment_ARRAYFILE   SegmentType = "array[file]"
-	Segment_NONE        SegmentType = "none"
-	Segment_GROUP       SegmentType = "group"
+	Segment_NUMBER       SegmentType = "number"
+	Segment_INTEGER      SegmentType = "integer"
+	Segment_FLOAT        SegmentType = "float"
+	Segment_STRING       SegmentType = "string"
+	Segment_OBJECT       SegmentType = "object"
+	Segment_SECRET       SegmentType = "secret"
+	Segment_FILE         SegmentType = "file"
+	Segment_ARRAY_ANY    SegmentType = "array[any]"
+	Segment_ARRAY_STRING SegmentType = "array[string]"
+	Segment_ARRAY_NUMBER SegmentType = "array[number]"
+	Segment_ARRAY_OBJECT SegmentType = "array[object]"
+	Segment_ARRAY_FILE   SegmentType = "array[file]"
+	Segment_NONE         SegmentType = "none"
+	Segment_GROUP        SegmentType = "group"
 )
 
 // IsArrayType checks if the segment type is an array type
@@ -93,11 +93,11 @@ func (s SegmentType) Validate() bool {
 		s != Segment_OBJECT &&
 		s != Segment_SECRET &&
 		s != Segment_FILE &&
-		s != Segment_ARRAYANY &&
-		s != Segment_ARRAYSTRING &&
-		s != Segment_ARRAYNUMBER &&
-		s != Segment_ARRAYOBJECT &&
-		s != Segment_ARRAYFILE &&
+		s != Segment_ARRAY_ANY &&
+		s != Segment_ARRAY_STRING &&
+		s != Segment_ARRAY_NUMBER &&
+		s != Segment_ARRAY_OBJECT &&
+		s != Segment_ARRAY_FILE &&
 		s != Segment_NONE &&
 		s != Segment_GROUP
 }
@@ -112,7 +112,7 @@ func InferSegmentType(value any) SegmentType {
 	switch v := value.(type) {
 	case []any:
 		if len(v) == 0 {
-			return Segment_ARRAYANY
+			return Segment_ARRAY_ANY
 		}
 		elemTypes := make(map[SegmentType]bool)
 		for _, item := range v {
@@ -128,18 +128,18 @@ func InferSegmentType(value any) SegmentType {
 			if !slices.ContainsFunc(slices.Sorted(maps.Keys(elemTypes)), func(segType SegmentType) bool {
 				return !slices.Contains(_NUMERICAL_TYPES, segType)
 			}) {
-				return Segment_ARRAYNUMBER
+				return Segment_ARRAY_NUMBER
 			} else {
-				return Segment_ARRAYANY
+				return Segment_ARRAY_ANY
 			}
 		} else {
 			switch v[0].(type) {
 			case string:
-				return Segment_ARRAYSTRING
+				return Segment_ARRAY_STRING
 			case int, int32, int64, int16, int8, uint, uint32, uint64, uint16, uint8, float32, float64:
-				return Segment_ARRAYNUMBER
+				return Segment_ARRAY_NUMBER
 			case map[string]any:
-				return Segment_ARRAYOBJECT
+				return Segment_ARRAY_OBJECT
 			default:
 				// This should be unreachable
 				panic(exceptions.NewValueError(fmt.Sprintf("not supported value %v", value)))
@@ -168,7 +168,7 @@ func (s SegmentType) validateArray(value any, arrayValidation ArrayValidationTyp
 		return true
 	}
 
-	if s == Segment_ARRAYANY {
+	if s == Segment_ARRAY_ANY {
 		return true
 	}
 
@@ -263,19 +263,19 @@ var (
 	// _ARRAY_ELEMENT_TYPES_MAPPING maps array segment types to their element types
 	_ARRAY_ELEMENT_TYPES_MAPPING = map[SegmentType]SegmentType{
 		// ARRAYANY does not have corresponding element type
-		Segment_ARRAYSTRING: Segment_STRING,
-		Segment_ARRAYNUMBER: Segment_NUMBER,
-		Segment_ARRAYOBJECT: Segment_OBJECT,
-		Segment_ARRAYFILE:   Segment_FILE,
+		Segment_ARRAY_STRING: Segment_STRING,
+		Segment_ARRAY_NUMBER: Segment_NUMBER,
+		Segment_ARRAY_OBJECT: Segment_OBJECT,
+		Segment_ARRAY_FILE:   Segment_FILE,
 	}
 
 	// _ARRAY_TYPES contains all array segment types
 	_ARRAY_TYPES = []SegmentType{
-		Segment_ARRAYSTRING,
-		Segment_ARRAYNUMBER,
-		Segment_ARRAYOBJECT,
-		Segment_ARRAYFILE,
-		Segment_ARRAYANY,
+		Segment_ARRAY_STRING,
+		Segment_ARRAY_NUMBER,
+		Segment_ARRAY_OBJECT,
+		Segment_ARRAY_FILE,
+		Segment_ARRAY_ANY,
 	}
 
 	// _NUMERICAL_TYPES contains all numerical segment types

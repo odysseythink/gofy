@@ -8,6 +8,7 @@ import (
 	"slices"
 	"strings"
 
+	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
 	"mlib.com/gofy/server/core/exceptions"
 	qcfnodesexceptions "mlib.com/gofy/server/core/exceptions/nodes/question_classifier"
 	modelmanager "mlib.com/gofy/server/core/manageres/model_manager"
@@ -412,4 +413,7 @@ func New() *QuestionClassifierNode {
 	return &QuestionClassifierNode{
 		BaseNode: &base.BaseNode[*qcfnodesentities.QuestionClassifierNodeData]{},
 	}
+}
+func init() {
+	nodesconstants.Regist(New())
 }

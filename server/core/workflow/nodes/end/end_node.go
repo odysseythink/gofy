@@ -3,6 +3,7 @@ package end
 import (
 	"iter"
 
+	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
 	endnodesentities "mlib.com/gofy/server/entities/nodes/end"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
@@ -45,4 +46,7 @@ func New() *EndNode {
 	return &EndNode{
 		BaseNode: &base.BaseNode[*endnodesentities.EndNodeData]{},
 	}
+}
+func init() {
+	nodesconstants.Regist(New())
 }

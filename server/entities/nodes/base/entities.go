@@ -3,11 +3,11 @@ package base
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"strconv"
 
 	"mlib.com/gofy/server/core/exceptions"
 	basenodesexceptions "mlib.com/gofy/server/core/exceptions/base_nodes"
-	"mlib.com/gofy/server/core/file"
 	basenodesenumtypes "mlib.com/gofy/server/enum_types/base_nodes"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 	"mlib.com/mlog"
@@ -17,86 +17,157 @@ type NumberType interface {
 	~int | ~float32 | float64
 }
 
-// DefaultValue represents a default value with type and key
 type DefaultValue struct {
+	Key   string                              `json:"key"`
 	Value any                                 `json:"value"`
 	Type  basenodesenumtypes.DefaultValueType `json:"type"`
-	Key   string                              `json:"key"`
 }
 
-// parseJSON is a unified JSON parsing handler
+// parseJSON parses a JSON string into a Go value.
 func parseJSON(value string) (any, error) {
 	var result any
-	if err := json.Unmarshal([]byte(value), &result); err != nil {
-		return nil, basenodesexceptions.NewDefaultValueTypeError(fmt.Sprintf("Invalid JSON format for value: %v", value))
+	err := json.Unmarshal([]byte(value), &result)
+	if err != nil {
+		return nil, basenodesexceptions.NewDefaultValueTypeError(fmt.Sprintf("Invalid JSON format for value: %s", value))
 	}
 	return result, nil
 }
 
-// validateArray is a unified array type validation
+// validateArray checks if the value is a slice and each element matches the expected element type.
 func validateArray(value any, elementType basenodesenumtypes.DefaultValueType) bool {
-	_, ok := value.([]any)
-	if !ok {
+	val := reflect.ValueOf(value)
+	if val.Kind() != reflect.Slice {
 		return false
 	}
-	switch elementType {
-	case basenodesenumtypes.DefaultValue_STRING:
-		if _, ok := value.(string); ok {
-			return true
-		} else {
-			return false
-		}
-	case basenodesenumtypes.DefaultValue_NUMBER:
-		if _, ok := value.(int); ok {
-			return true
-		} else if _, ok := value.(float64); ok {
-			return true
-		} else {
-			return false
-		}
-	case basenodesenumtypes.DefaultValue_OBJECT:
-		if _, ok := value.(map[string]any); ok {
-			return true
-		} else {
-			return false
-		}
-	case basenodesenumtypes.DefaultValue_ARRAY_NUMBER:
-		if _, ok := value.([]int); ok {
-			return true
-		} else if _, ok := value.([]float64); ok {
-			return true
-		} else {
-			return false
-		}
-	case basenodesenumtypes.DefaultValue_ARRAY_STRING:
-		if _, ok := value.([]string); ok {
-			return true
-		} else {
-			return false
-		}
-	case basenodesenumtypes.DefaultValue_ARRAY_OBJECT:
-		if _, ok := value.([]map[string]any); ok {
-			return true
-		} else {
-			return false
-		}
-	case basenodesenumtypes.DefaultValue_ARRAY_FILES:
-		if _, ok := value.([]*file.File); ok {
-			return true
-		} else {
+	for i := 0; i < val.Len(); i++ {
+		elem := val.Index(i).Interface()
+		switch elementType {
+		case basenodesenumtypes.DefaultValue_STRING:
+			if _, ok := elem.(string); !ok {
+				return false
+			}
+		case basenodesenumtypes.DefaultValue_NUMBER:
+			if !isNumberType(elem) {
+				return false
+			}
+		case basenodesenumtypes.DefaultValue_OBJECT:
+			if _, ok := elem.(map[string]any); !ok {
+				return false
+			}
+		default:
+			// unknown element type
 			return false
 		}
 	}
-	return false
+	return true
 }
 
-// convertNumber is a unified number conversion handler
-func convertNumber(value string) (float64, error) {
-	num, err := strconv.ParseFloat(value, 64)
-	if err != nil {
-		return 0, basenodesexceptions.NewDefaultValueTypeError(fmt.Sprintf("Cannot convert to number: %v", value))
+// isNumberType checks if the value is int, float32, or float64.
+func isNumberType(value any) bool {
+	switch value.(type) {
+	case int, float32, float64:
+		return true
+	default:
+		return false
 	}
-	return num, nil
+}
+
+// convertNumber converts a string to float64.
+func convertNumber(value string) (float64, error) {
+	f, err := strconv.ParseFloat(value, 64)
+	if err != nil {
+		return 0, basenodesexceptions.NewDefaultValueTypeError(fmt.Sprintf("Cannot convert to number: %s", value))
+	}
+	return f, nil
+}
+
+// Validate validates the DefaultValue according to its type.
+func (dv *DefaultValue) Validate() error {
+	if dv.Type == "" {
+		return basenodesexceptions.NewDefaultValueTypeError("type field is required")
+	}
+
+	// Special case for ARRAY_FILES - skip validation
+	if dv.Type == basenodesenumtypes.DefaultValue_ARRAY_FILES {
+		return nil
+	}
+
+	// Define validation rules for each type
+	switch dv.Type {
+	case basenodesenumtypes.DefaultValue_STRING:
+		// Value must be string
+		if _, ok := dv.Value.(string); !ok {
+			return basenodesexceptions.NewDefaultValueTypeError(fmt.Sprintf("Value must be string type for %v", dv.Value))
+		}
+
+	case basenodesenumtypes.DefaultValue_NUMBER:
+		// If value is string, convert it
+		if strVal, ok := dv.Value.(string); ok {
+			num, err := convertNumber(strVal)
+			if err != nil {
+				return err
+			}
+			dv.Value = num
+		}
+		if !isNumberType(dv.Value) {
+			return basenodesexceptions.NewDefaultValueTypeError(fmt.Sprintf("Value must be number type for %v", dv.Value))
+		}
+
+	case basenodesenumtypes.DefaultValue_OBJECT:
+		// If value is string, parse as JSON
+		if strVal, ok := dv.Value.(string); ok {
+			obj, err := parseJSON(strVal)
+			if err != nil {
+				return err
+			}
+			dv.Value = obj
+		}
+		if _, ok := dv.Value.(map[string]any); !ok {
+			return basenodesexceptions.NewDefaultValueTypeError(fmt.Sprintf("Value must be object type for %v", dv.Value))
+		}
+
+	case basenodesenumtypes.DefaultValue_ARRAY_NUMBER:
+		// If value is string, parse as JSON
+		if strVal, ok := dv.Value.(string); ok {
+			arr, err := parseJSON(strVal)
+			if err != nil {
+				return err
+			}
+			dv.Value = arr
+		}
+		if !validateArray(dv.Value, basenodesenumtypes.DefaultValue_NUMBER) {
+			return basenodesexceptions.NewDefaultValueTypeError(fmt.Sprintf("All elements must be number for %v", dv.Value))
+		}
+
+	case basenodesenumtypes.DefaultValue_ARRAY_STRING:
+		if strVal, ok := dv.Value.(string); ok {
+			arr, err := parseJSON(strVal)
+			if err != nil {
+				return err
+			}
+			dv.Value = arr
+		}
+		if !validateArray(dv.Value, basenodesenumtypes.DefaultValue_STRING) {
+			return basenodesexceptions.NewDefaultValueTypeError(fmt.Sprintf("All elements must be string for %v", dv.Value))
+		}
+
+	case basenodesenumtypes.DefaultValue_ARRAY_OBJECT:
+		if strVal, ok := dv.Value.(string); ok {
+			arr, err := parseJSON(strVal)
+			if err != nil {
+				return err
+			}
+			dv.Value = arr
+		}
+		if !validateArray(dv.Value, basenodesenumtypes.DefaultValue_OBJECT) {
+			return basenodesexceptions.NewDefaultValueTypeError(fmt.Sprintf("All elements must be object for %v", dv.Value))
+		}
+
+	default:
+		return basenodesexceptions.NewDefaultValueTypeError(fmt.Sprintf("Unsupported type: %s", dv.Type))
+	}
+
+	return nil
 }
 
 // RetryConfig represents node retry configuration
@@ -162,7 +233,7 @@ func (bnd *BaseNodeData) DefaultValueDict() map[string]any {
 // BaseIterationNodeData represents base iteration node data
 type BaseIterationNodeData struct {
 	*BaseNodeData
-	StartNodeID string `json:"start_node_id,omitempty"`
+	StartNodeID string `json:"start_node_id"`
 }
 
 // BaseIterationState represents base iteration state
@@ -171,4 +242,15 @@ type BaseIterationState struct {
 	Index           int            `json:"index"`
 	Inputs          map[string]any `json:"inputs"`
 	Metadata        any            `json:"metadata"`
+}
+
+type BaseLoopNodeData struct {
+	*BaseNodeData
+	StartNodeID string `json:"start_node_id"`
+}
+
+type BaseLoopState struct {
+	LoopNodeID string         `json:"loop_node_id"`
+	Index      int            `json:"index"`
+	Inputs     map[string]any `json:"inputs"`
 }

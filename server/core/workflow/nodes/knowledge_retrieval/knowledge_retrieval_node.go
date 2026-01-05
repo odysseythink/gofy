@@ -3,6 +3,7 @@ package knowledgeretrieval
 import (
 	"iter"
 
+	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
 	knowledgeretrievalnodesentities "mlib.com/gofy/server/entities/nodes/knowledge_retrieval"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
@@ -33,4 +34,7 @@ func New() *KnowledgeRetrievalNode {
 	return &KnowledgeRetrievalNode{
 		BaseNode: &base.BaseNode[*knowledgeretrievalnodesentities.KnowledgeRetrievalNodeData]{},
 	}
+}
+func init() {
+	nodesconstants.Regist(New())
 }

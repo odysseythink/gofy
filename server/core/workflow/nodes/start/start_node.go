@@ -4,6 +4,7 @@ import (
 	"iter"
 
 	"mlib.com/gofy/server/constants"
+	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
 	startnodesentities "mlib.com/gofy/server/entities/nodes/start"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
@@ -44,4 +45,8 @@ func New() *StartNode {
 	return &StartNode{
 		BaseNode: &base.BaseNode[*startnodesentities.StartNodeData]{},
 	}
+}
+
+func init() {
+	nodesconstants.Regist(New())
 }

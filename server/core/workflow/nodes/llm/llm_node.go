@@ -10,6 +10,7 @@ import (
 	"gorm.io/gorm"
 	"mlib.com/confy/cast"
 	"mlib.com/gofy/server/constants"
+	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
 	"mlib.com/gofy/server/core/exceptions"
 	llmnodesexceptions "mlib.com/gofy/server/core/exceptions/nodes/llm"
 	modelmanager "mlib.com/gofy/server/core/manageres/model_manager"
@@ -1053,4 +1054,7 @@ func _handle_completion_template(
 
 	prompt_messages = append(prompt_messages, prompt_message)
 	return prompt_messages
+}
+func init() {
+	nodesconstants.Regist(New())
 }

@@ -3,6 +3,7 @@ package listoperator
 import (
 	"iter"
 
+	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
 	listoperatornodesentities "mlib.com/gofy/server/entities/nodes/list_operator"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
@@ -33,4 +34,7 @@ func New() *ListOperatorNode {
 	return &ListOperatorNode{
 		BaseNode: &base.BaseNode[*listoperatornodesentities.ListOperatorNodeData]{},
 	}
+}
+func init() {
+	nodesconstants.Regist(New())
 }

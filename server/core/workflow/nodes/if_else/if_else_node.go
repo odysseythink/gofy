@@ -3,6 +3,7 @@ package ifelse
 import (
 	"iter"
 
+	nodesconstants "mlib.com/gofy/server/constants/workflow/nodes"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
 	"mlib.com/gofy/server/core/workflow/utils/condition"
 	ifelsenodesentities "mlib.com/gofy/server/entities/nodes/if_else"
@@ -141,4 +142,7 @@ func _should_not_use_old_function(
 		conditions,
 		operator,
 	)
+}
+func init() {
+	nodesconstants.Regist(New())
 }

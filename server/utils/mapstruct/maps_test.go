@@ -1,6 +1,7 @@
 package mapstruct
 
 import (
+	"reflect"
 	"testing"
 	"time"
 )
@@ -142,7 +143,10 @@ func TestGet_MapTypes(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result := Get(testMap, tt.key, tt.defaultVal)
-			if !mapEqual(result, tt.expected) {
+			t.Logf("testMap[%s]=%#v", tt.key, testMap[tt.key])
+			t.Logf("testMap[%s]=%#v", tt.key, result)
+			t.Logf("tt.expected=%#v", tt.expected)
+			if !reflect.DeepEqual(result, tt.expected) {
 				t.Errorf("Get(%q, %v) = %v, want %v", tt.key, tt.defaultVal, result, tt.expected)
 			}
 		})
@@ -345,56 +349,7 @@ func sliceEqual(a, b interface{}) bool {
 			return false
 		}
 		for i := range a {
-			if !mapEqual(a[i], bSlice[i]) {
-				return false
-			}
-		}
-		return true
-	default:
-		return false
-	}
-}
-
-func mapEqual(a, b interface{}) bool {
-	switch a := a.(type) {
-	case map[string]string:
-		bMap, ok := b.(map[string]string)
-		if !ok {
-			return false
-		}
-		if len(a) != len(bMap) {
-			return false
-		}
-		for k, v := range a {
-			if bMap[k] != v {
-				return false
-			}
-		}
-		return true
-	case map[string]int:
-		bMap, ok := b.(map[string]int)
-		if !ok {
-			return false
-		}
-		if len(a) != len(bMap) {
-			return false
-		}
-		for k, v := range a {
-			if bMap[k] != v {
-				return false
-			}
-		}
-		return true
-	case map[string]any:
-		bMap, ok := b.(map[string]any)
-		if !ok {
-			return false
-		}
-		if len(a) != len(bMap) {
-			return false
-		}
-		for k, v := range a {
-			if bMap[k] != v {
+			if !reflect.DeepEqual(a[i], bSlice[i]) {
 				return false
 			}
 		}

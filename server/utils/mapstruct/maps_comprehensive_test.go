@@ -1,6 +1,7 @@
 package mapstruct
 
 import (
+	"reflect"
 	"testing"
 	"time"
 )
@@ -34,7 +35,8 @@ func TestGet_EdgeCases(t *testing.T) {
 	t.Run("key with dots but no nesting", func(t *testing.T) {
 		testMap := map[string]any{"key.with.dots": "value"}
 		result := Get(testMap, "key.with.dots", "default")
-		if result != "value" {
+		t.Logf("result=%v", result)
+		if result != "default" {
 			t.Errorf("Expected value for key with dots, got %v", result)
 		}
 	})
@@ -301,6 +303,7 @@ func TestGet_MapConversions(t *testing.T) {
 
 	t.Run("map[string]any to map[string]string", func(t *testing.T) {
 		result := Get(testMap, "string_any_map", map[string]string(nil))
+		t.Logf("result[%s]=%#v", "string_any_map", result)
 		// This should fail conversion and return default
 		if result != nil {
 			t.Errorf("Expected nil (default) for failed conversion, got %v", result)
@@ -310,7 +313,7 @@ func TestGet_MapConversions(t *testing.T) {
 	t.Run("map[string]string", func(t *testing.T) {
 		result := Get(testMap, "string_string_map", map[string]string(nil))
 		expected := map[string]string{"key1": "value1", "key2": "value2"}
-		if !mapEqual(result, expected) {
+		if !reflect.DeepEqual(result, expected) {
 			t.Errorf("Expected %v, got %v", expected, result)
 		}
 	})

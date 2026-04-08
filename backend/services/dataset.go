@@ -440,3 +440,89 @@ func (s *DatasetService) GetDatasetAutoDisableLogs(datasetID string) []*models.D
 	dbengine.Instance().DB.Where("dataset_id = ?", datasetID).Order("created_at DESC").Find(&logs)
 	return logs
 }
+
+// === Dataset Update ===
+
+func (s *DatasetService) UpdateDataset(datasetID string, user *models.Account, data map[string]any) (*models.Dataset, error) {
+	dataset, err := s.GetByIDAndTenantID(datasetID, user.CurrentTenantID())
+	if err != nil || dataset == nil {
+		return nil, fmt.Errorf("dataset not found")
+	}
+	if err := s.CheckDatasetPermission(dataset, user); err != nil {
+		return nil, err
+	}
+	// Check duplicate name
+	if name, ok := data["name"].(string); ok && name != dataset.Name {
+		var count int64
+		dbengine.Instance().DB.Model(&models.Dataset{}).Where("tenant_id = ? AND name = ? AND id != ?", dataset.TenantID, name, dataset.ID).Count(&count)
+		if count > 0 {
+			return nil, fmt.Errorf("dataset with name '%s' already exists", name)
+		}
+	}
+	updates := map[string]any{}
+	allowedFields := []string{"name", "description", "permission", "indexing_technique", "retrieval_model", "embedding_model_provider", "embedding_model"}
+	for _, field := range allowedFields {
+		if v, ok := data[field]; ok {
+			updates[field] = v
+		}
+	}
+	if len(updates) > 0 {
+		updates["updated_by"] = user.ID
+		if err := dbengine.Instance().DB.Model(dataset).Updates(updates).Error; err != nil {
+			return nil, err
+		}
+	}
+	return dataset, nil
+}
+
+func (s *DatasetService) CheckDatasetModelSetting(dataset *models.Dataset) error {
+	if dataset.IndexingTechnique == "high_quality" {
+		if dataset.EmbeddingModelProvider == "" || dataset.EmbeddingModel == "" {
+			return fmt.Errorf("embedding model not configured for high quality dataset")
+		}
+	}
+	return nil
+}
+
+func (s *DatasetService) GetDatasetCollectionBinding(providerName, modelName, collectionType string) *models.DatasetCollectionBinding {
+	var binding models.DatasetCollectionBinding
+	if err := dbengine.Instance().DB.Where("provider_name = ? AND model_name = ? AND type = ?", providerName, modelName, collectionType).First(&binding).Error; err != nil {
+		return nil
+	}
+	return &binding
+}
+
+func (s *DatasetService) UpdatePartialMemberList(tenantID, datasetID string, userIDs []string) error {
+	// Clear existing permissions
+	dbengine.Instance().DB.Where("dataset_id = ?", datasetID).Delete(&models.DatasetPermission{})
+	// Add new permissions
+	for _, userID := range userIDs {
+		perm := &models.DatasetPermission{
+			ID:        uuid.NewV4().String(),
+			DatasetID: datasetID,
+			AccountID: userID,
+			TenantID:  tenantID,
+		}
+		dbengine.Instance().DB.Create(perm)
+	}
+	return nil
+}
+
+func (s *DatasetService) ClearPartialMemberList(datasetID string) error {
+	return dbengine.Instance().DB.Where("dataset_id = ?", datasetID).Delete(&models.DatasetPermission{}).Error
+}
+
+func (s *DatasetService) CheckDatasetOperatorPermission(user *models.Account, dataset *models.Dataset) error {
+	if dataset == nil || user == nil {
+		return fmt.Errorf("invalid parameters")
+	}
+	role := ""
+	var join models.TenantAccountJoin
+	if err := dbengine.Instance().DB.Where("tenant_id = ? AND account_id = ?", dataset.TenantID, user.ID).First(&join).Error; err == nil {
+		role = join.Role
+	}
+	if role == "owner" || role == "admin" || role == "editor" || role == "dataset_operator" {
+		return nil
+	}
+	return fmt.Errorf("no permission to operate on this dataset")
+}

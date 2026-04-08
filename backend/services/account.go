@@ -1,6 +1,7 @@
 package services
 
 import (
+	"context"
 	crand "crypto/rand"
 	"encoding/base64"
 	"fmt"
@@ -745,6 +746,103 @@ func (s *AccountService) UpdateAccountTimezone(accountID, timezone string) error
 // UpdateAccountTheme updates the interface theme.
 func (s *AccountService) UpdateAccountTheme(accountID, theme string) error {
 	return dbengine.Instance().DB.Model(&models.Account{}).Where("id = ?", accountID).Update("interface_theme", theme).Error
+}
+
+// === Email Sending (stubs — need email service integration) ===
+
+func (s *AccountService) SendRegistrationEmail(email, verificationCode string) error {
+	// TODO: Integrate with email service (config/email.go)
+	mlog.Infof("sending registration email to %s with code %s", email, verificationCode)
+	return nil
+}
+
+func (s *AccountService) SendResetPasswordNotification(email, resetToken string) error {
+	mlog.Infof("sending reset password email to %s", email)
+	return nil
+}
+
+func (s *AccountService) SendInvitationEmail(inviterName, email, tenantName, inviteCode string) error {
+	mlog.Infof("sending invitation email to %s for tenant %s", email, tenantName)
+	return nil
+}
+
+func (s *AccountService) SendChangeEmailCode(accountID, newEmail, code string) error {
+	mlog.Infof("sending email change code to %s", newEmail)
+	return nil
+}
+
+func (s *AccountService) SendAccountDeletionCode(email, code string) error {
+	mlog.Infof("sending account deletion code to %s", email)
+	return nil
+}
+
+// === Rate Limiting ===
+
+func (s *AccountService) CheckRateLimit(key string, maxAttempts int, windowSeconds int) error {
+	cacheKey := fmt.Sprintf("rate_limit:%s", key)
+	// Use Redis INCR + EXPIRE for rate limiting
+	client := cache.Instance().Client()
+	ctx := context.Background()
+
+	count, err := client.Incr(ctx, cacheKey).Result()
+	if err != nil {
+		return nil // fail open
+	}
+	if count == 1 {
+		client.Expire(ctx, cacheKey, time.Duration(windowSeconds)*time.Second)
+	}
+	if count > int64(maxAttempts) {
+		return fmt.Errorf("rate limit exceeded, please try again later")
+	}
+	return nil
+}
+
+func (s *AccountService) CheckEmailSendRateLimit(email string) error {
+	return s.CheckRateLimit(fmt.Sprintf("email_send:%s", email), 5, 300) // 5 per 5 minutes
+}
+
+func (s *AccountService) CheckLoginRateLimit(email string) error {
+	return s.CheckRateLimit(fmt.Sprintf("login:%s", email), 10, 600) // 10 per 10 minutes
+}
+
+func (s *AccountService) CheckPasswordResetRateLimit(email string) error {
+	return s.CheckRateLimit(fmt.Sprintf("pwd_reset:%s", email), 3, 3600) // 3 per hour
+}
+
+// === Verification Codes ===
+
+func (s *AccountService) GenerateVerificationCode(purpose, identifier string) (string, error) {
+	code := fmt.Sprintf("%06d", rand.Intn(1000000))
+	cacheKey := fmt.Sprintf("verify:%s:%s", purpose, identifier)
+	client := cache.Instance().Client()
+	client.Set(context.Background(), cacheKey, code, 10*time.Minute)
+	return code, nil
+}
+
+func (s *AccountService) VerifyCode(purpose, identifier, code string) bool {
+	cacheKey := fmt.Sprintf("verify:%s:%s", purpose, identifier)
+	client := cache.Instance().Client()
+	stored, err := client.Get(context.Background(), cacheKey).Result()
+	if err != nil || stored != code {
+		return false
+	}
+	client.Del(context.Background(), cacheKey)
+	return true
+}
+
+// === Owner Transfer ===
+
+func (s *AccountService) TransferOwnership(tenantID, currentOwnerID, newOwnerID string) error {
+	// Verify current owner
+	role := s.GetUserRole(tenantID, currentOwnerID)
+	if role != "owner" {
+		return fmt.Errorf("only the owner can transfer ownership")
+	}
+	// Update roles
+	if err := s.UpdateMemberRole(tenantID, currentOwnerID, "admin"); err != nil {
+		return err
+	}
+	return s.UpdateMemberRole(tenantID, newOwnerID, "owner")
 }
 
 // === Dataset Operator Members ===

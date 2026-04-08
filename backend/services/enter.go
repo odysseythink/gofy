@@ -37,6 +37,7 @@ type ServiceGroup struct {
 	Document              *DocumentService
 	Segment               *SegmentService
 	Plugin                *PluginService
+	Trigger               *TriggerService
 }
 
 var ServiceGroupApp = ServiceGroup{
@@ -74,4 +75,5 @@ var ServiceGroupApp = ServiceGroup{
 	Document:              &DocumentService{},
 	Segment:               &SegmentService{},
 	Plugin:                &PluginService{},
+	Trigger:               &TriggerService{},
 }

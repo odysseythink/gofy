@@ -59,12 +59,12 @@ export default function AccountAbout({
             <div className="text-text-accent">
               {
                 IS_CE_EDITION
-                  ? <Link href="https://github.com/langgenius/dify/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Open Source License</Link>
+                  ? <Link to="https://github.com/langgenius/dify/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Open Source License</Link>
                   : (
                       <>
-                        <Link href="https://dify.ai/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</Link>
+                        <Link to="https://dify.ai/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</Link>
                         ,&nbsp;
-                        <Link href="https://dify.ai/terms" target="_blank" rel="noopener noreferrer">Terms of Service</Link>
+                        <Link to="https://dify.ai/terms" target="_blank" rel="noopener noreferrer">Terms of Service</Link>
                       </>
                     )
               }
@@ -83,7 +83,7 @@ export default function AccountAbout({
           <div className="flex items-center">
             <Button className="mr-2" size="small">
               <Link
-                href="https://github.com/langgenius/dify/releases"
+                to="https://github.com/langgenius/dify/releases"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -94,7 +94,7 @@ export default function AccountAbout({
               !isLatest && !IS_CE_EDITION && (
                 <Button variant="primary" size="small">
                   <Link
-                    href={langGeniusVersionInfo.release_notes}
+                    to={langGeniusVersionInfo.release_notes}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

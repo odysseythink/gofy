@@ -146,7 +146,7 @@ const FeaturedTools = ({
 
           {showEmptyState && (
             <p className="system-xs-regular py-2 text-text-tertiary">
-              <Link className="text-text-accent" href={getMarketplaceUrl('', { category: 'tool' })} target="_blank" rel="noopener noreferrer">
+              <Link className="text-text-accent" to={getMarketplaceUrl('', { category: 'tool' })} target="_blank" rel="noopener noreferrer">
                 {t('tabs.noFeaturedPlugins', { ns: 'workflow' })}
               </Link>
             </p>

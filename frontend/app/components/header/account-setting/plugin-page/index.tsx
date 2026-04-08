@@ -25,7 +25,7 @@ const PluginPage = () => {
           className="mx-1 text-primary-600"
           target="_blank"
           rel="noopener noreferrer"
-          href="https://pycryptodome.readthedocs.io/en/latest/src/cipher/oaep.html"
+          to="https://pycryptodome.readthedocs.io/en/latest/src/cipher/oaep.html"
         >
           PKCS1_OAEP
         </Link>

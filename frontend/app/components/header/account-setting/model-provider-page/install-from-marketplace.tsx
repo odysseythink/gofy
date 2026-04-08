@@ -57,7 +57,7 @@ const InstallFromMarketplace = ({
           <Link
             target="_blank"
             rel="noopener noreferrer"
-            href={getMarketplaceUrl('', { theme })}
+            to={getMarketplaceUrl('', { theme })}
             className="inline-flex items-center text-text-accent system-sm-medium"
           >
             {t('marketplace.difyMarketplace', { ns: 'plugin' })}

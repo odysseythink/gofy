@@ -126,7 +126,7 @@ const ToolSelector: FC<Props> = ({
           : t('detailPanel.toolSelector.unsupportedContent', { ns: 'plugin' })}
       </p>
       <p>
-        <Link href="/plugins" className="tracking-tight text-text-accent">
+        <Link to="/plugins" className="tracking-tight text-text-accent">
           {t('detailPanel.toolSelector.uninstalledLink', { ns: 'plugin' })}
         </Link>
       </p>

@@ -105,7 +105,7 @@ const RAGToolRecommendations = ({
                       className="text-text-accent"
                       target="_blank"
                       rel="noopener noreferrer"
-                      href={getMarketplaceUrl('', { tags: 'rag' })}
+                      to={getMarketplaceUrl('', { tags: 'rag' })}
                     />
                   ),
                 }}

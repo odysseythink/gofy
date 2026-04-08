@@ -28,7 +28,7 @@ export const TopBar: FC<TopBarProps> = (props) => {
 
   return (
     <div className={cn('relative flex h-[52px] shrink-0 items-center justify-between border-b border-b-divider-subtle', className)}>
-      <Link href={fallbackRoute} replace className="inline-flex h-12 items-center justify-start gap-1 py-2 pl-2 pr-6">
+      <Link to={fallbackRoute} replace className="inline-flex h-12 items-center justify-start gap-1 py-2 pl-2 pr-6">
         <div className="p-2">
           <RiArrowLeftLine className="size-4 text-text-primary" />
         </div>

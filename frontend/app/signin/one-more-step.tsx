@@ -157,7 +157,7 @@ const OneMoreStep = () => {
               className="system-xs-medium text-text-accent-secondary"
               target="_blank"
               rel="noopener noreferrer"
-              href={LICENSE_LINK}
+              to={LICENSE_LINK}
             >
               {t('license.link', { ns: 'login' })}
             </Link>

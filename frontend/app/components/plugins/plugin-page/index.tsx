@@ -175,7 +175,7 @@ const PluginPage = ({
               isExploringMarketplace && (
                 <>
                   <Link
-                    href="https://github.com/langgenius/dify-plugins/issues/new?template=plugin_request.yaml"
+                    to="https://github.com/langgenius/dify-plugins/issues/new?template=plugin_request.yaml"
                     target="_blank"
                   >
                     <Button
@@ -186,7 +186,7 @@ const PluginPage = ({
                     </Button>
                   </Link>
                   <Link
-                    href={docLink('/develop-plugin/publishing/marketplace-listing/release-to-dify-marketplace')}
+                    to={docLink('/develop-plugin/publishing/marketplace-listing/release-to-dify-marketplace')}
                     target="_blank"
                   >
                     <Button

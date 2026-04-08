@@ -47,7 +47,7 @@ export default function IntegrationsPage() {
                   !integrate.is_bound && (
                     <Link
                       className="flex h-8 cursor-pointer items-center rounded-lg border border-gray-200 bg-white px-[7px] text-xs font-medium text-gray-700"
-                      href={integrate.link}
+                      to={integrate.link}
                       target="_blank"
                       rel="noopener noreferrer"
                     >

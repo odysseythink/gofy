@@ -86,7 +86,7 @@ const Card = ({
           </span>
         </Button>
         <Link
-          href={apiReferenceUrl}
+          to={apiReferenceUrl}
           target="_blank"
           rel="noopener noreferrer"
         >

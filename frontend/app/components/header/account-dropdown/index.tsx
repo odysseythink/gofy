@@ -43,7 +43,7 @@ function AccountMenuRouteItem({
   return (
     <DropdownMenuLinkItem
       className="justify-between"
-      render={<Link href={href} />}
+      render={<Link to={href} />}
     >
       <MenuItemContent iconClassName={iconClassName} label={label} trailing={trailing} />
     </DropdownMenuLinkItem>

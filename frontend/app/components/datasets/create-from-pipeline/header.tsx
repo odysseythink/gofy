@@ -12,7 +12,7 @@ const Header = () => {
       <span>{t('creation.backToKnowledge', { ns: 'datasetPipeline' })}</span>
       <Link
         className="absolute bottom-0 left-5"
-        href="/datasets"
+        to="/datasets"
         replace
       >
         <Button

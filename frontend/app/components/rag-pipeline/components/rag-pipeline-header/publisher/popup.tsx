@@ -127,7 +127,7 @@ const Popup = () => {
                     CustomLink: (
                       <Link
                         className="text-text-accent system-xs-medium"
-                        href={`/datasets/${datasetId}/documents`}
+                        to={`/datasets/${datasetId}/documents`}
                       >
                       </Link>
                     ),
@@ -189,7 +189,7 @@ const Popup = () => {
               {t('publishTemplate.success.tip', { ns: 'datasetPipeline' })}
             </span>
             <Link
-              href={docLink()}
+              to={docLink()}
               target="_blank"
               className="inline-block text-text-accent system-xs-medium-uppercase"
             >
@@ -274,7 +274,7 @@ const Popup = () => {
           <RiArrowRightUpLine className="ml-2 h-4 w-4 shrink-0" />
         </Button>
         <Link
-          href={apiReferenceUrl}
+          to={apiReferenceUrl}
           target="_blank"
           rel="noopener noreferrer"
         >

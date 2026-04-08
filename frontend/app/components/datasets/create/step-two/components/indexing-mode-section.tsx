@@ -169,7 +169,7 @@ export const IndexingModeSection: FC<IndexingModeSectionProps> = ({
       {hasSetIndexType && indexType === IndexingType.ECONOMICAL && (
         <div className="mt-2 text-text-tertiary system-xs-medium">
           {t('stepTwo.indexSettingTip', { ns: 'datasetCreation' })}
-          <Link className="text-text-accent" href={`/datasets/${datasetId}/settings`}>
+          <Link className="text-text-accent" to={`/datasets/${datasetId}/settings`}>
             {t('stepTwo.datasetSettingLink', { ns: 'datasetCreation' })}
           </Link>
         </div>
@@ -191,7 +191,7 @@ export const IndexingModeSection: FC<IndexingModeSectionProps> = ({
           {isModelAndRetrievalConfigDisabled && (
             <div className="mt-2 text-text-tertiary system-xs-medium">
               {t('stepTwo.indexSettingTip', { ns: 'datasetCreation' })}
-              <Link className="text-text-accent" href={`/datasets/${datasetId}/settings`}>
+              <Link className="text-text-accent" to={`/datasets/${datasetId}/settings`}>
                 {t('stepTwo.datasetSettingLink', { ns: 'datasetCreation' })}
               </Link>
             </div>

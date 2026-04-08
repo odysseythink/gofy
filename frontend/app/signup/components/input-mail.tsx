@@ -81,7 +81,7 @@ export default function Form({
         <span>{t('signup.haveAccount', { ns: 'login' })}</span>
         <Link
           className="text-text-accent"
-          href="/signin"
+          to="/signin"
         >
           {t('signup.signIn', { ns: 'login' })}
         </Link>
@@ -96,7 +96,7 @@ export default function Form({
               className="system-xs-medium text-text-secondary hover:underline"
               target="_blank"
               rel="noopener noreferrer"
-              href="https://dify.ai/terms"
+              to="https://dify.ai/terms"
             >
               {t('tos', { ns: 'login' })}
             </Link>
@@ -105,7 +105,7 @@ export default function Form({
               className="system-xs-medium text-text-secondary hover:underline"
               target="_blank"
               rel="noopener noreferrer"
-              href="https://dify.ai/privacy"
+              to="https://dify.ai/privacy"
             >
               {t('pp', { ns: 'login' })}
             </Link>

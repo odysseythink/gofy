@@ -141,7 +141,7 @@ const FeaturedTriggers = ({
 
           {showEmptyState && (
             <p className="system-xs-regular py-2 text-text-tertiary">
-              <Link className="text-text-accent" href={getMarketplaceUrl('', { category: 'trigger' })} target="_blank" rel="noopener noreferrer">
+              <Link className="text-text-accent" to={getMarketplaceUrl('', { category: 'trigger' })} target="_blank" rel="noopener noreferrer">
                 {t('tabs.noFeaturedTriggers', { ns: 'workflow' })}
               </Link>
             </p>

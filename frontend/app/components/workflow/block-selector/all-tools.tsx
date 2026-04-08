@@ -296,7 +296,7 @@ const AllTools = ({
                 {t('tabs.noPluginsFound', { ns: 'workflow' })}
               </div>
               <Link
-                href="https://github.com/langgenius/dify-plugins/issues/new?template=plugin_request.yaml"
+                to="https://github.com/langgenius/dify-plugins/issues/new?template=plugin_request.yaml"
                 target="_blank"
               >
                 <Button
@@ -313,7 +313,7 @@ const AllTools = ({
         {shouldShowMarketplaceFooter && (
           <Link
             className={marketplaceFooterClassName}
-            href={getMarketplaceUrl('', { category: PluginCategoryEnum.tool })}
+            to={getMarketplaceUrl('', { category: PluginCategoryEnum.tool })}
             target="_blank"
           >
             <span>{t('findMoreInMarketplace', { ns: 'plugin' })}</span>

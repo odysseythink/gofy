@@ -45,7 +45,7 @@ const NotFoundWarn = (props: {
             {description}
           </p>
           <p>
-            <Link href="/plugins" className="tracking-tight text-text-accent">
+            <Link to="/plugins" className="tracking-tight text-text-accent">
               {t('nodes.agent.linkToPlugin', { ns: 'workflow' })}
             </Link>
           </p>

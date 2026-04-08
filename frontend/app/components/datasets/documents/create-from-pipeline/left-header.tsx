@@ -34,7 +34,7 @@ const LeftHeader = ({
       </div>
       {currentStep !== steps.length && (
         <Link
-          href={`/datasets/${datasetId}/documents`}
+          to={`/datasets/${datasetId}/documents`}
           replace
         >
           <Button

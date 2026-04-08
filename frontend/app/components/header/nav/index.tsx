@@ -45,7 +45,7 @@ const Nav = ({
       ${!curNav && !isActivated && 'hover:bg-components-main-nav-nav-button-bg-hover'}
     `}
     >
-      <Link href={link}>
+      <Link to={link}>
         <div
           onClick={(e) => {
             // Don't clear state if opening in new tab/window

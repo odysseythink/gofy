@@ -37,8 +37,8 @@ const EmptyElement: FC<{ appDetail: App }> = ({ appDetail }) => {
             i18nKey="table.empty.element.content"
             ns="appLog"
             components={{
-              shareLink: <Link href={`${appDetail.site.app_base_url}${basePath}/${getWebAppType(appDetail.mode)}/${appDetail.site.access_token}`} className="text-util-colors-blue-blue-600" target="_blank" rel="noopener noreferrer" />,
-              testLink: <Link href={getRedirectionPath(true, appDetail)} className="text-util-colors-blue-blue-600" />,
+              shareLink: <Link to={`${appDetail.site.app_base_url}${basePath}/${getWebAppType(appDetail.mode)}/${appDetail.site.access_token}`} className="text-util-colors-blue-blue-600" target="_blank" rel="noopener noreferrer" />,
+              testLink: <Link to={getRedirectionPath(true, appDetail)} className="text-util-colors-blue-blue-600" />,
             }}
           />
         </div>

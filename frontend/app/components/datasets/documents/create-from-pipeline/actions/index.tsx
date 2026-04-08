@@ -68,7 +68,7 @@ const Actions = ({
       )}
       <div className="flex grow items-center justify-end gap-x-2">
         <Link
-          href={`/datasets/${datasetId}/documents`}
+          to={`/datasets/${datasetId}/documents`}
           replace
         >
           <Button

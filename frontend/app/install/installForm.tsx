@@ -220,7 +220,7 @@ const InstallForm = () => {
                     className="text-text-accent"
                     target="_blank"
                     rel="noopener noreferrer"
-                    href={LICENSE_LINK}
+                    to={LICENSE_LINK}
                   >
                     {t('license.link', { ns: 'login' })}
                   </Link>

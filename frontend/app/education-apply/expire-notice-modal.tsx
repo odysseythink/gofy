@@ -69,7 +69,7 @@ const ExpireNoticeModal: React.FC<Props> = ({ expireAt, expired, onClose }) => {
         </div>
       </div>
       <div className="mt-7 flex items-center justify-between space-x-2">
-        <Link className="system-xs-regular flex items-center space-x-1 text-text-accent" href={eduDocLink} target="_blank" rel="noopener noreferrer">
+        <Link className="system-xs-regular flex items-center space-x-1 text-text-accent" to={eduDocLink} target="_blank" rel="noopener noreferrer">
           <div>{t('learn', { ns: 'education' })}</div>
           <RiExternalLinkLine className="size-3" />
         </Link>

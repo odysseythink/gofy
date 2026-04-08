@@ -192,7 +192,7 @@ const AllStartBlocks = ({
                 {t('tabs.noPluginsFound', { ns: 'workflow' })}
               </div>
               <Link
-                href="https://github.com/langgenius/dify-plugins/issues/new?template=plugin_request.yaml"
+                to="https://github.com/langgenius/dify-plugins/issues/new?template=plugin_request.yaml"
                 target="_blank"
               >
                 <Button
@@ -211,7 +211,7 @@ const AllStartBlocks = ({
           // Footer - Same as Tools tab marketplace footer
           <Link
             className={marketplaceFooterClassName}
-            href={getMarketplaceUrl('', { category: PluginCategoryEnum.trigger })}
+            to={getMarketplaceUrl('', { category: PluginCategoryEnum.trigger })}
             target="_blank"
           >
             <span>{t('findMoreInMarketplace', { ns: 'plugin' })}</span>

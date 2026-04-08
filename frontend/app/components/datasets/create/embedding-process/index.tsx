@@ -60,7 +60,7 @@ const ActionButtons: FC<{
 
   return (
     <div className="mt-6 flex items-center gap-x-2 py-2">
-      <Link href={apiReferenceUrl} target="_blank" rel="noopener noreferrer">
+      <Link to={apiReferenceUrl} target="_blank" rel="noopener noreferrer">
         <Button className="w-fit gap-x-0.5 px-3">
           <RiTerminalBoxLine className="size-4" />
           <span className="px-0.5">Access the API</span>

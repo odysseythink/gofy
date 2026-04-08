@@ -123,7 +123,7 @@ export default function MailAndPasswordAuth({ isEmailSetup }: MailAndPasswordAut
         <label htmlFor="password" className="my-2 flex items-center justify-between">
           <span className="system-md-semibold text-text-secondary">{t('password', { ns: 'login' })}</span>
           <Link
-            href={`/webapp-reset-password?${searchParams.toString()}`}
+            to={`/webapp-reset-password?${searchParams.toString()}`}
             className={`system-xs-regular ${isEmailSetup ? 'text-components-button-secondary-accent-text' : 'pointer-events-none text-components-button-secondary-accent-text-disabled'}`}
             tabIndex={isEmailSetup ? 0 : -1}
             aria-disabled={!isEmailSetup}

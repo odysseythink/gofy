@@ -229,7 +229,7 @@ const EmbeddingProcess = ({
       </div>
       <div className="mt-6 flex items-center gap-x-2 py-2">
         <Link
-          href={apiReferenceUrl}
+          to={apiReferenceUrl}
           target="_blank"
           rel="noopener noreferrer"
         >

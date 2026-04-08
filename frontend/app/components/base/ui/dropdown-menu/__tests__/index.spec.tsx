@@ -301,7 +301,7 @@ describe('dropdown-menu wrapper', () => {
           <DropdownMenuTrigger aria-label="menu trigger">Open</DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuLinkItem
-              render={<Link href="/account" />}
+              render={<Link to="/account" />}
               aria-label="account link"
             >
               Account settings

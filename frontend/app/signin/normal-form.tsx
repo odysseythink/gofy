@@ -212,7 +212,7 @@ const NormalForm = () => {
               <span>{t('signup.noAccount', { ns: 'login' })}</span>
               <Link
                 className="text-text-accent"
-                href="/signup"
+                to="/signup"
               >
                 {t('signup.signUp', { ns: 'login' })}
               </Link>
@@ -243,7 +243,7 @@ const NormalForm = () => {
                   className="text-text-secondary system-xs-medium hover:underline"
                   target="_blank"
                   rel="noopener noreferrer"
-                  href="https://dify.ai/terms"
+                  to="https://dify.ai/terms"
                 >
                   {t('tos', { ns: 'login' })}
                 </Link>
@@ -252,7 +252,7 @@ const NormalForm = () => {
                   className="text-text-secondary system-xs-medium hover:underline"
                   target="_blank"
                   rel="noopener noreferrer"
-                  href="https://dify.ai/privacy"
+                  to="https://dify.ai/privacy"
                 >
                   {t('pp', { ns: 'login' })}
                 </Link>
@@ -263,7 +263,7 @@ const NormalForm = () => {
               &nbsp;
                   <Link
                     className="text-text-secondary system-xs-medium hover:underline"
-                    href="/install"
+                    to="/install"
                   >
                     {t('setAdminAccount', { ns: 'login' })}
                   </Link>

@@ -160,7 +160,7 @@ export default function InviteSettingsPage() {
             className="text-text-accent-secondary system-xs-medium"
             target="_blank"
             rel="noopener noreferrer"
-            href={LICENSE_LINK}
+            to={LICENSE_LINK}
           >
             {t('license.link', { ns: 'login' })}
           </Link>

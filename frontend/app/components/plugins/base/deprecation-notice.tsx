@@ -76,7 +76,7 @@ const DeprecationNotice: FC<DeprecationNoticeProps> = ({
                 components={{
                   CustomLink: (
                     <Link
-                      href={alternativePluginURL}
+                      to={alternativePluginURL}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="underline"

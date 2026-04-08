@@ -17,7 +17,7 @@ const CustomLink = React.memo(({
       className="flex h-8 w-8 cursor-pointer items-center justify-center transition-opacity duration-200 ease-in-out hover:opacity-80"
       target="_blank"
       rel="noopener noreferrer"
-      href={href}
+      to={href}
     >
       {children}
     </Link>

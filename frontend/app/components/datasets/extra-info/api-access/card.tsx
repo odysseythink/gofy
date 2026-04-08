@@ -73,7 +73,7 @@ const Card = ({
       <div className="h-px bg-divider-subtle"></div>
       <div className="p-1">
         <Link
-          href={apiReferenceUrl}
+          to={apiReferenceUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="flex h-8 items-center space-x-[7px] rounded-lg px-2 text-text-tertiary hover:bg-state-base-hover"

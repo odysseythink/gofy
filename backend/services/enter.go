@@ -38,6 +38,13 @@ type ServiceGroup struct {
 	Segment               *SegmentService
 	Plugin                *PluginService
 	Trigger               *TriggerService
+	File                  *FileService
+	HumanInput            *HumanInputService
+	DatasourceProvider    *DatasourceProviderService
+	SummaryIndex          *SummaryIndexService
+	Annotation            *AnnotationService
+	Metadata              *MetadataService
+	WebappAuth            *WebappAuthService
 }
 
 var ServiceGroupApp = ServiceGroup{
@@ -76,4 +83,11 @@ var ServiceGroupApp = ServiceGroup{
 	Segment:               &SegmentService{},
 	Plugin:                &PluginService{},
 	Trigger:               &TriggerService{},
+	File:                  &FileService{},
+	HumanInput:            &HumanInputService{},
+	DatasourceProvider:    &DatasourceProviderService{},
+	SummaryIndex:          &SummaryIndexService{},
+	Annotation:            &AnnotationService{},
+	Metadata:              &MetadataService{},
+	WebappAuth:            &WebappAuthService{},
 }

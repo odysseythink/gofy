@@ -157,3 +157,37 @@ type LoadBalancingModelConfig struct {
 func (LoadBalancingModelConfig) TableName() string {
 	return "load_balancing_model_configs"
 }
+
+// ProviderCredential [...]
+type ProviderCredential struct {
+	ID              string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	TenantID        string     `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
+	ProviderName    string     `gorm:"column:provider_name;type:varchar(255);not null" json:"provider_name"`
+	CredentialName  string     `gorm:"column:credential_name;type:varchar(255);not null" json:"credential_name"`
+	EncryptedConfig string     `gorm:"column:encrypted_config;type:text;not null" json:"encrypted_config"`
+	CreatedAt       *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt       *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+}
+
+// TableName get sql table name.获取数据库表名
+func (ProviderCredential) TableName() string {
+	return "provider_credentials"
+}
+
+// ProviderModelCredential [...]
+type ProviderModelCredential struct {
+	ID              string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	TenantID        string     `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
+	ProviderName    string     `gorm:"column:provider_name;type:varchar(255);not null" json:"provider_name"`
+	ModelName       string     `gorm:"column:model_name;type:varchar(255);not null" json:"model_name"`
+	ModelType       string     `gorm:"column:model_type;type:varchar(40);not null" json:"model_type"`
+	CredentialName  string     `gorm:"column:credential_name;type:varchar(255);not null" json:"credential_name"`
+	EncryptedConfig string     `gorm:"column:encrypted_config;type:text;not null" json:"encrypted_config"`
+	CreatedAt       *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt       *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+}
+
+// TableName get sql table name.获取数据库表名
+func (ProviderModelCredential) TableName() string {
+	return "provider_model_credentials"
+}

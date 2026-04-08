@@ -2132,3 +2132,55 @@ type TraceAppConfig struct {
 func (TraceAppConfig) TableName() string {
 	return "trace_app_config"
 }
+
+// TenantCreditPool [...]
+type TenantCreditPool struct {
+	ID         string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	TenantID   string     `gorm:"column:tenant_id;type:varchar(36);not null;index" json:"tenant_id"`
+	PoolType   string     `gorm:"column:pool_type;type:varchar(40);not null;default:'trial';index" json:"pool_type"`
+	QuotaLimit int64      `gorm:"column:quota_limit;type:bigint;not null;default:0" json:"quota_limit"`
+	QuotaUsed  int64      `gorm:"column:quota_used;type:bigint;not null;default:0" json:"quota_used"`
+	CreatedAt  *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt  *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+}
+
+// TableName get sql table name.获取数据库表名
+func (TenantCreditPool) TableName() string {
+	return "tenant_credit_pools"
+}
+
+// OAuthProviderApp [...]
+type OAuthProviderApp struct {
+	ID           string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	AppIcon      string     `gorm:"column:app_icon;type:varchar(255);not null" json:"app_icon"`
+	ClientID     string     `gorm:"column:client_id;type:varchar(255);not null;index" json:"client_id"`
+	ClientSecret string     `gorm:"column:client_secret;type:varchar(255);not null" json:"client_secret"`
+	AppLabel     string     `gorm:"column:app_label;type:json;not null" json:"app_label"`
+	RedirectURIs string     `gorm:"column:redirect_uris;type:json;not null" json:"redirect_uris"`
+	Scope        string     `gorm:"column:scope;type:varchar(255);not null;default:'read:name read:email read:avatar read:interface_language read:timezone'" json:"scope"`
+	CreatedAt    *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+}
+
+// TableName get sql table name.获取数据库表名
+func (OAuthProviderApp) TableName() string {
+	return "oauth_provider_apps"
+}
+
+// AppMCPServer [...]
+type AppMCPServer struct {
+	ID          string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	TenantID    string     `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
+	AppID       string     `gorm:"column:app_id;type:varchar(36);not null" json:"app_id"`
+	Name        string     `gorm:"column:name;type:varchar(255);not null" json:"name"`
+	Description string     `gorm:"column:description;type:varchar(255);not null" json:"description"`
+	ServerCode  string     `gorm:"column:server_code;type:varchar(255);not null;uniqueIndex" json:"server_code"`
+	Status      string     `gorm:"column:status;type:varchar(255);not null;default:'normal'" json:"status"`
+	Parameters  string     `gorm:"column:parameters;type:text;not null" json:"parameters"`
+	CreatedAt   *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt   *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+}
+
+// TableName get sql table name.获取数据库表名
+func (AppMCPServer) TableName() string {
+	return "app_mcp_servers"
+}

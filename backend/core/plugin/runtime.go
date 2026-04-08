@@ -146,9 +146,11 @@ type PluginRuntimeSessionIOInterface interface {
 	Write(sessionID string, action string, data []byte) error
 }
 
-// PluginClusterLifetime provides cluster-level runtime state.
+// PluginClusterLifetime provides cluster-level runtime state and lifecycle control.
 type PluginClusterLifetime interface {
 	RuntimeState() PluginRuntimeState
+	Stopped() bool
+	Stop()
 }
 
 // PluginLifetime combines basic info, session I/O, and cluster lifetime.

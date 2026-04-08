@@ -450,3 +450,180 @@ func (s *DocumentService) GetErrorDocumentsByDatasetID(datasetID string) []*mode
 	dbengine.Instance().DB.Where("dataset_id = ? AND indexing_status = ?", datasetID, "error").Find(&docs)
 	return docs
 }
+
+// === Document Status Update Helpers ===
+
+// PrepareDocumentStatusUpdate validates and prepares a status update for a single document.
+func (s *DocumentService) PrepareDocumentStatusUpdate(doc *models.Document, action string, userID string) (map[string]any, string, error) {
+	now := time.Now()
+	switch action {
+	case "enable":
+		return s.prepareEnableUpdate(doc, now)
+	case "disable":
+		return s.prepareDisableUpdate(doc, userID, now)
+	case "archive":
+		return s.prepareArchiveUpdate(doc, userID, now)
+	case "un_archive":
+		return s.prepareUnarchiveUpdate(doc, now)
+	default:
+		return nil, "", fmt.Errorf("invalid action: %s", action)
+	}
+}
+
+func (s *DocumentService) prepareEnableUpdate(doc *models.Document, now time.Time) (map[string]any, string, error) {
+	if doc.Enabled {
+		return nil, "", nil // already enabled
+	}
+	updates := map[string]any{
+		"enabled":     true,
+		"disabled_at": nil,
+		"disabled_by": nil,
+		"updated_at":  now,
+	}
+	return updates, tasks.TaskSegmentEnable, nil
+}
+
+func (s *DocumentService) prepareDisableUpdate(doc *models.Document, userID string, now time.Time) (map[string]any, string, error) {
+	if doc.IndexingStatus != "completed" {
+		return nil, "", fmt.Errorf("document is not completed indexing")
+	}
+	if !doc.Enabled {
+		return nil, "", nil // already disabled
+	}
+	updates := map[string]any{
+		"enabled":     false,
+		"disabled_at": &now,
+		"disabled_by": userID,
+		"updated_at":  now,
+	}
+	return updates, tasks.TaskSegmentDisable, nil
+}
+
+func (s *DocumentService) prepareArchiveUpdate(doc *models.Document, userID string, now time.Time) (map[string]any, string, error) {
+	if doc.Archived {
+		return nil, "", nil // already archived
+	}
+	updates := map[string]any{
+		"archived":    true,
+		"archived_at": &now,
+		"archived_by": userID,
+		"updated_at":  now,
+	}
+	taskType := ""
+	if doc.Enabled {
+		taskType = tasks.TaskSegmentDisable
+	}
+	return updates, taskType, nil
+}
+
+func (s *DocumentService) prepareUnarchiveUpdate(doc *models.Document, now time.Time) (map[string]any, string, error) {
+	if !doc.Archived {
+		return nil, "", nil // not archived
+	}
+	updates := map[string]any{
+		"archived":    false,
+		"archived_at": nil,
+		"archived_by": nil,
+		"updated_at":  now,
+	}
+	taskType := ""
+	if doc.Enabled {
+		taskType = tasks.TaskSegmentEnable
+	}
+	return updates, taskType, nil
+}
+
+// BatchUpdateDocumentStatusAdvanced is the full implementation with validation and async tasks.
+func (s *DocumentService) BatchUpdateDocumentStatusAdvanced(dataset *models.Dataset, documentIDs []string, action string, userID string) error {
+	if len(documentIDs) == 0 {
+		return nil
+	}
+
+	// Phase 1: Validate and prepare
+	type updateInfo struct {
+		doc     *models.Document
+		updates map[string]any
+		task    string
+	}
+	var toUpdate []updateInfo
+
+	for _, docID := range documentIDs {
+		doc := s.GetDocumentByID(docID)
+		if doc == nil {
+			continue
+		}
+		if doc.DatasetID != dataset.ID {
+			continue
+		}
+		updates, taskType, err := s.PrepareDocumentStatusUpdate(doc, action, userID)
+		if err != nil {
+			return fmt.Errorf("document %s: %w", docID, err)
+		}
+		if updates == nil {
+			continue // no change needed
+		}
+		toUpdate = append(toUpdate, updateInfo{doc: doc, updates: updates, task: taskType})
+	}
+
+	// Phase 2: Apply all updates
+	for _, u := range toUpdate {
+		if err := dbengine.Instance().DB.Model(u.doc).Updates(u.updates).Error; err != nil {
+			return fmt.Errorf("failed to update document %s: %w", u.doc.ID, err)
+		}
+	}
+
+	// Phase 3: Trigger async tasks
+	for _, u := range toUpdate {
+		if u.task != "" {
+			// Get all segment IDs for this document
+			var segmentIDs []string
+			dbengine.Instance().DB.Model(&models.DocumentSegment{}).
+				Where("document_id = ?", u.doc.ID).
+				Pluck("id", &segmentIDs)
+			if len(segmentIDs) > 0 {
+				tasks.EnqueueTask(u.task, tasks.SegmentTaskPayload{
+					DatasetID:  dataset.ID,
+					DocumentID: u.doc.ID,
+					SegmentIDs: segmentIDs,
+				})
+			}
+		}
+	}
+
+	return nil
+}
+
+// EnrichDocumentsWithSummaryStatus adds summary index status to documents.
+func (s *DocumentService) EnrichDocumentsWithSummaryStatus(documents []*models.Document, dataset *models.Dataset) []map[string]any {
+	result := make([]map[string]any, len(documents))
+	for i, doc := range documents {
+		docMap := map[string]any{
+			"id":               doc.ID,
+			"name":             doc.Name,
+			"indexing_status":  doc.IndexingStatus,
+			"enabled":         doc.Enabled,
+			"archived":        doc.Archived,
+			"position":        doc.Position,
+			"word_count":      doc.WordCount,
+			"data_source_type": doc.DataSourceType,
+			"created_at":      doc.CreatedAt,
+		}
+		// Add summary status
+		summaryService := &SummaryIndexService{}
+		status := summaryService.GetDocumentSummaryStatus(doc.ID, dataset.ID)
+		docMap["summary_status"] = status
+		result[i] = docMap
+	}
+	return result
+}
+
+// CheckDocumentCreateArgs validates document creation arguments.
+func (s *DocumentService) CheckDocumentCreateArgs(dataSourceType string, dataSourceInfoList []map[string]any) error {
+	if dataSourceType == "" {
+		return fmt.Errorf("data_source_type is required")
+	}
+	if len(dataSourceInfoList) == 0 {
+		return fmt.Errorf("data_source_info_list is required")
+	}
+	return nil
+}

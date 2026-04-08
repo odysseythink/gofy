@@ -3,10 +3,13 @@ package main
 import (
 	"context"
 	"fmt"
+	"io/fs"
 	"net/http"
+	"strings"
 	"sync"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc/peer"
 	"mlib.com/confy"
 	"mlib.com/gofy/server/cache"
@@ -92,6 +95,28 @@ func (s *LinkService) Init(args ...any) error {
 
 	r := router.InitRouters()
 	r.Static("/form-generator", "./resource/page")
+
+	// Serve frontend static files with SPA fallback
+	frontendAssets, err := FrontendAssets()
+	if err != nil {
+		mlog.Errorf("failed to load frontend assets: %v", err)
+	} else {
+		r.NoRoute(func(c *gin.Context) {
+			path := c.Request.URL.Path
+
+			// Try to serve the exact file from embedded assets
+			f, fErr := frontendAssets.(fs.ReadFileFS).ReadFile(strings.TrimPrefix(path, "/"))
+			if fErr == nil {
+				// Determine content type
+				_ = f // file exists
+				c.FileFromFS(strings.TrimPrefix(path, "/"), http.FS(frontendAssets))
+				return
+			}
+
+			// SPA fallback: serve index.html for all non-API routes
+			c.FileFromFS("index.html", http.FS(frontendAssets))
+		})
+	}
 
 	address := fmt.Sprintf(":%d", confy.GetWithDefault[int]("system.addr", 5001))
 	s.httpserver = &http.Server{

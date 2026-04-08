@@ -48,10 +48,10 @@ func (l *LoggingLayer) OnNodeRunEnd(nodeID, nodeType string, outputs map[string]
 	delete(l.startTimes, nodeID)
 }
 
-func (l *LoggingLayer) OnEvent(event *events.GraphEvent) {
+func (l *LoggingLayer) OnEvent(event events.GraphEvent) {
 	// Only log non-routine events
-	switch event.Type {
-	case events.EventPauseRequested, events.EventResumed, events.EventGraphFailed:
-		mlog.Infof("[workflow] event: %s data=%v", event.Type, event.Data)
+	switch event.GetEventType() {
+	case events.EventGraphRunPaused, events.EventGraphRunResumed, events.EventGraphRunFailed:
+		mlog.Infof("[workflow] event: %s", event.GetEventType())
 	}
 }

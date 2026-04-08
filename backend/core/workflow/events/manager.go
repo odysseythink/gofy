@@ -7,14 +7,14 @@ import (
 )
 
 // EventHandler processes workflow events.
-type EventHandler func(event *GraphEvent)
+type EventHandler func(event GraphEvent)
 
 // EventManager manages event registration and dispatch.
 type EventManager struct {
 	mu          sync.RWMutex
 	handlers    map[EventType][]EventHandler
 	allHandlers []EventHandler // catch-all handlers
-	eventCh     chan *GraphEvent
+	eventCh     chan GraphEvent
 	quit        chan struct{}
 }
 
@@ -25,7 +25,7 @@ func NewEventManager(bufferSize int) *EventManager {
 	}
 	return &EventManager{
 		handlers: make(map[EventType][]EventHandler),
-		eventCh:  make(chan *GraphEvent, bufferSize),
+		eventCh:  make(chan GraphEvent, bufferSize),
 		quit:     make(chan struct{}),
 	}
 }
@@ -45,11 +45,11 @@ func (em *EventManager) OnAll(handler EventHandler) {
 }
 
 // Emit publishes an event.
-func (em *EventManager) Emit(event *GraphEvent) {
+func (em *EventManager) Emit(event GraphEvent) {
 	select {
 	case em.eventCh <- event:
 	default:
-		mlog.Errorf("event buffer full, dropping event: %s", event.Type)
+		mlog.Errorf("event buffer full, dropping event: %s", event.GetEventType())
 	}
 }
 
@@ -84,9 +84,9 @@ func (em *EventManager) Drain() {
 	}
 }
 
-func (em *EventManager) dispatch(event *GraphEvent) {
+func (em *EventManager) dispatch(event GraphEvent) {
 	em.mu.RLock()
-	handlers := em.handlers[event.Type]
+	handlers := em.handlers[event.GetEventType()]
 	all := em.allHandlers
 	em.mu.RUnlock()
 
@@ -98,10 +98,10 @@ func (em *EventManager) dispatch(event *GraphEvent) {
 	}
 }
 
-func safeCall(handler EventHandler, event *GraphEvent) {
+func safeCall(handler EventHandler, event GraphEvent) {
 	defer func() {
 		if r := recover(); r != nil {
-			mlog.Errorf("event handler panicked on %s: %v", event.Type, r)
+			mlog.Errorf("event handler panicked on %s: %v", event.GetEventType(), r)
 		}
 	}()
 	handler(event)

@@ -1,83 +1,325 @@
 package events
 
-import "time"
+import (
+	"time"
+)
 
-// EventType defines workflow event types.
+// ========== Event Types ==========
+
 type EventType string
 
 const (
-	EventGraphStarted       EventType = "graph_started"
-	EventGraphSucceeded     EventType = "graph_succeeded"
-	EventGraphFailed        EventType = "graph_failed"
-	EventNodeStarted        EventType = "node_started"
-	EventNodeSucceeded      EventType = "node_succeeded"
-	EventNodeFailed         EventType = "node_failed"
-	EventNodeRetrying       EventType = "node_retrying"
+	// Graph lifecycle events
+	EventGraphRunStarted          EventType = "graph_run_started"
+	EventGraphRunSucceeded        EventType = "graph_run_succeeded"
+	EventGraphRunFailed           EventType = "graph_run_failed"
+	EventGraphRunAborted          EventType = "graph_run_aborted"
+	EventGraphRunPaused           EventType = "graph_run_paused"
+	EventGraphRunResumed          EventType = "graph_run_resumed"
+	EventGraphRunPartialSucceeded EventType = "graph_run_partial_succeeded"
+
+	// Node execution events
+	EventNodeExecutionStarted   EventType = "node_execution_started"
+	EventNodeExecutionSucceeded EventType = "node_execution_succeeded"
+	EventNodeExecutionFailed    EventType = "node_execution_failed"
+	EventNodeExecutionRetrying  EventType = "node_execution_retrying"
+	EventNodeExecutionSkipped   EventType = "node_execution_skipped"
+
+	// Agent events
+	EventAgentLoopStarted  EventType = "agent_loop_started"
+	EventAgentLoopPending  EventType = "agent_loop_pending"
+	EventAgentLoopFinished EventType = "agent_loop_finished"
+	EventAgentMessage      EventType = "agent_message"
+
+	// Human input events
+	EventHumanInputRequired  EventType = "human_input_required"
+	EventHumanInputSubmitted EventType = "human_input_submitted"
+	EventHumanInputTimeout   EventType = "human_input_timeout"
+
+	// Iteration events
 	EventIterationStarted   EventType = "iteration_started"
 	EventIterationNext      EventType = "iteration_next"
 	EventIterationCompleted EventType = "iteration_completed"
-	EventLoopStarted        EventType = "loop_started"
-	EventLoopNext           EventType = "loop_next"
-	EventLoopCompleted      EventType = "loop_completed"
-	EventPauseRequested     EventType = "pause_requested"
-	EventResumed            EventType = "resumed"
-	EventTextChunk          EventType = "text_chunk"
+
+	// Loop events
+	EventLoopStarted   EventType = "loop_started"
+	EventLoopNext      EventType = "loop_next"
+	EventLoopCompleted EventType = "loop_completed"
+
+	// Streaming events
+	EventTextChunk       EventType = "text_chunk"
+	EventMessageReplace  EventType = "message_replace"
+	EventStreamCompleted EventType = "stream_completed"
+
+	// Parallel execution events
+	EventParallelBranchStarted   EventType = "parallel_branch_started"
+	EventParallelBranchCompleted EventType = "parallel_branch_completed"
 )
 
-// GraphEvent is the base event emitted by the workflow engine.
-type GraphEvent struct {
-	Type      EventType      `json:"type"`
-	Timestamp time.Time      `json:"timestamp"`
-	Data      map[string]any `json:"data,omitempty"`
+// ========== Event Interface ==========
+
+// GraphEvent is the interface all events implement.
+type GraphEvent interface {
+	GetEventType() EventType
+	GetEventTimestamp() time.Time
 }
 
-// NodeEvent is emitted during node execution.
-type NodeEvent struct {
-	GraphEvent
+// ========== Base Event ==========
+
+type BaseGraphEvent struct {
+	Type      EventType `json:"type"`
+	Timestamp time.Time `json:"timestamp"`
+}
+
+func newBaseEvent(eventType EventType) BaseGraphEvent {
+	return BaseGraphEvent{Type: eventType, Timestamp: time.Now()}
+}
+
+func (e BaseGraphEvent) GetEventType() EventType    { return e.Type }
+func (e BaseGraphEvent) GetEventTimestamp() time.Time { return e.Timestamp }
+
+// ========== Graph Events ==========
+
+type GraphRunStartedEvent struct {
+	BaseGraphEvent
+	GraphID       string         `json:"graph_id"`
+	WorkflowID    string         `json:"workflow_id"`
+	WorkflowRunID string         `json:"workflow_run_id"`
+	Inputs        map[string]any `json:"inputs,omitempty"`
+}
+
+func NewGraphRunStartedEvent(graphID, workflowID, workflowRunID string, inputs map[string]any) *GraphRunStartedEvent {
+	return &GraphRunStartedEvent{
+		BaseGraphEvent: newBaseEvent(EventGraphRunStarted),
+		GraphID: graphID, WorkflowID: workflowID, WorkflowRunID: workflowRunID, Inputs: inputs,
+	}
+}
+
+type GraphRunSucceededEvent struct {
+	BaseGraphEvent
+	GraphID       string         `json:"graph_id"`
+	WorkflowRunID string         `json:"workflow_run_id"`
+	Outputs       map[string]any `json:"outputs,omitempty"`
+	TotalTokens   int            `json:"total_tokens"`
+	TotalSteps    int            `json:"total_steps"`
+	ElapsedTime   float64        `json:"elapsed_time"`
+}
+
+type GraphRunFailedEvent struct {
+	BaseGraphEvent
+	GraphID       string  `json:"graph_id"`
+	WorkflowRunID string  `json:"workflow_run_id"`
+	Error         string  `json:"error"`
+	ElapsedTime   float64 `json:"elapsed_time"`
+}
+
+type GraphRunAbortedEvent struct {
+	BaseGraphEvent
+	GraphID       string `json:"graph_id"`
+	WorkflowRunID string `json:"workflow_run_id"`
+	Reason        string `json:"reason"`
+}
+
+type GraphRunPausedEvent struct {
+	BaseGraphEvent
+	GraphID       string `json:"graph_id"`
+	WorkflowRunID string `json:"workflow_run_id"`
+	NodeID        string `json:"node_id"`
+	ReasonType    string `json:"reason_type"`
+	FormID        string `json:"form_id,omitempty"`
+}
+
+type GraphRunResumedEvent struct {
+	BaseGraphEvent
+	GraphID       string `json:"graph_id"`
+	WorkflowRunID string `json:"workflow_run_id"`
+}
+
+type GraphRunPartialSucceededEvent struct {
+	BaseGraphEvent
+	GraphID       string         `json:"graph_id"`
+	WorkflowRunID string         `json:"workflow_run_id"`
+	Outputs       map[string]any `json:"outputs,omitempty"`
+	Exceptions    int            `json:"exceptions"`
+}
+
+// ========== Node Events ==========
+
+type NodeExecutionStartedEvent struct {
+	BaseGraphEvent
+	NodeID        string         `json:"node_id"`
+	NodeType      string         `json:"node_type"`
+	NodeTitle     string         `json:"node_title"`
+	PredecessorID string         `json:"predecessor_id,omitempty"`
+	Inputs        map[string]any `json:"inputs,omitempty"`
+	ParallelID    string         `json:"parallel_id,omitempty"`
+	ParallelIndex int            `json:"parallel_index,omitempty"`
+}
+
+type NodeExecutionSucceededEvent struct {
+	BaseGraphEvent
 	NodeID      string         `json:"node_id"`
 	NodeType    string         `json:"node_type"`
-	NodeTitle   string         `json:"node_title,omitempty"`
 	Inputs      map[string]any `json:"inputs,omitempty"`
 	Outputs     map[string]any `json:"outputs,omitempty"`
-	Error       string         `json:"error,omitempty"`
-	ElapsedTime float64        `json:"elapsed_time,omitempty"`
-	RetryCount  int            `json:"retry_count,omitempty"`
+	ProcessData map[string]any `json:"process_data,omitempty"`
+	Metadata    map[string]any `json:"metadata,omitempty"`
+	ElapsedTime float64        `json:"elapsed_time"`
+	ExecutionID string         `json:"execution_id,omitempty"`
 }
 
-// IterationEvent is emitted during iteration/loop execution.
-type IterationEvent struct {
-	GraphEvent
+type NodeExecutionFailedEvent struct {
+	BaseGraphEvent
+	NodeID      string  `json:"node_id"`
+	NodeType    string  `json:"node_type"`
+	Error       string  `json:"error"`
+	ElapsedTime float64 `json:"elapsed_time"`
+	ExecutionID string  `json:"execution_id,omitempty"`
+}
+
+type NodeExecutionRetryingEvent struct {
+	BaseGraphEvent
+	NodeID     string `json:"node_id"`
+	NodeType   string `json:"node_type"`
+	RetryCount int    `json:"retry_count"`
+	MaxRetries int    `json:"max_retries"`
+	Error      string `json:"error"`
+}
+
+type NodeExecutionSkippedEvent struct {
+	BaseGraphEvent
+	NodeID   string `json:"node_id"`
+	NodeType string `json:"node_type"`
+	Reason   string `json:"reason"`
+}
+
+// ========== Agent Events ==========
+
+type AgentLoopStartedEvent struct {
+	BaseGraphEvent
+	NodeID    string `json:"node_id"`
+	Iteration int    `json:"iteration"`
+}
+
+type AgentLoopPendingEvent struct {
+	BaseGraphEvent
+	NodeID    string `json:"node_id"`
+	Iteration int    `json:"iteration"`
+	ToolName  string `json:"tool_name,omitempty"`
+	ToolInput string `json:"tool_input,omitempty"`
+}
+
+type AgentLoopFinishedEvent struct {
+	BaseGraphEvent
+	NodeID    string `json:"node_id"`
+	Iteration int    `json:"iteration"`
+}
+
+type AgentMessageEvent struct {
+	BaseGraphEvent
+	NodeID      string `json:"node_id"`
+	Message     string `json:"message"`
+	MessageType string `json:"type"` // thought, action, observation
+}
+
+// ========== Human Input Events ==========
+
+type HumanInputRequiredEvent struct {
+	BaseGraphEvent
+	NodeID   string `json:"node_id"`
+	FormID   string `json:"form_id"`
+	FormKind string `json:"form_kind"`
+}
+
+type HumanInputSubmittedEvent struct {
+	BaseGraphEvent
+	NodeID         string         `json:"node_id"`
+	FormID         string         `json:"form_id"`
+	SelectedAction string         `json:"selected_action"`
+	FormData       map[string]any `json:"form_data"`
+}
+
+type HumanInputTimeoutEvent struct {
+	BaseGraphEvent
+	NodeID string `json:"node_id"`
+	FormID string `json:"form_id"`
+}
+
+// ========== Iteration Events ==========
+
+type IterationStartedEvent struct {
+	BaseGraphEvent
+	NodeID string `json:"node_id"`
+	Total  int    `json:"total"`
+}
+
+type IterationNextEvent struct {
+	BaseGraphEvent
+	NodeID string         `json:"node_id"`
+	Index  int            `json:"index"`
+	Output map[string]any `json:"output,omitempty"`
+}
+
+type IterationCompletedEvent struct {
+	BaseGraphEvent
+	NodeID  string `json:"node_id"`
+	Outputs []any  `json:"outputs"`
+}
+
+// ========== Loop Events ==========
+
+type LoopStartedEvent struct {
+	BaseGraphEvent
+	NodeID   string `json:"node_id"`
+	MaxLoops int    `json:"max_loops"`
+}
+
+type LoopNextEvent struct {
+	BaseGraphEvent
 	NodeID string `json:"node_id"`
 	Index  int    `json:"index"`
-	Total  int    `json:"total,omitempty"`
 }
 
-// TextChunkEvent is emitted for streaming text output.
+type LoopCompletedEvent struct {
+	BaseGraphEvent
+	NodeID string `json:"node_id"`
+	Loops  int    `json:"loops"`
+}
+
+// ========== Stream Events ==========
+
 type TextChunkEvent struct {
-	GraphEvent
+	BaseGraphEvent
+	NodeID  string `json:"node_id"`
+	Text    string `json:"text"`
+	FromVar string `json:"from_variable_selector,omitempty"`
+}
+
+type MessageReplaceEvent struct {
+	BaseGraphEvent
 	NodeID string `json:"node_id"`
 	Text   string `json:"text"`
 }
 
-// PauseEvent is emitted when workflow is paused.
-type PauseEvent struct {
-	GraphEvent
-	NodeID     string `json:"node_id"`
-	ReasonType string `json:"reason_type"`
-	FormID     string `json:"form_id,omitempty"`
-	Message    string `json:"message,omitempty"`
+type StreamCompletedEvent struct {
+	BaseGraphEvent
+	NodeID           string `json:"node_id"`
+	EdgeSourceHandle string `json:"edge_source_handle,omitempty"`
 }
 
-// NewGraphEvent creates a new graph-level event.
-func NewGraphEvent(eventType EventType, data map[string]any) *GraphEvent {
-	return &GraphEvent{Type: eventType, Timestamp: time.Now(), Data: data}
+// ========== Parallel Events ==========
+
+type ParallelBranchStartedEvent struct {
+	BaseGraphEvent
+	ParallelID  string `json:"parallel_id"`
+	BranchIndex int    `json:"branch_index"`
+	StartNodeID string `json:"start_node_id"`
 }
 
-// NewNodeEvent creates a new node-level event.
-func NewNodeEvent(eventType EventType, nodeID, nodeType string) *NodeEvent {
-	return &NodeEvent{
-		GraphEvent: GraphEvent{Type: eventType, Timestamp: time.Now()},
-		NodeID:     nodeID,
-		NodeType:   nodeType,
-	}
+type ParallelBranchCompletedEvent struct {
+	BaseGraphEvent
+	ParallelID  string `json:"parallel_id"`
+	BranchIndex int    `json:"branch_index"`
+	EndNodeID   string `json:"end_node_id"`
+	Error       string `json:"error,omitempty"`
 }

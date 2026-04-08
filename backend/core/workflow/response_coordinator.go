@@ -9,24 +9,24 @@ import (
 // ResponseCoordinator manages ordered streaming responses from parallel execution.
 type ResponseCoordinator struct {
 	mu       sync.Mutex
-	buffer   map[string][]*events.GraphEvent // nodeID -> buffered events
+	buffer   map[string][]events.GraphEvent // nodeID -> buffered events
 	order    []string                         // expected node ordering
 	position int                              // current emit position
-	outCh    chan *events.GraphEvent
+	outCh    chan events.GraphEvent
 }
 
 // NewResponseCoordinator creates a coordinator with expected node execution order.
 func NewResponseCoordinator(nodeOrder []string, bufferSize int) *ResponseCoordinator {
 	return &ResponseCoordinator{
-		buffer:   make(map[string][]*events.GraphEvent),
+		buffer:   make(map[string][]events.GraphEvent),
 		order:    nodeOrder,
 		position: 0,
-		outCh:    make(chan *events.GraphEvent, bufferSize),
+		outCh:    make(chan events.GraphEvent, bufferSize),
 	}
 }
 
 // Submit adds an event from a node. Events are buffered until the node's turn to emit.
-func (rc *ResponseCoordinator) Submit(nodeID string, event *events.GraphEvent) {
+func (rc *ResponseCoordinator) Submit(nodeID string, event events.GraphEvent) {
 	rc.mu.Lock()
 	defer rc.mu.Unlock()
 
@@ -48,7 +48,7 @@ func (rc *ResponseCoordinator) MarkNodeComplete(nodeID string) {
 }
 
 // Events returns the ordered event channel.
-func (rc *ResponseCoordinator) Events() <-chan *events.GraphEvent {
+func (rc *ResponseCoordinator) Events() <-chan events.GraphEvent {
 	return rc.outCh
 }
 

@@ -10,7 +10,7 @@ type Layer interface {
 	OnGraphEnd(graphID string, outputs map[string]any, err error)
 	OnNodeRunStart(nodeID, nodeType string, inputs map[string]any)
 	OnNodeRunEnd(nodeID, nodeType string, outputs map[string]any, err error)
-	OnEvent(event *events.GraphEvent)
+	OnEvent(event events.GraphEvent)
 }
 
 // BaseLayer provides default no-op implementations.
@@ -20,7 +20,7 @@ func (l *BaseLayer) OnGraphStart(graphID string, inputs map[string]any)         
 func (l *BaseLayer) OnGraphEnd(graphID string, outputs map[string]any, err error)           {}
 func (l *BaseLayer) OnNodeRunStart(nodeID, nodeType string, inputs map[string]any)          {}
 func (l *BaseLayer) OnNodeRunEnd(nodeID, nodeType string, outputs map[string]any, err error) {}
-func (l *BaseLayer) OnEvent(event *events.GraphEvent)                                       {}
+func (l *BaseLayer) OnEvent(event events.GraphEvent)                                        {}
 
 // LayerStack manages an ordered stack of layers.
 type LayerStack struct {
@@ -66,7 +66,7 @@ func (s *LayerStack) OnNodeRunEnd(nodeID, nodeType string, outputs map[string]an
 }
 
 // OnEvent broadcasts an event to all layers.
-func (s *LayerStack) OnEvent(event *events.GraphEvent) {
+func (s *LayerStack) OnEvent(event events.GraphEvent) {
 	for _, l := range s.layers {
 		l.OnEvent(event)
 	}

@@ -26,6 +26,15 @@ func InitTasks(workers int) {
 	defaultQueue.Register(TaskSegmentEnable, HandleSegmentEnable)
 	defaultQueue.Register(TaskSegmentDisable, HandleSegmentDisable)
 
+	// Workflow tasks
+	defaultQueue.Register(TaskWorkflowExecution, HandleWorkflowExecution)
+	defaultQueue.Register(TaskWorkflowNodeExecution, HandleWorkflowNodeExecution)
+
+	// Mail tasks
+	defaultQueue.Register(TaskMailRegistration, HandleMailRegistration)
+	defaultQueue.Register(TaskMailResetPassword, HandleMailResetPassword)
+	defaultQueue.Register(TaskMailInviteMember, HandleMailInviteMember)
+
 	// Start queue workers
 	defaultQueue.Start()
 

@@ -24,6 +24,11 @@ const (
 	// Ops
 	TaskOpsTrace = "ops:trace"
 
+	// Mail tasks
+	TaskMailRegistration  = "mail:registration"
+	TaskMailResetPassword = "mail:reset_password"
+	TaskMailInviteMember  = "mail:invite_member"
+
 	// Cleanup (scheduled)
 	TaskCleanMessages       = "clean:messages"
 	TaskCleanWorkflowRuns   = "clean:workflow_runs"

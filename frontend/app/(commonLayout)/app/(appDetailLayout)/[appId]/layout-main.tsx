@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { NavIcon } from '@/app/components/app-sidebar/nav-link'
 import type { App } from '@/types/app'

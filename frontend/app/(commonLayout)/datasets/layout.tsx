@@ -1,13 +1,12 @@
-'use client'
-
 import { useEffect } from 'react'
+import { Outlet } from 'react-router'
 import Loading from '@/app/components/base/loading'
 import { useAppContext } from '@/context/app-context'
 import { ExternalApiPanelProvider } from '@/context/external-api-panel-context'
 import { ExternalKnowledgeApiProvider } from '@/context/external-knowledge-api-context'
 import { useRouter } from '@/next/navigation'
 
-export default function DatasetsLayout({ children }: { children: React.ReactNode }) {
+export default function DatasetsLayout() {
   const { isCurrentWorkspaceEditor, isCurrentWorkspaceDatasetOperator, currentWorkspace, isLoadingCurrentWorkspace } = useAppContext()
   const router = useRouter()
   const shouldRedirect = !isLoadingCurrentWorkspace
@@ -29,7 +28,7 @@ export default function DatasetsLayout({ children }: { children: React.ReactNode
   return (
     <ExternalKnowledgeApiProvider>
       <ExternalApiPanelProvider>
-        {children}
+        <Outlet />
       </ExternalApiPanelProvider>
     </ExternalKnowledgeApiProvider>
   )

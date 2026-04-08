@@ -1,4 +1,4 @@
-'use client'
+import { Outlet } from 'react-router'
 import Loading from '@/app/components/base/loading'
 
 import Header from '@/app/signin/_header'
@@ -8,7 +8,7 @@ import useDocumentTitle from '@/hooks/use-document-title'
 import { useIsLogin } from '@/service/use-common'
 import { cn } from '@/utils/classnames'
 
-export default function SignInLayout({ children }: any) {
+export default function SignInLayout() {
   const { systemFeatures } = useGlobalPublicStore()
   useDocumentTitle('')
   const { isLoading, data: loginData } = useIsLogin()
@@ -31,10 +31,10 @@ export default function SignInLayout({ children }: any) {
               {isLoggedIn
                 ? (
                     <AppContextProvider>
-                      {children}
+                      <Outlet />
                     </AppContextProvider>
                   )
-                : children}
+                : <Outlet />}
             </div>
           </div>
           {systemFeatures.branding.enabled === false && (

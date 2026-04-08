@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react'
 import * as React from 'react'
+import { Outlet } from 'react-router'
 import { AppInitializer } from '@/app/components/app-initializer'
 import AmplitudeProvider from '@/app/components/base/amplitude'
 import GA, { GaType } from '@/app/components/base/ga'
@@ -10,7 +10,7 @@ import { ModalContextProvider } from '@/context/modal-context-provider'
 import { ProviderContextProvider } from '@/context/provider-context-provider'
 import Header from './header'
 
-const Layout = ({ children }: { children: ReactNode }) => {
+const Layout = () => {
   return (
     <>
       <GA gaType={GaType.admin} />
@@ -24,7 +24,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
                   <Header />
                 </HeaderWrapper>
                 <div className="relative flex h-0 shrink-0 grow flex-col overflow-y-auto bg-components-panel-bg">
-                  {children}
+                  <Outlet />
                 </div>
               </ModalContextProvider>
             </ProviderContextProvider>

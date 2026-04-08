@@ -1,12 +1,10 @@
-'use client'
-
-import type { PropsWithChildren } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Outlet } from 'react-router'
 import { useGlobalPublicStore } from '@/context/global-public-context'
 import useDocumentTitle from '@/hooks/use-document-title'
 import { cn } from '@/utils/classnames'
 
-export default function SignInLayout({ children }: PropsWithChildren) {
+export default function SignInLayout() {
   const { t } = useTranslation()
   const systemFeatures = useGlobalPublicStore(s => s.systemFeatures)
   useDocumentTitle(t('webapp.login', { ns: 'login' }))
@@ -17,7 +15,7 @@ export default function SignInLayout({ children }: PropsWithChildren) {
           {/* <Header /> */}
           <div className={cn('flex w-full grow flex-col items-center justify-center px-6 md:px-[108px]')}>
             <div className="flex justify-center md:w-[440px] lg:w-[600px]">
-              {children}
+              <Outlet />
             </div>
           </div>
           {systemFeatures.branding.enabled === false && (

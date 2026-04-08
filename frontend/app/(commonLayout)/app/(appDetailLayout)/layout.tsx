@@ -1,21 +1,14 @@
-'use client'
-import type { FC } from 'react'
 import * as React from 'react'
 import { useTranslation } from 'react-i18next'
+import { Outlet } from 'react-router'
 import useDocumentTitle from '@/hooks/use-document-title'
 
-export type IAppDetail = {
-  children: React.ReactNode
-}
-
-const AppDetail: FC<IAppDetail> = ({ children }) => {
+const AppDetail = () => {
   const { t } = useTranslation()
   useDocumentTitle(t('menus.appDetail', { ns: 'common' }))
 
   return (
-    <>
-      {children}
-    </>
+    <Outlet />
   )
 }
 

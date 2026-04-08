@@ -1,4 +1,3 @@
-'use client'
 import type { RemixiconComponentType } from '@remixicon/react'
 import type { FC } from 'react'
 import {

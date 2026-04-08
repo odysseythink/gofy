@@ -1,10 +1,10 @@
-'use client'
+import { Outlet } from 'react-router'
 import Header from '@/app/signin/_header'
 
 import { useGlobalPublicStore } from '@/context/global-public-context'
 import { cn } from '@/utils/classnames'
 
-export default function SignInLayout({ children }: any) {
+export default function SignInLayout() {
   const { systemFeatures } = useGlobalPublicStore()
   return (
     <>
@@ -20,7 +20,7 @@ export default function SignInLayout({ children }: any) {
           }
           >
             <div className="flex w-[400px] flex-col">
-              {children}
+              <Outlet />
             </div>
           </div>
           {!systemFeatures.branding.enabled && (

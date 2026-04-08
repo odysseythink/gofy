@@ -1,14 +1,8 @@
+import { Outlet, useParams } from 'react-router'
 import Main from './layout-main'
 
-const AppDetailLayout = async (props: {
-  children: React.ReactNode
-  params: Promise<{ appId: string }>
-}) => {
-  const {
-    children,
-    params,
-  } = props
-
-  return <Main appId={(await params).appId}>{children}</Main>
+const AppDetailLayout = () => {
+  const { appId } = useParams<{ appId: string }>()
+  return <Main appId={appId!}><Outlet /></Main>
 }
 export default AppDetailLayout

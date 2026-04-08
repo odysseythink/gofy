@@ -1,16 +1,8 @@
+import { Outlet, useParams } from 'react-router'
 import Main from './layout-main'
 
-const DatasetDetailLayout = async (
-  props: {
-    children: React.ReactNode
-    params: Promise<{ datasetId: string }>
-  },
-) => {
-  const {
-    children,
-    params,
-  } = props
-
-  return <Main datasetId={(await params).datasetId}>{children}</Main>
+const DatasetDetailLayout = () => {
+  const { datasetId } = useParams<{ datasetId: string }>()
+  return <Main datasetId={datasetId!}><Outlet /></Main>
 }
 export default DatasetDetailLayout

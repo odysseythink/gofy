@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react'
 import * as React from 'react'
+import { Outlet } from 'react-router'
 import { AppInitializer } from '@/app/components/app-initializer'
 import InSiteMessageNotification from '@/app/components/app/in-site-message/notification'
 import AmplitudeProvider from '@/app/components/base/amplitude'
@@ -17,7 +17,7 @@ import PartnerStack from '../components/billing/partner-stack'
 import Splash from '../components/splash'
 import RoleRouteGuard from './role-route-guard'
 
-const Layout = ({ children }: { children: ReactNode }) => {
+const Layout = () => {
   return (
     <>
       <GA gaType={GaType.admin} />
@@ -31,7 +31,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
                   <Header />
                 </HeaderWrapper>
                 <RoleRouteGuard>
-                  {children}
+                  <Outlet />
                 </RoleRouteGuard>
                 <InSiteMessageNotification />
                 <PartnerStack />

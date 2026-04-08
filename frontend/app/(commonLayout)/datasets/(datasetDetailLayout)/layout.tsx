@@ -1,16 +1,10 @@
-import type { FC } from 'react'
 import * as React from 'react'
+import { Outlet } from 'react-router'
 
-export type IDatasetDetail = {
-  children: React.ReactNode
-}
-
-const AppDetail: FC<IDatasetDetail> = ({ children }) => {
+const DatasetDetail = () => {
   return (
-    <>
-      {children}
-    </>
+    <Outlet />
   )
 }
 
-export default React.memo(AppDetail)
+export default React.memo(DatasetDetail)

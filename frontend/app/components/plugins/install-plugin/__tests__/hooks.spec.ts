@@ -15,10 +15,6 @@ vi.mock('@/app/components/base/ui/toast', () => ({
   }),
 }))
 
-vi.mock('@/config', () => ({
-  GITHUB_ACCESS_TOKEN: '',
-}))
-
 const mockUploadGitHub = vi.fn()
 vi.mock('@/service/plugins', () => ({
   uploadGitHub: (...args: unknown[]) => mockUploadGitHub(...args),

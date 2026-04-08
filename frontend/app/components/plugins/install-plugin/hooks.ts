@@ -1,6 +1,5 @@
 import type { GitHubRepoReleaseResponse } from '../types'
 import { toast } from '@/app/components/base/ui/toast'
-import { GITHUB_ACCESS_TOKEN } from '@/config'
 import { uploadGitHub } from '@/service/plugins'
 import { compareVersion, getLatestVersion } from '@/utils/semver'
 
@@ -17,22 +16,12 @@ const formatReleases = (releases: any) => {
 export const useGitHubReleases = () => {
   const fetchReleases = async (owner: string, repo: string) => {
     try {
-      if (!GITHUB_ACCESS_TOKEN) {
-        // Fetch releases without authentication from client
-        const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/releases`)
-        if (!res.ok)
-          throw new Error('Failed to fetch repository releases')
-        const data = await res.json()
-        return formatReleases(data)
-      }
-      else {
-        // Fetch releases with authentication from server
-        const res = await fetch(`/repos/${owner}/${repo}/releases`)
-        const bodyJson = await res.json()
-        if (bodyJson.status !== 200)
-          throw new Error(bodyJson.data.message)
-        return formatReleases(bodyJson.data)
-      }
+      // Fetch releases via Go backend proxy (handles GitHub auth token server-side)
+      const res = await fetch(`/api/repos/${owner}/${repo}/releases`)
+      if (!res.ok)
+        throw new Error('Failed to fetch repository releases')
+      const data = await res.json()
+      return formatReleases(data)
     }
     catch (error) {
       if (error instanceof Error) {

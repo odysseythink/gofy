@@ -1,12 +1,14 @@
 package router
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"mlib.com/confy"
 	v1 "mlib.com/gofy/server/main/link/api/v1"
 	"mlib.com/gofy/server/main/link/middleware"
 	"mlib.com/mlog"
@@ -250,6 +252,36 @@ func InitRouters() *gin.Engine {
 		// authapiRouter.POST("/workflows/logs", v1.ApiGroupApp.WorkflowRunApi.WorkflowAppLogApi)
 		noauthapiRouter.POST("chat-messages", v1.ApiGroupApp.WorkflowRunApi.AppRun)
 	}
+
+	// GitHub API proxy (replaces frontend Next.js API route)
+	r.GET("/api/repos/:owner/:repo/releases", func(c *gin.Context) {
+		owner := c.Param("owner")
+		repo := c.Param("repo")
+
+		url := fmt.Sprintf("https://api.github.com/repos/%s/%s/releases", owner, repo)
+		req, err := http.NewRequest("GET", url, nil)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		token := confy.GetWithDefault[string]("github.access_token", "")
+		if token != "" {
+			req.Header.Set("Authorization", "Bearer "+token)
+		}
+		req.Header.Set("X-GitHub-Api-Version", "2022-11-28")
+		req.Header.Set("Accept", "application/vnd.github+json")
+
+		client := &http.Client{}
+		resp, err := client.Do(req)
+		if err != nil {
+			c.JSON(http.StatusBadGateway, gin.H{"error": err.Error()})
+			return
+		}
+		defer resp.Body.Close()
+
+		c.DataFromReader(resp.StatusCode, resp.ContentLength, resp.Header.Get("Content-Type"), resp.Body, nil)
+	})
 
 	mlog.Info("router register success")
 	return r

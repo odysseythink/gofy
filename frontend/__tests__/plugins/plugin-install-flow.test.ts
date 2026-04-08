@@ -7,10 +7,6 @@
  */
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-vi.mock('@/config', () => ({
-  GITHUB_ACCESS_TOKEN: '',
-}))
-
 const mockToastNotify = vi.fn()
 vi.mock('@/app/components/base/ui/toast', () => ({
   toast: Object.assign((message: string, options?: { type?: string }) => mockToastNotify({ type: options?.type, message }), {

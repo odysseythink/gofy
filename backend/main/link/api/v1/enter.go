@@ -27,6 +27,7 @@ type ApiGroup struct {
 	PluginApi
 	RuleGenerateApi
 	WebApi
+	DatasetDocumentApi
 }
 
 var ApiGroupApp = new(ApiGroup)

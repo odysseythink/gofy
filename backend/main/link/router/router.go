@@ -224,6 +224,19 @@ func InitRouters() *gin.Engine {
 		authapiRouter.GET("datasets", v1.ApiGroupApp.DatasetApi.DatasetList)
 		authapiRouter.GET("datasets/external-knowledge-api", v1.ApiGroupApp.DatasetApi.ExternalKnowledgeApiList)
 
+		// Dataset document & segment routes
+		docApi := v1.ApiGroupApp.DatasetDocumentApi
+		authapiRouter.GET("datasets/:dataset_id/documents", docApi.GetDocuments)
+		authapiRouter.DELETE("datasets/:dataset_id/documents/:document_id", docApi.DeleteDocument)
+		authapiRouter.POST("datasets/:dataset_id/documents/:document_id/rename", docApi.RenameDocument)
+		authapiRouter.PATCH("datasets/:dataset_id/documents/:document_id/pause", docApi.PauseDocument)
+		authapiRouter.PATCH("datasets/:dataset_id/documents/:document_id/recover", docApi.RecoverDocument)
+		authapiRouter.POST("datasets/:dataset_id/documents/status", docApi.BatchUpdateStatus)
+		authapiRouter.GET("datasets/:dataset_id/documents/:document_id/segments", docApi.GetSegments)
+		authapiRouter.POST("datasets/:dataset_id/documents/:document_id/segments", docApi.CreateSegment)
+		authapiRouter.DELETE("datasets/:dataset_id/documents/:document_id/segments/:segment_id", docApi.DeleteSegment)
+		authapiRouter.POST("datasets/:dataset_id/hit-testing", docApi.HitTesting)
+
 		authapiRouter.GET("tags", v1.ApiGroupApp.TagApi.List)
 		authapiRouter.POST("tags", v1.ApiGroupApp.TagApi.Add)
 		authapiRouter.PATCH("tags/:tag_id", v1.ApiGroupApp.TagApi.Update)

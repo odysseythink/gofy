@@ -45,6 +45,20 @@ type ServiceGroup struct {
 	Annotation            *AnnotationService
 	Metadata              *MetadataService
 	WebappAuth            *WebappAuthService
+	Vector                *VectorService
+	HitTesting            *HitTestingService
+	ApiBasedExtension     *ApiBasedExtensionService
+	CodeBasedExtension    *CodeBasedExtensionService
+	AdvancedPromptTemplate *AdvancedPromptTemplateService
+	CreditPool            *CreditPoolService
+	EndUser               *EndUserService
+	Audio                 *AudioService
+	Agent                 *AgentService
+	SavedMessage          *SavedMessageService
+	RecommendedApp        *RecommendedAppService
+	Operation             *OperationService
+	ConversationVariable  *ConversationVariableService
+	Workspace             *WorkspaceService
 }
 
 var ServiceGroupApp = ServiceGroup{
@@ -90,4 +104,18 @@ var ServiceGroupApp = ServiceGroup{
 	Annotation:            &AnnotationService{},
 	Metadata:              &MetadataService{},
 	WebappAuth:            &WebappAuthService{},
+	Vector:                &VectorService{},
+	HitTesting:            &HitTestingService{},
+	ApiBasedExtension:     &ApiBasedExtensionService{},
+	CodeBasedExtension:    &CodeBasedExtensionService{},
+	AdvancedPromptTemplate: &AdvancedPromptTemplateService{},
+	CreditPool:            &CreditPoolService{},
+	EndUser:               &EndUserService{},
+	Audio:                 &AudioService{},
+	Agent:                 &AgentService{},
+	SavedMessage:          &SavedMessageService{},
+	RecommendedApp:        &RecommendedAppService{},
+	Operation:             &OperationService{},
+	ConversationVariable:  &ConversationVariableService{},
+	Workspace:             &WorkspaceService{},
 }

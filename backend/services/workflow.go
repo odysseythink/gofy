@@ -477,3 +477,73 @@ func (s *WorkflowService) ValidateGraphStructure(graph map[string]any) error {
 
 	return nil
 }
+
+// === Human Input Form Support ===
+
+func (s *WorkflowService) GetHumanInputFormPreview(appModel *models.App, nodeID string) (map[string]any, error) {
+	draft := s.GetDraftWorkflow(appModel)
+	if draft == nil {
+		return nil, fmt.Errorf("draft workflow not found")
+	}
+	// Parse graph to find the human input node
+	var graph map[string]any
+	json.Unmarshal([]byte(draft.Graph), &graph)
+	nodes, _ := graph["nodes"].([]any)
+	for _, n := range nodes {
+		node, _ := n.(map[string]any)
+		if nodeData, ok := node["data"].(map[string]any); ok {
+			if id, _ := node["id"].(string); id == nodeID {
+				return map[string]any{
+					"node_id":   nodeID,
+					"node_type": node["type"],
+					"form_data": nodeData,
+				}, nil
+			}
+		}
+	}
+	return nil, fmt.Errorf("node %s not found", nodeID)
+}
+
+func (s *WorkflowService) GetPublishedWorkflowByID(appModel *models.App, workflowID string) *models.Workflow {
+	var workflow models.Workflow
+	if err := dbengine.Instance().DB.Where("id = ? AND app_id = ? AND version != ?", workflowID, appModel.ID, "draft").First(&workflow).Error; err != nil {
+		return nil
+	}
+	return &workflow
+}
+
+// === Credential Validation ===
+
+func (s *WorkflowService) ValidateWorkflowCredentials(workflow *models.Workflow) error {
+	if workflow == nil {
+		return fmt.Errorf("workflow is nil")
+	}
+	var graph map[string]any
+	if err := json.Unmarshal([]byte(workflow.Graph), &graph); err != nil {
+		return fmt.Errorf("invalid graph JSON: %w", err)
+	}
+	nodes, _ := graph["nodes"].([]any)
+	for _, n := range nodes {
+		node, _ := n.(map[string]any)
+		nodeType, _ := node["type"].(string)
+		if nodeType == "llm" {
+			data, _ := node["data"].(map[string]any)
+			provider, _ := data["model"].(map[string]any)["provider"].(string)
+			model, _ := data["model"].(map[string]any)["name"].(string)
+			if provider == "" || model == "" {
+				nodeID, _ := node["id"].(string)
+				return fmt.Errorf("LLM node %s has no model configured", nodeID)
+			}
+		}
+	}
+	return nil
+}
+
+func (s *WorkflowService) ConvertToWorkflow(appModel *models.App, account *models.Account) (*models.App, error) {
+	if appModel.Mode == models.AppMode_WORKFLOW || appModel.Mode == models.AppMode_ADVANCED_CHAT {
+		return nil, fmt.Errorf("app is already a workflow type")
+	}
+	// Update app mode
+	dbengine.Instance().DB.Model(appModel).Update("mode", "workflow")
+	return appModel, nil
+}

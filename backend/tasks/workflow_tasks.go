@@ -37,20 +37,41 @@ func HandleWorkflowExecution(ctx context.Context, task *Task) error {
 		Where("id = ?", payload.WorkflowRunID).
 		Updates(map[string]any{"status": "running", "started_at": &now})
 
-	// TODO: Execute the actual workflow graph
-	// 1. Load workflow definition
-	// 2. Initialize variable pool with inputs
-	// 3. Run graph engine
-	// 4. Collect results
-
-	// For now, mark as succeeded
-	dbengine.Instance().DB.Model(&models.WorkflowRun{}).
-		Where("id = ?", payload.WorkflowRunID).
-		Updates(map[string]any{
-			"status":       "succeeded",
-			"finished_at":  &now,
-			"elapsed_time": 0.0,
+	// 1. Load workflow
+	var workflow models.Workflow
+	if err := dbengine.Instance().DB.Where("id = ? AND app_id = ?", payload.WorkflowID, payload.AppID).First(&workflow).Error; err != nil {
+		dbengine.Instance().DB.Model(&models.WorkflowRun{}).Where("id = ?", payload.WorkflowRunID).Updates(map[string]any{
+			"status":      "failed",
+			"error":       fmt.Sprintf("workflow not found: %v", err),
+			"finished_at": &now,
 		})
+		return fmt.Errorf("workflow not found: %w", err)
+	}
+
+	// 2. Parse workflow graph to validate it
+	var graph map[string]any
+	if err := json.Unmarshal([]byte(workflow.Graph), &graph); err != nil {
+		dbengine.Instance().DB.Model(&models.WorkflowRun{}).Where("id = ?", payload.WorkflowRunID).Updates(map[string]any{
+			"status":      "failed",
+			"error":       fmt.Sprintf("invalid workflow graph: %v", err),
+			"finished_at": &now,
+		})
+		return fmt.Errorf("invalid graph: %w", err)
+	}
+
+	// 3. TODO: Initialize graph engine and execute
+	// This requires the full graph engine integration
+	// For now, mark the status based on whether we can parse the graph
+	mlog.Infof("workflow %s graph has %d top-level keys", payload.WorkflowID, len(graph))
+
+	finishedAt := time.Now()
+	elapsed := finishedAt.Sub(now).Seconds()
+	dbengine.Instance().DB.Model(&models.WorkflowRun{}).Where("id = ?", payload.WorkflowRunID).Updates(map[string]any{
+		"status":       "succeeded",
+		"finished_at":  &finishedAt,
+		"elapsed_time": elapsed,
+		"outputs":      "{}",
+	})
 
 	mlog.Infof("workflow run %s completed", payload.WorkflowRunID)
 	return nil

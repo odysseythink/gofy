@@ -31,11 +31,13 @@ func HandleSegmentCreate(ctx context.Context, task *Task) error {
 	dbengine.Instance().DB.Where("id IN ?", payload.SegmentIDs).Find(&segments)
 
 	for _, seg := range segments {
-		// TODO: Generate embedding and add to vector store
-		// Update segment status
+		// TODO: Generate embedding vector using model_runtime
+		// For now just mark as completed with index node
 		dbengine.Instance().DB.Model(&seg).Updates(map[string]any{
-			"status":  "completed",
-			"enabled": true,
+			"status":        "completed",
+			"enabled":       true,
+			"index_node_id": seg.IndexNodeID,
+			"tokens":        len([]rune(seg.Content)) / 2,
 		})
 	}
 

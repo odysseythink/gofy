@@ -35,6 +35,7 @@ type ServiceGroup struct {
 	ToolsTransform        *ToolsTransformService
 	ExternalDataset       *ExternalDatasetService
 	Document              *DocumentService
+	Segment               *SegmentService
 }
 
 var ServiceGroupApp = ServiceGroup{
@@ -70,4 +71,5 @@ var ServiceGroupApp = ServiceGroup{
 	ToolsTransform:        &ToolsTransformService{},
 	ExternalDataset:       &ExternalDatasetService{},
 	Document:              &DocumentService{},
+	Segment:               &SegmentService{},
 }

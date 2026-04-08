@@ -251,6 +251,18 @@ func InitRouters() *gin.Engine {
 		// authapiRouter.POST("/workflows/tasks/<string:task_id>/stop", v1.ApiGroupApp.WorkflowRunApi.WorkflowTaskStopApi)
 		// authapiRouter.POST("/workflows/logs", v1.ApiGroupApp.WorkflowRunApi.WorkflowAppLogApi)
 		noauthapiRouter.POST("chat-messages", v1.ApiGroupApp.WorkflowRunApi.AppRun)
+
+		// Web/end-user API routes
+		webApi := v1.ApiGroupApp.WebApi
+		noauthapiRouter.GET("conversations", webApi.GetConversations)
+		noauthapiRouter.DELETE("conversations/:conversation_id", webApi.DeleteConversation)
+		noauthapiRouter.POST("conversations/:conversation_id/name", webApi.RenameConversation)
+		noauthapiRouter.GET("messages", webApi.GetMessages)
+		noauthapiRouter.POST("messages/:message_id/feedbacks", webApi.MessageFeedback)
+		noauthapiRouter.GET("messages/:message_id/suggested", webApi.GetSuggestedQuestions)
+		noauthapiRouter.POST("files/upload", webApi.UploadFile)
+		noauthapiRouter.GET("parameters", webApi.GetAppParameters)
+		noauthapiRouter.GET("meta", webApi.GetAppMeta)
 	}
 
 	// GitHub API proxy (replaces frontend Next.js API route)

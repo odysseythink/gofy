@@ -26,6 +26,7 @@ type ApiGroup struct {
 	ModelsApi
 	PluginApi
 	RuleGenerateApi
+	WebApi
 }
 
 var ApiGroupApp = new(ApiGroup)

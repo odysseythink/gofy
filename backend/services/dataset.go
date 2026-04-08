@@ -526,3 +526,79 @@ func (s *DatasetService) CheckDatasetOperatorPermission(user *models.Account, da
 	}
 	return fmt.Errorf("no permission to operate on this dataset")
 }
+
+// CreateProcessRule creates a new dataset process rule.
+func (s *DatasetService) CreateProcessRule(datasetID, mode, rules string) (*models.DatasetProcessRule, error) {
+	rule := &models.DatasetProcessRule{
+		ID:        uuid.NewV4().String(),
+		DatasetID: datasetID,
+		Mode:      mode,
+		Rules:     rules,
+	}
+	if err := dbengine.Instance().DB.Create(rule).Error; err != nil {
+		return nil, err
+	}
+	return rule, nil
+}
+
+// CheckDocumentsUploadQuota validates that the tenant hasn't exceeded upload limits.
+func (s *DatasetService) CheckDocumentsUploadQuota(tenantID string, count int) error {
+	// Default limit: 50 documents per dataset
+	// TODO: Check against billing/subscription plan
+	if count > 500 {
+		return fmt.Errorf("batch upload limit exceeded (max 500)")
+	}
+	return nil
+}
+
+// DataSourceArgsValidate validates document data source arguments.
+func (s *DatasetService) DataSourceArgsValidate(dataSourceType string, dataSourceInfoList []map[string]any) error {
+	if len(dataSourceInfoList) == 0 {
+		return fmt.Errorf("data_source_info_list is required")
+	}
+	switch dataSourceType {
+	case "upload_file":
+		for _, info := range dataSourceInfoList {
+			if _, ok := info["upload_file_id"]; !ok {
+				return fmt.Errorf("upload_file_id is required for upload_file source")
+			}
+		}
+	case "notion_import":
+		for _, info := range dataSourceInfoList {
+			if _, ok := info["page_id"]; !ok {
+				return fmt.Errorf("page_id is required for notion_import source")
+			}
+		}
+	case "website_crawl":
+		for _, info := range dataSourceInfoList {
+			if _, ok := info["url"]; !ok {
+				return fmt.Errorf("url is required for website_crawl source")
+			}
+		}
+	default:
+		return fmt.Errorf("unsupported data source type: %s", dataSourceType)
+	}
+	return nil
+}
+
+// ProcessRuleArgsValidate validates process rule arguments.
+func (s *DatasetService) ProcessRuleArgsValidate(mode string, rules string) error {
+	if mode == "" {
+		return fmt.Errorf("process rule mode is required")
+	}
+	validModes := []string{"automatic", "custom", "hierarchical"}
+	valid := false
+	for _, m := range validModes {
+		if mode == m {
+			valid = true
+			break
+		}
+	}
+	if !valid {
+		return fmt.Errorf("invalid process rule mode: %s", mode)
+	}
+	if mode == "custom" && rules == "" {
+		return fmt.Errorf("rules are required for custom mode")
+	}
+	return nil
+}

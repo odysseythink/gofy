@@ -11,6 +11,7 @@ import (
 	documentextractor "mlib.com/gofy/server/core/workflow/nodes/document_extractor"
 	"mlib.com/gofy/server/core/workflow/nodes/end"
 	httprequest "mlib.com/gofy/server/core/workflow/nodes/http_request"
+	humaninput "mlib.com/gofy/server/core/workflow/nodes/human_input"
 	ifelse "mlib.com/gofy/server/core/workflow/nodes/if_else"
 	"mlib.com/gofy/server/core/workflow/nodes/iteration"
 	knowledgeretrieval "mlib.com/gofy/server/core/workflow/nodes/knowledge_retrieval"
@@ -30,6 +31,7 @@ import (
 	documentextractornodesentities "mlib.com/gofy/server/entities/nodes/document_extractor"
 	endnodesentities "mlib.com/gofy/server/entities/nodes/end"
 	httprequestnodesentities "mlib.com/gofy/server/entities/nodes/http_request"
+	humaninputnodesentities "mlib.com/gofy/server/entities/nodes/human_input"
 	ifelsenodesentities "mlib.com/gofy/server/entities/nodes/if_else"
 	iterationnodesentities "mlib.com/gofy/server/entities/nodes/iteration"
 	knowledgeretrievalnodesentities "mlib.com/gofy/server/entities/nodes/knowledge_retrieval"
@@ -119,6 +121,10 @@ var (
 			LATEST_VERSION: listoperator.New(),
 			"1":            listoperator.New(),
 		},
+		nodesenumtypes.Node_HUMAN_INPUT: {
+			LATEST_VERSION: humaninput.New(),
+			"1":            humaninput.New(),
+		},
 	}
 )
 
@@ -195,6 +201,10 @@ func ExtractVariableSelectorToVariableMappingByNoder(graph_config map[string]any
 		if real_node_data, ok := noder.GetNodeData().(*listoperatornodesentities.ListOperatorNodeData); ok {
 			return specific_noder.ExtractVariableSelectorToVariableMapping(graph_config, node_id, real_node_data)
 		}
+	} else if specific_noder, ok := any(noder).(base.SpecificNoder[*humaninputnodesentities.HumanInputNodeData]); ok {
+		if real_node_data, ok := noder.GetNodeData().(*humaninputnodesentities.HumanInputNodeData); ok {
+			return specific_noder.ExtractVariableSelectorToVariableMapping(graph_config, node_id, real_node_data)
+		}
 	}
 	mlog.Errorf("unsurported noder:%#v", noder)
 	panic(exceptions.NewNotImplementedError(fmt.Sprintf("unsurported noder:%#v", noder)))
@@ -239,6 +249,8 @@ func ExtractVariableSelectorToVariableMappingByNodeType(graph_config map[string]
 		nodedata = new(documentextractornodesentities.DocumentExtractorNodeData)
 	case nodesenumtypes.Node_LIST_OPERATOR:
 		nodedata = new(listoperatornodesentities.ListOperatorNodeData)
+	case nodesenumtypes.Node_HUMAN_INPUT:
+		nodedata = new(humaninputnodesentities.HumanInputNodeData)
 	}
 	return ExtractVariableSelectorToVariableMapping(graph_config, node_id, nodedata)
 }
@@ -337,6 +349,11 @@ func ExtractVariableSelectorToVariableMapping(graph_config map[string]any, node_
 			data = new(listoperatornodesentities.ListOperatorNodeData)
 		}
 		return listoperator.New().ExtractVariableSelectorToVariableMapping(graph_config, node_id, data)
+	case *humaninputnodesentities.HumanInputNodeData:
+		if data == nil {
+			data = new(humaninputnodesentities.HumanInputNodeData)
+		}
+		return humaninput.New().ExtractVariableSelectorToVariableMapping(graph_config, node_id, data)
 	}
 	mlog.Errorf("unsurported node_data:%#v", node_data)
 	panic(exceptions.NewNotImplementedError(fmt.Sprintf("unsurported node_data:%#v", node_data)))
@@ -475,6 +492,13 @@ func NewNode(
 		ndata := new(listoperatornodesentities.ListOperatorNodeData)
 		bn := base.NewBaseNode(id, config, graphInitParams, graph, graphRuntimeState, previousNodeID, ndata)
 		n := &listoperator.ListOperatorNode{
+			BaseNode: bn,
+		}
+		return n
+	case nodesenumtypes.Node_HUMAN_INPUT:
+		ndata := humaninputnodesentities.New()
+		bn := base.NewBaseNode(id, config, graphInitParams, graph, graphRuntimeState, previousNodeID, ndata)
+		n := &humaninput.HumanInputNode{
 			BaseNode: bn,
 		}
 		return n

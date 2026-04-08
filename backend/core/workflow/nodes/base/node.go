@@ -17,6 +17,7 @@ import (
 	endnodesentities "mlib.com/gofy/server/entities/nodes/end"
 	evententities "mlib.com/gofy/server/entities/nodes/event"
 	httprequestnodesentities "mlib.com/gofy/server/entities/nodes/http_request"
+	humaninputnodesentities "mlib.com/gofy/server/entities/nodes/human_input"
 	ifelsenodesentities "mlib.com/gofy/server/entities/nodes/if_else"
 	iterationnodesentities "mlib.com/gofy/server/entities/nodes/iteration"
 	knowledgeretrievalnodesentities "mlib.com/gofy/server/entities/nodes/knowledge_retrieval"
@@ -213,6 +214,8 @@ func (n *BaseNode[T]) GetBaseNodeData() *basenodesentities.BaseNodeData {
 		return data.BaseNodeData
 	case *variableassignernodesentities.VariableAssignerNodeData:
 		return data.BaseNodeData
+	case *humaninputnodesentities.HumanInputNodeData:
+		return data.BaseNodeData
 	}
 	return nil
 }
@@ -255,6 +258,8 @@ func (n *BaseNode[T]) guessNodeType() nodesenumtypes.NodeType {
 		return nodesenumtypes.Node_VARIABLE_AGGREGATOR
 	case *variableassignernodesentities.VariableAssignerNodeData:
 		return nodesenumtypes.Node_VARIABLE_ASSIGNER
+	case *humaninputnodesentities.HumanInputNodeData:
+		return nodesenumtypes.Node_HUMAN_INPUT
 	}
 	return nodesenumtypes.NodeType(-1)
 }

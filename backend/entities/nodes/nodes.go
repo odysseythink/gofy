@@ -7,6 +7,7 @@ import (
 	documentextractor "mlib.com/gofy/server/entities/nodes/document_extractor"
 	"mlib.com/gofy/server/entities/nodes/end"
 	httprequest "mlib.com/gofy/server/entities/nodes/http_request"
+	humaninput "mlib.com/gofy/server/entities/nodes/human_input"
 	ifelse "mlib.com/gofy/server/entities/nodes/if_else"
 	"mlib.com/gofy/server/entities/nodes/iteration"
 	knowledgeretrieval "mlib.com/gofy/server/entities/nodes/knowledge_retrieval"
@@ -26,7 +27,7 @@ import (
 
 // GenericNodeData represents the generic node data type.
 type GenericNodeData interface {
-	*start.StartNodeData | *end.EndNodeData | *answer.AnswerNodeData | *code.CodeNodeData | *documentextractor.DocumentExtractorNodeData | *httprequest.HttpRequestNodeData | *ifelse.IfElseNodeData | *iteration.IterationNodeData | *knowledgeretrieval.KnowledgeRetrievalNodeData | *listoperator.ListOperatorNodeData | *llm.LLMNodeData | *loop.LoopNodeData | *parameterextractor.ParameterExtractorNodeData | *templatetransform.TemplateTransformNodeData | *variableaggregator.VariableAggregatorNodeData | *variableassigner.VariableAssignerNodeData | *questionclassifier.QuestionClassifierNodeData | *tool.ToolNodeData | *base.BaseNodeData
+	*start.StartNodeData | *end.EndNodeData | *answer.AnswerNodeData | *code.CodeNodeData | *documentextractor.DocumentExtractorNodeData | *httprequest.HttpRequestNodeData | *humaninput.HumanInputNodeData | *ifelse.IfElseNodeData | *iteration.IterationNodeData | *knowledgeretrieval.KnowledgeRetrievalNodeData | *listoperator.ListOperatorNodeData | *llm.LLMNodeData | *loop.LoopNodeData | *parameterextractor.ParameterExtractorNodeData | *templatetransform.TemplateTransformNodeData | *variableaggregator.VariableAggregatorNodeData | *variableassigner.VariableAssignerNodeData | *questionclassifier.QuestionClassifierNodeData | *tool.ToolNodeData | *base.BaseNodeData
 }
 
 func NewNodeDataByNodeType(node_type nodesenumtypes.NodeType) any {
@@ -67,6 +68,8 @@ func NewNodeDataByNodeType(node_type nodesenumtypes.NodeType) any {
 		return new(documentextractor.DocumentExtractorNodeData)
 	case nodesenumtypes.Node_LIST_OPERATOR:
 		return new(listoperator.ListOperatorNodeData)
+	case nodesenumtypes.Node_HUMAN_INPUT:
+		return humaninput.New()
 	}
 	mlog.Errorf("unsurported node_type=%v", node_type)
 	return nil

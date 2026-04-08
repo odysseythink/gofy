@@ -27,6 +27,7 @@ const (
 	Node_VARIABLE_ASSIGNER          NodeType = "assigner"
 	Node_DOCUMENT_EXTRACTOR         NodeType = "document-extractor"
 	Node_LIST_OPERATOR              NodeType = "list-operator"
+	Node_HUMAN_INPUT                NodeType = "human-input"
 )
 
 func (n NodeType) Valid() bool {
@@ -49,7 +50,8 @@ func (n NodeType) Valid() bool {
 		n == Node_PARAMETER_EXTRACTOR ||
 		n == Node_VARIABLE_ASSIGNER ||
 		n == Node_DOCUMENT_EXTRACTOR ||
-		n == Node_LIST_OPERATOR
+		n == Node_LIST_OPERATOR ||
+		n == Node_HUMAN_INPUT
 }
 
 // ParseNodeType returns the case-insensitive NodeType value for the given string.

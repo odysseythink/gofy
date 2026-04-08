@@ -432,3 +432,419 @@ func (cls *AccountService) ResetLoginErrorRateLimit(email string) {
 func (cls *AccountService) LoadLoggedInAccount(account_id string) (*models.Account, error) {
 	return cls.LoadUser(account_id)
 }
+
+// === Registration & Invitation ===
+
+// CreateAccountWithEmail creates a new account with email/password after checking uniqueness.
+func (s *AccountService) CreateAccountWithEmail(email, name, pwd, language string) (*models.Account, error) {
+	var count int64
+	dbengine.Instance().DB.Model(&models.Account{}).Where("email = ?", email).Count(&count)
+	if count > 0 {
+		return nil, fmt.Errorf("email already registered")
+	}
+
+	now := time.Now()
+	timezone := global.LANGUAGE_TIMEZONE_MAPPING[language]
+	if timezone == "" {
+		timezone = "UTC"
+	}
+	account := &models.Account{
+		ID:                uuid.NewV4().String(),
+		Email:             email,
+		Name:              name,
+		InterfaceLanguage: language,
+		Status:            enumtypes.AccountStatusACTIVE,
+		Timezone:          timezone,
+		LastLoginAt:       &now,
+		InitializedAt:     &now,
+		CreatedAt:         &now,
+		UpdatedAt:         &now,
+		LastActiveAt:      &now,
+	}
+	if pwd != "" {
+		salt := make([]byte, 16)
+		crand.Read(salt)
+		base64_salt := base64.StdEncoding.EncodeToString(salt)
+		password_hashed := password.HashPassword(pwd, salt)
+		base64_password_hashed := base64.StdEncoding.EncodeToString([]byte(password_hashed))
+		account.Password = base64_password_hashed
+		account.PasswordSalt = base64_salt
+	}
+	if err := dbengine.Instance().DB.Create(account).Error; err != nil {
+		return nil, err
+	}
+	return account, nil
+}
+
+// CheckEmailUnique returns true if the email is not already registered.
+func (s *AccountService) CheckEmailUnique(email string) bool {
+	var count int64
+	dbengine.Instance().DB.Model(&models.Account{}).Where("email = ?", email).Count(&count)
+	return count == 0
+}
+
+// === Tenant/Member Management ===
+
+// CreateTenant creates a new tenant and adds the creator as owner.
+func (s *AccountService) CreateTenant(name string, creatorID string) (*models.Tenant, error) {
+	now := time.Now()
+	tenant := &models.Tenant{
+		Model: models.Model{
+			ID:        uuid.NewV4().String(),
+			CreatedAt: &now,
+			UpdatedAt: &now,
+		},
+		Name: name,
+	}
+	if err := dbengine.Instance().DB.Create(tenant).Error; err != nil {
+		return nil, err
+	}
+	join := &models.TenantAccountJoin{
+		Model: models.Model{
+			ID:        uuid.NewV4().String(),
+			CreatedAt: &now,
+			UpdatedAt: &now,
+		},
+		TenantID:  tenant.ID,
+		AccountID: creatorID,
+		Role:      string(enumtypes.TenantAccountRole_OWNER),
+		Current:   true,
+	}
+	if err := dbengine.Instance().DB.Create(join).Error; err != nil {
+		return nil, err
+	}
+	return tenant, nil
+}
+
+// InviteMember invites an existing account to a tenant by email.
+func (s *AccountService) InviteMember(tenantID, email, role, inviterID string) error {
+	account, err := s.GetByEmail(email)
+	if err != nil || account == nil {
+		return fmt.Errorf("account not found for email: %s", email)
+	}
+	var count int64
+	dbengine.Instance().DB.Model(&models.TenantAccountJoin{}).Where("tenant_id = ? AND account_id = ?", tenantID, account.ID).Count(&count)
+	if count > 0 {
+		return fmt.Errorf("user is already a member")
+	}
+	now := time.Now()
+	join := &models.TenantAccountJoin{
+		Model: models.Model{
+			ID:        uuid.NewV4().String(),
+			CreatedAt: &now,
+			UpdatedAt: &now,
+		},
+		TenantID:  tenantID,
+		AccountID: account.ID,
+		Role:      role,
+		InvitedBy: inviterID,
+	}
+	return dbengine.Instance().DB.Create(join).Error
+}
+
+// RemoveMember removes a non-owner member from a tenant.
+func (s *AccountService) RemoveMember(tenantID, accountID string) error {
+	var join models.TenantAccountJoin
+	if err := dbengine.Instance().DB.Where("tenant_id = ? AND account_id = ?", tenantID, accountID).First(&join).Error; err != nil {
+		return fmt.Errorf("member not found")
+	}
+	if join.Role == string(enumtypes.TenantAccountRole_OWNER) {
+		return fmt.Errorf("cannot remove the owner")
+	}
+	return dbengine.Instance().DB.Delete(&join).Error
+}
+
+// UpdateMemberRole updates the role of a tenant member.
+func (s *AccountService) UpdateMemberRole(tenantID, accountID, newRole string) error {
+	return dbengine.Instance().DB.Model(&models.TenantAccountJoin{}).
+		Where("tenant_id = ? AND account_id = ?", tenantID, accountID).
+		Update("role", newRole).Error
+}
+
+// GetUserRole returns the role of a user in a tenant, or empty string if not a member.
+func (s *AccountService) GetUserRole(tenantID, accountID string) string {
+	var join models.TenantAccountJoin
+	if err := dbengine.Instance().DB.Where("tenant_id = ? AND account_id = ?", tenantID, accountID).First(&join).Error; err != nil {
+		return ""
+	}
+	return join.Role
+}
+
+// IsMember checks whether an account is a member of a tenant.
+func (s *AccountService) IsMember(tenantID, accountID string) bool {
+	var count int64
+	dbengine.Instance().DB.Model(&models.TenantAccountJoin{}).Where("tenant_id = ? AND account_id = ?", tenantID, accountID).Count(&count)
+	return count > 0
+}
+
+// GetTenantMembers returns all TenantAccountJoin records for a tenant.
+func (s *AccountService) GetTenantMembers(tenantID string) []*models.TenantAccountJoin {
+	var joins []*models.TenantAccountJoin
+	dbengine.Instance().DB.Where("tenant_id = ?", tenantID).Find(&joins)
+	return joins
+}
+
+// GetTenantMemberAccounts returns all Account objects for members of a tenant.
+func (s *AccountService) GetTenantMemberAccounts(tenantID string) []*models.Account {
+	var accounts []*models.Account
+	dbengine.Instance().DB.Raw("SELECT acc.* FROM accounts acc JOIN tenant_account_joins ta ON acc.id = ta.account_id WHERE ta.tenant_id = ?", tenantID).Find(&accounts)
+	return accounts
+}
+
+// GetAccountTenants returns all tenants an account belongs to.
+func (s *AccountService) GetAccountTenants(accountID string) []*models.Tenant {
+	var tenants []*models.Tenant
+	dbengine.Instance().DB.Raw("SELECT t.* FROM tenants t JOIN tenant_account_joins ta ON t.id = ta.tenant_id WHERE ta.account_id = ?", accountID).Find(&tenants)
+	return tenants
+}
+
+// GetTenantByID retrieves a tenant by ID.
+func (s *AccountService) GetTenantByID(tenantID string) (*models.Tenant, error) {
+	var tenant models.Tenant
+	if err := dbengine.Instance().DB.Where("id = ?", tenantID).First(&tenant).Error; err != nil {
+		return nil, err
+	}
+	return &tenant, nil
+}
+
+// UpdateTenant updates a tenant's name.
+func (s *AccountService) UpdateTenant(tenantID, name string) error {
+	return dbengine.Instance().DB.Model(&models.Tenant{}).Where("id = ?", tenantID).Update("name", name).Error
+}
+
+// === Password Management ===
+
+// ChangePassword verifies the old password and sets a new one.
+func (s *AccountService) ChangePassword(accountID, oldPassword, newPassword string) error {
+	account, err := s.Get(accountID)
+	if err != nil || account == nil {
+		return fmt.Errorf("account not found")
+	}
+	if !password.ComparePassword(oldPassword, account.Password, account.PasswordSalt) {
+		return fmt.Errorf("incorrect password")
+	}
+	salt := make([]byte, 16)
+	crand.Read(salt)
+	base64_salt := base64.StdEncoding.EncodeToString(salt)
+	password_hashed := password.HashPassword(newPassword, salt)
+	base64_password_hashed := base64.StdEncoding.EncodeToString([]byte(password_hashed))
+	account.Password = base64_password_hashed
+	account.PasswordSalt = base64_salt
+	return s.Update(account)
+}
+
+// ResetPassword sets a new password for an account (no old password check).
+func (s *AccountService) ResetPassword(accountID, newPassword string) error {
+	account, err := s.Get(accountID)
+	if err != nil || account == nil {
+		return fmt.Errorf("account not found")
+	}
+	salt := make([]byte, 16)
+	crand.Read(salt)
+	base64_salt := base64.StdEncoding.EncodeToString(salt)
+	password_hashed := password.HashPassword(newPassword, salt)
+	base64_password_hashed := base64.StdEncoding.EncodeToString([]byte(password_hashed))
+	account.Password = base64_password_hashed
+	account.PasswordSalt = base64_salt
+	return s.Update(account)
+}
+
+// === Account Integration ===
+
+// LinkAccountIntegrate links a third-party provider account to an account.
+func (s *AccountService) LinkAccountIntegrate(accountID, provider, openID string) error {
+	now := time.Now()
+	integrate := &models.AccountIntegrate{
+		Model: models.Model{
+			ID:        uuid.NewV4().String(),
+			CreatedAt: &now,
+			UpdatedAt: &now,
+		},
+		AccountID: accountID,
+		Provider:  provider,
+		OpenID:    openID,
+	}
+	return dbengine.Instance().DB.Create(integrate).Error
+}
+
+// GetAccountIntegrates returns all integrations for an account.
+func (s *AccountService) GetAccountIntegrates(accountID string) []*models.AccountIntegrate {
+	var integrates []*models.AccountIntegrate
+	dbengine.Instance().DB.Where("account_id = ?", accountID).Find(&integrates)
+	return integrates
+}
+
+// GetAccountByIntegrate finds an account by third-party provider and open ID.
+func (s *AccountService) GetAccountByIntegrate(provider, openID string) (*models.Account, error) {
+	var integrate models.AccountIntegrate
+	if err := dbengine.Instance().DB.Where("provider = ? AND open_id = ?", provider, openID).First(&integrate).Error; err != nil {
+		return nil, fmt.Errorf("integration not found")
+	}
+	return s.Get(integrate.AccountID)
+}
+
+// UnlinkAccountIntegrate removes a third-party integration from an account.
+func (s *AccountService) UnlinkAccountIntegrate(accountID, provider string) error {
+	return dbengine.Instance().DB.Where("account_id = ? AND provider = ?", accountID, provider).Delete(&models.AccountIntegrate{}).Error
+}
+
+// === Account Status ===
+
+// CloseAccount sets an account's status to banned/closed.
+func (s *AccountService) CloseAccount(accountID string) error {
+	return dbengine.Instance().DB.Model(&models.Account{}).Where("id = ?", accountID).Update("status", enumtypes.AccountStatusBANNED).Error
+}
+
+// IsAccountActive checks if an account exists and is active.
+func (s *AccountService) IsAccountActive(accountID string) bool {
+	var count int64
+	dbengine.Instance().DB.Model(&models.Account{}).Where("id = ? AND status = ?", accountID, enumtypes.AccountStatusACTIVE).Count(&count)
+	return count > 0
+}
+
+// GetAccountByEmail returns an account by email, or nil if not found.
+func (s *AccountService) GetAccountByEmail(email string) *models.Account {
+	acc, err := s.GetByEmail(email)
+	if err != nil {
+		return nil
+	}
+	return acc
+}
+
+// GetAccountByID returns an account by ID, or nil if not found.
+func (s *AccountService) GetAccountByID(accountID string) *models.Account {
+	acc, err := s.Get(accountID)
+	if err != nil {
+		return nil
+	}
+	return acc
+}
+
+// === Profile Updates ===
+
+// UpdateAccountName updates only the name field.
+func (s *AccountService) UpdateAccountName(accountID, name string) error {
+	return dbengine.Instance().DB.Model(&models.Account{}).Where("id = ?", accountID).Update("name", name).Error
+}
+
+// UpdateAccountAvatar updates only the avatar field.
+func (s *AccountService) UpdateAccountAvatar(accountID, avatar string) error {
+	return dbengine.Instance().DB.Model(&models.Account{}).Where("id = ?", accountID).Update("avatar", avatar).Error
+}
+
+// UpdateAccountLanguage updates the interface language.
+func (s *AccountService) UpdateAccountLanguage(accountID, language string) error {
+	return dbengine.Instance().DB.Model(&models.Account{}).Where("id = ?", accountID).Update("interface_language", language).Error
+}
+
+// UpdateAccountTimezone updates the timezone.
+func (s *AccountService) UpdateAccountTimezone(accountID, timezone string) error {
+	return dbengine.Instance().DB.Model(&models.Account{}).Where("id = ?", accountID).Update("timezone", timezone).Error
+}
+
+// UpdateAccountTheme updates the interface theme.
+func (s *AccountService) UpdateAccountTheme(accountID, theme string) error {
+	return dbengine.Instance().DB.Model(&models.Account{}).Where("id = ?", accountID).Update("interface_theme", theme).Error
+}
+
+// === Dataset Operator Members ===
+
+// GetDatasetOperatorMembers returns accounts that can operate on datasets in a tenant.
+func (s *AccountService) GetDatasetOperatorMembers(tenantID string) []*models.Account {
+	var accounts []*models.Account
+	dbengine.Instance().DB.Raw(
+		"SELECT acc.* FROM accounts acc JOIN tenant_account_joins ta ON acc.id = ta.account_id WHERE ta.tenant_id = ? AND ta.role IN (?, ?, ?, ?)",
+		tenantID,
+		string(enumtypes.TenantAccountRole_OWNER),
+		string(enumtypes.TenantAccountRole_ADMIN),
+		string(enumtypes.TenantAccountRole_EDITOR),
+		string(enumtypes.TenantAccountRole_DATASET_OPERATOR),
+	).Find(&accounts)
+	return accounts
+}
+
+// === Invitation Code ===
+
+// GetInvitationByCode looks up an invitation code record by code string.
+func (s *AccountService) GetInvitationByCode(code string) *models.InvitationCode {
+	var invitation models.InvitationCode
+	if err := dbengine.Instance().DB.Where("code = ? AND status = ?", code, "unused").First(&invitation).Error; err != nil {
+		return nil
+	}
+	return &invitation
+}
+
+// UseInvitationCode marks an invitation code as used by a tenant and account.
+func (s *AccountService) UseInvitationCode(code string, tenantID, accountID string) error {
+	invitation := s.GetInvitationByCode(code)
+	if invitation == nil {
+		return fmt.Errorf("invitation code not found or already used")
+	}
+	now := time.Now()
+	return dbengine.Instance().DB.Model(invitation).Updates(map[string]interface{}{
+		"status":              "used",
+		"used_at":             &now,
+		"used_by_tenant_id":   tenantID,
+		"used_by_account_id":  accountID,
+	}).Error
+}
+
+// === Token Refresh ===
+
+// RefreshAccessToken validates a refresh token and issues a new token pair.
+func (s *AccountService) RefreshAccessToken(refreshToken string) (*TokenPair, error) {
+	accountID := cache.Instance().GetString(s._get_refresh_token_key(refreshToken))
+	if accountID == "" {
+		return nil, fmt.Errorf("invalid or expired refresh token")
+	}
+	account, err := s.Get(accountID)
+	if err != nil || account == nil {
+		return nil, fmt.Errorf("account not found")
+	}
+	// Delete old refresh token
+	s._delete_refresh_token(refreshToken, accountID)
+	// Issue new pair
+	exp := 30 * time.Second * 3600 * 24
+	accessToken := s.GetAccountJWTToken(account, exp)
+	newRefreshToken := password.GenerateRefreshToken(0)
+	s._store_refresh_token(newRefreshToken, accountID)
+	return &TokenPair{
+		AccessToken:  accessToken,
+		RefreshToken: newRefreshToken,
+	}, nil
+}
+
+// === Batch Operations ===
+
+// GetAccountsByIDs returns multiple accounts by their IDs.
+func (s *AccountService) GetAccountsByIDs(ids []string) []*models.Account {
+	var accounts []*models.Account
+	if len(ids) == 0 {
+		return accounts
+	}
+	dbengine.Instance().DB.Where("id IN ?", ids).Find(&accounts)
+	return accounts
+}
+
+// CountTenantMembers returns the number of members in a tenant.
+func (s *AccountService) CountTenantMembers(tenantID string) int64 {
+	var count int64
+	dbengine.Instance().DB.Model(&models.TenantAccountJoin{}).Where("tenant_id = ?", tenantID).Count(&count)
+	return count
+}
+
+// SwitchCurrentTenant sets the current flag for a user's tenant.
+func (s *AccountService) SwitchCurrentTenant(accountID, tenantID string) error {
+	// Unset all current flags for this account
+	dbengine.Instance().DB.Model(&models.TenantAccountJoin{}).
+		Where("account_id = ?", accountID).
+		Update("current", false)
+	// Set the target tenant as current
+	result := dbengine.Instance().DB.Model(&models.TenantAccountJoin{}).
+		Where("account_id = ? AND tenant_id = ?", accountID, tenantID).
+		Update("current", true)
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("tenant membership not found")
+	}
+	return result.Error
+}

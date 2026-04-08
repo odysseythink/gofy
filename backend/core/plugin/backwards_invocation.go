@@ -1,13 +1,19 @@
 package plugin
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 
 	modelmanager "mlib.com/gofy/server/core/manageres/model_manager"
+	toolmanager "mlib.com/gofy/server/core/manageres/tool_manager"
+	toolbase "mlib.com/gofy/server/core/tools/base"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	toolsentities "mlib.com/gofy/server/entities/tools"
+	appenumtypes "mlib.com/gofy/server/enum_types/app"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
+	toolsenumtypes "mlib.com/gofy/server/enum_types/tools"
 	"mlib.com/gofy/server/services"
 	"mlib.com/mlog"
 )
@@ -589,36 +595,179 @@ func (di *DifyInvocation) InvokeModeration(payload any) (any, error) {
 // ---------------------------------------------------------------------------
 
 // InvokeTool calls another tool through the tool engine.
-// TODO: Will be implemented to route through core/tools ToolManager.
 func (di *DifyInvocation) InvokeTool(payload any) (<-chan ToolResponseChunk, error) {
-	ch := make(chan ToolResponseChunk, 10)
+	params, err := payloadToMap(payload)
+	if err != nil {
+		return nil, fmt.Errorf("InvokeTool: %w", err)
+	}
+
+	toolProviderType, _ := extractStringField(params, "provider_type")
+	toolProvider, _ := extractStringField(params, "provider")
+	toolName, _ := extractStringField(params, "tool_name")
+	toolParameters := extractMapField(params, "tool_parameters")
+	if toolParameters == nil {
+		toolParameters = make(map[string]any)
+	}
+
+	mlog.Infof("backwards invocation: InvokeTool tenant=%s provider_type=%s provider=%s tool=%s",
+		di.tenantID, toolProviderType, toolProvider, toolName)
+
+	ch := make(chan ToolResponseChunk, 50)
+
 	go func() {
 		defer close(ch)
-		mlog.Infof("backwards invocation: InvokeTool tenant=%s payload=%v", di.tenantID, summarizePayload(payload))
-		ch <- ToolResponseChunk{
-			Type:    ToolResponseChunkTypeText,
-			Message: map[string]any{"text": "[tool invoked (pending tool engine integration)]"},
+		defer func() {
+			if r := recover(); r != nil {
+				mlog.Errorf("InvokeTool panic: %v", r)
+				ch <- ToolResponseChunk{
+					Type:    ToolResponseChunkTypeText,
+					Message: map[string]any{"text": fmt.Sprintf("tool invocation error: %v", r)},
+				}
+			}
+		}()
+
+		// Resolve the tool runtime through the ToolManager.
+		tm := toolmanager.NewToolManager()
+		toolRuntime, err := tm.GetToolRuntime(
+			toolProviderType, toolProvider, toolName,
+			di.tenantID,
+			appenumtypes.InvokeFrom_SERVICE_API,
+			toolsenumtypes.ToolInvokeFrom_PLUGIN,
+		)
+		if err != nil {
+			ch <- ToolResponseChunk{
+				Type:    ToolResponseChunkTypeText,
+				Message: map[string]any{"text": fmt.Sprintf("tool resolution error: %v", err)},
+			}
+			return
+		}
+
+		// Invoke the tool if the runtime was resolved successfully.
+		if toolRuntime == nil {
+			ch <- ToolResponseChunk{
+				Type:    ToolResponseChunkTypeText,
+				Message: map[string]any{"text": fmt.Sprintf("tool '%s/%s' not found or not yet implemented", toolProvider, toolName)},
+			}
+			return
+		}
+
+		// The tool runtime implements the Toolor interface with Invoke.
+		if toolInstance, ok := toolRuntime.(toolbase.Toolor); ok {
+			result1, result2, result3 := toolInstance.Invoke(
+				di.userID, toolParameters,
+				"", // conversation_id
+				di.appID,
+				"", // message_id
+			)
+			// Handle single result
+			if result1 != nil {
+				ch <- toolInvokeMessageToChunk(result1)
+			}
+			// Handle batch results
+			if result2 != nil {
+				for _, msg := range result2 {
+					ch <- toolInvokeMessageToChunk(msg)
+				}
+			}
+			// Handle streaming results
+			if result3 != nil {
+				for msg := range result3 {
+					ch <- toolInvokeMessageToChunk(msg)
+				}
+			}
+		} else {
+			ch <- ToolResponseChunk{
+				Type:    ToolResponseChunkTypeText,
+				Message: map[string]any{"text": fmt.Sprintf("tool '%s/%s' does not implement Toolor interface", toolProvider, toolName)},
+			}
 		}
 	}()
+
 	return ch, nil
+}
+
+// toolInvokeMessageToChunk converts a ToolInvokeMessage to a ToolResponseChunk.
+func toolInvokeMessageToChunk(msg *toolsentities.ToolInvokeMessage) ToolResponseChunk {
+	return ToolResponseChunk{
+		Type:    ToolResponseChunkType(msg.Type),
+		Message: msg.ToDict(),
+		Meta:    msg.Meta,
+	}
 }
 
 // ---------------------------------------------------------------------------
 // App invocation
 // ---------------------------------------------------------------------------
 
-// InvokeApp calls another Dify app.
-// TODO: Will be implemented to route through AppGenerateService.
+// InvokeApp calls another Dify app via the app generation service.
 func (di *DifyInvocation) InvokeApp(payload any) (<-chan map[string]any, error) {
-	ch := make(chan map[string]any, 10)
+	params, err := payloadToMap(payload)
+	if err != nil {
+		return nil, fmt.Errorf("InvokeApp: %w", err)
+	}
+
+	targetAppID, _ := extractStringField(params, "app_id")
+	if targetAppID == "" {
+		return nil, fmt.Errorf("InvokeApp: app_id is required")
+	}
+
+	mlog.Infof("backwards invocation: InvokeApp tenant=%s appID=%s", di.tenantID, targetAppID)
+
+	// Fetch the target app model.
+	targetApp, err := services.ServiceGroupApp.App.GetByIDAndTenantID(targetAppID, di.tenantID)
+	if err != nil {
+		return nil, fmt.Errorf("InvokeApp: app not found: %s: %w", targetAppID, err)
+	}
+
+	// Build arguments for generation.
+	args := extractMapField(params, "inputs")
+	if args == nil {
+		args = make(map[string]any)
+	}
+	if query, _ := extractStringField(params, "query"); query != "" {
+		args["query"] = query
+	}
+	if convID, _ := extractStringField(params, "conversation_id"); convID != "" {
+		args["conversation_id"] = convID
+	}
+
+	// Fetch the user account for invocation.
+	account := services.ServiceGroupApp.Account.GetAccountByID(di.userID)
+	if account == nil {
+		return nil, fmt.Errorf("InvokeApp: cannot resolve user %s", di.userID)
+	}
+
+	ch := make(chan map[string]any, 50)
+
 	go func() {
 		defer close(ch)
-		mlog.Infof("backwards invocation: InvokeApp tenant=%s payload=%v", di.tenantID, summarizePayload(payload))
-		ch <- map[string]any{
-			"type":    "message",
-			"content": "[app invoked (pending app generate integration)]",
+		defer func() {
+			if r := recover(); r != nil {
+				mlog.Errorf("InvokeApp panic: %v", r)
+				ch <- map[string]any{"type": "error", "error": fmt.Sprintf("%v", r)}
+			}
+		}()
+
+		// Use the AppGenerateService.Generate method which returns
+		// (map[string]any, iter.Seq[string]) for streaming.
+		result, stream := services.ServiceGroupApp.AppGenerate.Generate(
+			targetApp, account, args,
+			// Use SERVICE_API invoke_from since this is a programmatic call.
+			appenumtypes.InvokeFrom_SERVICE_API,
+			true, // streaming
+		)
+
+		if result != nil {
+			ch <- map[string]any{"type": "result", "data": result}
+		}
+
+		if stream != nil {
+			for chunk := range stream {
+				ch <- map[string]any{"type": "stream_chunk", "content": chunk}
+			}
 		}
 	}()
+
 	return ch, nil
 }
 
@@ -836,11 +985,41 @@ func (di *DifyInvocation) InvokeSummary(payload any) (*InvokeSummaryResponse, er
 // File operations
 // ---------------------------------------------------------------------------
 
-// UploadFile uploads a file from a plugin.
-// TODO: Will be implemented to route through FileService + storage.
+// UploadFile uploads a file from a plugin using the FileService.
 func (di *DifyInvocation) UploadFile(payload any) (*UploadFileResponse, error) {
-	mlog.Infof("backwards invocation: UploadFile tenant=%s", di.tenantID)
-	return &UploadFileResponse{URL: ""}, nil
+	params, err := payloadToMap(payload)
+	if err != nil {
+		return nil, fmt.Errorf("UploadFile: %w", err)
+	}
+
+	filename, _ := extractStringField(params, "filename")
+	mimeType, _ := extractStringField(params, "mime_type")
+
+	mlog.Infof("backwards invocation: UploadFile tenant=%s filename=%s", di.tenantID, filename)
+
+	// Extract file data from the payload.
+	var fileData []byte
+	switch v := params["data"].(type) {
+	case string:
+		fileData = []byte(v)
+	case []byte:
+		fileData = v
+	default:
+		return nil, fmt.Errorf("UploadFile: data field missing or invalid type")
+	}
+
+	fileSize := int64(len(fileData))
+	reader := bytes.NewReader(fileData)
+
+	uploadFile, err := services.ServiceGroupApp.File.UploadFile(
+		di.tenantID, di.userID, "account",
+		reader, filename, fileSize, mimeType,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("UploadFile: %w", err)
+	}
+
+	return &UploadFileResponse{URL: uploadFile.Key}, nil
 }
 
 // ---------------------------------------------------------------------------

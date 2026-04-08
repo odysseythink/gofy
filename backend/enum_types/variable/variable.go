@@ -10,11 +10,12 @@ const (
 	Variable_SECRET  VariableType = "secret"
 	Variable_FILE    VariableType = "file"
 
-	Variable_ARRAY_ANY    VariableType = "array[any]"
-	Variable_ARRAY_STRING VariableType = "array[string]"
-	Variable_ARRAY_NUMBER VariableType = "array[number]"
-	Variable_ARRAY_OBJECT VariableType = "array[object]"
-	Variable_ARRAY_FILE   VariableType = "array[file]"
+	Variable_ARRAY_ANY     VariableType = "array[any]"
+	Variable_ARRAY_STRING  VariableType = "array[string]"
+	Variable_ARRAY_NUMBER  VariableType = "array[number]"
+	Variable_ARRAY_BOOLEAN VariableType = "array[boolean]"
+	Variable_ARRAY_OBJECT  VariableType = "array[object]"
+	Variable_ARRAY_FILE    VariableType = "array[file]"
 
 	Variable_NONE  VariableType = "none"
 	Variable_GROUP VariableType = "group"
@@ -29,6 +30,7 @@ func (s VariableType) Valid() bool {
 		s == Variable_ARRAY_ANY ||
 		s == Variable_ARRAY_STRING ||
 		s == Variable_ARRAY_NUMBER ||
+		s == Variable_ARRAY_BOOLEAN ||
 		s == Variable_ARRAY_OBJECT ||
 		s == Variable_ARRAY_FILE ||
 		s == Variable_NONE ||

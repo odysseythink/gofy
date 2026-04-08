@@ -159,6 +159,34 @@ func (variable *ArrayFileVariable) ValueType() variableenumtypes.VariableType {
 	return variableenumtypes.Variable_ARRAY_FILE
 }
 
+type SecretVariable struct {
+	*BaseVariable[string]
+}
+
+func (variable *SecretVariable) ValueType() variableenumtypes.VariableType {
+	return variableenumtypes.Variable_SECRET
+}
+
+func (variable *SecretVariable) Text() string {
+	return strings.Repeat("*", len(variable.Value))
+}
+
+func (variable *SecretVariable) Log() string {
+	return strings.Repeat("*", len(variable.Value))
+}
+
+func (variable *SecretVariable) Markdown() string {
+	return strings.Repeat("*", len(variable.Value))
+}
+
+type ArrayBooleanVariable struct {
+	*BaseVariable[[]bool]
+}
+
+func (variable *ArrayBooleanVariable) ValueType() variableenumtypes.VariableType {
+	return variableenumtypes.Variable_ARRAY_BOOLEAN
+}
+
 type VariableGroup struct {
 	*BaseVariable[[]Variabler]
 }

@@ -157,6 +157,21 @@ func _build_variable_from_mapping(mapping map[string]any, selector []string) var
 			panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), confy.GetWithDefault[int]("workflow.max_variable_size", 204800))))
 		}
 		return &variables.ObjectVariable{BaseVariable: result}
+	case variableenumtypes.Variable_SECRET:
+		result := new(variables.BaseVariable[string])
+		bindata, _ := json.Marshal(mapping)
+		err := json.Unmarshal(bindata, result)
+		if err != nil {
+			mlog.Errorf("mapping(%#v) json.Unmarshal to Variable failed:%v", mapping, err)
+			panic(variables.NewVariableError("json.Unmarshal to Variable failed:" + err.Error()))
+		}
+		if result.Selector == nil {
+			result.Selector = selector
+		}
+		if result.Size() > confy.GetWithDefault[int]("workflow.max_variable_size", 204800) {
+			panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), confy.GetWithDefault[int]("workflow.max_variable_size", 204800))))
+		}
+		return &variables.SecretVariable{BaseVariable: result}
 	case variableenumtypes.Variable_ARRAY_ANY:
 		result := new(variables.BaseVariable[[]any])
 		bindata, _ := json.Marshal(mapping)
@@ -222,6 +237,21 @@ func _build_variable_from_mapping(mapping map[string]any, selector []string) var
 			mlog.Error("array number value must be []int or []float64")
 			panic(variables.NewVariableError("array number value must be []int or []float64"))
 		}
+	case variableenumtypes.Variable_ARRAY_BOOLEAN:
+		result := new(variables.BaseVariable[[]bool])
+		bindata, _ := json.Marshal(mapping)
+		err := json.Unmarshal(bindata, result)
+		if err != nil {
+			mlog.Errorf("mapping(%#v) json.Unmarshal to Variable failed:%v", mapping, err)
+			panic(variables.NewVariableError("json.Unmarshal to Variable failed:" + err.Error()))
+		}
+		if result.Selector == nil {
+			result.Selector = selector
+		}
+		if result.Size() > confy.GetWithDefault[int]("workflow.max_variable_size", 204800) {
+			panic(variables.NewVariableError(fmt.Sprintf("variable size %d exceeds limit %d", result.Size(), confy.GetWithDefault[int]("workflow.max_variable_size", 204800))))
+		}
+		return &variables.ArrayBooleanVariable{BaseVariable: result}
 	case variableenumtypes.Variable_ARRAY_OBJECT:
 		result := new(variables.BaseVariable[[]map[string]any])
 		bindata, _ := json.Marshal(mapping)
@@ -327,6 +357,12 @@ func BuildSegment(value any) variables.Variabler {
 	case []float64:
 		return &variables.ArrayFloatVariable{
 			BaseVariable: &variables.BaseVariable[[]float64]{
+				Value: v,
+			},
+		}
+	case []bool:
+		return &variables.ArrayBooleanVariable{
+			BaseVariable: &variables.BaseVariable[[]bool]{
 				Value: v,
 			},
 		}

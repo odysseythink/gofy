@@ -34,7 +34,7 @@ type Variabler interface {
 
 	ToDict(Variabler) map[string]any
 }
-type BaseVariable[T bool | string | struct{} | float64 | int | map[string]any | *file.File | []any | []string | []float64 | []int | []map[string]any | []*file.File | []Variabler] struct {
+type BaseVariable[T bool | string | struct{} | float64 | int | map[string]any | *file.File | []any | []string | []float64 | []int | []bool | []map[string]any | []*file.File | []Variabler] struct {
 	ModelConfig map[string]any `json:"model_config"`
 	Value       T              `json:"value"`
 	ID          string         `json:"id"`
@@ -113,6 +113,12 @@ func (variable *BaseVariable[T]) Text() string {
 			return fmt.Sprintf("%v", variable.Value)
 		}
 		return string(bindata)
+	case []bool:
+		bindata, err := json.Marshal(variable.Value)
+		if err != nil {
+			return fmt.Sprintf("%v", variable.Value)
+		}
+		return string(bindata)
 	case []float64:
 		bindata, err := json.Marshal(variable.Value)
 		if err != nil {
@@ -176,6 +182,8 @@ func (variable *BaseVariable[T]) Size() int {
 	case []float64:
 		return len(real_value)
 	case []int:
+		return len(real_value)
+	case []bool:
 		return len(real_value)
 	case []map[string]any:
 		return len(real_value)

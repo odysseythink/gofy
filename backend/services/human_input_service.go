@@ -1,9 +1,12 @@
 package services
 
 import (
+	"crypto/rand"
+	"encoding/hex"
 	"fmt"
 	"time"
 
+	uuid "github.com/satori/go.uuid"
 	dbengine "mlib.com/gofy/server/db_engine"
 	"mlib.com/gofy/server/models"
 )
@@ -58,4 +61,105 @@ func (s *HumanInputService) TimeoutExpiredForms() int64 {
 		Where("status = ? AND expiration_time < ?", "waiting", time.Now()).
 		Update("status", "timeout")
 	return result.RowsAffected
+}
+
+// CreateForm creates a new human input form for a workflow node.
+func (s *HumanInputService) CreateForm(
+	tenantID, appID, workflowRunID, nodeID string,
+	formDefinition string,
+	renderedContent string,
+	expirationMinutes int,
+) (*models.HumanInputForm, error) {
+	expiration := time.Now().Add(time.Duration(expirationMinutes) * time.Minute)
+	form := &models.HumanInputForm{
+		ID:              uuid.NewV4().String(),
+		TenantID:        tenantID,
+		AppID:           appID,
+		WorkflowRunID:   &workflowRunID,
+		FormKind:        "runtime",
+		NodeID:          nodeID,
+		FormDefinition:  formDefinition,
+		RenderedContent: renderedContent,
+		Status:          "waiting",
+		ExpirationTime:  expiration,
+	}
+	if err := dbengine.Instance().DB.Create(form).Error; err != nil {
+		return nil, err
+	}
+	return form, nil
+}
+
+// CreateDelivery creates a delivery record for a form.
+func (s *HumanInputService) CreateDelivery(
+	formID string,
+	deliveryMethodType string,
+	channelPayload string,
+) (*models.HumanInputDelivery, error) {
+	delivery := &models.HumanInputDelivery{
+		ID:                 uuid.NewV4().String(),
+		FormID:             formID,
+		DeliveryMethodType: deliveryMethodType,
+		ChannelPayload:     channelPayload,
+	}
+	if err := dbengine.Instance().DB.Create(delivery).Error; err != nil {
+		return nil, err
+	}
+	return delivery, nil
+}
+
+// CreateRecipient creates a recipient for a form delivery.
+func (s *HumanInputService) CreateRecipient(
+	formID, deliveryID, recipientType, recipientPayload string,
+) (*models.HumanInputFormRecipient, error) {
+	token := generateAccessToken()
+	recipient := &models.HumanInputFormRecipient{
+		ID:               uuid.NewV4().String(),
+		FormID:           formID,
+		DeliveryID:       deliveryID,
+		RecipientType:    recipientType,
+		RecipientPayload: recipientPayload,
+		AccessToken:      &token,
+	}
+	if err := dbengine.Instance().DB.Create(recipient).Error; err != nil {
+		return nil, err
+	}
+	return recipient, nil
+}
+
+// GetFormByID retrieves a form by ID.
+func (s *HumanInputService) GetFormByID(formID string) *models.HumanInputForm {
+	var form models.HumanInputForm
+	if err := dbengine.Instance().DB.Where("id = ?", formID).First(&form).Error; err != nil {
+		return nil
+	}
+	return &form
+}
+
+// GetFormByWorkflowRunAndNode retrieves a form by workflow run and node.
+func (s *HumanInputService) GetFormByWorkflowRunAndNode(workflowRunID, nodeID string) *models.HumanInputForm {
+	var form models.HumanInputForm
+	if err := dbengine.Instance().DB.Where("workflow_run_id = ? AND node_id = ?", workflowRunID, nodeID).First(&form).Error; err != nil {
+		return nil
+	}
+	return &form
+}
+
+// GetFormRecipients returns all recipients for a form.
+func (s *HumanInputService) GetFormRecipients(formID string) []*models.HumanInputFormRecipient {
+	var recipients []*models.HumanInputFormRecipient
+	dbengine.Instance().DB.Where("form_id = ?", formID).Find(&recipients)
+	return recipients
+}
+
+// GetFormDeliveries returns all deliveries for a form.
+func (s *HumanInputService) GetFormDeliveries(formID string) []*models.HumanInputDelivery {
+	var deliveries []*models.HumanInputDelivery
+	dbengine.Instance().DB.Where("form_id = ?", formID).Find(&deliveries)
+	return deliveries
+}
+
+func generateAccessToken() string {
+	bytes := make([]byte, 16)
+	rand.Read(bytes)
+	return hex.EncodeToString(bytes)
 }

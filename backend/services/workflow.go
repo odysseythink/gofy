@@ -363,3 +363,117 @@ func (s *WorkflowService) PublishWorkflow(app *models.App, account *models.Accou
 	// return new workflow
 	return wf
 }
+
+func (s *WorkflowService) RestorePublishedWorkflowToDraft(appModel *models.App, workflowID string, account *models.Account) (*models.Workflow, error) {
+	// Find the published workflow by ID
+	var published models.Workflow
+	if err := dbengine.Instance().DB.Where("id = ? AND app_id = ?", workflowID, appModel.ID).First(&published).Error; err != nil {
+		return nil, fmt.Errorf("published workflow not found")
+	}
+
+	// Get or create draft
+	draft := s.GetDraftWorkflow(appModel)
+	if draft == nil {
+		return nil, fmt.Errorf("draft workflow not found")
+	}
+
+	// Copy published content to draft
+	draft.Graph = published.Graph
+	draft.FeaturesStr = published.FeaturesStr
+	draft.EnvironmentVariablesStr = published.EnvironmentVariablesStr
+	draft.ConversationVariablesStr = published.ConversationVariablesStr
+	draft.UpdatedBy = account.ID
+
+	now := time.Now()
+	draft.UpdatedAt = &now
+
+	if err := dbengine.Instance().DB.Save(draft).Error; err != nil {
+		return nil, err
+	}
+	return draft, nil
+}
+
+func (s *WorkflowService) GetAllPublishedWorkflow(appModel *models.App, page, limit int, userID string, namedOnly bool) ([]*models.Workflow, bool) {
+	var workflows []*models.Workflow
+	query := dbengine.Instance().DB.Where("app_id = ? AND version != ?", appModel.ID, "draft")
+	if userID != "" {
+		query = query.Where("created_by = ?", userID)
+	}
+	if namedOnly {
+		query = query.Where("marked_name != ''")
+	}
+
+	query.Order("version DESC").Offset((page - 1) * limit).Limit(limit + 1).Find(&workflows)
+
+	hasMore := len(workflows) > limit
+	if hasMore {
+		workflows = workflows[:limit]
+	}
+	return workflows, hasMore
+}
+
+func (s *WorkflowService) UpdateWorkflow(workflowID string, tenantID string, appID string, graph map[string]any, features map[string]any, uniqueHash string) (*models.Workflow, error) {
+	var workflow models.Workflow
+	if err := dbengine.Instance().DB.Where("id = ? AND tenant_id = ? AND app_id = ?", workflowID, tenantID, appID).First(&workflow).Error; err != nil {
+		return nil, fmt.Errorf("workflow not found")
+	}
+
+	graphBytes, _ := json.Marshal(graph)
+	featuresBytes, _ := json.Marshal(features)
+
+	updates := map[string]any{
+		"graph":       string(graphBytes),
+		"features":    string(featuresBytes),
+		"unique_hash": uniqueHash,
+		"updated_at":  time.Now(),
+	}
+
+	if err := dbengine.Instance().DB.Model(&workflow).Updates(updates).Error; err != nil {
+		return nil, err
+	}
+	return &workflow, nil
+}
+
+func (s *WorkflowService) DeleteWorkflow(workflowID string, tenantID string) error {
+	return dbengine.Instance().DB.Where("id = ? AND tenant_id = ?", workflowID, tenantID).Delete(&models.Workflow{}).Error
+}
+
+func (s *WorkflowService) GetNodeLastRun(appModel *models.App, workflow *models.Workflow, nodeID string) *models.WorkflowNodeExecution {
+	var execution models.WorkflowNodeExecution
+	if err := dbengine.Instance().DB.Where(
+		"app_id = ? AND workflow_id = ? AND node_id = ? AND triggered_from = ?",
+		appModel.ID, workflow.ID, nodeID, "single-step",
+	).Order("created_at DESC").First(&execution).Error; err != nil {
+		return nil
+	}
+	return &execution
+}
+
+func (s *WorkflowService) IsWorkflowExist(appModel *models.App) bool {
+	var count int64
+	dbengine.Instance().DB.Model(&models.Workflow{}).Where("app_id = ?", appModel.ID).Count(&count)
+	return count > 0
+}
+
+func (s *WorkflowService) ValidateGraphStructure(graph map[string]any) error {
+	nodes, ok := graph["nodes"]
+	if !ok {
+		return fmt.Errorf("graph must contain nodes")
+	}
+	edges, ok := graph["edges"]
+	if !ok {
+		return fmt.Errorf("graph must contain edges")
+	}
+
+	nodeList, ok := nodes.([]any)
+	if !ok || len(nodeList) == 0 {
+		return fmt.Errorf("graph must have at least one node")
+	}
+
+	_, ok = edges.([]any)
+	if !ok {
+		return fmt.Errorf("edges must be an array")
+	}
+
+	return nil
+}

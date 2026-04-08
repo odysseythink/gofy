@@ -166,3 +166,27 @@ func (s *WorkflowRunService) GetWorkflowRunNodeExecutions(app_model *models.App,
 
 	return node_executions
 }
+
+func (s *WorkflowRunService) GetWorkflowRunsCount(appModel *models.App, status string, triggeredFrom string) map[string]int64 {
+	result := map[string]int64{}
+
+	baseQuery := dbengine.Instance().DB.Model(&models.WorkflowRun{}).Where("app_id = ?", appModel.ID)
+	if triggeredFrom != "" {
+		baseQuery = baseQuery.Where("triggered_from = ?", triggeredFrom)
+	}
+
+	// Total
+	var total int64
+	baseQuery.Count(&total)
+	result["total"] = total
+
+	// By status
+	statuses := []string{"running", "succeeded", "failed", "stopped"}
+	for _, st := range statuses {
+		var count int64
+		baseQuery.Where("status = ?", st).Count(&count)
+		result[st] = count
+	}
+
+	return result
+}

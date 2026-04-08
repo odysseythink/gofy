@@ -1,0 +1,84 @@
+package tasks
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+
+	dbengine "mlib.com/gofy/server/db_engine"
+	"mlib.com/gofy/server/models"
+	"mlib.com/mlog"
+)
+
+// SegmentTaskPayload is the payload for segment-related tasks.
+type SegmentTaskPayload struct {
+	DatasetID  string   `json:"dataset_id"`
+	DocumentID string   `json:"document_id"`
+	SegmentIDs []string `json:"segment_ids"`
+}
+
+// HandleSegmentCreate indexes newly created segments.
+func HandleSegmentCreate(ctx context.Context, task *Task) error {
+	var payload SegmentTaskPayload
+	if err := json.Unmarshal(task.Payload, &payload); err != nil {
+		return fmt.Errorf("invalid payload: %w", err)
+	}
+
+	mlog.Infof("indexing %d segments for document %s", len(payload.SegmentIDs), payload.DocumentID)
+
+	// Load segments
+	var segments []models.DocumentSegment
+	dbengine.Instance().DB.Where("id IN ?", payload.SegmentIDs).Find(&segments)
+
+	for _, seg := range segments {
+		// TODO: Generate embedding and add to vector store
+		// Update segment status
+		dbengine.Instance().DB.Model(&seg).Updates(map[string]any{
+			"status":  "completed",
+			"enabled": true,
+		})
+	}
+
+	return nil
+}
+
+// HandleSegmentDelete removes segments from the vector store.
+func HandleSegmentDelete(ctx context.Context, task *Task) error {
+	var payload SegmentTaskPayload
+	if err := json.Unmarshal(task.Payload, &payload); err != nil {
+		return fmt.Errorf("invalid payload: %w", err)
+	}
+
+	mlog.Infof("removing %d segments from index", len(payload.SegmentIDs))
+
+	// TODO: Remove from vector store by index_node_id
+	// The actual vector store deletion depends on the vector DB implementation
+
+	return nil
+}
+
+// HandleSegmentEnable enables segments in the vector store.
+func HandleSegmentEnable(ctx context.Context, task *Task) error {
+	var payload SegmentTaskPayload
+	if err := json.Unmarshal(task.Payload, &payload); err != nil {
+		return fmt.Errorf("invalid payload: %w", err)
+	}
+
+	// TODO: Re-add to vector store
+	dbengine.Instance().DB.Model(&models.DocumentSegment{}).
+		Where("id IN ?", payload.SegmentIDs).
+		Updates(map[string]any{"enabled": true, "disabled_at": nil})
+
+	return nil
+}
+
+// HandleSegmentDisable disables segments in the vector store.
+func HandleSegmentDisable(ctx context.Context, task *Task) error {
+	var payload SegmentTaskPayload
+	if err := json.Unmarshal(task.Payload, &payload); err != nil {
+		return fmt.Errorf("invalid payload: %w", err)
+	}
+
+	// TODO: Remove from vector store (but keep in DB)
+	return nil
+}

@@ -602,3 +602,150 @@ func (s *DatasetService) ProcessRuleArgsValidate(mode string, rules string) erro
 	}
 	return nil
 }
+
+// === Dataset Update Internals ===
+
+func (s *DatasetService) updateExternalDataset(dataset *models.Dataset, data map[string]any) {
+	if rm, ok := data["external_retrieval_model"]; ok {
+		rmJSON, _ := json.Marshal(rm)
+		dbengine.Instance().DB.Model(dataset).Update("retrieval_model", string(rmJSON))
+	}
+}
+
+func (s *DatasetService) updateInternalDataset(dataset *models.Dataset, data map[string]any, user *models.Account) error {
+	// Remove external-only fields
+	delete(data, "external_knowledge_api_id")
+	delete(data, "external_knowledge_id")
+	delete(data, "external_retrieval_model")
+
+	updates := map[string]any{}
+	allowedFields := map[string]string{
+		"name": "name", "description": "description", "permission": "permission",
+		"indexing_technique": "indexing_technique", "retrieval_model": "retrieval_model",
+	}
+	for key, col := range allowedFields {
+		if v, ok := data[key]; ok && v != nil {
+			if key == "retrieval_model" {
+				vJSON, _ := json.Marshal(v)
+				updates[col] = string(vJSON)
+			} else {
+				updates[col] = v
+			}
+		}
+	}
+
+	// Handle indexing technique change
+	action := s.handleIndexingTechniqueChange(dataset, data, updates)
+
+	// Handle embedding model update
+	if action == "" {
+		s.handleEmbeddingModelUpdate(dataset, data, updates)
+	}
+
+	if len(updates) > 0 {
+		updates["updated_by"] = user.ID
+		return dbengine.Instance().DB.Model(dataset).Updates(updates).Error
+	}
+	return nil
+}
+
+func (s *DatasetService) handleIndexingTechniqueChange(dataset *models.Dataset, data map[string]any, updates map[string]any) string {
+	newTechnique, ok := data["indexing_technique"].(string)
+	if !ok || newTechnique == dataset.IndexingTechnique {
+		return ""
+	}
+
+	if newTechnique == "economy" {
+		// Switching to economy: clear embedding settings
+		updates["embedding_model_provider"] = ""
+		updates["embedding_model"] = ""
+		updates["collection_binding_id"] = ""
+		return "remove"
+	}
+
+	// Switching to high_quality
+	if provider, ok := data["embedding_model_provider"].(string); ok {
+		updates["embedding_model_provider"] = provider
+	}
+	if model, ok := data["embedding_model"].(string); ok {
+		updates["embedding_model"] = model
+	}
+	return "add"
+}
+
+func (s *DatasetService) handleEmbeddingModelUpdate(dataset *models.Dataset, data map[string]any, updates map[string]any) {
+	if dataset.IndexingTechnique != "high_quality" {
+		return
+	}
+	newProvider, hasProvider := data["embedding_model_provider"].(string)
+	newModel, hasModel := data["embedding_model"].(string)
+
+	if hasProvider && newProvider != dataset.EmbeddingModelProvider {
+		updates["embedding_model_provider"] = newProvider
+	}
+	if hasModel && newModel != dataset.EmbeddingModel {
+		updates["embedding_model"] = newModel
+	}
+}
+
+// CheckDocForm validates that document form is compatible with dataset.
+func (s *DatasetService) CheckDocForm(dataset *models.Dataset, docForm string) error {
+	currentDocForm := dataset.DocForm()
+	if currentDocForm != "" && currentDocForm != docForm {
+		return fmt.Errorf("document form '%s' is not compatible with dataset form '%s'", docForm, currentDocForm)
+	}
+	return nil
+}
+
+// CheckEmbeddingModelSetting validates embedding model is configured for high-quality datasets.
+func (s *DatasetService) CheckEmbeddingModelSetting(tenantID, embeddingModelProvider, embeddingModel string) error {
+	if embeddingModelProvider == "" {
+		return fmt.Errorf("embedding model provider is required")
+	}
+	if embeddingModel == "" {
+		return fmt.Errorf("embedding model name is required")
+	}
+	// TODO: Validate model exists via model_runtime provider
+	return nil
+}
+
+// CheckRerankingModelSetting validates reranking model is configured.
+func (s *DatasetService) CheckRerankingModelSetting(tenantID, rerankingModelProvider, rerankingModel string) error {
+	if rerankingModelProvider == "" || rerankingModel == "" {
+		return fmt.Errorf("reranking model provider and name are required")
+	}
+	// TODO: Validate model exists via model_runtime provider
+	return nil
+}
+
+// CheckIsMultimodalModel checks if a model supports multimodal input.
+func (s *DatasetService) CheckIsMultimodalModel(tenantID, modelProvider, model string) bool {
+	// TODO: Query model_runtime for model capabilities
+	return false
+}
+
+// DocumentCreateArgsValidate validates document creation arguments.
+func (s *DatasetService) DocumentCreateArgsValidate(dataSourceType string, processRuleMode string) error {
+	if dataSourceType == "" && processRuleMode == "" {
+		return fmt.Errorf("data_source or process_rule is required")
+	}
+	return nil
+}
+
+// EstimateArgsValidate validates estimation request arguments.
+func (s *DatasetService) EstimateArgsValidate(infoList []map[string]any, processRule map[string]any) error {
+	if len(infoList) == 0 {
+		return fmt.Errorf("info_list is required")
+	}
+	if processRule != nil {
+		mode, _ := processRule["mode"].(string)
+		if mode == "" {
+			return fmt.Errorf("process_rule.mode is required")
+		}
+		validModes := map[string]bool{"automatic": true, "custom": true, "hierarchical": true}
+		if !validModes[mode] {
+			return fmt.Errorf("invalid process_rule mode: %s", mode)
+		}
+	}
+	return nil
+}

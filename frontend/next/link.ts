@@ -1,1 +1,2 @@
-export { default } from 'next/link'
+import { Link } from 'react-router'
+export default Link

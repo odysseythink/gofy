@@ -1,1 +1,8 @@
-export type { NextConfig, Viewport } from 'next'
+export type NextConfig = Record<string, any>
+export type Viewport = {
+  width?: string
+  initialScale?: number
+  maximumScale?: number
+  viewportFit?: string
+  userScalable?: boolean
+}

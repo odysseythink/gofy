@@ -1,4 +1,3 @@
-'use client'
 import type { AccessControlAccount, AccessControlGroup } from '@/models/access-control'
 import { RiAlertFill, RiCloseCircleFill, RiLockLine, RiOrganizationChart } from '@remixicon/react'
 import { useCallback, useEffect } from 'react'

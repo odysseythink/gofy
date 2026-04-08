@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Topic } from '@/app/components/workflow/nodes/question-classifier/types'
 import type { ValueSelector, Var } from '@/app/components/workflow/types'

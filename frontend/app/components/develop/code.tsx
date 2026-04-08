@@ -1,4 +1,3 @@
-'use client'
 import type { PropsWithChildren, ReactElement, ReactNode } from 'react'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import {

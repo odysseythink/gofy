@@ -1,4 +1,3 @@
-'use client'
 
 import type { PluginDeclaration, UpdateFromGitHubPayload } from '../../types'
 import type { Item } from '@/app/components/base/select'

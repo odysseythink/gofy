@@ -1,4 +1,3 @@
-'use client'
 import type { MailRegisterResponse } from '@/service/use-common'
 import Cookies from 'js-cookie'
 import { useCallback, useState } from 'react'

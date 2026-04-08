@@ -1,4 +1,3 @@
-'use client'
 import type { ToolWithProvider } from '@/app/components/workflow/types'
 import {
   RiArrowDownSLine,

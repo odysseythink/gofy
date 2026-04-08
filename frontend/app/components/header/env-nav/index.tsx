@@ -1,4 +1,3 @@
-'use client'
 
 import { useTranslation } from 'react-i18next'
 import { TerminalSquare } from '@/app/components/base/icons/src/vender/solid/development'

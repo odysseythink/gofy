@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { ValueSelector, Var, VisionSetting } from '@/app/components/workflow/types'
 import { produce } from 'immer'

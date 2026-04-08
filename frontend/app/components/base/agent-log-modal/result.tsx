@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import CodeEditor from '@/app/components/workflow/nodes/_base/components/editor/code-editor'

@@ -1,4 +1,3 @@
-'use client'
 import type { Collection, Tool } from '../types'
 import * as React from 'react'
 import { useState } from 'react'

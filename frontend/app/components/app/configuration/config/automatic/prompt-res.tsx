@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { WorkflowVariableBlockType } from '@/app/components/base/prompt-editor/types'
 import * as React from 'react'

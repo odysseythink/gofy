@@ -1,4 +1,3 @@
-'use client'
 
 import type { INavSelectorProps } from './nav-selector'
 import * as React from 'react'

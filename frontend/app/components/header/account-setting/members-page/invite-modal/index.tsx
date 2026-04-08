@@ -1,4 +1,3 @@
-'use client'
 import type { RoleKey } from './role-selector'
 import type { InvitationResult } from '@/models/common'
 import { useBoolean } from 'ahooks'

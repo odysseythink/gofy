@@ -1,4 +1,3 @@
-'use client'
 import type { DataSet } from '@/models/datasets'
 import type { DatasetConfigs } from '@/models/debug'
 import { RiEqualizer2Line } from '@remixicon/react'

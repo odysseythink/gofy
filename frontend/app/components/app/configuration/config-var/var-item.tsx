@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { IInputTypeIconProps } from './input-type-icon'
 import {

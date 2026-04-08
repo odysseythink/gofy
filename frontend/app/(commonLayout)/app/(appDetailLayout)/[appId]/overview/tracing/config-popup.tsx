@@ -1,4 +1,3 @@
-'use client'
 import type { FC, JSX } from 'react'
 import type { AliyunConfig, ArizeConfig, DatabricksConfig, LangFuseConfig, LangSmithConfig, MLflowConfig, OpikConfig, PhoenixConfig, TencentConfig, WeaveConfig } from './type'
 import { useBoolean } from 'ahooks'

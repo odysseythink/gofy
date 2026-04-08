@@ -1,4 +1,3 @@
-'use client'
 import type { IItem } from '@/app/components/header/account-setting/collapse'
 import type { App } from '@/types/app'
 import {

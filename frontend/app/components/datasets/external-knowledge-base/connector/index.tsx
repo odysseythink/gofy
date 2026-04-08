@@ -1,4 +1,3 @@
-'use client'
 
 import type { CreateKnowledgeBaseReq } from '@/app/components/datasets/external-knowledge-base/create/declarations'
 import * as React from 'react'

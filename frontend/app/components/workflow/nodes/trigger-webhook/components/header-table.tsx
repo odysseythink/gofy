@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { WebhookHeader } from '../types'
 import type { ColumnConfig, GenericTableRow } from './generic-table'

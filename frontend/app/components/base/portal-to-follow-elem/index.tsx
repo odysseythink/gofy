@@ -1,4 +1,3 @@
-'use client'
 /**
  * @deprecated Use semantic overlay primitives from `@/app/components/base/ui/` instead.
  * This component will be removed after migration is complete.

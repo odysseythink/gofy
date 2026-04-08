@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Credential } from '@/app/components/tools/types'
 import * as React from 'react'

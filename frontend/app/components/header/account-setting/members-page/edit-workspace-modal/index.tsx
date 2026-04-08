@@ -1,4 +1,3 @@
-'use client'
 import { useId, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useContext } from 'use-context-selector'

@@ -1,4 +1,3 @@
-'use client'
 import {
   RiDeleteBinLine,
   RiEqualizer2Line,

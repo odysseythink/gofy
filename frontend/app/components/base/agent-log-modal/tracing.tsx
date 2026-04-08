@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { AgentIteration } from '@/models/log'
 import Iteration from './iteration'

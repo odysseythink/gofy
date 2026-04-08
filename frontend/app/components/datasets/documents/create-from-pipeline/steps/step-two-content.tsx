@@ -1,4 +1,3 @@
-'use client'
 import type { RefObject } from 'react'
 import { memo } from 'react'
 import ProcessDocuments from '../process-documents'

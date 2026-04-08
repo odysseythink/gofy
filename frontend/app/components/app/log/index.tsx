@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { App } from '@/types/app'
 import { useDebounce } from 'ahooks'

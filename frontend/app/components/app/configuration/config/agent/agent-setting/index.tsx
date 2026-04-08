@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { AgentConfig } from '@/models/debug'
 import { RiCloseLine } from '@remixicon/react'

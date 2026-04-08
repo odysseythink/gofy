@@ -1,4 +1,3 @@
-'use client'
 
 import type { NotionPage } from '@/models/common'
 import type { CrawlResultItem } from '@/models/datasets'

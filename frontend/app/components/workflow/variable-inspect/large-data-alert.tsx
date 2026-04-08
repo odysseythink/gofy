@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import { RiInformation2Fill } from '@remixicon/react'
 import * as React from 'react'

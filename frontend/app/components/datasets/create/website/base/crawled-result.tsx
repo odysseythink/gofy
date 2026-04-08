@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { CrawlResultItem } from '@/models/datasets'
 import * as React from 'react'

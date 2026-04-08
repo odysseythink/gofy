@@ -1,4 +1,3 @@
-'use client'
 import type { InputProps } from '../input'
 import { useClipboard } from 'foxact/use-clipboard'
 import * as React from 'react'

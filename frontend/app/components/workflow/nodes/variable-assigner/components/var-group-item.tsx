@@ -1,4 +1,3 @@
-'use client'
 import type { ChangeEvent, FC } from 'react'
 import type { VarGroupItem as VarGroupItemType } from '../types'
 import type { NodeOutPutVar, ValueSelector, Var } from '@/app/components/workflow/types'

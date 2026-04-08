@@ -1,5 +1,4 @@
 /* eslint-disable ts/no-explicit-any */
-'use client'
 import type { FC } from 'react'
 import type { Features as FeaturesData, FileUpload } from '@/app/components/base/features/types'
 import type { FormValue } from '@/app/components/header/account-setting/model-provider-page/declarations'

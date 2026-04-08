@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Field as FieldType } from '../../../../../llm/types'
 import { RiArrowDropDownLine } from '@remixicon/react'

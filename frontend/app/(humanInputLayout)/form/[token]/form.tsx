@@ -1,4 +1,3 @@
-'use client'
 import type { ButtonProps } from '@/app/components/base/button'
 import type { FormInputItem, UserAction } from '@/app/components/workflow/nodes/human-input/types'
 import type { SiteInfo } from '@/models/share'

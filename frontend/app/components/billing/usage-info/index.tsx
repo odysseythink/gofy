@@ -1,4 +1,3 @@
-'use client'
 import type { ComponentType, FC } from 'react'
 import * as React from 'react'
 import { useTranslation } from 'react-i18next'

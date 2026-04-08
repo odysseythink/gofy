@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { ExternalKnowledgeBaseHitTesting } from '@/models/datasets'
 import { useBoolean } from 'ahooks'

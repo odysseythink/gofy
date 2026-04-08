@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { IndexingStatusResponse } from '@/models/datasets'
 import { noop } from 'es-toolkit/function'

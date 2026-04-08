@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { QueryParam } from './filter'
 import type { AnnotationItem, AnnotationItemBasic } from './type'

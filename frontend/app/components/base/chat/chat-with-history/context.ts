@@ -1,4 +1,3 @@
-'use client'
 
 import type { RefObject } from 'react'
 import type { ThemeBuilder } from '../embedded-chatbot/theme/theme-context'

@@ -1,4 +1,3 @@
-'use client'
 import type { Member } from '@/models/common'
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/24/outline'
 import { memo, useMemo, useState } from 'react'

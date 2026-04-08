@@ -1,4 +1,3 @@
-'use client'
 import type { Datasource } from '@/app/components/rag-pipeline/components/panel/test-run/types'
 import type { NotionPage } from '@/models/common'
 import type { CrawlResultItem, CustomFile, DocumentItem, FileIndexingEstimateResponse, FileItem } from '@/models/datasets'

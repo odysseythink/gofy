@@ -1,4 +1,3 @@
-'use client'
 import type { RefObject } from 'react'
 import type { Plugin, PluginCategoryEnum } from '@/app/components/plugins/types'
 import { RiArrowRightUpLine, RiSearchLine } from '@remixicon/react'

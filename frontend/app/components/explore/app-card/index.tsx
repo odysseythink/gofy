@@ -1,4 +1,3 @@
-'use client'
 import type { App } from '@/models/explore'
 import type { TryAppSelection } from '@/types/try-app'
 import { PlusIcon } from '@heroicons/react/20/solid'

@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Node, NodeOutPutVar, Var } from '../../../types'
 import type { CaseItem, HandleAddCondition, HandleAddSubVariableCondition, HandleRemoveCondition, handleRemoveSubVariableCondition, HandleToggleConditionLogicalOperator, HandleToggleSubVariableConditionLogicalOperator, HandleUpdateCondition, HandleUpdateSubVariableCondition } from '../types'

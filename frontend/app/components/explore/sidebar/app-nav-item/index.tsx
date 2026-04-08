@@ -1,4 +1,3 @@
-'use client'
 import type { AppIconType } from '@/types/app'
 
 import { useHover } from 'ahooks'

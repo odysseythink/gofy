@@ -1,4 +1,3 @@
-'use client'
 import type { OnFeaturesChange } from '@/app/components/base/features/types'
 import type { Item } from '@/app/components/base/select'
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions, Transition } from '@headlessui/react'

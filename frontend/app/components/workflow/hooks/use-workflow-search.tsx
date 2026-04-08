@@ -1,4 +1,3 @@
-'use client'
 
 import type { LLMNodeType } from '../nodes/llm/types'
 import type { CommonNodeType } from '../types'

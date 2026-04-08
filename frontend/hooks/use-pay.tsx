@@ -1,4 +1,3 @@
-'use client'
 
 import type { IConfirm } from '@/app/components/base/confirm'
 import { useCallback, useEffect, useState } from 'react'

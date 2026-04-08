@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Field, StructuredOutput, TypeWithArray } from '../../../llm/types'
 import * as React from 'react'

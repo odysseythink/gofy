@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { InputVar } from '../../../../types'
 import { produce } from 'immer'

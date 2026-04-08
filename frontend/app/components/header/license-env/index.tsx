@@ -1,4 +1,3 @@
-'use client'
 
 import { RiHourglass2Fill } from '@remixicon/react'
 import dayjs from 'dayjs'

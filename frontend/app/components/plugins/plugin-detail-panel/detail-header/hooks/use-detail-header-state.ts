@@ -1,4 +1,3 @@
-'use client'
 
 import type { PluginDetail } from '../../../types'
 import { useBoolean } from 'ahooks'

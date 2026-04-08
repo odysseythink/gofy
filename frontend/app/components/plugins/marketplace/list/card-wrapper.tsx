@@ -1,4 +1,3 @@
-'use client'
 import type { Plugin } from '@/app/components/plugins/types'
 import { useLocale, useTranslation } from '@/i18n-config/lib.client'
 import { RiArrowRightUpLine } from '@remixicon/react'

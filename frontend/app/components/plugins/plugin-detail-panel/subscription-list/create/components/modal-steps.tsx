@@ -1,4 +1,3 @@
-'use client'
 import type { FormRefObject, FormSchema } from '@/app/components/base/form/types'
 import type { TriggerLogEntity, TriggerSubscriptionBuilder } from '@/app/components/workflow/block-selector/types'
 import { RiLoader2Line } from '@remixicon/react'

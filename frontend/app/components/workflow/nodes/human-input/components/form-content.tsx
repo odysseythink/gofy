@@ -1,4 +1,3 @@
-'use client'
 import type { LexicalCommand } from 'lexical'
 import type { FC } from 'react'
 import type { FormInputItem } from '../types'

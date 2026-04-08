@@ -1,4 +1,3 @@
-'use client'
 
 import type { DuplicateAppModalProps } from '@/app/components/app/duplicate-modal'
 import type { HtmlContentProps } from '@/app/components/base/popover'

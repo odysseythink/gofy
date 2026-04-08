@@ -1,4 +1,3 @@
-'use client'
 import type { AccessControlAccount, AccessControlGroup, Subject, SubjectAccount, SubjectGroup } from '@/models/access-control'
 import { FloatingOverlay } from '@floating-ui/react'
 import { RiAddCircleFill, RiArrowRightSLine, RiOrganizationChart } from '@remixicon/react'

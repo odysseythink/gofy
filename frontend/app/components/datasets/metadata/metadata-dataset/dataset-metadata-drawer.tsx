@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { BuiltInMetadataItem, MetadataItemWithValueLength } from '../types'
 import { RiAddLine, RiDeleteBinLine, RiEditLine } from '@remixicon/react'

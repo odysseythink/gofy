@@ -1,4 +1,3 @@
-'use client'
 import type { TriggerSubscriptionBuilder } from '@/app/components/workflow/block-selector/types'
 import { useTranslation } from 'react-i18next'
 import { EncryptedBottom } from '@/app/components/base/encrypted-bottom'

@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { FullDocumentDetail } from '@/models/datasets'
 import { PencilIcon } from '@heroicons/react/24/outline'

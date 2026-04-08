@@ -1,4 +1,3 @@
-'use client'
 import { useKeyPress } from 'ahooks'
 import { noop } from 'es-toolkit/function'
 import { useTranslation } from 'react-i18next'

@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { DataSet } from '@/models/datasets'
 import { useBoolean } from 'ahooks'

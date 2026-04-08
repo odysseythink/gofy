@@ -1,4 +1,3 @@
-'use client'
 import type { TriggerLogEntity } from '@/app/components/workflow/block-selector/types'
 import {
   RiArrowDownSLine,

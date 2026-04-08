@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Credential, CustomCollectionBackend, CustomParamSchema, Emoji } from '../types'
 import { RiSettings2Line } from '@remixicon/react'

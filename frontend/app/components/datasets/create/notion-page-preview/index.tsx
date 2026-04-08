@@ -1,4 +1,3 @@
-'use client'
 import type { NotionPage } from '@/models/common'
 import { XMarkIcon } from '@heroicons/react/20/solid'
 import * as React from 'react'

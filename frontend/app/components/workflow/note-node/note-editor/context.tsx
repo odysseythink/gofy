@@ -1,4 +1,3 @@
-'use client'
 
 import { LinkNode } from '@lexical/link'
 import {

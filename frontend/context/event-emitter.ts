@@ -1,4 +1,3 @@
-'use client'
 
 import type { EventEmitter } from 'ahooks/lib/useEventEmitter'
 import { createContext, useContext } from 'use-context-selector'

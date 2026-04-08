@@ -1,4 +1,3 @@
-'use client'
 
 import type { ReactNode, SetStateAction } from 'react'
 import type { ModalState, ModelModalType } from './modal-context'

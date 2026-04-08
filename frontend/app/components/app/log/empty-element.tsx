@@ -1,4 +1,3 @@
-'use client'
 import type { FC, SVGProps } from 'react'
 import type { App } from '@/types/app'
 import * as React from 'react'

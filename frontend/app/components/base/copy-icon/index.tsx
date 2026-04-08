@@ -1,4 +1,3 @@
-'use client'
 import { useClipboard } from 'foxact/use-clipboard'
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'

@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Props as FormProps } from './form'
 import type { Emoji } from '@/app/components/tools/types'

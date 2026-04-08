@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { IAppCardProps } from '@/app/components/app/overview/app-card'
 import type { BlockEnum } from '@/app/components/workflow/types'

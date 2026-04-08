@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Plugin, PluginManifestInMarket } from '../../../types'
 import { RiLoader2Line } from '@remixicon/react'

@@ -1,4 +1,3 @@
-'use client'
 import type { MailSendResponse } from '@/service/use-common'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'

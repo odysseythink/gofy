@@ -1,4 +1,3 @@
-'use client'
 
 import type { Item } from '@/app/components/base/select'
 import type { Locale } from '@/i18n-config'

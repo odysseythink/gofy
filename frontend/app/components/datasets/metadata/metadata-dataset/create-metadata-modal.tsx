@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Props as CreateContentProps } from './create-content'
 import * as React from 'react'

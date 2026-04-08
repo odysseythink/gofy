@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { FileEntity } from '@/app/components/datasets/common/image-uploader/types'
 import type { ChildChunkDetail, ChunkingMode, SegmentDetailModel } from '@/models/datasets'

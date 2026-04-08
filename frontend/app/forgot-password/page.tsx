@@ -1,4 +1,3 @@
-'use client'
 import * as React from 'react'
 import ChangePasswordForm from '@/app/forgot-password/ChangePasswordForm'
 import { useGlobalPublicStore } from '@/context/global-public-context'

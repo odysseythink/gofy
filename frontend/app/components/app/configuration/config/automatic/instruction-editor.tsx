@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { GeneratorType } from './types'
 import type { Node, NodeOutPutVar, ValueSelector } from '@/app/components/workflow/types'

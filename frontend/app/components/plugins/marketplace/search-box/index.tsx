@@ -1,4 +1,3 @@
-'use client'
 import { RiAddLine, RiCloseLine, RiSearchLine } from '@remixicon/react'
 import ActionButton from '@/app/components/base/action-button'
 import Divider from '@/app/components/base/divider'

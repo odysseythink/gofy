@@ -1,4 +1,3 @@
-'use client'
 import type { DataSet } from '@/models/datasets'
 import { useHover } from 'ahooks'
 import { useMemo, useRef } from 'react'

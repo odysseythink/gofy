@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { ModelConfig } from '@/app/components/workflow/types'
 import type { GenRes } from '@/service/debug'

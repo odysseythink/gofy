@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import { produce } from 'immer'
 import * as React from 'react'

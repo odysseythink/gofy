@@ -1,4 +1,3 @@
-'use client'
 
 import type { ICurrentWorkspace, LangGeniusVersionResponse, UserProfileResponse } from '@/models/common'
 import { noop } from 'es-toolkit/function'

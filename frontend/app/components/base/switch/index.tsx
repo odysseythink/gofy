@@ -1,4 +1,3 @@
-'use client'
 
 import type { VariantProps } from 'class-variance-authority'
 import { Switch as BaseSwitch } from '@base-ui/react/switch'

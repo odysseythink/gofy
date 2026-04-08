@@ -1,4 +1,3 @@
-'use client'
 import type { Plugin } from '@/app/components/plugins/types'
 import { useBoolean } from 'ahooks'
 import * as React from 'react'

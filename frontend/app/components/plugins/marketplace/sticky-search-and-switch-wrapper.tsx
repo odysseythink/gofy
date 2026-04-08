@@ -1,4 +1,3 @@
-'use client'
 
 import { cn } from '@/utils/classnames'
 import PluginTypeSwitch from './plugin-type-switch'

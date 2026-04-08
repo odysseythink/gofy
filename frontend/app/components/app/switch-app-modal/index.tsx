@@ -1,4 +1,3 @@
-'use client'
 
 import type { App } from '@/types/app'
 import { RiCloseLine } from '@remixicon/react'

@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { ValueSelector, Var, Variable } from '@/app/components/workflow/types'
 import { RiDraggable } from '@remixicon/react'

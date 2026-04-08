@@ -1,4 +1,3 @@
-'use client'
 
 import type { FC, ReactNode } from 'react'
 import type { ExternalAPIItem, ExternalAPIListResponse } from '@/models/datasets'

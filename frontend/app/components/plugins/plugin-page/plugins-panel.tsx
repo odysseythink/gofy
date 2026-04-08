@@ -1,4 +1,3 @@
-'use client'
 import type { PluginDetail } from '../types'
 import type { FilterState } from './filter-management'
 import { useDebounceFn } from 'ahooks'

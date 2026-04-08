@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { PluginDetail } from '@/app/components/plugins/types'
 import * as React from 'react'

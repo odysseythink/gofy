@@ -1,4 +1,3 @@
-'use client'
 import type { ZodSchema } from 'zod'
 import * as React from 'react'
 

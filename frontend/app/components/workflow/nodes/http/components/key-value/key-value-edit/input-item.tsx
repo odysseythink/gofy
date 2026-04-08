@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Var } from '@/app/components/workflow/types'
 import * as React from 'react'

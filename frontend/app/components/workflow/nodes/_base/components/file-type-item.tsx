@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import { noop } from 'es-toolkit/function'
 import * as React from 'react'

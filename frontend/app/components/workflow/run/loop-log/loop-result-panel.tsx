@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { LoopDurationMap, LoopVariableMap, NodeTracing } from '@/types/workflow'
 import {

@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Topic } from '../types'
 import type { ValueSelector, Var } from '@/app/components/workflow/types'

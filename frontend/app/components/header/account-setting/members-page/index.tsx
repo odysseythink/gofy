@@ -1,4 +1,3 @@
-'use client'
 import type { InvitationResult } from '@/models/common'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'

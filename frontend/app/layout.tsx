@@ -5,14 +5,13 @@ import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import GlobalPublicStoreProvider from '@/context/global-public-context'
 import { TanstackQueryInitializer } from '@/context/query-client'
 import { getDatasetMap } from '@/env'
-import { getLocaleOnServer } from '@/i18n-config/server'
+import { I18nProvider } from '@/i18n-config/provider'
 import { ToastProvider } from './components/base/toast'
 import { ToastHost } from './components/base/ui/toast'
 import { TooltipProvider } from './components/base/ui/tooltip'
 import PartnerStackCookieRecorder from './components/billing/partner-stack/cookie-recorder'
 import { AgentationLoader } from './components/devtools/agentation-loader'
 import { ReactScanLoader } from './components/devtools/react-scan/loader'
-import { I18nServerProvider } from './components/provider/i18n-server'
 import RoutePrefixHandle from './routePrefixHandle'
 import './styles/globals.css'
 import './styles/markdown.css'
@@ -25,16 +24,15 @@ export const viewport: Viewport = {
   userScalable: false,
 }
 
-const LocaleLayout = async ({
+const LocaleLayout = ({
   children,
 }: {
   children: React.ReactNode
 }) => {
-  const locale = await getLocaleOnServer()
   const datasetMap = getDatasetMap()
 
   return (
-    <html lang={locale ?? 'en'} className="h-full" suppressHydrationWarning>
+    <html lang="en" className="h-full" suppressHydrationWarning>
       <head>
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#1C64F2" />
@@ -66,7 +64,7 @@ const LocaleLayout = async ({
             >
               <NuqsAdapter>
                 <TanstackQueryInitializer>
-                  <I18nServerProvider>
+                  <I18nProvider>
                     <ToastHost timeout={5000} limit={3} />
                     <PartnerStackCookieRecorder />
                     <ToastProvider>
@@ -76,7 +74,7 @@ const LocaleLayout = async ({
                         </TooltipProvider>
                       </GlobalPublicStoreProvider>
                     </ToastProvider>
-                  </I18nServerProvider>
+                  </I18nProvider>
                 </TanstackQueryInitializer>
               </NuqsAdapter>
             </ThemeProvider>

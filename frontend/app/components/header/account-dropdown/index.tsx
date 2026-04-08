@@ -1,4 +1,3 @@
-'use client'
 
 import type { MouseEventHandler, ReactNode } from 'react'
 import { useState } from 'react'

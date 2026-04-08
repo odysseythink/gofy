@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { WorkflowAppLogDetail, WorkflowLogsResponse, WorkflowRunTriggeredFrom } from '@/models/log'
 import type { App } from '@/types/app'

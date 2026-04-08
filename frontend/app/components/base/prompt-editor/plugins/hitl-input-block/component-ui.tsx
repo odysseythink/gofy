@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { WorkflowNodesMap } from '../workflow-variable-block/node'
 import type { FormInputItem } from '@/app/components/workflow/nodes/human-input/types'

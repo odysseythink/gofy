@@ -1,4 +1,3 @@
-'use client'
 
 import type { FC } from 'react'
 import type { DefaultModel, Model } from '@/app/components/header/account-setting/model-provider-page/declarations'

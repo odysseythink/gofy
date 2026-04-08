@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { ChatItemInTree } from '../../base/chat/types'
 import type { FeedbackFunc, FeedbackType, IChatItem, SubmitAnnotationFunc } from '@/app/components/base/chat/chat/type'

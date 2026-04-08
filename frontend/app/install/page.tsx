@@ -1,4 +1,3 @@
-'use client'
 import * as React from 'react'
 import { useGlobalPublicStore } from '@/context/global-public-context'
 import { cn } from '@/utils/classnames'

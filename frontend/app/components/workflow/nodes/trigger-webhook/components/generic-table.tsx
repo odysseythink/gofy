@@ -1,4 +1,3 @@
-'use client'
 import type { FC, ReactNode } from 'react'
 import { RiDeleteBinLine } from '@remixicon/react'
 import * as React from 'react'

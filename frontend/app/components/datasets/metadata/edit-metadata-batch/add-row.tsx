@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { MetadataItemWithEdit } from '../types'
 import { RiIndeterminateCircleLine } from '@remixicon/react'

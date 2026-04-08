@@ -1,4 +1,3 @@
-'use client'
 import type { HeaderItem } from '../headers-input'
 import type { AppIconSelection } from '@/app/components/base/app-icon-picker'
 import type { ToolWithProvider } from '@/app/components/workflow/types'

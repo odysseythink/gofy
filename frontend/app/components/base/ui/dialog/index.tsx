@@ -1,4 +1,3 @@
-'use client'
 
 //   z-index strategy (relies on root `isolation: isolate` in layout.tsx):
 //   All base/ui/* overlay primitives — z-[1002]

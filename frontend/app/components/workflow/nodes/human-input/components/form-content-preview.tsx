@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { FormInputItem, UserAction } from '../types'
 import type { ButtonProps } from '@/app/components/base/button'

@@ -1,4 +1,3 @@
-'use client'
 import { RiArrowDownSLine, RiCheckLine } from '@remixicon/react'
 import * as React from 'react'
 import { useState } from 'react'

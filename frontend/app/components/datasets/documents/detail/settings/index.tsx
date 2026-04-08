@@ -1,4 +1,3 @@
-'use client'
 import * as React from 'react'
 import { useDatasetDetailContextWithSelector } from '@/context/dataset-detail'
 import DocumentSettings from './document-settings'

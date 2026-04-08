@@ -1,4 +1,3 @@
-'use client'
 
 import type { Placement } from '@/app/components/base/ui/placement'
 import { Menu } from '@base-ui/react/menu'

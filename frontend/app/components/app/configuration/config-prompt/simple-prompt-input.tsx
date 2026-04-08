@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { ExternalDataTool } from '@/models/common'
 import type { PromptVariable } from '@/models/debug'

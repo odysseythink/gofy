@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { InputVar, MoreInfo } from '@/app/components/workflow/types'
 import {

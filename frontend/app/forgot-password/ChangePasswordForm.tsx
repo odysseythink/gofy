@@ -1,4 +1,3 @@
-'use client'
 import { CheckCircleIcon } from '@heroicons/react/24/solid'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'

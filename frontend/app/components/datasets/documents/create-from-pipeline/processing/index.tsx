@@ -1,4 +1,3 @@
-'use client'
 import type { InitialDocumentDetail } from '@/models/pipeline'
 import { RiBookOpenLine } from '@remixicon/react'
 import * as React from 'react'

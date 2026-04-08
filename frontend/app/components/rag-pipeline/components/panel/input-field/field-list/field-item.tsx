@@ -1,4 +1,3 @@
-'use client'
 import type { InputVarType } from '@/app/components/workflow/types'
 import type { InputVar } from '@/models/pipeline'
 import {

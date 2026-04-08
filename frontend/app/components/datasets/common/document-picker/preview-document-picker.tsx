@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { DocumentItem } from '@/models/datasets'
 import { RiArrowDownSLine } from '@remixicon/react'

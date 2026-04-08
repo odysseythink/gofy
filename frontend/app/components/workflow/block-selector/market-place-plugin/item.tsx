@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Plugin } from '@/app/components/plugins/types.ts'
 import { useBoolean } from 'ahooks'

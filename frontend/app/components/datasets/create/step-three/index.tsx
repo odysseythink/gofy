@@ -1,4 +1,3 @@
-'use client'
 import type { createDocumentResponse, FullDocumentDetail } from '@/models/datasets'
 import type { RETRIEVE_METHOD } from '@/types/app'
 import { RiBookOpenLine } from '@remixicon/react'

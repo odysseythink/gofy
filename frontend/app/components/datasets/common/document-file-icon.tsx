@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { FileAppearanceType } from '@/app/components/base/file-uploader/types'
 import * as React from 'react'

@@ -1,4 +1,3 @@
-'use client'
 
 import type { Resource } from 'i18next'
 import type { Locale } from '@/i18n-config'

@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { AppCategory } from '@/models/explore'
 import * as React from 'react'

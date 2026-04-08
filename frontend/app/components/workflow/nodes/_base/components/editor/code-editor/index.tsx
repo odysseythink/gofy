@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import Editor, { loader } from '@monaco-editor/react'
 import { noop } from 'es-toolkit/function'

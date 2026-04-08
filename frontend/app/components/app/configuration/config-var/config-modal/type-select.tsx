@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { InputVarType } from '@/app/components/workflow/types'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'

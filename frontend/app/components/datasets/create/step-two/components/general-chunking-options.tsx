@@ -1,4 +1,3 @@
-'use client'
 
 import type { FC } from 'react'
 import type { PreProcessingRule, SummaryIndexSetting as SummaryIndexSettingType } from '@/models/datasets'

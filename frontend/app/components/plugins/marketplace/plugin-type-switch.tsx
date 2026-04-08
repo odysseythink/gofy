@@ -1,4 +1,3 @@
-'use client'
 import type { ActivePluginType } from './constants'
 import { useTranslation } from '@/i18n-config/lib.client'
 import {

@@ -1,4 +1,3 @@
-'use client'
 
 import type { DataSourceAuth } from '@/app/components/header/account-setting/data-source-page-new/types'
 import type { DataSourceProvider, NotionPage } from '@/models/common'

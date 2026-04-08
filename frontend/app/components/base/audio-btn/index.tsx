@@ -1,4 +1,3 @@
-'use client'
 import { t } from 'i18next'
 import { useState } from 'react'
 import { AudioPlayerManager } from '@/app/components/base/audio-btn/audio.player.manager'

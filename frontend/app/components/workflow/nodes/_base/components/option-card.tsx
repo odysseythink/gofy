@@ -1,4 +1,3 @@
-'use client'
 import type { VariantProps } from 'class-variance-authority'
 import type { FC } from 'react'
 import { cva } from 'class-variance-authority'

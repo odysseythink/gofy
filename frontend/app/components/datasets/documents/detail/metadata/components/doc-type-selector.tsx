@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { DocType } from '@/models/datasets'
 import { useTranslation } from 'react-i18next'

@@ -1,4 +1,3 @@
-'use client'
 
 import type { FC } from 'react'
 import * as amplitude from '@amplitude/analytics-browser'

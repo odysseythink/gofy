@@ -1,4 +1,3 @@
-'use client'
 import type { AppIconSelection } from '@/app/components/base/app-icon-picker'
 import type { IconInfo } from '@/models/datasets'
 import { RiCloseLine } from '@remixicon/react'

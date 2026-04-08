@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { BuiltInMetadataItem, MetadataItemInBatchEdit, MetadataItemWithEdit } from '../types'
 import { RiQuestionLine } from '@remixicon/react'

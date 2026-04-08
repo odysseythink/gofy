@@ -1,4 +1,3 @@
-'use client'
 import type { Placement } from '@floating-ui/react'
 import type { FC } from 'react'
 import {

@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Authorization as AuthorizationPayloadType } from '../../types'
 import type { Var } from '@/app/components/workflow/types'

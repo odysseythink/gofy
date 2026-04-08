@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { MetaData } from '../types'
 import type { PluginCategoryEnum } from '@/app/components/plugins/types'

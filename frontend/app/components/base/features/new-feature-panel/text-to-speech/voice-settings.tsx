@@ -1,4 +1,3 @@
-'use client'
 import type { OnFeaturesChange } from '@/app/components/base/features/types'
 import { memo } from 'react'
 import ParamConfigContent from '@/app/components/base/features/new-feature-panel/text-to-speech/param-config-content'

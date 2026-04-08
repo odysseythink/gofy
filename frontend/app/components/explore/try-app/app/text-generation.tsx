@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { InputValueTypes, Task } from '../../../share/text-generation/types'
 import type { MoreLikeThisConfig, PromptConfig, TextToSpeechConfig } from '@/models/debug'

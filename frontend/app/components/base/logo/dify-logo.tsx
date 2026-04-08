@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import useTheme from '@/hooks/use-theme'
 import { cn } from '@/utils/classnames'

@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import Input from '@/app/components/base/input'

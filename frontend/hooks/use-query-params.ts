@@ -1,4 +1,3 @@
-'use client'
 
 /**
  * Centralized URL query parameter management hooks using nuqs

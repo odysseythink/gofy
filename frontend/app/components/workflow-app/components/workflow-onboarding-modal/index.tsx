@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { PluginDefaultValue } from '@/app/components/workflow/block-selector/types'
 import { useTranslation } from 'react-i18next'

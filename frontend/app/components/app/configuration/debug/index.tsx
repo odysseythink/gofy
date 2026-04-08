@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { DebugWithSingleModelRefType } from './debug-with-single-model'
 import type { ModelAndParameter } from './types'

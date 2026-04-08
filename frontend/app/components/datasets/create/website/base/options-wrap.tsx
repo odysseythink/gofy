@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import { RiEqualizer2Line } from '@remixicon/react'
 import { useBoolean } from 'ahooks'

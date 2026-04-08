@@ -1,4 +1,3 @@
-'use client'
 import type { FormRefObject, FormSchema } from '@/app/components/base/form/types'
 import type { ParametersSchema, PluginDetail } from '@/app/components/plugins/types'
 import type { TriggerSubscription } from '@/app/components/workflow/block-selector/types'

@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Collection } from '@/app/components/tools/types'
 import type { ToolDefaultValue, ToolValue } from '@/app/components/workflow/block-selector/types'

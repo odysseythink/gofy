@@ -1,4 +1,3 @@
-'use client'
 
 import type { ModelAndParameter } from '../types'
 import { noop } from 'es-toolkit/function'

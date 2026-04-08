@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { FeedbackType } from '@/app/components/base/chat/chat/type'
 import type { WorkflowProcess } from '@/app/components/base/chat/types'

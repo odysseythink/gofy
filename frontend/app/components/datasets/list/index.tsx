@@ -1,4 +1,3 @@
-'use client'
 
 import { useBoolean, useDebounceFn } from 'ahooks'
 // Libraries

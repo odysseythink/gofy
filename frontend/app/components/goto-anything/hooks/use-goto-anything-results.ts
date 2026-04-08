@@ -1,4 +1,3 @@
-'use client'
 
 import type { ActionItem, SearchResult } from '../actions/types'
 import { useQuery } from '@tanstack/react-query'

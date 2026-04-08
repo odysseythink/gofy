@@ -1,4 +1,3 @@
-'use client'
 import type { AppData } from '@/models/share'
 import {
   useEffect,

@@ -1,4 +1,3 @@
-'use client'
 
 import type { RefObject } from 'react'
 import type { PLUGIN_TYPE_SEARCH_MAP } from '../marketplace/constants'

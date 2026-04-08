@@ -1,4 +1,3 @@
-'use client'
 import type { CreateApiKeyResponse } from '@/models/app'
 import { PlusIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { RiDeleteBinLine } from '@remixicon/react'

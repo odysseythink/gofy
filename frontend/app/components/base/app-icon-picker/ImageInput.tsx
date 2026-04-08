@@ -1,4 +1,3 @@
-'use client'
 
 import type { ChangeEvent, FC } from 'react'
 import type { Area, CropperProps } from 'react-easy-crop'

@@ -1,4 +1,3 @@
-'use client'
 import { RiArrowRightUpLine } from '@remixicon/react'
 import { useTranslation } from 'react-i18next'
 import useTheme from '@/hooks/use-theme'

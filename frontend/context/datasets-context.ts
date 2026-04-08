@@ -1,4 +1,3 @@
-'use client'
 
 import type { DataSet } from '@/models/datasets'
 import { noop } from 'es-toolkit/function'

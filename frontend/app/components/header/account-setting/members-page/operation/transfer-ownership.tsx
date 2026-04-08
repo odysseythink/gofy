@@ -1,4 +1,3 @@
-'use client'
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react'
 import {
   RiArrowDownSLine,

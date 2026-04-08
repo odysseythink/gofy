@@ -1,4 +1,3 @@
-'use client'
 import type { Dispatch, SetStateAction } from 'react'
 import type { ViewType } from '@/app/components/workflow/block-selector/view-type-select'
 import type { OnSelectBlock } from '@/app/components/workflow/types'

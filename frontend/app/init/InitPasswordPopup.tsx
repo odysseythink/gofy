@@ -1,4 +1,3 @@
-'use client'
 import type { InitValidateStatusResponse } from '@/models/common'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'

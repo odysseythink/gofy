@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { CredentialFormSchema, CredentialFormSchemaNumberInput, CredentialFormSchemaSelect } from '@/app/components/header/account-setting/model-provider-page/declarations'
 import type { Var } from '@/app/components/workflow/types'

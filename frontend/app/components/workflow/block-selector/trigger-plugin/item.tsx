@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { TriggerDefaultValue, TriggerWithProvider } from '@/app/components/workflow/block-selector/types'
 import { RiArrowDownSLine, RiArrowRightSLine } from '@remixicon/react'

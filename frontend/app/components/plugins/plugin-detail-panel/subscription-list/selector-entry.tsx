@@ -1,4 +1,3 @@
-'use client'
 import type { SimpleSubscription } from './types'
 import { RiArrowDownSLine, RiWebhookLine } from '@remixicon/react'
 import { useMemo, useState } from 'react'

@@ -1,4 +1,3 @@
-'use client'
 import type { ReactNode } from 'react'
 import type { Components, StreamdownProps } from 'streamdown'
 import DOMPurify from 'dompurify'

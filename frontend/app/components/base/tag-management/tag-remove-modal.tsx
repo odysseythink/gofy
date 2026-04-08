@@ -1,4 +1,3 @@
-'use client'
 
 import type { Tag } from '@/app/components/base/tag-management/constant'
 import { noop } from 'es-toolkit/function'

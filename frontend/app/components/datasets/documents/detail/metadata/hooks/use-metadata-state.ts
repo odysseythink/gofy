@@ -1,4 +1,3 @@
-'use client'
 import type { CommonResponse } from '@/models/common'
 import type { DocType, FullDocumentDetail } from '@/models/datasets'
 import { useEffect, useState } from 'react'

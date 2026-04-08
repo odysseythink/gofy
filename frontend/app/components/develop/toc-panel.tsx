@@ -1,4 +1,3 @@
-'use client'
 import type { TocItem } from './hooks/use-doc-toc'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@/utils/classnames'

@@ -1,4 +1,3 @@
-'use client'
 import type { AppIconSelection } from '@/app/components/base/app-icon-picker'
 import type { Member } from '@/models/common'
 import type { DataSet, DatasetPermission, IconInfo } from '@/models/datasets'

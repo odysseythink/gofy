@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { AnnotationItem } from './type'
 import { RiDeleteBinLine, RiEditLine } from '@remixicon/react'

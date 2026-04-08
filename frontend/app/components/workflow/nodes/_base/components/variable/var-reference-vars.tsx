@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { StructuredOutput } from '../../../llm/types'
 import type { Field } from '@/app/components/workflow/nodes/llm/types'

@@ -1,4 +1,3 @@
-'use client'
 import type { FileUpload } from '@/app/components/base/features/types'
 import type { FileUploadConfigResponse } from '@/models/common'
 import type { App } from '@/types/app'

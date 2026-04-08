@@ -1,4 +1,3 @@
-'use client'
 import type { Emoji } from '@/app/components/tools/types'
 import type { InputVar, Variable } from '@/app/components/workflow/types'
 import type { PublishWorkflowParams } from '@/types/workflow'

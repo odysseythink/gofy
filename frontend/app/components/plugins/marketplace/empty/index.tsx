@@ -1,4 +1,3 @@
-'use client'
 import { useTranslation } from '@/i18n-config/lib.client'
 import { Group } from '@/app/components/base/icons/src/vender/other'
 import { cn } from '@/utils/classnames'

@@ -1,4 +1,3 @@
-'use client'
 import type { ChangeEvent, FC } from 'react'
 import type { Item as SelectItem } from './type-select'
 import type { FileEntity } from '@/app/components/base/file-uploader/types'

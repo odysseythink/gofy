@@ -1,4 +1,3 @@
-'use client'
 import type { InitialDocumentDetail } from '@/models/pipeline'
 import { memo } from 'react'
 import Processing from '../processing'

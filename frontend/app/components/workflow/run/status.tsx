@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'

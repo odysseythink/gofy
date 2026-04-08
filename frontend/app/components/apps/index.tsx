@@ -1,4 +1,3 @@
-'use client'
 import type { CreateAppModalProps } from '../explore/create-app-modal'
 import type { TryAppSelection } from '@/types/try-app'
 import { useCallback, useState } from 'react'

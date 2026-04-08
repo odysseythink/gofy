@@ -1,4 +1,3 @@
-'use client'
 import type { FormRefObject } from '@/app/components/base/form/types'
 import type { TriggerOAuthClientParams, TriggerOAuthConfig, TriggerSubscriptionBuilder } from '@/app/components/workflow/block-selector/types'
 import type { ConfigureTriggerOAuthPayload } from '@/service/use-triggers'

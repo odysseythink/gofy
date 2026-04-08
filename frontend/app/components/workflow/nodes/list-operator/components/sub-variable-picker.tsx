@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Item } from '@/app/components/base/select'
 import * as React from 'react'

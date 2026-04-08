@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { MetadataItem } from '../types'
 import { RiAddLine, RiArrowRightUpLine } from '@remixicon/react'

@@ -1,4 +1,3 @@
-'use client'
 import type { AccountSettingTab } from '@/app/components/header/account-setting/constants'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'

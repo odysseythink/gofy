@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import LoadingAnim from '@/app/components/base/chat/chat/loading-anim'

@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { InputVarType } from '@/app/components/workflow/types'
 import type { I18nKeysByPrefix } from '@/types/i18n'

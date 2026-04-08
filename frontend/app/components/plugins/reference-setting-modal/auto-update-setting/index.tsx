@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { AutoUpdateConfig } from './types'
 import type { TriggerParams } from '@/app/components/base/date-and-time-picker/types'

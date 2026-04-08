@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import { RiSettings2Line } from '@remixicon/react'
 import { memo, useState } from 'react'

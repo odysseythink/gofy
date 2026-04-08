@@ -1,4 +1,3 @@
-'use client'
 
 import type { FC, ReactElement } from 'react'
 import type { SelectItem } from './form-input-item.helpers'

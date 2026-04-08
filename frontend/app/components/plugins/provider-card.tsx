@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Plugin } from './types'
 import { RiArrowRightUpLine } from '@remixicon/react'

@@ -1,4 +1,3 @@
-'use client'
 import type { FileAppearanceTypeEnum } from '@/app/components/base/file-uploader/types'
 import type { HitTesting } from '@/models/datasets'
 import * as React from 'react'

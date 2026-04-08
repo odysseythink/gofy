@@ -1,4 +1,3 @@
-'use client'
 import type { ConversationVariable } from '@/app/components/workflow/types'
 import { RiAddLine } from '@remixicon/react'
 import * as React from 'react'

@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Var } from '../../../types'
 import * as React from 'react'

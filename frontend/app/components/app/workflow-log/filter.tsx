@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { QueryParam } from './index'
 import type { I18nKeysByPrefix } from '@/types/i18n'

@@ -1,4 +1,3 @@
-'use client'
 
 import type { Dispatch, SetStateAction } from 'react'
 import type { TriggerEventsLimitModalPayload } from './hooks/use-trigger-events-limit-modal'

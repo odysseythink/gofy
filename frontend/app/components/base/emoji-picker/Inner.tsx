@@ -1,4 +1,3 @@
-'use client'
 import type { EmojiMartData } from '@emoji-mart/data'
 import type { ChangeEvent, FC } from 'react'
 import data from '@emoji-mart/data'

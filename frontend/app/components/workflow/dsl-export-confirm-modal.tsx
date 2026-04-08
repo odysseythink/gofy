@@ -1,4 +1,3 @@
-'use client'
 import type { EnvironmentVariable } from '@/app/components/workflow/types'
 import { RiCloseLine, RiLock2Line } from '@remixicon/react'
 import { noop } from 'es-toolkit/function'

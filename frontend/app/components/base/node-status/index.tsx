@@ -1,4 +1,3 @@
-'use client'
 import type { VariantProps } from 'class-variance-authority'
 import type { CSSProperties } from 'react'
 import { RiErrorWarningFill } from '@remixicon/react'

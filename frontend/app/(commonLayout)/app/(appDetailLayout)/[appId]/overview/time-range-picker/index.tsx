@@ -1,4 +1,3 @@
-'use client'
 import type { Dayjs } from 'dayjs'
 import type { FC } from 'react'
 import type { PeriodParams, PeriodParamsWithTimeRange } from '@/app/components/app/overview/app-chart'

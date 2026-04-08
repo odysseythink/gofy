@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { PromptConfig } from '@/models/debug'
 import type { SiteInfo } from '@/models/share'

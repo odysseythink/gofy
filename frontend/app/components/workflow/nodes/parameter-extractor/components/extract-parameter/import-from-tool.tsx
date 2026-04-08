@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Param, ParamType } from '../../types'
 import type { ToolParameter } from '@/app/components/tools/types'

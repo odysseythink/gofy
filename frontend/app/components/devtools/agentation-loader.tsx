@@ -1,4 +1,3 @@
-'use client'
 
 import { IS_DEV } from '@/config'
 import dynamic from '@/next/dynamic'

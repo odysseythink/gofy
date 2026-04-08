@@ -1,4 +1,3 @@
-'use client'
 import { RiExternalLinkLine } from '@remixicon/react'
 import * as React from 'react'
 import { useTranslation } from 'react-i18next'

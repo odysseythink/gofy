@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { AppData } from '@/models/share'
 import type { TryAppInfo } from '@/service/try-app'

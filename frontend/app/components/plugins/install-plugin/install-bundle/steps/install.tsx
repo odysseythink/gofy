@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Dependency, InstallStatus, InstallStatusResponse, Plugin, VersionInfo } from '../../../types'
 import type { ExposeRefs } from './install-multi'

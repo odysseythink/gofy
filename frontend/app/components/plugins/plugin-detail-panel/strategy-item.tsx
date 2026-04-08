@@ -1,4 +1,3 @@
-'use client'
 import type {
   StrategyDetail,
 } from '@/app/components/plugins/types'

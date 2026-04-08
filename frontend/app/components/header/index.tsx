@@ -1,4 +1,3 @@
-'use client'
 import { useCallback } from 'react'
 import DifyLogo from '@/app/components/base/logo/dify-logo'
 import WorkplaceSelector from '@/app/components/header/account-dropdown/workplace-selector'

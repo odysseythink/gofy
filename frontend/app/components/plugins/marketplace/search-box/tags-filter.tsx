@@ -1,4 +1,3 @@
-'use client'
 
 import { useTranslation } from '@/i18n-config/lib.client'
 import { useState } from 'react'

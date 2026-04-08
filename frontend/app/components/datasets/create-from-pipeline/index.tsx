@@ -1,4 +1,3 @@
-'use client'
 import Effect from '../../base/effect'
 import Footer from './footer'
 import Header from './header'

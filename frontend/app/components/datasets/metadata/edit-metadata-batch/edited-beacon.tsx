@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import { RiResetLeftLine } from '@remixicon/react'
 import { useHover } from 'ahooks'

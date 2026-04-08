@@ -1,4 +1,3 @@
-'use client'
 
 import type { AppDetailResponse } from '@/models/app'
 import { ArrowLeftIcon, Squares2X2Icon } from '@heroicons/react/24/solid'

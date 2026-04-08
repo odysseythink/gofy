@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { CredentialFormSchema, CredentialFormSchemaSelect, FormOption } from '@/app/components/header/account-setting/model-provider-page/declarations'
 import type { Tool } from '@/app/components/tools/types'

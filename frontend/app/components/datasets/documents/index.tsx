@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import { useCallback } from 'react'
 import Loading from '@/app/components/base/loading'

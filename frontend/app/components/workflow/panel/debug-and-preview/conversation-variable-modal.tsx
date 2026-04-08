@@ -1,4 +1,3 @@
-'use client'
 import type {
   ConversationVariable,
 } from '@/app/components/workflow/types'

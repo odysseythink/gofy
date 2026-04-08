@@ -1,4 +1,3 @@
-'use client'
 import type { Subject } from '@/models/access-control'
 import type { App } from '@/types/app'
 import { Description as DialogDescription, DialogTitle } from '@headlessui/react'

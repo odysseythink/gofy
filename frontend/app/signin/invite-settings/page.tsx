@@ -1,4 +1,3 @@
-'use client'
 import type { Locale } from '@/i18n-config'
 import { RiAccountCircleLine } from '@remixicon/react'
 import { noop } from 'es-toolkit/function'

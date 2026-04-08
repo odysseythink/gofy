@@ -1,4 +1,3 @@
-'use client'
 import { Dialog, DialogBackdrop, DialogTitle } from '@headlessui/react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@/utils/classnames'

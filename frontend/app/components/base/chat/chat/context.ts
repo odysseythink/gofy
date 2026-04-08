@@ -1,4 +1,3 @@
-'use client'
 
 import type { ChatProps } from './index'
 import { createContext, useContext } from 'use-context-selector'

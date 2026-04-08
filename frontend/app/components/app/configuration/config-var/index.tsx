@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { InputVar } from '@/app/components/workflow/types'
 import type { ExternalDataTool } from '@/models/common'

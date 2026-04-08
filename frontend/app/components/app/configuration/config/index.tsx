@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { ModelConfig, PromptVariable } from '@/models/debug'
 import { produce } from 'immer'

@@ -1,4 +1,3 @@
-'use client'
 import type { FC, PropsWithChildren } from 'react'
 import * as React from 'react'
 import { useIsLogin } from '@/service/use-common'

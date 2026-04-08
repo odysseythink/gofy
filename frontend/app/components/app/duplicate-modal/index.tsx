@@ -1,4 +1,3 @@
-'use client'
 import type { AppIconType } from '@/types/app'
 import { RiCloseLine } from '@remixicon/react'
 import { noop } from 'es-toolkit/function'

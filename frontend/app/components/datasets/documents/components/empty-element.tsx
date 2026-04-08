@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import { PlusIcon } from '@heroicons/react/24/solid'
 import { useTranslation } from 'react-i18next'

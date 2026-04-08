@@ -1,4 +1,3 @@
-'use client'
 import { useHover } from 'ahooks'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'

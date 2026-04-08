@@ -1,4 +1,3 @@
-'use client'
 import type { Plugin } from '../../types'
 import type { MarketplaceCollection } from '../types'
 import { cn } from '@/utils/classnames'

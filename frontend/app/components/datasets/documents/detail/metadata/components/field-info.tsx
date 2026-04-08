@@ -1,4 +1,3 @@
-'use client'
 import type { FC, ReactNode } from 'react'
 import type { inputType } from '@/hooks/use-metadata'
 import { useTranslation } from 'react-i18next'

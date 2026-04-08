@@ -1,4 +1,3 @@
-'use client'
 import type { CSSProperties, FC } from 'react'
 import type { I18nKeysWithPrefix } from '@/types/i18n'
 import * as React from 'react'

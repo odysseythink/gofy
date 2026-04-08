@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { FormSchema } from '../../base/form/types'
 import type { PluginDetail } from '../types'

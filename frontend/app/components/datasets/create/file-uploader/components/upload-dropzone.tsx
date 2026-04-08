@@ -1,4 +1,3 @@
-'use client'
 import type { RefObject } from 'react'
 import type { FileUploadConfig } from '../hooks/use-file-upload'
 import { RiUploadCloud2Line } from '@remixicon/react'

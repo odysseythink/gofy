@@ -1,4 +1,3 @@
-'use client'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CustomDialog from '@/app/components/base/dialog'

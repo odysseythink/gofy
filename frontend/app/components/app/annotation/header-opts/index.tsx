@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { AnnotationItemBasic } from '../type'
 import { Menu, MenuButton, MenuItems, Transition } from '@headlessui/react'

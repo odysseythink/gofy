@@ -1,4 +1,3 @@
-'use client'
 import { useBoolean } from 'ahooks'
 import * as React from 'react'
 import { useState } from 'react'

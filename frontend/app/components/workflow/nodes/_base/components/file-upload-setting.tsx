@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { UploadFileSetting } from '../../../types'
 import { produce } from 'immer'

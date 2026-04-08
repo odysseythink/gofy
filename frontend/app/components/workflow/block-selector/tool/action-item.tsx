@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { ToolWithProvider } from '../../types'
 import type { ToolDefaultValue } from '../types'

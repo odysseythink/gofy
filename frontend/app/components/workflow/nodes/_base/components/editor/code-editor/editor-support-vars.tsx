@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Props as EditorProps } from '.'
 import type { NodeOutPutVar, Variable } from '@/app/components/workflow/types'

@@ -1,4 +1,3 @@
-'use client'
 import { t } from 'i18next'
 import * as React from 'react'
 import { useEffect, useState } from 'react'

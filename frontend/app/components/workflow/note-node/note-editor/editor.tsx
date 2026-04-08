@@ -1,4 +1,3 @@
-'use client'
 
 import type { EditorState } from 'lexical'
 import { ClickableLinkPlugin } from '@lexical/react/LexicalClickableLinkPlugin'

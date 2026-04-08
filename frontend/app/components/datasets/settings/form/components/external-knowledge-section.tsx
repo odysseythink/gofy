@@ -1,4 +1,3 @@
-'use client'
 import type { DataSet } from '@/models/datasets'
 import { useTranslation } from 'react-i18next'
 import Divider from '@/app/components/base/divider'

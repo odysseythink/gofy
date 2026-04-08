@@ -1,4 +1,3 @@
-'use client'
 import type { FC, PropsWithChildren } from 'react'
 import type { SystemFeatures } from '@/types/feature'
 import { useQuery } from '@tanstack/react-query'

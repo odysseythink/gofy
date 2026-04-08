@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Condition } from '../types'
 import * as React from 'react'

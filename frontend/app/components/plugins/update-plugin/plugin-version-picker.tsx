@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Placement } from '@/app/components/base/ui/placement'
 import * as React from 'react'

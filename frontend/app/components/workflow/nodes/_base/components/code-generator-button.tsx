@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { CodeLanguage } from '../../code/types'
 import type { GenRes } from '@/service/debug'

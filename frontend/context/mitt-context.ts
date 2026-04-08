@@ -1,4 +1,3 @@
-'use client'
 
 import type { useMitt } from '@/hooks/use-mitt'
 import { noop } from 'es-toolkit/function'

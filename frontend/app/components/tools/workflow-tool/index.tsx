@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Emoji, WorkflowToolProviderOutputParameter, WorkflowToolProviderOutputSchema, WorkflowToolProviderParameter, WorkflowToolProviderRequest } from '../types'
 import { RiErrorWarningLine } from '@remixicon/react'

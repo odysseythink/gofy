@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import { RiArrowDownSLine, RiCheckLine } from '@remixicon/react'
 import * as React from 'react'

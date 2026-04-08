@@ -1,4 +1,3 @@
-'use client'
 import type { AppDetailResponse } from '@/models/app'
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react'
 import { ChevronDownIcon, PlusIcon } from '@heroicons/react/24/solid'

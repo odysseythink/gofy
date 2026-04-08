@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Inputs } from '@/models/debug'
 import type { VisionFile, VisionSettings } from '@/types/app'

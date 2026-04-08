@@ -1,4 +1,3 @@
-'use client'
 import type { CustomFile as File, FileItem } from '@/models/datasets'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@/utils/classnames'

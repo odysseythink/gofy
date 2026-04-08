@@ -1,4 +1,3 @@
-'use client'
 import type { SimpleDetail } from '../../../store'
 import type { SchemaItem } from '../components/modal-steps'
 import type { FormRefObject } from '@/app/components/base/form/types'

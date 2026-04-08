@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import { RiMoreFill } from '@remixicon/react'
 import { useQueryClient } from '@tanstack/react-query'

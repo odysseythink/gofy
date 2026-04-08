@@ -1,4 +1,3 @@
-'use client'
 
 import type { ActionItem } from '../actions/types'
 import { useDebounce } from 'ahooks'

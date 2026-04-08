@@ -1,4 +1,3 @@
-'use client'
 
 import type { PluginDetail } from '../../../types'
 import type { ModalStates, VersionTarget } from './use-detail-header-state'

@@ -1,4 +1,3 @@
-'use client'
 import type { ActionItem } from '../types'
 import { useTheme } from 'next-themes'
 import { useEffect } from 'react'

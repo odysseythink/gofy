@@ -1,4 +1,3 @@
-'use client'
 import type { Collection } from './types'
 import { parseAsStringLiteral, useQueryState } from 'nuqs'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'

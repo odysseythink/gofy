@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { ConversationHistoriesRole } from '@/models/debug'
 import * as React from 'react'

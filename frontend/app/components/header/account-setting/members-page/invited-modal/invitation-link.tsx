@@ -1,4 +1,3 @@
-'use client'
 import type { SuccessInvitationResult } from '.'
 import copy from 'copy-to-clipboard'
 import { t } from 'i18next'

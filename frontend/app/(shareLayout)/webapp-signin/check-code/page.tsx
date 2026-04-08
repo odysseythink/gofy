@@ -1,4 +1,3 @@
-'use client'
 import type { FormEvent } from 'react'
 import { RiArrowLeftLine, RiMailSendFill } from '@remixicon/react'
 import { useCallback, useEffect, useRef, useState } from 'react'

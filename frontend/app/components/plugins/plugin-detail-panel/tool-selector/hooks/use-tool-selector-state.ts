@@ -1,4 +1,3 @@
-'use client'
 import type { ReasoningConfigValue } from '../components/reasoning-config-form'
 import type { ToolParameter } from '@/app/components/tools/types'
 import type { ToolDefaultValue, ToolValue } from '@/app/components/workflow/block-selector/types'

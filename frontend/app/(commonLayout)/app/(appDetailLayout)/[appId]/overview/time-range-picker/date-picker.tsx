@@ -1,4 +1,3 @@
-'use client'
 import type { Dayjs } from 'dayjs'
 import type { FC } from 'react'
 import type { TriggerProps } from '@/app/components/base/date-and-time-picker/types'

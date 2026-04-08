@@ -1,4 +1,3 @@
-'use client'
 import type { DataSourceNodeType } from '@/app/components/workflow/nodes/data-source/types'
 import type { CrawlResultItem } from '@/models/datasets'
 import type {

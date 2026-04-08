@@ -1,4 +1,3 @@
-'use client'
 import type { ErrorInfo, ReactNode } from 'react'
 import { RiAlertLine, RiBugLine } from '@remixicon/react'
 import * as React from 'react'

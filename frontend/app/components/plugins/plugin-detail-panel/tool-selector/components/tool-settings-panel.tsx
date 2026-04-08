@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Node } from 'reactflow'
 import type { TabType } from '../hooks/use-tool-selector-state'

@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { AnnotationItem, HitHistoryItem } from '../type'
 import * as React from 'react'

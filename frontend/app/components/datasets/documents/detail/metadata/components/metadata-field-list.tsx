@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { metadataType } from '@/hooks/use-metadata'
 import type { FullDocumentDetail } from '@/models/datasets'

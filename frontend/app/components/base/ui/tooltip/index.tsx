@@ -1,4 +1,3 @@
-'use client'
 
 import type { Placement } from '@/app/components/base/ui/placement'
 import { Tooltip as BaseTooltip } from '@base-ui/react/tooltip'

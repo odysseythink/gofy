@@ -1,4 +1,3 @@
-'use client'
 
 import type { IWorkspace } from '@/models/common'
 import { createContext, useContext } from 'use-context-selector'

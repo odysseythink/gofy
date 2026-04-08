@@ -1,4 +1,3 @@
-'use client'
 
 import type { Area } from 'react-easy-crop'
 import type { OnImageInput } from '@/app/components/base/app-icon-picker/ImageInput'

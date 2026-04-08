@@ -1,4 +1,3 @@
-'use client'
 import type { ComponentType } from 'react'
 import type { App, AppSSO } from '@/types/app'
 import { useMemo } from 'react'

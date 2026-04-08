@@ -1,4 +1,3 @@
-'use client'
 
 import type { MarketplaceCollection } from '../types'
 import type { Plugin } from '@/app/components/plugins/types'

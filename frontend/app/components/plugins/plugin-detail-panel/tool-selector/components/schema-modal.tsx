@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { SchemaRoot } from '@/app/components/workflow/nodes/llm/types'
 import { RiCloseLine } from '@remixicon/react'

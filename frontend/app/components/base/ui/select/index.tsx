@@ -1,4 +1,3 @@
-'use client'
 
 import type { VariantProps } from 'class-variance-authority'
 import type { Placement } from '@/app/components/base/ui/placement'

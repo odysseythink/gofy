@@ -1,4 +1,3 @@
-'use client'
 import { RiKey2Line } from '@remixicon/react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'

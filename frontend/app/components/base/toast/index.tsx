@@ -1,4 +1,3 @@
-'use client'
 
 /**
  * @deprecated Use `@/app/components/base/ui/toast` instead.

@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { PromptItem, PromptVariable } from '@/models/debug'
 import type { AppModeEnum } from '@/types/app'

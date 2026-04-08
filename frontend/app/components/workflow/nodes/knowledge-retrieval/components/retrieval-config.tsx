@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { ModelConfig } from '../../../types'
 import type { MultipleRetrievalConfig, SingleRetrievalConfig } from '../types'

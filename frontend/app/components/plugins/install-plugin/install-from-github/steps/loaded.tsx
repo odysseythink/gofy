@@ -1,4 +1,3 @@
-'use client'
 
 import type { Plugin, PluginDeclaration, UpdateFromGitHubPayload } from '../../../types'
 import { RiLoader2Line } from '@remixicon/react'

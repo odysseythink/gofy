@@ -1,4 +1,3 @@
-'use client'
 
 import type { Dependency, GitHubItemAndMarketPlaceDependency, PackageDependency, Plugin, VersionInfo } from '@/app/components/plugins/types'
 import { useCallback, useEffect, useMemo, useState } from 'react'

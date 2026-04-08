@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { BlockEnum, ToolWithProvider } from '../../../types'
 import type { ToolDefaultValue, ToolValue } from '../../types'

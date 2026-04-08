@@ -1,4 +1,3 @@
-'use client'
 import type { ButtonProps } from '@/app/components/base/button'
 import type { UserAction } from '@/app/components/workflow/nodes/human-input/types'
 import type { HumanInputFormData } from '@/types/workflow'

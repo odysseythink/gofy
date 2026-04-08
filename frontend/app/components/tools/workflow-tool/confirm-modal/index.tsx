@@ -1,4 +1,3 @@
-'use client'
 
 import { RiCloseLine } from '@remixicon/react'
 import { noop } from 'es-toolkit/function'

@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { InputValueTypes, TextGenerationRunControl } from './types'
 import type { InstalledApp } from '@/models/explore'

@@ -1,4 +1,3 @@
-'use client'
 /**
  * @deprecated Use `@/app/components/base/ui/select` instead.
  * This component will be removed after migration is complete.

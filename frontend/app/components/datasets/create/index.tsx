@@ -1,4 +1,3 @@
-'use client'
 import type { NotionPage } from '@/models/common'
 import type { CrawlOptions, CrawlResultItem, createDocumentResponse, FileItem } from '@/models/datasets'
 import type { RETRIEVE_METHOD } from '@/types/app'

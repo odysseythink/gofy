@@ -1,4 +1,3 @@
-'use client'
 import type { CustomFile as File } from '@/models/datasets'
 import { RiCloseLine } from '@remixicon/react'
 import * as React from 'react'

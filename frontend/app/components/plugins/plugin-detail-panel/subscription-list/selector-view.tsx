@@ -1,4 +1,3 @@
-'use client'
 import type { TriggerSubscription } from '@/app/components/workflow/block-selector/types'
 import { RiCheckLine, RiDeleteBinLine, RiWebhookLine } from '@remixicon/react'
 import * as React from 'react'

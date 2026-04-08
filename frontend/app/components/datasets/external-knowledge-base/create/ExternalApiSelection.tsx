@@ -1,4 +1,3 @@
-'use client'
 
 import { RiAddLine } from '@remixicon/react'
 import * as React from 'react'

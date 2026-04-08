@@ -1,4 +1,3 @@
-'use client'
 import type {
   MCPServerDetail,
 } from '@/app/components/tools/types'

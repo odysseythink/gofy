@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { CodeLanguage } from '../../../code/types'
 import type { FileEntity } from '@/app/components/base/file-uploader/types'

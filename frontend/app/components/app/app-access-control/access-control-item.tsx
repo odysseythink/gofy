@@ -1,4 +1,3 @@
-'use client'
 import type { FC, PropsWithChildren } from 'react'
 import type { AccessMode } from '@/models/access-control'
 import useAccessControlStore from '@/context/access-control-store'

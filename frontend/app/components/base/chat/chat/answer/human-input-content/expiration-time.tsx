@@ -1,4 +1,3 @@
-'use client'
 import { useTranslation } from 'react-i18next'
 import { useLocale } from '@/context/i18n'
 import { cn } from '@/utils/classnames'

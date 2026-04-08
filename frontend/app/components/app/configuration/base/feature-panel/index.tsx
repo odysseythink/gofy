@@ -1,4 +1,3 @@
-'use client'
 import type { FC, ReactNode } from 'react'
 import * as React from 'react'
 import { cn } from '@/utils/classnames'

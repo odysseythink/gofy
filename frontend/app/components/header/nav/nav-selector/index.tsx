@@ -1,4 +1,3 @@
-'use client'
 import type { AppIconType, AppModeEnum } from '@/types/app'
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react'
 import {

@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { FileAppearanceTypeEnum } from '@/app/components/base/file-uploader/types'
 import { RiArrowRightUpLine } from '@remixicon/react'

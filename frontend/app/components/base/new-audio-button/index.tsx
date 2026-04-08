@@ -1,4 +1,3 @@
-'use client'
 import {
   RiVolumeUpLine,
 } from '@remixicon/react'

@@ -1,4 +1,3 @@
-'use client'
 
 import type { Namespace } from './resources'
 import { useTranslation as useTranslationOriginal } from 'react-i18next'

@@ -1,4 +1,3 @@
-'use client'
 import type { VersionHistory } from '@/types/workflow'
 import { RiArrowDownDoubleLine, RiCloseLine, RiLoader2Line } from '@remixicon/react'
 import copy from 'copy-to-clipboard'

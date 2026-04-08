@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { FileItem } from '@/models/datasets'
 import {

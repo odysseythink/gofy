@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { RelatedApp } from '@/models/datasets'
 import { RiArrowRightUpLine } from '@remixicon/react'

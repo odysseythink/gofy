@@ -1,4 +1,3 @@
-'use client'
 
 import type { CreateKnowledgeBaseReq } from './declarations'
 import { RiArrowLeftLine, RiArrowRightLine } from '@remixicon/react'

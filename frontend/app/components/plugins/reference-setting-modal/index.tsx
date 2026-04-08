@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { AutoUpdateConfig } from './auto-update-setting/types'
 import type { Permissions, ReferenceSetting } from '@/app/components/plugins/types'

@@ -1,4 +1,3 @@
-'use client'
 import type { InitValidateStatusResponse, SetupStatusResponse } from '@/models/common'
 import { useStore } from '@tanstack/react-form'
 import * as React from 'react'

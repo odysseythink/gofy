@@ -1,4 +1,3 @@
-'use client'
 import type { AccessMode } from '@/models/access-control'
 import type { AppData } from '@/models/share'
 import * as React from 'react'

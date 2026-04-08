@@ -1,4 +1,3 @@
-'use client'
 import type { RefObject } from 'react'
 import type { CustomFile as File, FileItem } from '@/models/datasets'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'

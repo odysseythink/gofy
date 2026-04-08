@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { IndexingType } from '../create/step-two'
 import type { RetrievalConfig } from '@/types/app'

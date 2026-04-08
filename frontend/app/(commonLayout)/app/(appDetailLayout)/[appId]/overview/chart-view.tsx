@@ -1,4 +1,3 @@
-'use client'
 import type { PeriodParams } from '@/app/components/app/overview/app-chart'
 import type { I18nKeysByPrefix } from '@/types/i18n'
 import dayjs from 'dayjs'

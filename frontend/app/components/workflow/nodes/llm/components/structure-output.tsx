@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { SchemaRoot, StructuredOutput } from '../types'
 import { RiEditLine } from '@remixicon/react'

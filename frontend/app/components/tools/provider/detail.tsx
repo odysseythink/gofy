@@ -1,4 +1,3 @@
-'use client'
 import type { Collection, CustomCollectionBackend, Tool, WorkflowToolProviderRequest, WorkflowToolProviderResponse } from '../types'
 import type { WorkflowToolModalPayload } from '@/app/components/tools/workflow-tool'
 import {

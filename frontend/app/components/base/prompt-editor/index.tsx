@@ -1,4 +1,3 @@
-'use client'
 
 import type { InitialConfigType } from '@lexical/react/LexicalComposer'
 import type {

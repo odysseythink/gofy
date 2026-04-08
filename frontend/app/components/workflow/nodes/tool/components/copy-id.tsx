@@ -1,4 +1,3 @@
-'use client'
 import { RiFileCopyLine } from '@remixicon/react'
 import copy from 'copy-to-clipboard'
 import { debounce } from 'es-toolkit/compat'

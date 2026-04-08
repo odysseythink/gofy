@@ -1,4 +1,3 @@
-'use client'
 import { useOAuthCallback } from '@/hooks/use-oauth'
 
 const OAuthCallback = () => {

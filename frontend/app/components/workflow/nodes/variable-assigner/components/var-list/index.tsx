@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { ValueSelector, Var } from '@/app/components/workflow/types'
 import { noop } from 'es-toolkit/function'

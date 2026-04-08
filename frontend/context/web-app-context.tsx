@@ -1,4 +1,3 @@
-'use client'
 
 import type { FC, PropsWithChildren } from 'react'
 import type { ChatConfig } from '@/app/components/base/chat/types'

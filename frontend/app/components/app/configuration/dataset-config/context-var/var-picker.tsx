@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { IInputTypeIconProps } from '@/app/components/app/configuration/config-var/input-type-icon'
 import { ChevronDownIcon } from '@heroicons/react/24/outline'

@@ -1,4 +1,3 @@
-'use client'
 import type { App } from '@/models/explore'
 import { PlusIcon } from '@heroicons/react/20/solid'
 import { RiInformation2Line } from '@remixicon/react'

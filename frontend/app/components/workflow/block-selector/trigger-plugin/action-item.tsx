@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { TriggerDefaultValue, TriggerWithProvider } from '../types'
 import type { Event } from '@/app/components/tools/types'

@@ -1,4 +1,3 @@
-'use client'
 import type { CustomFile as File, FileItem } from '@/models/datasets'
 import { RiDeleteBinLine, RiErrorWarningFill } from '@remixicon/react'
 import { useMemo } from 'react'

@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { Props as PaginationProps } from '@/app/components/base/pagination'
 import type { SimpleDocumentDetail } from '@/models/datasets'

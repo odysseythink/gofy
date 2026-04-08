@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { PeriodParamsWithTimeRange, TimeRange } from '@/app/components/app/overview/app-chart'
 import type { Item } from '@/app/components/base/select'

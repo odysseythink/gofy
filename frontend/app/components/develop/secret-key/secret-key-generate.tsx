@@ -1,4 +1,3 @@
-'use client'
 import type { CreateApiKeyResponse } from '@/models/app'
 import { XMarkIcon } from '@heroicons/react/20/solid'
 import { useTranslation } from 'react-i18next'

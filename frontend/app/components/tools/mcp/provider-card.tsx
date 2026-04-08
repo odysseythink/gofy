@@ -1,4 +1,3 @@
-'use client'
 import type { ToolWithProvider } from '../../workflow/types'
 import { RiHammerFill } from '@remixicon/react'
 import { useBoolean } from 'ahooks'

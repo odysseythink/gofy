@@ -1,4 +1,3 @@
-'use client'
 import type { TFunction } from 'i18next'
 import type { FC } from 'react'
 import type { TriggerEvent } from '@/app/components/plugins/types'

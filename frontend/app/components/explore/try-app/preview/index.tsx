@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { TryAppInfo } from '@/service/try-app'
 import * as React from 'react'

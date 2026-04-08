@@ -1,4 +1,3 @@
-'use client'
 import type { CrawlResultItem } from '@/models/datasets'
 import { RiCloseLine, RiGlobalLine } from '@remixicon/react'
 import * as React from 'react'

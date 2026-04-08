@@ -1,4 +1,3 @@
-'use client'
 import { useTheme } from 'next-themes'
 import { cn } from '@/utils/classnames'
 

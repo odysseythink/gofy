@@ -1,4 +1,3 @@
-'use client'
 import type { Plugin } from '../types'
 import { useTranslation } from '@/i18n-config/lib.client'
 import { RiAlertFill } from '@remixicon/react'

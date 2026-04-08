@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { GitHubItemAndMarketPlaceDependency, Plugin } from '../../../types'
 import type { VersionProps } from '@/app/components/plugins/types'

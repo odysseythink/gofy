@@ -1,4 +1,3 @@
-'use client'
 import type { Dependency, GitHubItemAndMarketPlaceDependency, PackageDependency, Plugin, VersionInfo } from '../../../types'
 import * as React from 'react'
 import { useImperativeHandle } from 'react'

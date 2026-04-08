@@ -1,4 +1,3 @@
-'use client'
 import type { MailSendResponse, MailValidityResponse } from '@/service/use-common'
 import { RiArrowLeftLine, RiMailSendFill } from '@remixicon/react'
 import { useState } from 'react'

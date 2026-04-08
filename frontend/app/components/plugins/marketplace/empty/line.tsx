@@ -1,4 +1,3 @@
-'use client'
 import useTheme from '@/hooks/use-theme'
 
 type LineProps = {

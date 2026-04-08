@@ -1,4 +1,3 @@
-'use client'
 
 import type { InSiteMessageActionItem } from './index'
 import { useMutation, useQuery } from '@tanstack/react-query'

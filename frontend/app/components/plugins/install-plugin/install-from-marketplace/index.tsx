@@ -1,4 +1,3 @@
-'use client'
 
 import type { Dependency, Plugin, PluginManifestInMarket } from '../../types'
 import * as React from 'react'

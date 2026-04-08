@@ -1,4 +1,3 @@
-'use client'
 import type { LangGeniusVersionResponse } from '@/models/common'
 import { RiCloseLine } from '@remixicon/react'
 import dayjs from 'dayjs'

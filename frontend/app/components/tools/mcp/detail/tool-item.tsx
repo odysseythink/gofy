@@ -1,4 +1,3 @@
-'use client'
 import type { Tool } from '@/app/components/tools/types'
 import * as React from 'react'
 import { useTranslation } from 'react-i18next'

@@ -1,4 +1,3 @@
-'use client'
 import type { CrawlResultItem } from '@/models/datasets'
 import { XMarkIcon } from '@heroicons/react/20/solid'
 import * as React from 'react'

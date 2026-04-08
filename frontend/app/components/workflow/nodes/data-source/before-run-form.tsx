@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { CustomRunFormProps } from './types'
 import * as React from 'react'

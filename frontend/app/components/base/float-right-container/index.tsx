@@ -1,4 +1,3 @@
-'use client'
 import type { IDrawerProps } from '@/app/components/base/drawer'
 import Drawer from '@/app/components/base/drawer'
 

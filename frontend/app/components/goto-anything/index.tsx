@@ -1,4 +1,3 @@
-'use client'
 
 import type { FC, KeyboardEvent } from 'react'
 import { Command } from 'cmdk'

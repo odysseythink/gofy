@@ -1,4 +1,3 @@
-'use client'
 import type { Locale } from '@/i18n-config'
 import Divider from '@/app/components/base/divider'
 import LocaleSigninSelect from '@/app/components/base/select/locale-signin'

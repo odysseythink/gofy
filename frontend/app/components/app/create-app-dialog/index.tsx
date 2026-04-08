@@ -1,4 +1,3 @@
-'use client'
 import { useKeyPress } from 'ahooks'
 import { useCallback } from 'react'
 import FullScreenModal from '@/app/components/base/fullscreen-modal'

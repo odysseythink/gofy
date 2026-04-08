@@ -1,4 +1,3 @@
-'use client'
 import { useFavicon, useTitle } from 'ahooks'
 import { useEffect } from 'react'
 import { useGlobalPublicStore, useIsSystemFeaturesPending } from '@/context/global-public-context'

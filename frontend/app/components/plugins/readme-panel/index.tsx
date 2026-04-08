@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import { RiBookReadLine, RiCloseLine } from '@remixicon/react'
 import { createPortal } from 'react-dom'

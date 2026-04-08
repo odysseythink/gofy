@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { TriggerMetadata } from '@/models/log'
 import * as React from 'react'

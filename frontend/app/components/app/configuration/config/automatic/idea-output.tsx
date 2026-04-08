@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import { useBoolean } from 'ahooks'
 import * as React from 'react'

@@ -1,4 +1,3 @@
-'use client'
 import type { OnFeaturesChange } from '@/app/components/base/features/types'
 import { memo } from 'react'
 import SettingContent from '@/app/components/base/features/new-feature-panel/file-upload/setting-content'

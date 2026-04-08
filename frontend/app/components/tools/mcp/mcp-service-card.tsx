@@ -1,4 +1,3 @@
-'use client'
 import type { TFunction } from 'i18next'
 import type { FC, ReactNode } from 'react'
 import type { AppDetailResponse } from '@/models/app'

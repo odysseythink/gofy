@@ -1,4 +1,3 @@
-'use client'
 
 import type { FC, KeyboardEvent, RefObject } from 'react'
 import { RiSearchLine } from '@remixicon/react'

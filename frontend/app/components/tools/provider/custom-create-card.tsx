@@ -1,4 +1,3 @@
-'use client'
 import type { CustomCollectionBackend } from '../types'
 import {
   RiAddCircleFill,

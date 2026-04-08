@@ -1,4 +1,3 @@
-'use client'
 
 import type { KnowledgeRetrievalNodeType } from '@/app/components/workflow/nodes/knowledge-retrieval/types'
 import type { LLMNodeType } from '@/app/components/workflow/nodes/llm/types'

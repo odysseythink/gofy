@@ -1,4 +1,3 @@
-'use client'
 import { cn } from '@/utils/classnames'
 
 const variantStyles = {

@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { WorkflowRunDetailResponse } from '@/models/log'
 import type { NodeTracing } from '@/types/workflow'

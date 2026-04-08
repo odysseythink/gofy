@@ -1,4 +1,3 @@
-'use client'
 import type { Reducer } from 'react'
 import { useReducer } from 'react'
 import { useTranslation } from 'react-i18next'

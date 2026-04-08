@@ -1,4 +1,3 @@
-'use client'
 
 import { RiArrowRightLine } from '@remixicon/react'
 import { useTranslation } from 'react-i18next'

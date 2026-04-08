@@ -1,4 +1,3 @@
-'use client'
 import type { BlockEnum } from '../../types'
 import type { TriggerDefaultValue, TriggerWithProvider } from '../types'
 import { memo, useEffect, useMemo } from 'react'

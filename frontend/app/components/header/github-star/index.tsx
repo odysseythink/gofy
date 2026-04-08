@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { GithubRepo } from '@/models/common'
 import { RiLoader2Line } from '@remixicon/react'

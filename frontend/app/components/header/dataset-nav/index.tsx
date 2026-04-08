@@ -1,4 +1,3 @@
-'use client'
 
 import type { NavItem } from '../nav/nav-selector'
 import type { DataSet } from '@/models/datasets'

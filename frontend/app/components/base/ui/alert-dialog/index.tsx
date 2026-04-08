@@ -1,4 +1,3 @@
-'use client'
 
 import type { ButtonProps } from '@/app/components/base/button'
 import { AlertDialog as BaseAlertDialog } from '@base-ui/react/alert-dialog'

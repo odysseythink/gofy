@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { ModelAndParameter } from '@/app/components/app/configuration/debug/types'
 import type { Features as FeaturesData, FileUpload } from '@/app/components/base/features/types'

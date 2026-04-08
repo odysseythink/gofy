@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { DataSourceInfo, FileItem, FullDocumentDetail, LegacyDataSourceInfo } from '@/models/datasets'
 import * as React from 'react'

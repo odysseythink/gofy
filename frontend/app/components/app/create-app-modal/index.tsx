@@ -1,4 +1,3 @@
-'use client'
 
 import type { AppIconSelection } from '../../base/app-icon-picker'
 import { RiArrowRightLine, RiArrowRightSLine, RiExchange2Fill } from '@remixicon/react'

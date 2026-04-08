@@ -1,4 +1,3 @@
-'use client'
 import type { NotionPage } from '@/models/common'
 import { RiCloseLine } from '@remixicon/react'
 import * as React from 'react'

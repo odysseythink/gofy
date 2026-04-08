@@ -1,4 +1,3 @@
-'use client'
 import { useSearchParams } from '@/next/navigation'
 import NormalForm from './normal-form'
 import OneMoreStep from './one-more-step'

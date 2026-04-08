@@ -1,4 +1,3 @@
-'use client'
 import type { FC } from 'react'
 import type { ProcessStatus } from '../segment-add'
 import type { SegmentListContextValue } from './segment-list-context'

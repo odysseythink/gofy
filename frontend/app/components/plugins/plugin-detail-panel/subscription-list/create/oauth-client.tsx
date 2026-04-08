@@ -1,4 +1,3 @@
-'use client'
 import type { TriggerOAuthConfig, TriggerSubscriptionBuilder } from '@/app/components/workflow/block-selector/types'
 import {
   RiClipboardLine,

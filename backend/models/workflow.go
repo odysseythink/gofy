@@ -873,3 +873,127 @@ type WorkflowConversationVariable struct {
 func (WorkflowConversationVariable) TableName() string {
 	return "workflow_conversation_variable"
 }
+
+// WorkflowNodeExecutionOffload [...]
+type WorkflowNodeExecutionOffload struct {
+	ID              string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	CreatedAt       *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+	TenantID        string     `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
+	AppID           string     `gorm:"column:app_id;type:varchar(36);not null" json:"app_id"`
+	NodeExecutionID *string    `gorm:"column:node_execution_id;type:varchar(36)" json:"node_execution_id"`
+	Type            string     `gorm:"column:type;type:varchar(50);not null" json:"type"`
+	FileID          string     `gorm:"column:file_id;type:varchar(36);not null" json:"file_id"`
+}
+
+// TableName get sql table name.获取数据库表名
+func (WorkflowNodeExecutionOffload) TableName() string {
+	return "workflow_node_execution_offload"
+}
+
+// WorkflowArchiveLog [...]
+type WorkflowArchiveLog struct {
+	ID                 string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	TenantID           string     `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
+	AppID              string     `gorm:"column:app_id;type:varchar(36);not null" json:"app_id"`
+	WorkflowID         string     `gorm:"column:workflow_id;type:varchar(36);not null" json:"workflow_id"`
+	WorkflowRunID      string     `gorm:"column:workflow_run_id;type:varchar(36);not null" json:"workflow_run_id"`
+	CreatedByRole      string     `gorm:"column:created_by_role;type:varchar(255);not null" json:"created_by_role"`
+	CreatedBy          string     `gorm:"column:created_by;type:varchar(36);not null" json:"created_by"`
+	LogID              *string    `gorm:"column:log_id;type:varchar(36)" json:"log_id"`
+	LogCreatedAt       *time.Time `gorm:"column:log_created_at;type:timestamp" json:"log_created_at"`
+	LogCreatedFrom     *string    `gorm:"column:log_created_from;type:varchar(255)" json:"log_created_from"`
+	RunVersion         string     `gorm:"column:run_version;type:varchar(255);not null" json:"run_version"`
+	RunStatus          string     `gorm:"column:run_status;type:varchar(255);not null" json:"run_status"`
+	RunTriggeredFrom   string     `gorm:"column:run_triggered_from;type:varchar(255);not null" json:"run_triggered_from"`
+	RunError           *string    `gorm:"column:run_error;type:text" json:"run_error"`
+	RunElapsedTime     float64    `gorm:"column:run_elapsed_time;type:float;not null;default:0" json:"run_elapsed_time"`
+	RunTotalTokens     int64      `gorm:"column:run_total_tokens;type:bigint;default:0" json:"run_total_tokens"`
+	RunTotalSteps      *int       `gorm:"column:run_total_steps;type:int;default:0" json:"run_total_steps"`
+	RunCreatedAt       time.Time  `gorm:"column:run_created_at;type:timestamp;not null" json:"run_created_at"`
+	RunFinishedAt      *time.Time `gorm:"column:run_finished_at;type:timestamp" json:"run_finished_at"`
+	RunExceptionsCount *int       `gorm:"column:run_exceptions_count;type:int;default:0" json:"run_exceptions_count"`
+	TriggerMetadata    *string    `gorm:"column:trigger_metadata;type:text" json:"trigger_metadata"`
+	ArchivedAt         *time.Time `gorm:"column:archived_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"archived_at"`
+}
+
+// TableName get sql table name.获取数据库表名
+func (WorkflowArchiveLog) TableName() string {
+	return "workflow_archive_logs"
+}
+
+// WorkflowDraftVariable [...]
+type WorkflowDraftVariable struct {
+	ID              string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	CreatedAt       *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt       *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+	AppID           string     `gorm:"column:app_id;type:varchar(36);not null" json:"app_id"`
+	UserID          *string    `gorm:"column:user_id;type:varchar(36)" json:"user_id"`
+	LastEditedAt    *time.Time `gorm:"column:last_edited_at;type:timestamp" json:"last_edited_at"`
+	NodeID          string     `gorm:"column:node_id;type:varchar(255);not null" json:"node_id"`
+	Name            string     `gorm:"column:name;type:varchar(255);not null" json:"name"`
+	Description     string     `gorm:"column:description;type:varchar(255);not null;default:''" json:"description"`
+	Selector        string     `gorm:"column:selector;type:varchar(255);not null" json:"selector"`
+	ValueType       string     `gorm:"column:value_type;type:varchar(20);not null" json:"value_type"`
+	Value           string     `gorm:"column:value;type:text;not null" json:"value"`
+	Visible         bool       `gorm:"column:visible;type:bool;not null;default:true" json:"visible"`
+	Editable        bool       `gorm:"column:editable;type:bool;not null;default:false" json:"editable"`
+	NodeExecutionID *string    `gorm:"column:node_execution_id;type:varchar(36)" json:"node_execution_id"`
+	FileID          *string    `gorm:"column:file_id;type:varchar(36)" json:"file_id"`
+	IsDefaultValue  bool       `gorm:"column:is_default_value;type:bool;not null;default:false" json:"is_default_value"`
+}
+
+// TableName get sql table name.获取数据库表名
+func (WorkflowDraftVariable) TableName() string {
+	return "workflow_draft_variables"
+}
+
+// WorkflowDraftVariableFile [...]
+type WorkflowDraftVariableFile struct {
+	ID           string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	CreatedAt    *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+	TenantID     string     `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
+	AppID        string     `gorm:"column:app_id;type:varchar(36);not null" json:"app_id"`
+	UserID       string     `gorm:"column:user_id;type:varchar(36);not null" json:"user_id"`
+	UploadFileID string     `gorm:"column:upload_file_id;type:varchar(36);not null" json:"upload_file_id"`
+	Size         *int64     `gorm:"column:size;type:bigint;not null" json:"size"`
+	Length       *int       `gorm:"column:length;type:int" json:"length"`
+	ValueType    string     `gorm:"column:value_type;type:varchar(20);not null" json:"value_type"`
+}
+
+// TableName get sql table name.获取数据库表名
+func (WorkflowDraftVariableFile) TableName() string {
+	return "workflow_draft_variable_files"
+}
+
+// WorkflowPause [...]
+type WorkflowPause struct {
+	ID             string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	CreatedAt      *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt      *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+	WorkflowID     string     `gorm:"column:workflow_id;type:varchar(36);not null" json:"workflow_id"`
+	WorkflowRunID  string     `gorm:"column:workflow_run_id;type:varchar(36);not null;uniqueIndex" json:"workflow_run_id"`
+	ResumedAt      *time.Time `gorm:"column:resumed_at;type:timestamp" json:"resumed_at"`
+	StateObjectKey string     `gorm:"column:state_object_key;type:varchar(255);not null" json:"state_object_key"`
+}
+
+// TableName get sql table name.获取数据库表名
+func (WorkflowPause) TableName() string {
+	return "workflow_pauses"
+}
+
+// WorkflowPauseReason [...]
+type WorkflowPauseReason struct {
+	ID        string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	CreatedAt *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+	PauseID   string     `gorm:"column:pause_id;type:varchar(36);not null;index" json:"pause_id"`
+	Type      string     `gorm:"column:type;type:varchar(50);not null" json:"type"`
+	FormID    string     `gorm:"column:form_id;type:varchar(36);not null;default:''" json:"form_id"`
+	Message   string     `gorm:"column:message;type:varchar(255);not null;default:''" json:"message"`
+	NodeID    string     `gorm:"column:node_id;type:varchar(255);not null;default:''" json:"node_id"`
+}
+
+// TableName get sql table name.获取数据库表名
+func (WorkflowPauseReason) TableName() string {
+	return "workflow_pause_reasons"
+}

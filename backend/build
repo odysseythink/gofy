@@ -1,10 +1,23 @@
 #!/bin/bash
+set -e
 
+echo "=== Building frontend ==="
+cd ../frontend
+pnpm install --frozen-lockfile
+pnpm build
+echo "=== Copying frontend dist to backend ==="
+rm -rf ../backend/main/link/frontend/dist
+cp -r dist/ ../backend/main/link/frontend/dist/
+cd ../backend
+
+echo "=== Building Go binaries ==="
 go build -o ../deploy/FrameWorkServer main/FrameWorkServer/main.go
-go build -buildmode=plugin -o ../deploy/link.so main/link/main.go 
-go build -buildmode=plugin -o ../deploy/admin.so main/admin/*.go 
-go build -buildmode=plugin -o ../deploy/app.so main/app/*.go 
+go build -buildmode=plugin -o ../deploy/link.so main/link/main.go main/link/frontend.go
+go build -buildmode=plugin -o ../deploy/admin.so main/admin/*.go
+go build -buildmode=plugin -o ../deploy/app.so main/app/*.go
 go build -buildmode=plugin -o ../deploy/tools.so main/tools/*.go
 go build -buildmode=plugin -o ../deploy/plugins.so main/plugins/*.go
 go build -buildmode=plugin -o ../deploy/sandbox.so main/sandbox/*.go
 go build -buildmode=plugin -o ../deploy/datasets.so main/datasets/*.go
+
+echo "=== Build complete ==="

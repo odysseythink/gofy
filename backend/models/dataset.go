@@ -1425,3 +1425,143 @@ var (
 		"segmentation": map[string]any{"delimiter": "\n", "max_tokens": 500, "chunk_overlap": 50},
 	}
 )
+
+// PipelineBuiltInTemplate [...]
+type PipelineBuiltInTemplate struct {
+	ID             string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	Name           string     `gorm:"column:name;type:varchar(255);not null" json:"name"`
+	Description    string     `gorm:"column:description;type:text;not null" json:"description"`
+	ChunkStructure string     `gorm:"column:chunk_structure;type:varchar(255);not null" json:"chunk_structure"`
+	Icon           string     `gorm:"column:icon;type:json;not null" json:"icon"`
+	YamlContent    string     `gorm:"column:yaml_content;type:text;not null" json:"yaml_content"`
+	Copyright      string     `gorm:"column:copyright;type:varchar(255);not null" json:"copyright"`
+	PrivacyPolicy  string     `gorm:"column:privacy_policy;type:varchar(255);not null" json:"privacy_policy"`
+	Position       int        `gorm:"column:position;type:int;not null" json:"position"`
+	InstallCount   int        `gorm:"column:install_count;type:int;not null" json:"install_count"`
+	Language       string     `gorm:"column:language;type:varchar(255);not null" json:"language"`
+	CreatedAt      *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt      *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+}
+
+// TableName get sql table name.获取数据库表名
+func (PipelineBuiltInTemplate) TableName() string {
+	return "pipeline_built_in_templates"
+}
+
+// PipelineCustomizedTemplate [...]
+type PipelineCustomizedTemplate struct {
+	ID             string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	TenantID       string     `gorm:"column:tenant_id;type:varchar(36);not null;index" json:"tenant_id"`
+	Name           string     `gorm:"column:name;type:varchar(255);not null" json:"name"`
+	Description    string     `gorm:"column:description;type:text;not null" json:"description"`
+	ChunkStructure string     `gorm:"column:chunk_structure;type:varchar(255);not null" json:"chunk_structure"`
+	Icon           string     `gorm:"column:icon;type:json;not null" json:"icon"`
+	Position       int        `gorm:"column:position;type:int;not null" json:"position"`
+	YamlContent    string     `gorm:"column:yaml_content;type:text;not null" json:"yaml_content"`
+	InstallCount   int        `gorm:"column:install_count;type:int;not null" json:"install_count"`
+	Language       string     `gorm:"column:language;type:varchar(255);not null" json:"language"`
+	CreatedBy      string     `gorm:"column:created_by;type:varchar(36);not null" json:"created_by"`
+	UpdatedBy      *string    `gorm:"column:updated_by;type:varchar(36)" json:"updated_by"`
+	CreatedAt      *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt      *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+}
+
+// TableName get sql table name.获取数据库表名
+func (PipelineCustomizedTemplate) TableName() string {
+	return "pipeline_customized_templates"
+}
+
+// Pipeline [...]
+type Pipeline struct {
+	ID          string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	TenantID    string     `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
+	Name        string     `gorm:"column:name;type:varchar(255);not null" json:"name"`
+	Description string     `gorm:"column:description;type:text;not null;default:''" json:"description"`
+	WorkflowID  *string    `gorm:"column:workflow_id;type:varchar(36)" json:"workflow_id"`
+	IsPublic    bool       `gorm:"column:is_public;type:bool;not null;default:false" json:"is_public"`
+	IsPublished bool       `gorm:"column:is_published;type:bool;not null;default:false" json:"is_published"`
+	CreatedBy   *string    `gorm:"column:created_by;type:varchar(36)" json:"created_by"`
+	CreatedAt   *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedBy   *string    `gorm:"column:updated_by;type:varchar(36)" json:"updated_by"`
+	UpdatedAt   *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+}
+
+// TableName get sql table name.获取数据库表名
+func (Pipeline) TableName() string {
+	return "pipelines"
+}
+
+// DocumentPipelineExecutionLog [...]
+type DocumentPipelineExecutionLog struct {
+	ID               string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	PipelineID       string     `gorm:"column:pipeline_id;type:varchar(36);not null" json:"pipeline_id"`
+	DocumentID       string     `gorm:"column:document_id;type:varchar(36);not null;index" json:"document_id"`
+	DatasourceType   string     `gorm:"column:datasource_type;type:varchar(255);not null" json:"datasource_type"`
+	DatasourceInfo   string     `gorm:"column:datasource_info;type:text;not null" json:"datasource_info"`
+	DatasourceNodeID string     `gorm:"column:datasource_node_id;type:varchar(255);not null" json:"datasource_node_id"`
+	InputData        string     `gorm:"column:input_data;type:json;not null" json:"input_data"`
+	CreatedBy        *string    `gorm:"column:created_by;type:varchar(36)" json:"created_by"`
+	CreatedAt        *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+}
+
+// TableName get sql table name.获取数据库表名
+func (DocumentPipelineExecutionLog) TableName() string {
+	return "document_pipeline_execution_logs"
+}
+
+// PipelineRecommendedPlugin [...]
+type PipelineRecommendedPlugin struct {
+	ID           string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	PluginID     string     `gorm:"column:plugin_id;type:text;not null" json:"plugin_id"`
+	ProviderName string     `gorm:"column:provider_name;type:text;not null" json:"provider_name"`
+	Type         string     `gorm:"column:type;type:varchar(50);not null;default:'tool'" json:"type"`
+	Position     int        `gorm:"column:position;type:int;not null;default:0" json:"position"`
+	Active       bool       `gorm:"column:active;type:bool;not null;default:true" json:"active"`
+	CreatedAt    *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt    *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+}
+
+// TableName get sql table name.获取数据库表名
+func (PipelineRecommendedPlugin) TableName() string {
+	return "pipeline_recommended_plugins"
+}
+
+// SegmentAttachmentBinding [...]
+type SegmentAttachmentBinding struct {
+	ID           string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	TenantID     string     `gorm:"column:tenant_id;type:varchar(36);not null" json:"tenant_id"`
+	DatasetID    string     `gorm:"column:dataset_id;type:varchar(36);not null" json:"dataset_id"`
+	DocumentID   string     `gorm:"column:document_id;type:varchar(36);not null" json:"document_id"`
+	SegmentID    string     `gorm:"column:segment_id;type:varchar(36);not null" json:"segment_id"`
+	AttachmentID string     `gorm:"column:attachment_id;type:varchar(36);not null;index" json:"attachment_id"`
+	CreatedAt    *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+}
+
+// TableName get sql table name.获取数据库表名
+func (SegmentAttachmentBinding) TableName() string {
+	return "segment_attachment_bindings"
+}
+
+// DocumentSegmentSummary [...]
+type DocumentSegmentSummary struct {
+	ID                   string     `gorm:"primaryKey;column:id;type:varchar(36);not null" json:"id"`
+	DatasetID            string     `gorm:"column:dataset_id;type:varchar(36);not null;index" json:"dataset_id"`
+	DocumentID           string     `gorm:"column:document_id;type:varchar(36);not null;index" json:"document_id"`
+	ChunkID              string     `gorm:"column:chunk_id;type:varchar(36);not null;index" json:"chunk_id"`
+	SummaryContent       *string    `gorm:"column:summary_content;type:text" json:"summary_content"`
+	SummaryIndexNodeID   *string    `gorm:"column:summary_index_node_id;type:varchar(255)" json:"summary_index_node_id"`
+	SummaryIndexNodeHash *string    `gorm:"column:summary_index_node_hash;type:varchar(255)" json:"summary_index_node_hash"`
+	Tokens               *int       `gorm:"column:tokens;type:int" json:"tokens"`
+	Status               string     `gorm:"column:status;type:varchar(32);not null;default:'generating';index" json:"status"`
+	Error                *string    `gorm:"column:error;type:text" json:"error"`
+	Enabled              bool       `gorm:"column:enabled;type:bool;not null;default:true" json:"enabled"`
+	DisabledAt           *time.Time `gorm:"column:disabled_at;type:timestamp" json:"disabled_at"`
+	DisabledBy           *string    `gorm:"column:disabled_by;type:varchar(36)" json:"disabled_by"`
+	CreatedAt            *time.Time `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt            *time.Time `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+}
+
+// TableName get sql table name.获取数据库表名
+func (DocumentSegmentSummary) TableName() string {
+	return "document_segment_summaries"
+}

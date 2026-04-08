@@ -31,6 +31,8 @@ const (
 	PluginCategory_Model         PluginCategoryType = "model"
 	PluginCategory_Extension     PluginCategoryType = "extension"
 	PluginCategory_AgentStrategy PluginCategoryType = "agent-strategy"
+	PluginCategory_Datasource    PluginCategoryType = "datasource"
+	PluginCategory_Trigger       PluginCategoryType = "trigger"
 )
 
 type PluginDependencyType string
@@ -41,32 +43,97 @@ const (
 	PluginDependency_Package     PluginDependencyType = PluginDependencyType(PluginInstallationSource_Package)
 )
 
+type PluginPermissionToolRequirement struct {
+	Enabled bool `json:"enabled"`
+}
+
+type PluginPermissionModelRequirement struct {
+	Enabled       bool `json:"enabled"`
+	LLM           bool `json:"llm"`
+	TextEmbedding bool `json:"text_embedding"`
+	Rerank        bool `json:"rerank"`
+	TTS           bool `json:"tts"`
+	Speech2Text   bool `json:"speech2text"`
+	Moderation    bool `json:"moderation"`
+}
+
+type PluginPermissionNodeRequirement struct {
+	Enabled bool `json:"enabled"`
+}
+
+type PluginPermissionEndpointRequirement struct {
+	Enabled bool `json:"enabled"`
+}
+
+type PluginPermissionAppRequirement struct {
+	Enabled bool `json:"enabled"`
+}
+
+type PluginPermissionStorageRequirement struct {
+	Enabled bool `json:"enabled"`
+	Size    int  `json:"size"` //(ge=1024, le=1073741824, default=1048576)
+}
+
+type PluginPermissionRequirement struct {
+	Tool     *PluginPermissionToolRequirement     `json:"tool,omitempty"`
+	Model    *PluginPermissionModelRequirement    `json:"model,omitempty"`
+	Node     *PluginPermissionNodeRequirement     `json:"node,omitempty"`
+	Endpoint *PluginPermissionEndpointRequirement `json:"endpoint,omitempty"`
+	App      *PluginPermissionAppRequirement      `json:"app,omitempty"`
+	Storage  *PluginPermissionStorageRequirement  `json:"storage,omitempty"`
+}
+
+func (p *PluginPermissionRequirement) AllowInvokeTool() bool {
+	return p != nil && p.Tool != nil && p.Tool.Enabled
+}
+
+func (p *PluginPermissionRequirement) AllowInvokeModel() bool {
+	return p != nil && p.Model != nil && p.Model.Enabled
+}
+
+func (p *PluginPermissionRequirement) AllowInvokeLLM() bool {
+	return p != nil && p.Model != nil && p.Model.Enabled && p.Model.LLM
+}
+
+func (p *PluginPermissionRequirement) AllowInvokeTextEmbedding() bool {
+	return p != nil && p.Model != nil && p.Model.Enabled && p.Model.TextEmbedding
+}
+
+func (p *PluginPermissionRequirement) AllowInvokeRerank() bool {
+	return p != nil && p.Model != nil && p.Model.Enabled && p.Model.Rerank
+}
+
+func (p *PluginPermissionRequirement) AllowInvokeTTS() bool {
+	return p != nil && p.Model != nil && p.Model.Enabled && p.Model.TTS
+}
+
+func (p *PluginPermissionRequirement) AllowInvokeSpeech2Text() bool {
+	return p != nil && p.Model != nil && p.Model.Enabled && p.Model.Speech2Text
+}
+
+func (p *PluginPermissionRequirement) AllowInvokeModeration() bool {
+	return p != nil && p.Model != nil && p.Model.Enabled && p.Model.Moderation
+}
+
+func (p *PluginPermissionRequirement) AllowInvokeNode() bool {
+	return p != nil && p.Node != nil && p.Node.Enabled
+}
+
+func (p *PluginPermissionRequirement) AllowInvokeApp() bool {
+	return p != nil && p.App != nil && p.App.Enabled
+}
+
+func (p *PluginPermissionRequirement) AllowRegisterEndpoint() bool {
+	return p != nil && p.Endpoint != nil && p.Endpoint.Enabled
+}
+
+func (p *PluginPermissionRequirement) AllowInvokeStorage() bool {
+	return p != nil && p.Storage != nil && p.Storage.Enabled
+}
+
 type PluginResourceRequirements struct {
-	Memory     int `json:"memory"`
-	Permission *struct {
-		Tool *struct {
-			Enabled bool `json:"enabled"`
-		} `json:"tool"`
-		Model *struct {
-			Enabled       bool `json:"enabled"`
-			LLM           bool `json:"llm"`
-			TextEmbedding bool `json:"text_embedding"`
-			Rerank        bool `json:"rerank"`
-			TTS           bool `json:"tts"`
-			Speech2Text   bool `json:"speech2text"`
-			Moderation    bool `json:"moderation"`
-		} `json:"model"`
-		Node *struct {
-			Enabled bool `json:"enabled"`
-		} `json:"node"`
-		Endpoint *struct {
-			Enabled bool `json:"enabled"`
-		} `json:"endpoint"`
-		Storage *struct {
-			Enabled bool `json:"enabled"`
-			Size    int  `json:"size"` //(ge=1024, le=1073741824, default=1048576)
-		} `json:"storage"`
-	} `json:"permission"`
+	Memory     int                          `json:"memory"`
+	Permission *PluginPermissionRequirement `json:"permission,omitempty"`
 }
 
 type PluginDeclaration struct {
@@ -80,36 +147,51 @@ type PluginDeclaration struct {
 	Category    PluginCategoryType         `json:"category"`
 	CreatedAt   time.Time                  `json:"created_at"`
 	Resource    PluginResourceRequirements `json:"resource"`
-	Plugins     struct {
-		Tools     []string `json:"tools"`
-		Models    []string `json:"models"`
-		Endpoints []string `json:"endpoints"`
+	Plugins struct {
+		Tools           []string `json:"tools"`
+		Models          []string `json:"models"`
+		Endpoints       []string `json:"endpoints"`
+		AgentStrategies []string `json:"agent_strategies"`
+		Datasources     []string `json:"datasources"`
+		Triggers        []string `json:"triggers"`
 	} `json:"plugins"`
-	Tags          []string                                   `json:"tags"`
-	Repo          string                                     `json:"repo"`
-	Verified      bool                                       `json:"verified"`
-	Tool          *toolsentities.ToolProviderEntity          `json:"tool"`
-	Model         *modelruntimeentities.ProviderEntity       `json:"model"`
-	Endpoint      *EndpointProviderDeclaration               `json:"endpoint"`
-	AgentStrategy *agententities.AgentStrategyProviderEntity `json:"agent_strategy"`
-	Meta          struct {
+	Tags     []string `json:"tags"`
+	Repo     string   `json:"repo"`
+	Privacy  string   `json:"privacy,omitempty"`
+	Verified bool     `json:"verified"`
+
+	Tool          *toolsentities.ToolProviderEntity          `json:"tool,omitempty"`
+	Model         *modelruntimeentities.ProviderEntity       `json:"model,omitempty"`
+	Endpoint      *EndpointProviderDeclaration               `json:"endpoint,omitempty"`
+	AgentStrategy *agententities.AgentStrategyProviderEntity `json:"agent_strategy,omitempty"`
+	// Datasource and Trigger are placeholders for future provider declarations.
+	Datasource any `json:"datasource,omitempty"`
+	Trigger    any `json:"trigger,omitempty"`
+
+	Meta struct {
 		MinimumDifyVersion string `json:"minimum_dify_version"` // pattern=r"^\d{1,4}(\.\d{1,4}){1,3}(-\w{1,16})?$")
 		Version            string `json:"version"`
 	} `json:"meta"`
+}
 
-	// @model_validator(mode="before")
-	// @classmethod
-	// def validate_category(cls, values: dict) -> dict:
-	//     # auto detect category
-	//     if values.get("tool"):
-	//         values["category"] = PluginCategory.Tool
-	//     elif values.get("model"):
-	//         values["category"] = PluginCategory.Model
-	//     elif values.get("agent_strategy"):
-	//         values["category"] = PluginCategory.AgentStrategy
-	//     else:
-	//         values["category"] = PluginCategory.Extension
-	//     return values
+// DetectCategory auto-detects the plugin category based on provider declarations.
+func (d *PluginDeclaration) DetectCategory() PluginCategoryType {
+	if d.Tool != nil || len(d.Plugins.Tools) > 0 {
+		return PluginCategory_Tool
+	}
+	if d.Model != nil || len(d.Plugins.Models) > 0 {
+		return PluginCategory_Model
+	}
+	if d.Datasource != nil || len(d.Plugins.Datasources) > 0 {
+		return PluginCategory_Datasource
+	}
+	if d.AgentStrategy != nil || len(d.Plugins.AgentStrategies) > 0 {
+		return PluginCategory_AgentStrategy
+	}
+	if d.Trigger != nil || len(d.Plugins.Triggers) > 0 {
+		return PluginCategory_Trigger
+	}
+	return PluginCategory_Extension
 }
 
 type PluginInstallation struct {

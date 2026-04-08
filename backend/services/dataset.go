@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	uuid "github.com/satori/go.uuid"
 	dbengine "mlib.com/gofy/server/db_engine"
 	enumtypes "mlib.com/gofy/server/enum_types"
 	"mlib.com/gofy/server/models"
@@ -299,4 +300,143 @@ func (s *DatasetService) GetExternalKnowledgeAPIs(
 	}
 
 	return datas, total
+}
+
+func (s *DatasetService) CreateEmptyDataset(tenantID, name string, description string, indexingTechnique string, account *models.Account, permission string, provider string, embeddingModelProvider string, embeddingModelName string) (*models.Dataset, error) {
+	// Check for duplicate name
+	var count int64
+	dbengine.Instance().DB.Model(&models.Dataset{}).Where("tenant_id = ? AND name = ?", tenantID, name).Count(&count)
+	if count > 0 {
+		return nil, fmt.Errorf("dataset with name '%s' already exists", name)
+	}
+
+	if permission == "" {
+		permission = "only_me"
+	}
+	if provider == "" {
+		provider = "vendor"
+	}
+
+	dataset := &models.Dataset{
+		ID:                     uuid.NewV4().String(),
+		TenantID:               tenantID,
+		Name:                   name,
+		Description:            description,
+		Provider:               provider,
+		Permission:             permission,
+		IndexingTechnique:      indexingTechnique,
+		CreatedBy:              account.ID,
+		EmbeddingModelProvider: embeddingModelProvider,
+		EmbeddingModel:         embeddingModelName,
+	}
+
+	if err := dbengine.Instance().DB.Create(dataset).Error; err != nil {
+		return nil, err
+	}
+	return dataset, nil
+}
+
+func (s *DatasetService) DeleteDataset(datasetID string, user *models.Account) error {
+	dataset, err := s.GetByIDAndTenantID(datasetID, user.CurrentTenantID())
+	if err != nil {
+		return err
+	}
+	if dataset == nil {
+		return fmt.Errorf("dataset not found")
+	}
+
+	if err := s.CheckDatasetPermission(dataset, user); err != nil {
+		return err
+	}
+
+	return dbengine.Instance().DB.Delete(dataset).Error
+}
+
+func (s *DatasetService) CheckDatasetPermission(dataset *models.Dataset, user *models.Account) error {
+	if dataset.TenantID != user.CurrentTenantID() {
+		return fmt.Errorf("no permission to access this dataset")
+	}
+
+	// Check user role - get tenant account join
+	var join models.TenantAccountJoin
+	if err := dbengine.Instance().DB.Where("tenant_id = ? AND account_id = ?", dataset.TenantID, user.ID).First(&join).Error; err != nil {
+		return fmt.Errorf("no permission to access this dataset")
+	}
+
+	if join.Role == "owner" || join.Role == "admin" {
+		return nil
+	}
+
+	if dataset.Permission == "only_me" && dataset.CreatedBy != user.ID {
+		return fmt.Errorf("no permission to access this dataset")
+	}
+
+	if dataset.Permission == "partial_members" && dataset.CreatedBy != user.ID {
+		var permCount int64
+		dbengine.Instance().DB.Model(&models.DatasetPermission{}).Where("dataset_id = ? AND account_id = ?", dataset.ID, user.ID).Count(&permCount)
+		if permCount == 0 {
+			return fmt.Errorf("no permission to access this dataset")
+		}
+	}
+
+	return nil
+}
+
+func (s *DatasetService) GetProcessRules(datasetID string) map[string]any {
+	var rule models.DatasetProcessRule
+	err := dbengine.Instance().DB.Where("dataset_id = ?", datasetID).Order("created_at DESC").First(&rule).Error
+	if err != nil {
+		// Return default rules
+		return map[string]any{
+			"mode": "automatic",
+			"rules": map[string]any{
+				"pre_processing_rules": []map[string]any{
+					{"id": "remove_extra_spaces", "enabled": true},
+					{"id": "remove_urls_emails", "enabled": false},
+				},
+				"segmentation": map[string]any{
+					"separator":  "###",
+					"max_tokens": 500,
+				},
+			},
+		}
+	}
+	return map[string]any{
+		"mode":  rule.Mode,
+		"rules": rule.Rules,
+	}
+}
+
+func (s *DatasetService) GetRelatedApps(datasetID string) []*models.AppDatasetJoin {
+	var joins []*models.AppDatasetJoin
+	dbengine.Instance().DB.Where("dataset_id = ?", datasetID).Order("created_at DESC").Find(&joins)
+	return joins
+}
+
+func (s *DatasetService) GetDatasetQueries(datasetID string, page, perPage int) ([]*models.DatasetQuery, int64) {
+	if perPage > 100 {
+		perPage = 100
+	}
+	var queries []*models.DatasetQuery
+	var total int64
+	db := dbengine.Instance().DB.Where("dataset_id = ?", datasetID)
+	db.Model(&models.DatasetQuery{}).Count(&total)
+	db.Order("created_at DESC").Offset((page - 1) * perPage).Limit(perPage).Find(&queries)
+	return queries, total
+}
+
+func (s *DatasetService) DatasetUseCheck(datasetID string) bool {
+	var count int64
+	dbengine.Instance().DB.Model(&models.AppDatasetJoin{}).Where("dataset_id = ?", datasetID).Count(&count)
+	return count > 0
+}
+
+func (s *DatasetService) UpdateDatasetApiStatus(datasetID string, status bool) error {
+	return dbengine.Instance().DB.Model(&models.Dataset{}).Where("id = ?", datasetID).Update("is_api_enabled", status).Error
+}
+
+func (s *DatasetService) GetDatasetAutoDisableLogs(datasetID string) []*models.DatasetAutoDisableLog {
+	var logs []*models.DatasetAutoDisableLog
+	dbengine.Instance().DB.Where("dataset_id = ?", datasetID).Order("created_at DESC").Find(&logs)
+	return logs
 }

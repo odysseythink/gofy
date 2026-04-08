@@ -36,6 +36,7 @@ type ServiceGroup struct {
 	ExternalDataset       *ExternalDatasetService
 	Document              *DocumentService
 	Segment               *SegmentService
+	Plugin                *PluginService
 }
 
 var ServiceGroupApp = ServiceGroup{
@@ -72,4 +73,5 @@ var ServiceGroupApp = ServiceGroup{
 	ExternalDataset:       &ExternalDatasetService{},
 	Document:              &DocumentService{},
 	Segment:               &SegmentService{},
+	Plugin:                &PluginService{},
 }

@@ -207,7 +207,7 @@ export default function AppSelector() {
                   )}
                 />
                 {
-                  env.NEXT_PUBLIC_SITE_ABOUT !== 'hide' && (
+                  env.VITE_SITE_ABOUT !== 'hide' && (
                     <AccountMenuActionItem
                       iconClassName="i-ri-information-2-line"
                       label={t('userProfile.about', { ns: 'common' })}

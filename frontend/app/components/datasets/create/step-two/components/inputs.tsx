@@ -106,7 +106,7 @@ function CompoundNumberInput({
 }
 
 export const MaxLengthInput: FC<CompoundNumberInputProps> = (props) => {
-  const maxValue = env.NEXT_PUBLIC_INDEXING_MAX_SEGMENTATION_TOKENS_LENGTH
+  const maxValue = env.VITE_INDEXING_MAX_SEGMENTATION_TOKENS_LENGTH
 
   const { t } = useTranslation()
   return (

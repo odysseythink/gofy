@@ -16,38 +16,38 @@ const getStringConfig = (
 }
 
 export const API_PREFIX = getStringConfig(
-  env.NEXT_PUBLIC_API_PREFIX,
+  env.VITE_API_PREFIX,
   'http://localhost:5001/console/api',
 )
 export const PUBLIC_API_PREFIX = getStringConfig(
-  env.NEXT_PUBLIC_PUBLIC_API_PREFIX,
+  env.VITE_PUBLIC_API_PREFIX,
   'http://localhost:5001/api',
 )
 export const MARKETPLACE_API_PREFIX = getStringConfig(
-  env.NEXT_PUBLIC_MARKETPLACE_API_PREFIX,
+  env.VITE_MARKETPLACE_API_PREFIX,
   'http://localhost:5002/api',
 )
 export const MARKETPLACE_URL_PREFIX = getStringConfig(
-  env.NEXT_PUBLIC_MARKETPLACE_URL_PREFIX,
+  env.VITE_MARKETPLACE_URL_PREFIX,
   '',
 )
 
-const EDITION = env.NEXT_PUBLIC_EDITION
+const EDITION = env.VITE_EDITION
 
 export const IS_CE_EDITION = EDITION === 'SELF_HOSTED'
 export const IS_CLOUD_EDITION = EDITION === 'CLOUD'
 
 export const AMPLITUDE_API_KEY = getStringConfig(
-  env.NEXT_PUBLIC_AMPLITUDE_API_KEY,
+  env.VITE_AMPLITUDE_API_KEY,
   '',
 )
 
 export const isAmplitudeEnabled = IS_CLOUD_EDITION && !!AMPLITUDE_API_KEY
 
-export const IS_DEV = process.env.NODE_ENV === 'development'
-export const IS_PROD = process.env.NODE_ENV === 'production'
+export const IS_DEV = import.meta.env.DEV
+export const IS_PROD = import.meta.env.PROD
 
-export const SUPPORT_MAIL_LOGIN = env.NEXT_PUBLIC_SUPPORT_MAIL_LOGIN
+export const SUPPORT_MAIL_LOGIN = env.VITE_SUPPORT_MAIL_LOGIN
 
 export const TONE_LIST = [
   {
@@ -113,11 +113,11 @@ export const getMaxToken = (modelId: string) => {
 export const LOCALE_COOKIE_NAME = 'locale'
 
 const COOKIE_DOMAIN = getStringConfig(
-  env.NEXT_PUBLIC_COOKIE_DOMAIN,
+  env.VITE_COOKIE_DOMAIN,
   '',
 ).trim()
 
-export const BATCH_CONCURRENCY = env.NEXT_PUBLIC_BATCH_CONCURRENCY
+export const BATCH_CONCURRENCY = env.VITE_BATCH_CONCURRENCY
 
 export const CSRF_COOKIE_NAME = () => {
   if (COOKIE_DOMAIN)
@@ -290,68 +290,68 @@ export const resetReg = () => (VAR_REGEX.lastIndex = 0)
 export const HITL_INPUT_REG = /\{\{(#\$output\.(?:[a-z_]\w{0,29}){1,10}#)\}\}/gi
 export const resetHITLInputReg = () => HITL_INPUT_REG.lastIndex = 0
 
-export const DISABLE_UPLOAD_IMAGE_AS_ICON = env.NEXT_PUBLIC_DISABLE_UPLOAD_IMAGE_AS_ICON
+export const DISABLE_UPLOAD_IMAGE_AS_ICON = env.VITE_DISABLE_UPLOAD_IMAGE_AS_ICON
 
 export const GITHUB_ACCESS_TOKEN
-  = env.NEXT_PUBLIC_GITHUB_ACCESS_TOKEN
+  = env.VITE_GITHUB_ACCESS_TOKEN
 
 export const SUPPORT_INSTALL_LOCAL_FILE_EXTENSIONS = '.difypkg,.difybndl'
 export const FULL_DOC_PREVIEW_LENGTH = 50
 
 export const JSON_SCHEMA_MAX_DEPTH = 10
 
-export const MAX_TOOLS_NUM = env.NEXT_PUBLIC_MAX_TOOLS_NUM
-export const MAX_PARALLEL_LIMIT = env.NEXT_PUBLIC_MAX_PARALLEL_LIMIT
-export const TEXT_GENERATION_TIMEOUT_MS = env.NEXT_PUBLIC_TEXT_GENERATION_TIMEOUT_MS
-export const LOOP_NODE_MAX_COUNT = env.NEXT_PUBLIC_LOOP_NODE_MAX_COUNT
-export const MAX_ITERATIONS_NUM = env.NEXT_PUBLIC_MAX_ITERATIONS_NUM
-export const MAX_TREE_DEPTH = env.NEXT_PUBLIC_MAX_TREE_DEPTH
+export const MAX_TOOLS_NUM = env.VITE_MAX_TOOLS_NUM
+export const MAX_PARALLEL_LIMIT = env.VITE_MAX_PARALLEL_LIMIT
+export const TEXT_GENERATION_TIMEOUT_MS = env.VITE_TEXT_GENERATION_TIMEOUT_MS
+export const LOOP_NODE_MAX_COUNT = env.VITE_LOOP_NODE_MAX_COUNT
+export const MAX_ITERATIONS_NUM = env.VITE_MAX_ITERATIONS_NUM
+export const MAX_TREE_DEPTH = env.VITE_MAX_TREE_DEPTH
 
-export const ALLOW_UNSAFE_DATA_SCHEME = env.NEXT_PUBLIC_ALLOW_UNSAFE_DATA_SCHEME
-export const ENABLE_WEBSITE_JINAREADER = env.NEXT_PUBLIC_ENABLE_WEBSITE_JINAREADER
-export const ENABLE_WEBSITE_FIRECRAWL = env.NEXT_PUBLIC_ENABLE_WEBSITE_FIRECRAWL
-export const ENABLE_WEBSITE_WATERCRAWL = env.NEXT_PUBLIC_ENABLE_WEBSITE_WATERCRAWL
-export const ENABLE_SINGLE_DOLLAR_LATEX = env.NEXT_PUBLIC_ENABLE_SINGLE_DOLLAR_LATEX
+export const ALLOW_UNSAFE_DATA_SCHEME = env.VITE_ALLOW_UNSAFE_DATA_SCHEME
+export const ENABLE_WEBSITE_JINAREADER = env.VITE_ENABLE_WEBSITE_JINAREADER
+export const ENABLE_WEBSITE_FIRECRAWL = env.VITE_ENABLE_WEBSITE_FIRECRAWL
+export const ENABLE_WEBSITE_WATERCRAWL = env.VITE_ENABLE_WEBSITE_WATERCRAWL
+export const ENABLE_SINGLE_DOLLAR_LATEX = env.VITE_ENABLE_SINGLE_DOLLAR_LATEX
 
 export const VALUE_SELECTOR_DELIMITER = '@@@'
 
 export const validPassword = /^(?=.*[a-z])(?=.*\d)\S{8,}$/i
 
 export const ZENDESK_WIDGET_KEY = getStringConfig(
-  env.NEXT_PUBLIC_ZENDESK_WIDGET_KEY,
+  env.VITE_ZENDESK_WIDGET_KEY,
   '',
 )
 export const ZENDESK_FIELD_IDS = {
   ENVIRONMENT: getStringConfig(
-    env.NEXT_PUBLIC_ZENDESK_FIELD_ID_ENVIRONMENT,
+    env.VITE_ZENDESK_FIELD_ID_ENVIRONMENT,
     '',
   ),
   VERSION: getStringConfig(
-    env.NEXT_PUBLIC_ZENDESK_FIELD_ID_VERSION,
+    env.VITE_ZENDESK_FIELD_ID_VERSION,
     '',
   ),
   EMAIL: getStringConfig(
-    env.NEXT_PUBLIC_ZENDESK_FIELD_ID_EMAIL,
+    env.VITE_ZENDESK_FIELD_ID_EMAIL,
     '',
   ),
   WORKSPACE_ID: getStringConfig(
-    env.NEXT_PUBLIC_ZENDESK_FIELD_ID_WORKSPACE_ID,
+    env.VITE_ZENDESK_FIELD_ID_WORKSPACE_ID,
     '',
   ),
   PLAN: getStringConfig(
-    env.NEXT_PUBLIC_ZENDESK_FIELD_ID_PLAN,
+    env.VITE_ZENDESK_FIELD_ID_PLAN,
     '',
   ),
 }
 
 export const SUPPORT_EMAIL_ADDRESS = getStringConfig(
-  env.NEXT_PUBLIC_SUPPORT_EMAIL_ADDRESS,
+  env.VITE_SUPPORT_EMAIL_ADDRESS,
   '',
 )
 
 export const APP_VERSION = pkg.version
 
-export const IS_MARKETPLACE = env.NEXT_PUBLIC_IS_MARKETPLACE
+export const IS_MARKETPLACE = env.VITE_IS_MARKETPLACE
 
 export const RAG_PIPELINE_PREVIEW_CHUNK_NUM = 20
 

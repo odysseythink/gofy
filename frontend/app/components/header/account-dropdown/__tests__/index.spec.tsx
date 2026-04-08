@@ -75,7 +75,7 @@ const { mockConfig, mockEnv } = vi.hoisted(() => ({
   },
   mockEnv: {
     env: {
-      NEXT_PUBLIC_SITE_ABOUT: 'show',
+      VITE_SITE_ABOUT: 'show',
     },
   },
 }))
@@ -156,7 +156,7 @@ describe('AccountDropdown', () => {
     vi.clearAllMocks()
     vi.stubGlobal('localStorage', { removeItem: vi.fn() })
     mockConfig.IS_CLOUD_EDITION = false
-    mockEnv.env.NEXT_PUBLIC_SITE_ABOUT = 'show'
+    mockEnv.env.VITE_SITE_ABOUT = 'show'
 
     vi.mocked(useAppContext).mockReturnValue(baseAppContextValue)
     vi.mocked(useGlobalPublicStore).mockImplementation((selector?: unknown) => {
@@ -331,9 +331,9 @@ describe('AccountDropdown', () => {
       expect(screen.queryByText('common.userProfile.roadmap')).not.toBeInTheDocument()
     })
 
-    it('should hide About section when NEXT_PUBLIC_SITE_ABOUT is hide', () => {
+    it('should hide About section when VITE_SITE_ABOUT is hide', () => {
       // Arrange
-      mockEnv.env.NEXT_PUBLIC_SITE_ABOUT = 'hide'
+      mockEnv.env.VITE_SITE_ABOUT = 'hide'
 
       // Act
       renderWithRouter(<AppSelector />)

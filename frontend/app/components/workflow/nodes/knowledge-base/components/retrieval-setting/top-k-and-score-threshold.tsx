@@ -23,7 +23,7 @@ export type TopKAndScoreThresholdProps = {
   hiddenScoreThreshold?: boolean
 }
 
-const maxTopK = env.NEXT_PUBLIC_TOP_K_MAX_VALUE
+const maxTopK = env.VITE_TOP_K_MAX_VALUE
 const TOP_K_VALUE_LIMIT = {
   amount: 1,
   min: 1,

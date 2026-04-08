@@ -61,7 +61,7 @@ async function main() {
     })
   }
 
-  const SENTRY_DSN = env.NEXT_PUBLIC_SENTRY_DSN
+  const SENTRY_DSN = env.VITE_SENTRY_DSN
 
   if (!IS_DEV && SENTRY_DSN) {
     const Sentry = await import('@sentry/react')

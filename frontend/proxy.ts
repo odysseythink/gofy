@@ -8,7 +8,7 @@ const NECESSARY_DOMAIN = '*.sentry.io http://localhost:* http://127.0.0.1:* http
 const wrapResponseWithXFrameOptions = (response: NextResponse, pathname: string) => {
   // prevent clickjacking: https://owasp.org/www-community/attacks/Clickjacking
   // Chatbot page should be allowed to be embedded in iframe. It's a feature
-  if (env.NEXT_PUBLIC_ALLOW_EMBED !== true && !pathname.startsWith('/chat') && !pathname.startsWith('/workflow') && !pathname.startsWith('/completion') && !pathname.startsWith('/webapp-signin'))
+  if (env.VITE_ALLOW_EMBED !== true && !pathname.startsWith('/chat') && !pathname.startsWith('/workflow') && !pathname.startsWith('/completion') && !pathname.startsWith('/webapp-signin'))
     response.headers.set('X-Frame-Options', 'DENY')
 
   return response
@@ -22,11 +22,11 @@ export function proxy(request: NextRequest) {
     },
   })
 
-  const isWhiteListEnabled = !!env.NEXT_PUBLIC_CSP_WHITELIST && process.env.NODE_ENV === 'production'
+  const isWhiteListEnabled = !!env.VITE_CSP_WHITELIST && import.meta.env.PROD
   if (!isWhiteListEnabled)
     return wrapResponseWithXFrameOptions(response, pathname)
 
-  const whiteList = `${env.NEXT_PUBLIC_CSP_WHITELIST} ${NECESSARY_DOMAIN}`
+  const whiteList = `${env.VITE_CSP_WHITELIST} ${NECESSARY_DOMAIN}`
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64')
   const csp = `'nonce-${nonce}'`
 

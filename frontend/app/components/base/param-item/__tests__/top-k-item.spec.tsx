@@ -4,7 +4,7 @@ import TopKItem from '../top-k-item'
 
 vi.mock('@/env', () => ({
   env: {
-    NEXT_PUBLIC_TOP_K_MAX_VALUE: 10,
+    VITE_TOP_K_MAX_VALUE: 10,
   },
 }))
 

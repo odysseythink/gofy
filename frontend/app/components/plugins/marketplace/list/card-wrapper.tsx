@@ -1,6 +1,6 @@
 'use client'
 import type { Plugin } from '@/app/components/plugins/types'
-import { useLocale, useTranslation } from '#i18n'
+import { useLocale, useTranslation } from '@/i18n-config/lib.client'
 import { RiArrowRightUpLine } from '@remixicon/react'
 import { useBoolean } from 'ahooks'
 import { useTheme } from 'next-themes'

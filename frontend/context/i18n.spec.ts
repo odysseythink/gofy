@@ -1,6 +1,6 @@
 import type { DocPathMap } from './i18n'
 import type { DocPathWithoutLang } from '@/types/doc-paths'
-import { useTranslation } from '#i18n'
+import { useTranslation } from '@/i18n-config/lib.client'
 import { renderHook } from '@testing-library/react'
 import { getDocLanguage } from '@/i18n-config/language'
 import { defaultDocBaseUrl, useDocLink } from './i18n'

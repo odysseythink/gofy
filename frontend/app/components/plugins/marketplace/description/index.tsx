@@ -1,4 +1,4 @@
-import { useLocale, useTranslation } from '#i18n'
+import { useLocale, useTranslation } from '@/i18n-config/lib.client'
 
 const Description = () => {
   const { t } = useTranslation('plugin')

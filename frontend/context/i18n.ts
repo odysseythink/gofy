@@ -1,6 +1,6 @@
 import type { Locale } from '@/i18n-config/language'
 import type { DocPathWithoutLang } from '@/types/doc-paths'
-import { useTranslation } from '#i18n'
+import { useTranslation } from '@/i18n-config/lib.client'
 import { useCallback } from 'react'
 import { getDocLanguage, getLanguage, getPricingPageLanguage } from '@/i18n-config/language'
 import { apiReferencePathTranslations } from '@/types/doc-paths'

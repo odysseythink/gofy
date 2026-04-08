@@ -1,6 +1,6 @@
 'use client'
 
-import { useTranslation } from '#i18n'
+import { useTranslation } from '@/i18n-config/lib.client'
 import { useState } from 'react'
 import Checkbox from '@/app/components/base/checkbox'
 import Input from '@/app/components/base/input'

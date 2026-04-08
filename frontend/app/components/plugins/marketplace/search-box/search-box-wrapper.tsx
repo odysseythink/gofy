@@ -1,6 +1,6 @@
 'use client'
 
-import { useTranslation } from '#i18n'
+import { useTranslation } from '@/i18n-config/lib.client'
 import { useFilterPluginTags, useSearchPluginText } from '../atoms'
 import SearchBox from './index'
 

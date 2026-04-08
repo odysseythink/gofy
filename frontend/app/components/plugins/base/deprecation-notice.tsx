@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import { useTranslation } from '#i18n'
+import { useTranslation } from '@/i18n-config/lib.client'
 import { RiAlertFill } from '@remixicon/react'
 import { camelCase } from 'es-toolkit/string'
 import * as React from 'react'

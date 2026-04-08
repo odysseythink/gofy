@@ -1,5 +1,5 @@
 import type { useMarketplace } from './hooks'
-import { useLocale } from '#i18n'
+import { useLocale } from '@/i18n-config/lib.client'
 import {
   RiArrowRightUpLine,
   RiArrowUpDoubleLine,

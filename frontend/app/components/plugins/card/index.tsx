@@ -1,6 +1,6 @@
 'use client'
 import type { Plugin } from '../types'
-import { useTranslation } from '#i18n'
+import { useTranslation } from '@/i18n-config/lib.client'
 import { RiAlertFill } from '@remixicon/react'
 import * as React from 'react'
 import { useSelector } from '@/context/app-context'

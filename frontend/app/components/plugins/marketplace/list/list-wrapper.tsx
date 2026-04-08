@@ -1,5 +1,5 @@
 'use client'
-import { useTranslation } from '#i18n'
+import { useTranslation } from '@/i18n-config/lib.client'
 import Loading from '@/app/components/base/loading'
 import SortDropdown from '../sort-dropdown'
 import { useMarketplaceData } from '../state'

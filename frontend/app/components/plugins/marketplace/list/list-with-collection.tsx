@@ -2,7 +2,7 @@
 
 import type { MarketplaceCollection } from '../types'
 import type { Plugin } from '@/app/components/plugins/types'
-import { useLocale, useTranslation } from '#i18n'
+import { useLocale, useTranslation } from '@/i18n-config/lib.client'
 import { RiArrowRightSLine } from '@remixicon/react'
 import { getLanguage } from '@/i18n-config/language'
 import { cn } from '@/utils/classnames'

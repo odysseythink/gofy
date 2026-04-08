@@ -1,4 +1,4 @@
-import { useTranslation } from '#i18n'
+import { useTranslation } from '@/i18n-config/lib.client'
 import Form from '@/app/components/datasets/settings/form'
 
 const Settings = () => {

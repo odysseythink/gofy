@@ -1,5 +1,5 @@
 import type { Tag } from '../../../hooks'
-import { useTranslation } from '#i18n'
+import { useTranslation } from '@/i18n-config/lib.client'
 import { RiArrowDownSLine, RiCloseCircleFill, RiFilter3Line } from '@remixicon/react'
 import * as React from 'react'
 import { cn } from '@/utils/classnames'

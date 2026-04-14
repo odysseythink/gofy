@@ -4,7 +4,7 @@ import (
 	"strings"
 	"sync"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
 	providerentities "mlib.com/gofy/server/entities/provider"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
@@ -76,10 +76,10 @@ type HostingConfiguration struct {
 	moderationConfig *HostedModerationConfig
 }
 
-// func NewHostingConfiguration(difyConfig DifyConfig) *HostingConfiguration {
+// func NewHostingConfiguration(gofyConfig GofyConfig) *HostingConfiguration {
 // 	return &HostingConfiguration{
 // 		providerMap: make(map[string]*HostingProvider),
-// 		difyConfig:  difyConfig,
+// 		gofyConfig:  gofyConfig,
 // 	}
 // }
 

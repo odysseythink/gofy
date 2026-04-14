@@ -810,18 +810,18 @@ html[data-theme="dark"] {
 
   --color-saas-background: #0b0b0e;
   --color-saas-pricing-grid-bg: rgb(200 206 218 / 0.2);
-  --color-saas-dify-blue-static: #0033ff;
-  --color-saas-dify-blue-static-hover: #002cd6;
-  --color-saas-dify-blue-accessible: #0a68ff;
-  --color-saas-dify-blue-inverted: #ffffff;
-  --color-saas-dify-blue-inverted-dimmed: rgb(255 255 255 / 0.88);
+  --color-saas-gofy-blue-static: #0033ff;
+  --color-saas-gofy-blue-static-hover: #002cd6;
+  --color-saas-gofy-blue-accessible: #0a68ff;
+  --color-saas-gofy-blue-inverted: #ffffff;
+  --color-saas-gofy-blue-inverted-dimmed: rgb(255 255 255 / 0.88);
 
   --color-saas-background-inverted: rgb(255 255 255 / 0.9);
   --color-saas-background-inverted-hover: #ffffff;
 
-  --color-dify-logo-blue: #e8e8e8;
-  --color-dify-logo-black: #e8e8e8;
-  --color-dify-logo-outline-1: #ffffff;
-  --color-dify-logo-outline-2: #e8e8e8;
+  --color-gofy-logo-blue: #e8e8e8;
+  --color-gofy-logo-black: #e8e8e8;
+  --color-gofy-logo-outline-1: #ffffff;
+  --color-gofy-logo-outline-2: #e8e8e8;
 
 }

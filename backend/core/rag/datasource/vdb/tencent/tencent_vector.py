@@ -10,7 +10,7 @@ from tcvectordb.model import document, enum  # type: ignore
 from tcvectordb.model import index as vdb_index  # type: ignore
 from tcvectordb.model.document import AnnSearch, Filter, KeywordSearch, WeightedRerank  # type: ignore
 
-from configs import dify_config
+from configs import gofy_config
 from core.rag.datasource.vdb.vector_base import BaseVector
 from core.rag.datasource.vdb.vector_factory import AbstractVectorFactory
 from core.rag.datasource.vdb.vector_type import VectorType
@@ -138,7 +138,7 @@ class TencentVector(BaseVector):
                     collection_name=self._collection_name,
                     shard=self._client_config.shard,
                     replicas=self._client_config.replicas,
-                    description="Collection for Dify",
+                    description="Collection for Gofy",
                     indexes=indexes,
                 )
             except VectorDBException as e:
@@ -156,7 +156,7 @@ class TencentVector(BaseVector):
                     collection_name=self._collection_name,
                     shard=self._client_config.shard,
                     replicas=self._client_config.replicas,
-                    description="Collection for Dify",
+                    description="Collection for Gofy",
                     indexes=indexes,
                 )
             redis_client.set(collection_exist_cache_key, 1, ex=3600)
@@ -312,13 +312,13 @@ class TencentVectorFactory(AbstractVectorFactory):
         return TencentVector(
             collection_name=collection_name,
             config=TencentConfig(
-                url=dify_config.TENCENT_VECTOR_DB_URL or "",
-                api_key=dify_config.TENCENT_VECTOR_DB_API_KEY,
-                timeout=dify_config.TENCENT_VECTOR_DB_TIMEOUT,
-                username=dify_config.TENCENT_VECTOR_DB_USERNAME,
-                database=dify_config.TENCENT_VECTOR_DB_DATABASE,
-                shard=dify_config.TENCENT_VECTOR_DB_SHARD,
-                replicas=dify_config.TENCENT_VECTOR_DB_REPLICAS,
-                enable_hybrid_search=dify_config.TENCENT_VECTOR_DB_ENABLE_HYBRID_SEARCH or False,
+                url=gofy_config.TENCENT_VECTOR_DB_URL or "",
+                api_key=gofy_config.TENCENT_VECTOR_DB_API_KEY,
+                timeout=gofy_config.TENCENT_VECTOR_DB_TIMEOUT,
+                username=gofy_config.TENCENT_VECTOR_DB_USERNAME,
+                database=gofy_config.TENCENT_VECTOR_DB_DATABASE,
+                shard=gofy_config.TENCENT_VECTOR_DB_SHARD,
+                replicas=gofy_config.TENCENT_VECTOR_DB_REPLICAS,
+                enable_hybrid_search=gofy_config.TENCENT_VECTOR_DB_ENABLE_HYBRID_SEARCH or False,
             ),
         )

@@ -34,7 +34,7 @@ func (rl *RateLimiter) IsRateLimited(email string) bool {
 	cache.Instance().ZRemRangeByScore(key, "-inf", strconv.Itoa(int(window_start_time)))
 	attempts := cache.Instance().ZCard(key)
 
-	return attempts >= rl.max_attempts
+	return attempts >= int64(rl.max_attempts)
 }
 func (rl *RateLimiter) IncrementRateLimit(email string) {
 	key := rl.get_key(email)

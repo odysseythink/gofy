@@ -107,11 +107,11 @@ const Installed: FC<Props> = ({
   }
 
   const { langGeniusVersionInfo } = useAppContext()
-  const isDifyVersionCompatible = useMemo(() => {
+  const isGofyVersionCompatible = useMemo(() => {
     if (!langGeniusVersionInfo.current_version)
       return true
-    return isEqualOrLaterThanVersion(langGeniusVersionInfo.current_version, payload.meta.minimum_dify_version ?? '0.0.0')
-  }, [langGeniusVersionInfo.current_version, payload.meta.minimum_dify_version])
+    return isEqualOrLaterThanVersion(langGeniusVersionInfo.current_version, payload.meta.minimum_gofy_version ?? '0.0.0')
+  }, [langGeniusVersionInfo.current_version, payload.meta.minimum_gofy_version])
 
   return (
     <>
@@ -125,9 +125,9 @@ const Installed: FC<Props> = ({
               components={{ trustSource: <span className="system-md-semibold" /> }}
             />
           </p>
-          {!isDifyVersionCompatible && (
+          {!isGofyVersionCompatible && (
             <p className="flex items-center gap-1 text-text-warning system-md-regular">
-              {t('difyVersionNotCompatible', { ns: 'plugin', minimalDifyVersion: payload.meta.minimum_dify_version })}
+              {t('gofyVersionNotCompatible', { ns: 'plugin', minimalGofyVersion: payload.meta.minimum_gofy_version })}
             </p>
           )}
         </div>

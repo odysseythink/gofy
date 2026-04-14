@@ -1,4 +1,4 @@
-import DifyLogo from '@/app/components/base/logo/dify-logo'
+import GofyLogo from '@/app/components/base/logo/gofy-logo'
 
 type PoweredByBrandProps = {
   webappBrandRemoved?: boolean
@@ -23,7 +23,7 @@ const PoweredByBrand = ({
       <div className="text-text-tertiary system-2xs-medium-uppercase">POWERED BY</div>
       {previewLogo
         ? <img src={previewLogo} alt="logo" className="block h-5 w-auto" />
-        : <DifyLogo size="small" />}
+        : <GofyLogo size="small" />}
     </>
   )
 }

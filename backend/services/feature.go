@@ -1,7 +1,7 @@
 package services
 
 import (
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
 	servicesenumtypes "mlib.com/gofy/server/enum_types/services"
 	pbentities "mlib.com/gofy/server/proto/entities"
 )

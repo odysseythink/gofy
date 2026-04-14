@@ -38,7 +38,7 @@ const createMockDependencies = (): Dependency[] => [
   },
 ]
 
-const createMockFile = (name: string = 'test-plugin.difypkg'): File => {
+const createMockFile = (name: string = 'test-plugin.gofypkg'): File => {
   return new File(['test content'], name, { type: 'application/octet-stream' })
 }
 
@@ -102,11 +102,11 @@ describe('Uploading', () => {
     })
 
     it('should render card with file name', () => {
-      const file = createMockFile('my-plugin.difypkg')
+      const file = createMockFile('my-plugin.gofypkg')
       render(<Uploading {...defaultProps} file={file} />)
 
-      expect(screen.getByTestId('card-name')).toHaveTextContent('my-plugin.difypkg')
-      expect(screen.getByTestId('card-loading-filename')).toHaveTextContent('my-plugin.difypkg')
+      expect(screen.getByTestId('card-name')).toHaveTextContent('my-plugin.gofypkg')
+      expect(screen.getByTestId('card-loading-filename')).toHaveTextContent('my-plugin.gofypkg')
     })
 
     it('should render cancel button', () => {
@@ -234,25 +234,25 @@ describe('Uploading', () => {
   // ================================
   describe('File Name Display', () => {
     it('should display correct file name for package file', () => {
-      const file = createMockFile('custom-plugin.difypkg')
+      const file = createMockFile('custom-plugin.gofypkg')
       render(<Uploading {...defaultProps} file={file} />)
 
-      expect(screen.getByTestId('card-name')).toHaveTextContent('custom-plugin.difypkg')
+      expect(screen.getByTestId('card-name')).toHaveTextContent('custom-plugin.gofypkg')
     })
 
     it('should display correct file name for bundle file', () => {
-      const file = createMockFile('custom-bundle.difybndl')
+      const file = createMockFile('custom-bundle.gofybndl')
       render(<Uploading {...defaultProps} file={file} isBundle />)
 
-      expect(screen.getByTestId('card-name')).toHaveTextContent('custom-bundle.difybndl')
+      expect(screen.getByTestId('card-name')).toHaveTextContent('custom-bundle.gofybndl')
     })
 
     it('should display file name in uploading message', () => {
-      const file = createMockFile('special-plugin.difypkg')
+      const file = createMockFile('special-plugin.gofypkg')
       render(<Uploading {...defaultProps} file={file} />)
 
       // The message includes the file name as a parameter
-      expect(screen.getByText(/plugin\.installModal\.uploadingPackage/)).toHaveTextContent('special-plugin.difypkg')
+      expect(screen.getByText(/plugin\.installModal\.uploadingPackage/)).toHaveTextContent('special-plugin.gofypkg')
     })
   })
 
@@ -293,10 +293,10 @@ describe('Uploading', () => {
     })
 
     it('should handle file with special characters in name', () => {
-      const file = createMockFile('my plugin (v1.0).difypkg')
+      const file = createMockFile('my plugin (v1.0).gofypkg')
       render(<Uploading {...defaultProps} file={file} />)
 
-      expect(screen.getByTestId('card-name')).toHaveTextContent('my plugin (v1.0).difypkg')
+      expect(screen.getByTestId('card-name')).toHaveTextContent('my plugin (v1.0).gofypkg')
     })
   })
 
@@ -306,9 +306,9 @@ describe('Uploading', () => {
   describe('Props Variations', () => {
     it('should work with different file types', () => {
       const files = [
-        createMockFile('plugin-a.difypkg'),
+        createMockFile('plugin-a.gofypkg'),
         createMockFile('plugin-b.zip'),
-        createMockFile('bundle.difybndl'),
+        createMockFile('bundle.gofybndl'),
       ]
 
       files.forEach((file) => {

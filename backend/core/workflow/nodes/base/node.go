@@ -5,6 +5,7 @@ import (
 	"iter"
 	"slices"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/workflow/graph"
 	graphengineentities "mlib.com/gofy/server/entities/graph_engine"
@@ -36,7 +37,6 @@ import (
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/utils"
-	"mlib.com/mlog"
 )
 
 type BaseNode[T nodesentities.GenericNodeData] struct {

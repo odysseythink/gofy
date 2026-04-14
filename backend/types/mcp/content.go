@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 )
 
 type ContentType string

@@ -129,7 +129,7 @@ const PluginPage = ({
   }, [activeTab])
 
   const handleFileChange = (file: File | null) => {
-    if (!file || !file.name.endsWith('.difypkg')) {
+    if (!file || !file.name.endsWith('.gofypkg')) {
       setCurrentFile(null)
       return
     }
@@ -174,7 +174,7 @@ const PluginPage = ({
               isExploringMarketplace && (
                 <>
                   <Link
-                    to="https://github.com/langgenius/dify-plugins/issues/new?template=plugin_request.yaml"
+                    to="https://github.com/langgenius/gofy-plugins/issues/new?template=plugin_request.yaml"
                     target="_blank"
                   >
                     <Button
@@ -185,7 +185,7 @@ const PluginPage = ({
                     </Button>
                   </Link>
                   <Link
-                    to={docLink('/develop-plugin/publishing/marketplace-listing/release-to-dify-marketplace')}
+                    to={docLink('/develop-plugin/publishing/marketplace-listing/release-to-gofy-marketplace')}
                     target="_blank"
                   >
                     <Button

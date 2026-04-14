@@ -4,10 +4,10 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/cluster"
 	"mlib.com/gofy/server/models/response"
 	"mlib.com/gofy/server/proto/pbapi"
-	"mlib.com/mlog"
 )
 
 type FileApi struct {

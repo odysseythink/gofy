@@ -191,7 +191,7 @@ const AllStartBlocks = ({
                 {t('tabs.noPluginsFound', { ns: 'workflow' })}
               </div>
               <Link
-                to="https://github.com/langgenius/dify-plugins/issues/new?template=plugin_request.yaml"
+                to="https://github.com/langgenius/gofy-plugins/issues/new?template=plugin_request.yaml"
                 target="_blank"
               >
                 <Button

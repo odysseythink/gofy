@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"sync"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/tools/base"
 	builtintool "mlib.com/gofy/server/core/tools/builtin_tool"
@@ -15,7 +16,6 @@ import (
 	toolsenumtypes "mlib.com/gofy/server/enum_types/tools"
 	"mlib.com/gofy/server/models"
 	commontypes "mlib.com/gofy/server/types/common"
-	"mlib.com/mlog"
 )
 
 type ToolManager struct {

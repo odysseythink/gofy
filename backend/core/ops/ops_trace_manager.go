@@ -5,11 +5,11 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	dbengine "mlib.com/gofy/server/db_engine"
 	opsentities "mlib.com/gofy/server/entities/ops"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 var (
@@ -70,7 +70,7 @@ func (mgr *OpsTraceManager) InitTraceBackend(appID string) error {
 			Endpoint: endpoint,
 		})
 	default:
-		mlog.Warnf("ops: unsupported tracing provider %q, tracing disabled", provider)
+		mlog.Warningf("ops: unsupported tracing provider %q, tracing disabled", provider)
 		mgr.backend = nil
 	}
 	return nil

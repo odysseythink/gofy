@@ -13,7 +13,7 @@ import (
 	ragretrievalenumtypes "mlib.com/gofy/server/enum_types/rag/retrieval"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/utils/mapstruct"
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 )
 
 var (

@@ -6,6 +6,7 @@ import (
 	"slices"
 	"time"
 
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
 	"gopkg.in/yaml.v3"
 	"mlib.com/gofy/server/cache"
@@ -18,7 +19,6 @@ import (
 	pbentities "mlib.com/gofy/server/proto/entities"
 	"mlib.com/gofy/server/utils"
 	versionutils "mlib.com/gofy/server/utils/version"
-	"mlib.com/mlog"
 )
 
 const (

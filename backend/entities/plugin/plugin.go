@@ -7,12 +7,12 @@ import (
 	"strings"
 	"time"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	agententities "mlib.com/gofy/server/entities/agent"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	toolsentities "mlib.com/gofy/server/entities/tools"
 	commontypes "mlib.com/gofy/server/types/common"
-	"mlib.com/mlog"
 )
 
 type PluginInstallationSourceType string
@@ -147,7 +147,7 @@ type PluginDeclaration struct {
 	Category    PluginCategoryType         `json:"category"`
 	CreatedAt   time.Time                  `json:"created_at"`
 	Resource    PluginResourceRequirements `json:"resource"`
-	Plugins struct {
+	Plugins     struct {
 		Tools           []string `json:"tools"`
 		Models          []string `json:"models"`
 		Endpoints       []string `json:"endpoints"`
@@ -169,7 +169,7 @@ type PluginDeclaration struct {
 	Trigger    any `json:"trigger,omitempty"`
 
 	Meta struct {
-		MinimumDifyVersion string `json:"minimum_dify_version"` // pattern=r"^\d{1,4}(\.\d{1,4}){1,3}(-\w{1,16})?$")
+		MinimumGofyVersion string `json:"minimum_gofy_version"` // pattern=r"^\d{1,4}(\.\d{1,4}){1,3}(-\w{1,16})?$")
 		Version            string `json:"version"`
 	} `json:"meta"`
 }

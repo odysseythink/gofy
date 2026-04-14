@@ -15,7 +15,7 @@ import (
 	agententities "mlib.com/gofy/server/entities/agent"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 )
 
 type AgentChatAppRunner struct {

@@ -5,11 +5,11 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	basenodesentities "mlib.com/gofy/server/entities/nodes/base"
 	"mlib.com/gofy/server/entities/nodes/llm"
 	"mlib.com/gofy/server/entities/prompt"
-	"mlib.com/mlog"
 )
 
 type ParameterConfig struct {

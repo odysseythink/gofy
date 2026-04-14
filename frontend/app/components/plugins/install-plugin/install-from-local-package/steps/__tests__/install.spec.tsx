@@ -22,7 +22,7 @@ const createMockManifest = (overrides: Partial<PluginDeclaration> = {}): PluginD
   model: null,
   tags: [],
   agent_strategy: null,
-  meta: { version: '1.0.0', minimum_dify_version: '0.8.0' },
+  meta: { version: '1.0.0', minimum_gofy_version: '0.8.0' },
   trigger: {} as PluginDeclaration['trigger'],
   ...overrides,
 })
@@ -462,54 +462,54 @@ describe('Install', () => {
   })
 
   // ================================
-  // Dify Version Compatibility Tests
+  // Gofy Version Compatibility Tests
   // ================================
-  describe('Dify Version Compatibility', () => {
-    it('should not show warning when dify version is compatible', () => {
+  describe('Gofy Version Compatibility', () => {
+    it('should not show warning when gofy version is compatible', () => {
       mockLangGeniusVersionInfo.current_version = '1.0.0'
-      const payload = createMockManifest({ meta: { version: '1.0.0', minimum_dify_version: '0.8.0' } })
+      const payload = createMockManifest({ meta: { version: '1.0.0', minimum_gofy_version: '0.8.0' } })
 
       render(<Install {...defaultProps} payload={payload} />)
 
-      expect(screen.queryByText(/plugin.difyVersionNotCompatible/)).not.toBeInTheDocument()
+      expect(screen.queryByText(/plugin.gofyVersionNotCompatible/)).not.toBeInTheDocument()
     })
 
-    it('should show warning when dify version is incompatible', () => {
+    it('should show warning when gofy version is incompatible', () => {
       mockLangGeniusVersionInfo.current_version = '1.0.0'
-      const payload = createMockManifest({ meta: { version: '1.0.0', minimum_dify_version: '2.0.0' } })
+      const payload = createMockManifest({ meta: { version: '1.0.0', minimum_gofy_version: '2.0.0' } })
 
       render(<Install {...defaultProps} payload={payload} />)
 
-      expect(screen.getByText(/plugin.difyVersionNotCompatible/)).toBeInTheDocument()
+      expect(screen.getByText(/plugin.gofyVersionNotCompatible/)).toBeInTheDocument()
     })
 
-    it('should be compatible when minimum_dify_version is undefined', () => {
+    it('should be compatible when minimum_gofy_version is undefined', () => {
       mockLangGeniusVersionInfo.current_version = '1.0.0'
       const payload = createMockManifest({ meta: { version: '1.0.0' } })
 
       render(<Install {...defaultProps} payload={payload} />)
 
-      expect(screen.queryByText(/plugin.difyVersionNotCompatible/)).not.toBeInTheDocument()
+      expect(screen.queryByText(/plugin.gofyVersionNotCompatible/)).not.toBeInTheDocument()
     })
 
     it('should be compatible when current_version is empty', () => {
       mockLangGeniusVersionInfo.current_version = ''
-      const payload = createMockManifest({ meta: { version: '1.0.0', minimum_dify_version: '2.0.0' } })
+      const payload = createMockManifest({ meta: { version: '1.0.0', minimum_gofy_version: '2.0.0' } })
 
       render(<Install {...defaultProps} payload={payload} />)
 
       // When current_version is empty, should be compatible (no warning)
-      expect(screen.queryByText(/plugin.difyVersionNotCompatible/)).not.toBeInTheDocument()
+      expect(screen.queryByText(/plugin.gofyVersionNotCompatible/)).not.toBeInTheDocument()
     })
 
     it('should be compatible when current_version is undefined', () => {
       mockLangGeniusVersionInfo.current_version = undefined as unknown as string
-      const payload = createMockManifest({ meta: { version: '1.0.0', minimum_dify_version: '2.0.0' } })
+      const payload = createMockManifest({ meta: { version: '1.0.0', minimum_gofy_version: '2.0.0' } })
 
       render(<Install {...defaultProps} payload={payload} />)
 
       // When current_version is undefined, should be compatible (no warning)
-      expect(screen.queryByText(/plugin.difyVersionNotCompatible/)).not.toBeInTheDocument()
+      expect(screen.queryByText(/plugin.gofyVersionNotCompatible/)).not.toBeInTheDocument()
     })
   })
 

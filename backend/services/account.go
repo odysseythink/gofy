@@ -9,9 +9,10 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
-	"mlib.com/confy"
 	"mlib.com/gofy/server/cache"
 	"mlib.com/gofy/server/core/exceptions"
 	httpexceptions "mlib.com/gofy/server/core/exceptions/http"
@@ -24,7 +25,6 @@ import (
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/models/request"
 	jwtutils "mlib.com/gofy/server/utils/jwt"
-	"mlib.com/mlog"
 )
 
 const (
@@ -66,7 +66,11 @@ func (s *AccountService) CreateAccount(
 		timezone = "UTC"
 	}
 	account := &models.Account{
-		ID:                uuid.NewV4().String(),
+		Model: models.Model{
+			ID:        uuid.NewV4().String(),
+			CreatedAt: &now,
+			UpdatedAt: &now,
+		},
 		Name:              name,
 		Email:             email,
 		InterfaceLanguage: interface_language,
@@ -74,8 +78,6 @@ func (s *AccountService) CreateAccount(
 		Timezone:          timezone,
 		LastLoginAt:       &now,
 		InitializedAt:     &now,
-		CreatedAt:         &now,
-		UpdatedAt:         &now,
 		LastActiveAt:      &now,
 	}
 
@@ -344,7 +346,7 @@ func (s *AccountService) LoadUser(account_id string) (*models.Account, error) {
 		} else {
 			result.Tenant.CurrentRole = result.Role
 			account.SetCurrentTenant(&result.Tenant)
-			dbengine.Instance().DB.Updates(&models.TenantAccountJoin{ID: result.TaID, Current: true})
+			dbengine.Instance().DB.Updates(&models.TenantAccountJoin{Model: models.Model{ID: result.TaID}, Current: true})
 		}
 	} else {
 		result.Tenant.CurrentRole = result.Role
@@ -450,7 +452,11 @@ func (s *AccountService) CreateAccountWithEmail(email, name, pwd, language strin
 		timezone = "UTC"
 	}
 	account := &models.Account{
-		ID:                uuid.NewV4().String(),
+		Model: models.Model{
+			ID:        uuid.NewV4().String(),
+			CreatedAt: &now,
+			UpdatedAt: &now,
+		},
 		Email:             email,
 		Name:              name,
 		InterfaceLanguage: language,
@@ -458,8 +464,6 @@ func (s *AccountService) CreateAccountWithEmail(email, name, pwd, language strin
 		Timezone:          timezone,
 		LastLoginAt:       &now,
 		InitializedAt:     &now,
-		CreatedAt:         &now,
-		UpdatedAt:         &now,
 		LastActiveAt:      &now,
 	}
 	if pwd != "" {
@@ -880,10 +884,10 @@ func (s *AccountService) UseInvitationCode(code string, tenantID, accountID stri
 	}
 	now := time.Now()
 	return dbengine.Instance().DB.Model(invitation).Updates(map[string]interface{}{
-		"status":              "used",
-		"used_at":             &now,
-		"used_by_tenant_id":   tenantID,
-		"used_by_account_id":  accountID,
+		"status":             "used",
+		"used_at":            &now,
+		"used_by_tenant_id":  tenantID,
+		"used_by_account_id": accountID,
 	}).Error
 }
 

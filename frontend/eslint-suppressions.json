@@ -2431,7 +2431,7 @@
       "count": 1
     }
   },
-  "app/components/base/logo/dify-logo.tsx": {
+  "app/components/base/logo/gofy-logo.tsx": {
     "react-refresh/only-export-components": {
       "count": 2
     }

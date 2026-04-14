@@ -1,11 +1,11 @@
 package workflow
 
 import (
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/app/queue_manager/base"
 	"mlib.com/gofy/server/core/exceptions"
 	appqueueentities "mlib.com/gofy/server/entities/app/queue"
 	appenumtypes "mlib.com/gofy/server/enum_types/app"
-	"mlib.com/mlog"
 )
 
 type WorkflowAppQueueManager struct {

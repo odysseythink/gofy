@@ -1,6 +1,7 @@
 package nodes
 
 import (
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/entities/nodes/answer"
 	"mlib.com/gofy/server/entities/nodes/base"
 	"mlib.com/gofy/server/entities/nodes/code"
@@ -22,7 +23,6 @@ import (
 	variableaggregator "mlib.com/gofy/server/entities/nodes/variable_aggregator"
 	variableassigner "mlib.com/gofy/server/entities/nodes/variable_assigner"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
-	"mlib.com/mlog"
 )
 
 // GenericNodeData represents the generic node data type.

@@ -7,13 +7,13 @@ import (
 	"maps"
 	"slices"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	pluginparameter "mlib.com/gofy/server/entities/plugin/parameter"
 	providerentities "mlib.com/gofy/server/entities/provider"
 	ragentities "mlib.com/gofy/server/entities/rag"
 	toolsenumtypes "mlib.com/gofy/server/enum_types/tools"
 	commontypes "mlib.com/gofy/server/types/common"
-	"mlib.com/mlog"
 )
 
 type Messager interface {
@@ -580,7 +580,7 @@ type ToolSelector[T int | float64 | string] struct {
 	} `json:"tool_parameters"` //description="Parameters, type llm")
 }
 
-func (ts *ToolSelector[T]) DifyModelIdentity() string {
+func (ts *ToolSelector[T]) GofyModelIdentity() string {
 	return TOOL_SELECTOR_MODEL_IDENTITY
 }
 func (ts *ToolSelector[T]) ToPluginParameter() map[string]any {
@@ -591,7 +591,7 @@ func (ts *ToolSelector[T]) ToPluginParameter() map[string]any {
 		mlog.Error("unmarshal ToolSelector to map failed:", err)
 		return nil
 	}
-	res["dify_model_identity"] = ts.DifyModelIdentity()
+	res["gofy_model_identity"] = ts.GofyModelIdentity()
 	return res
 }
 

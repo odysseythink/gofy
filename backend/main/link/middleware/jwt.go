@@ -4,14 +4,14 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	httpexceptions "mlib.com/gofy/server/core/exceptions/http"
 	dbengine "mlib.com/gofy/server/db_engine"
 	enumtypes "mlib.com/gofy/server/enum_types"
 	"mlib.com/gofy/server/models"
 	jwtutils "mlib.com/gofy/server/utils/jwt"
-	"mlib.com/mlog"
 )
 
 func LoadUser(account_id string) (*models.Account, error) {
@@ -43,7 +43,7 @@ func LoadUser(account_id string) (*models.Account, error) {
 		} else {
 			result.Tenant.CurrentRole = result.Role
 			account.SetCurrentTenant(&result.Tenant)
-			dbengine.Instance().DB.Updates(&models.TenantAccountJoin{ID: result.TaID, Current: true})
+			dbengine.Instance().DB.Updates(&models.TenantAccountJoin{Model: models.Model{ID: result.TaID}, Current: true})
 		}
 	} else {
 		result.Tenant.CurrentRole = result.Role
@@ -54,7 +54,7 @@ func LoadUser(account_id string) (*models.Account, error) {
 
 	if now.Sub(*account.LastActiveAt) > 10*time.Minute {
 		account.LastActiveAt = &now
-		dbengine.Instance().DB.Updates(&models.Account{ID: account_id, LastActiveAt: &now})
+		dbengine.Instance().DB.Updates(&models.Account{Model: models.Model{ID: account_id}, LastActiveAt: &now})
 	}
 	return account, nil
 }

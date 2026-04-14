@@ -5,8 +5,8 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 
+	"github.com/odysseythink/mlog"
 	"golang.org/x/crypto/pbkdf2"
-	"mlib.com/mlog"
 )
 
 // // 定义密码规则的正则表达式

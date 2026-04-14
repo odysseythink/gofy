@@ -10,7 +10,7 @@ import psycopg2.extras  # type: ignore
 import psycopg2.pool  # type: ignore
 from pydantic import BaseModel, model_validator
 
-from configs import dify_config
+from configs import gofy_config
 from core.rag.datasource.vdb.vector_base import BaseVector
 from core.rag.datasource.vdb.vector_factory import AbstractVectorFactory
 from core.rag.datasource.vdb.vector_type import VectorType
@@ -277,13 +277,13 @@ class PGVectorFactory(AbstractVectorFactory):
         return PGVector(
             collection_name=collection_name,
             config=PGVectorConfig(
-                host=dify_config.PGVECTOR_HOST or "localhost",
-                port=dify_config.PGVECTOR_PORT,
-                user=dify_config.PGVECTOR_USER or "postgres",
-                password=dify_config.PGVECTOR_PASSWORD or "",
-                database=dify_config.PGVECTOR_DATABASE or "postgres",
-                min_connection=dify_config.PGVECTOR_MIN_CONNECTION,
-                max_connection=dify_config.PGVECTOR_MAX_CONNECTION,
-                pg_bigm=dify_config.PGVECTOR_PG_BIGM,
+                host=gofy_config.PGVECTOR_HOST or "localhost",
+                port=gofy_config.PGVECTOR_PORT,
+                user=gofy_config.PGVECTOR_USER or "postgres",
+                password=gofy_config.PGVECTOR_PASSWORD or "",
+                database=gofy_config.PGVECTOR_DATABASE or "postgres",
+                min_connection=gofy_config.PGVECTOR_MIN_CONNECTION,
+                max_connection=gofy_config.PGVECTOR_MAX_CONNECTION,
+                pg_bigm=gofy_config.PGVECTOR_PG_BIGM,
             ),
         )

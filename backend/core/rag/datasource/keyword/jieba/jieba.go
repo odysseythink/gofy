@@ -4,7 +4,7 @@
 
 // from pydantic import BaseModel
 
-// from configs import dify_config
+// from configs import gofy_config
 // from core.rag.datasource.keyword.jieba.jieba_keyword_table_handler import JiebaKeywordTableHandler
 // from core.rag.datasource.keyword.keyword_base import BaseKeyword
 // from core.rag.models.document import Document
@@ -23,16 +23,16 @@ import (
 	"sort"
 	"time"
 
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/datatypes"
-	"mlib.com/confy"
 	"mlib.com/gofy/server/core/rag/datasource/keywordor"
 	dbengine "mlib.com/gofy/server/db_engine"
 	ragentities "mlib.com/gofy/server/entities/rag"
 	"mlib.com/gofy/server/models"
 	distributelock "mlib.com/gofy/server/utils/distribute_lock"
 	"mlib.com/gofy/server/utils/mapstruct"
-	"mlib.com/mlog"
 )
 
 type KeywordTableConfig struct {

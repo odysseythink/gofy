@@ -3,6 +3,7 @@ package api
 import (
 	"fmt"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/extension"
 	"mlib.com/gofy/server/core/external_data_tool/base"
@@ -11,7 +12,6 @@ import (
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/utils"
 	"mlib.com/gofy/server/utils/mapstruct"
-	"mlib.com/mlog"
 )
 
 type ApiExternalDataTool struct {

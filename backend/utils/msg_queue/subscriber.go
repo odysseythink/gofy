@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
-	"mlib.com/mlog"
 
 	"github.com/redis/go-redis/v9"
 )

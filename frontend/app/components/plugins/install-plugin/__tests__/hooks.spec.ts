@@ -109,14 +109,14 @@ describe('install-plugin/hooks', () => {
       const pkg = await result.current.handleUpload(
         'https://github.com/owner/repo',
         'v1.0.0',
-        'plugin.difypkg',
+        'plugin.gofypkg',
         onSuccess,
       )
 
       expect(mockUploadGitHub).toHaveBeenCalledWith(
         'https://github.com/owner/repo',
         'v1.0.0',
-        'plugin.difypkg',
+        'plugin.gofypkg',
       )
       expect(onSuccess).toHaveBeenCalledWith({
         manifest: mockManifest,

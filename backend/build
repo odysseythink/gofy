@@ -11,13 +11,12 @@ cp -r dist/ ../backend/main/link/frontend/dist/
 cd ../backend
 
 echo "=== Building Go binaries ==="
-go build -o ../deploy/FrameWorkServer main/FrameWorkServer/main.go
-go build -buildmode=plugin -o ../deploy/link.so main/link/main.go main/link/frontend.go
-go build -buildmode=plugin -o ../deploy/admin.so main/admin/*.go
-go build -buildmode=plugin -o ../deploy/app.so main/app/*.go
-go build -buildmode=plugin -o ../deploy/tools.so main/tools/*.go
-go build -buildmode=plugin -o ../deploy/plugins.so main/plugins/*.go
-go build -buildmode=plugin -o ../deploy/sandbox.so main/sandbox/*.go
-go build -buildmode=plugin -o ../deploy/datasets.so main/datasets/*.go
+go build -o ../deploy/link main/link/main.go main/link/frontend.go
+go build -o ../deploy/admin main/admin/*.go
+go build -o ../deploy/app main/app/*.go
+go build -o ../deploy/tools main/tools/*.go
+go build -o ../deploy/plugins main/plugins/*.go
+go build -o ../deploy/sandbox main/sandbox/*.go
+go build -o ../deploy/datasets main/datasets/*.go
 
 echo "=== Build complete ==="

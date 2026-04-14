@@ -13,7 +13,7 @@ from volcengine.viking_db import (  # type: ignore
     VikingDBService,
 )
 
-from configs import dify_config
+from configs import gofy_config
 from core.rag.datasource.vdb.field import Field as vdb_Field
 from core.rag.datasource.vdb.vector_base import BaseVector
 from core.rag.datasource.vdb.vector_factory import AbstractVectorFactory
@@ -86,7 +86,7 @@ class VikingDBVector(BaseVector):
                 self._client.create_collection(
                     collection_name=self._collection_name,
                     fields=fields,
-                    description="Collection For Dify",
+                    description="Collection For Gofy",
                 )
 
             if not self._has_index():
@@ -101,7 +101,7 @@ class VikingDBVector(BaseVector):
                     index_name=self._index_name,
                     vector_index=vector_index,
                     partition_by=vdb_Field.GROUP_KEY.value,
-                    description="Index For Dify",
+                    description="Index For Gofy",
                 )
             redis_client.set(collection_exist_cache_key, 1, ex=3600)
 
@@ -219,26 +219,26 @@ class VikingDBVectorFactory(AbstractVectorFactory):
             collection_name = Dataset.gen_collection_name_by_id(dataset_id).lower()
             dataset.index_struct = json.dumps(self.gen_index_struct_dict(VectorType.VIKINGDB, collection_name))
 
-        if dify_config.VIKINGDB_ACCESS_KEY is None:
+        if gofy_config.VIKINGDB_ACCESS_KEY is None:
             raise ValueError("VIKINGDB_ACCESS_KEY should not be None")
-        if dify_config.VIKINGDB_SECRET_KEY is None:
+        if gofy_config.VIKINGDB_SECRET_KEY is None:
             raise ValueError("VIKINGDB_SECRET_KEY should not be None")
-        if dify_config.VIKINGDB_HOST is None:
+        if gofy_config.VIKINGDB_HOST is None:
             raise ValueError("VIKINGDB_HOST should not be None")
-        if dify_config.VIKINGDB_REGION is None:
+        if gofy_config.VIKINGDB_REGION is None:
             raise ValueError("VIKINGDB_REGION should not be None")
-        if dify_config.VIKINGDB_SCHEME is None:
+        if gofy_config.VIKINGDB_SCHEME is None:
             raise ValueError("VIKINGDB_SCHEME should not be None")
         return VikingDBVector(
             collection_name=collection_name,
             group_id=dataset.id,
             config=VikingDBConfig(
-                access_key=dify_config.VIKINGDB_ACCESS_KEY,
-                secret_key=dify_config.VIKINGDB_SECRET_KEY,
-                host=dify_config.VIKINGDB_HOST,
-                region=dify_config.VIKINGDB_REGION,
-                scheme=dify_config.VIKINGDB_SCHEME,
-                connection_timeout=dify_config.VIKINGDB_CONNECTION_TIMEOUT,
-                socket_timeout=dify_config.VIKINGDB_SOCKET_TIMEOUT,
+                access_key=gofy_config.VIKINGDB_ACCESS_KEY,
+                secret_key=gofy_config.VIKINGDB_SECRET_KEY,
+                host=gofy_config.VIKINGDB_HOST,
+                region=gofy_config.VIKINGDB_REGION,
+                scheme=gofy_config.VIKINGDB_SCHEME,
+                connection_timeout=gofy_config.VIKINGDB_CONNECTION_TIMEOUT,
+                socket_timeout=gofy_config.VIKINGDB_SOCKET_TIMEOUT,
             ),
         )

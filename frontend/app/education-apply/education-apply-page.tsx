@@ -19,7 +19,7 @@ import {
   useEducationAdd,
   useInvalidateEducationStatus,
 } from '@/service/use-education'
-import DifyLogo from '../components/base/logo/dify-logo'
+import GofyLogo from '../components/base/logo/gofy-logo'
 import RoleSelector from './role-selector'
 import SearchInput from './search-input'
 import UserInfo from './user-info'
@@ -85,7 +85,7 @@ const EducationApplyAge = () => {
         >
         </div>
         <div className="mt-[-349px] box-content flex h-7 items-center justify-between p-6">
-          <DifyLogo size="large" style="monochromeWhite" />
+          <GofyLogo size="large" style="monochromeWhite" />
         </div>
         <div className="mx-auto max-w-[720px] px-8 pb-[180px]">
           <div className="mb-2 flex h-[192px] flex-col justify-end pb-4 pt-3 text-text-primary-on-surface">
@@ -126,11 +126,11 @@ const EducationApplyAge = () => {
             <div className="mb-1 text-text-tertiary system-md-regular">
               {t('form.terms.desc.front', { ns: 'education' })}
 &nbsp;
-              <a href="https://dify.ai/terms" target="_blank" className="text-text-secondary hover:underline">{t('form.terms.desc.termsOfService', { ns: 'education' })}</a>
+              <a href="https://gofy.ai/terms" target="_blank" className="text-text-secondary hover:underline">{t('form.terms.desc.termsOfService', { ns: 'education' })}</a>
 &nbsp;
               {t('form.terms.desc.and', { ns: 'education' })}
 &nbsp;
-              <a href="https://dify.ai/privacy" target="_blank" className="text-text-secondary hover:underline">{t('form.terms.desc.privacyPolicy', { ns: 'education' })}</a>
+              <a href="https://gofy.ai/privacy" target="_blank" className="text-text-secondary hover:underline">{t('form.terms.desc.privacyPolicy', { ns: 'education' })}</a>
               {t('form.terms.desc.end', { ns: 'education' })}
             </div>
             <div className="py-2 text-text-primary system-md-regular">
@@ -162,7 +162,7 @@ const EducationApplyAge = () => {
           <div className="mb-4 mt-5 h-px bg-gradient-to-r from-[rgba(16,24,40,0.08)]"></div>
           <a
             className="flex items-center text-text-accent system-xs-regular"
-            href={docLink('/use-dify/workspace/subscription-management#dify-for-education')}
+            href={docLink('/use-gofy/workspace/subscription-management#gofy-for-education')}
             target="_blank"
           >
             {t('learn', { ns: 'education' })}

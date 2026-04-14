@@ -6,8 +6,8 @@ import (
 	"os/exec"
 	"strings"
 
+	"github.com/odysseythink/mlog"
 	ragentities "mlib.com/gofy/server/entities/rag"
-	"mlib.com/mlog"
 )
 
 type PdfExtractor struct {
@@ -43,7 +43,7 @@ func (extractor *PdfExtractor) Extract() []*ragentities.Document {
 				"source": extractor._file_path,
 				"type":   "pdf",
 			},
-			Provider: "dify",
+			Provider: "gofy",
 		},
 	}
 }

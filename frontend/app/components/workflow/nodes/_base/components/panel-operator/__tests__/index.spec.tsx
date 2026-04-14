@@ -106,7 +106,7 @@ describe('PanelOperator', () => {
       isSingleton: false,
       isUndeletable: false,
       description: 'Node description',
-      author: 'Dify',
+      author: 'Gofy',
       helpLinkUri: 'https://docs.example.com/node',
     } as ReturnType<typeof useNodeMetaData>)
     mockUseNodesInteractions.mockReturnValue({

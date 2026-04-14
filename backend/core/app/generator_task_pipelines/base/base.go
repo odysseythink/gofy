@@ -3,6 +3,7 @@ package base
 import (
 	"time"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	modelruntimeexceptions "mlib.com/gofy/server/core/exceptions/model_runtime"
 	dbengine "mlib.com/gofy/server/db_engine"
@@ -10,7 +11,6 @@ import (
 	appqueueentities "mlib.com/gofy/server/entities/app/queue"
 	appresponseentities "mlib.com/gofy/server/entities/app/response"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 // BaseGeneratorTaskPipeline 类的 Go 实现
@@ -76,7 +76,7 @@ func (p *BaseGeneratorTaskPipeline[T1, T2]) HandleError(event *appqueueentities.
 func (p *BaseGeneratorTaskPipeline[T1, T2]) ErrorToDesc(e error) string {
 	switch e := e.(type) {
 	case *exceptions.QuotaExceededError:
-		return "Your quota for Dify Hosted Model Provider has been exhausted. Please go to Settings -> Model Provider to complete your own provider credentials."
+		return "Your quota for Gofy Hosted Model Provider has been exhausted. Please go to Settings -> Model Provider to complete your own provider credentials."
 	default:
 		if e.Error() != "" {
 			return e.Error()

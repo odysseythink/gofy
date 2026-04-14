@@ -17,6 +17,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/odysseythink/mlog"
 	"github.com/pkoukk/tiktoken-go"
 	uuid "github.com/satori/go.uuid"
 	"mlib.com/gofy/server/core/exceptions"
@@ -27,7 +28,6 @@ import (
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	commontypes "mlib.com/gofy/server/types/common"
 	dashscopetypes "mlib.com/gofy/server/types/dashscope"
-	"mlib.com/mlog"
 )
 
 type Message struct {

@@ -3,6 +3,7 @@ package nodes
 import (
 	"fmt"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/workflow/graph"
 	"mlib.com/gofy/server/core/workflow/nodes/answer"
@@ -46,7 +47,6 @@ import (
 	variableaggregatornodesentities "mlib.com/gofy/server/entities/nodes/variable_aggregator"
 	variableassignernodesentities "mlib.com/gofy/server/entities/nodes/variable_assigner"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
-	"mlib.com/mlog"
 )
 
 const (

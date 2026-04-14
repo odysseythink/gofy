@@ -3,6 +3,7 @@ package indextool
 import (
 	"slices"
 
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
 	dbengine "mlib.com/gofy/server/db_engine"
 	appqueueentities "mlib.com/gofy/server/entities/app/queue"
@@ -11,7 +12,6 @@ import (
 	indexprocessorenumtypes "mlib.com/gofy/server/enum_types/rag/index_processor"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/utils/mapstruct"
-	"mlib.com/mlog"
 )
 
 type DatasetIndexToolCallbackHandler struct {

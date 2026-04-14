@@ -48,7 +48,7 @@ func (extractor *JinaReaderWebExtractor) Extract() []*ragentities.Document {
 				"description": crawl_data["description"],
 				"title":       crawl_data["title"],
 			},
-			Provider: "dify",
+			Provider: "gofy",
 		}
 		documents = append(documents, document)
 	}

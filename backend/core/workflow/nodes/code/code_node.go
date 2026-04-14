@@ -6,7 +6,8 @@ import (
 	"slices"
 	"strings"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	codenodesexceptions "mlib.com/gofy/server/core/exceptions/nodes/code"
 	codeexecutor "mlib.com/gofy/server/core/helper/code_executor"
 	python3codeexecutor "mlib.com/gofy/server/core/helper/code_executor/template_transformer/python3"
@@ -16,7 +17,6 @@ import (
 	codeexecutorenumtypes "mlib.com/gofy/server/enum_types/code_executor"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 type CodeNode struct {

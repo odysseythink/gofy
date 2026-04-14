@@ -2,7 +2,7 @@ import { RiArrowRightUpLine, RiRobot2Line } from '@remixicon/react'
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import Button from '@/app/components/base/button'
-import DifyLogo from '@/app/components/base/logo/dify-logo'
+import GofyLogo from '@/app/components/base/logo/gofy-logo'
 import { useGlobalPublicStore } from '@/context/global-public-context'
 import { useRouter } from '@/next/navigation'
 import Avatar from './avatar'
@@ -25,10 +25,10 @@ const Header = () => {
                 <img
                   src={systemFeatures.branding.login_page_logo}
                   className="block h-[22px] w-auto object-contain"
-                  alt="Dify logo"
+                  alt="Gofy logo"
                 />
               )
-            : <DifyLogo />}
+            : <GofyLogo />}
         </div>
         <div className="h-4 w-[1px] origin-center rotate-[11.31deg] bg-divider-regular" />
         <p className="title-3xl-semi-bold relative mt-[-2px] text-text-primary">{t('account.account', { ns: 'common' })}</p>

@@ -157,7 +157,7 @@ const WebsiteCrawl = ({
     <div className="flex flex-col">
       <Header
         docTitle="Docs"
-        docLink={docLink('/use-dify/knowledge/knowledge-pipeline/authorize-data-source')}
+        docLink={docLink('/use-gofy/knowledge/knowledge-pipeline/authorize-data-source')}
         onClickConfiguration={handleSetting}
         pluginName={nodeData.datasource_label}
         currentCredentialId={currentCredentialId}

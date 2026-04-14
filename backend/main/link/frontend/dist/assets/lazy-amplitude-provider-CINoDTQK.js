@@ -1,0 +1,2 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/AmplitudeProvider-DrXQ5tpn.js","assets/index-DJkZHX5U.js","assets/tslib.es6-CyuPUxRh.js","assets/index-m2eZn9zC.js","assets/index-CznawBgV.css"])))=>i.map(i=>d[i]);
+import{j as o,_ as t}from"./index-m2eZn9zC.js";import{d as s}from"./dynamic-DArJtiDs.js";const e=s(()=>t(()=>import("./AmplitudeProvider-DrXQ5tpn.js").then(r=>r.A),__vite__mapDeps([0,1,2,3,4])),{ssr:!1}),a=r=>o.jsx(e,{...r});export{a as L};

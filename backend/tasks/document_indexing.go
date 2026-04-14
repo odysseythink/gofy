@@ -9,9 +9,9 @@ import (
 
 	uuid "github.com/satori/go.uuid"
 
+	"github.com/odysseythink/mlog"
 	dbengine "mlib.com/gofy/server/db_engine"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 // DocumentIndexingPayload is the payload for document indexing tasks.
@@ -103,8 +103,8 @@ func HandleDocumentIndexing(ctx context.Context, task *Task) error {
 	completedAt := time.Now()
 	err = dbengine.Instance().DB.Model(&models.Document{}).Where("id = ?", payload.DocumentID).Updates(map[string]any{
 		"indexing_status": "completed",
-		"completed_at":   &completedAt,
-		"word_count":     len([]rune(content)),
+		"completed_at":    &completedAt,
+		"word_count":      len([]rune(content)),
 	}).Error
 	if err != nil {
 		return fmt.Errorf("failed to update completion status: %w", err)
@@ -138,7 +138,7 @@ func HandleDocumentIndexingUpdate(ctx context.Context, task *Task) error {
 		Where("id = ?", payload.DocumentID).
 		Updates(map[string]any{
 			"indexing_status": "completed",
-			"completed_at":   &now,
+			"completed_at":    &now,
 		})
 
 	return nil

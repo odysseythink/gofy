@@ -2,7 +2,7 @@
 /**
  * @deprecated Use `@/app/components/base/ui/toast` instead.
  * This module will be removed after migration is complete.
- * See: https://github.com/langgenius/dify/issues/32811
+ * See: https://github.com/langgenius/gofy/issues/32811
  */
 
 import type { ReactNode } from 'react'

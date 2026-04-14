@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"slices"
 
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
 	dbengine "mlib.com/gofy/server/db_engine"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 type PluginAutoUpgradeService struct {
@@ -40,7 +40,7 @@ func (s *PluginAutoUpgradeService) ChangeStrategy(
 
 	if exist_strategy == nil {
 		strategy := &models.TenantPluginAutoUpgradeStrategy{
-			ID:               uuid.NewV4().String(),
+			Model:            models.Model{ID: uuid.NewV4().String()},
 			TenantID:         tenant_id,
 			StrategySetting:  strategy_setting,
 			UpgradeTimeOfDay: upgrade_time_of_day,
@@ -59,7 +59,7 @@ func (s *PluginAutoUpgradeService) ChangeStrategy(
 		dbengine.Instance().DB.Create(strategy)
 	} else {
 		update_strategy := &models.TenantPluginAutoUpgradeStrategy{
-			ID:               exist_strategy.ID,
+			Model:            models.Model{ID: exist_strategy.ID},
 			StrategySetting:  strategy_setting,
 			UpgradeTimeOfDay: upgrade_time_of_day,
 		}
@@ -99,10 +99,10 @@ func (s *PluginAutoUpgradeService) ExcludePlugin(tenant_id string, plugin_id str
 		)
 		return true
 	} else {
-		if err := exist_strategy.ExcludePlugins.Bind(&exist_strategy.ExcludePluginList); err != nil {
+		if err := json.Unmarshal(exist_strategy.ExcludePlugins, &exist_strategy.ExcludePluginList); err != nil {
 			mlog.Warningf("bind ExcludePlugins to list failed:%v", err)
 		}
-		if err := exist_strategy.IncludePlugins.Bind(&exist_strategy.IncludePluginList); err != nil {
+		if err := json.Unmarshal(exist_strategy.IncludePlugins, &exist_strategy.IncludePluginList); err != nil {
 			mlog.Warningf("bind IncludePlugins to list failed:%v", err)
 		}
 		switch exist_strategy.UpgradeMode {
@@ -113,7 +113,7 @@ func (s *PluginAutoUpgradeService) ExcludePlugin(tenant_id string, plugin_id str
 				}
 				exist_strategy.ExcludePluginList = append(exist_strategy.ExcludePluginList, plugin_id)
 				update_strategy := &models.TenantPluginAutoUpgradeStrategy{
-					ID: exist_strategy.ID,
+					Model: models.Model{ID: exist_strategy.ID},
 				}
 				bindata, _ := json.Marshal(exist_strategy.ExcludePluginList)
 				update_strategy.ExcludePlugins.Scan(bindata)
@@ -122,7 +122,7 @@ func (s *PluginAutoUpgradeService) ExcludePlugin(tenant_id string, plugin_id str
 		case models.TenantPluginAutoUpgradeStrategyUpgradeMode_PARTIAL:
 			if slices.Contains(exist_strategy.IncludePluginList, plugin_id) {
 				update_strategy := &models.TenantPluginAutoUpgradeStrategy{
-					ID: exist_strategy.ID,
+					Model: models.Model{ID: exist_strategy.ID},
 				}
 				exist_strategy.IncludePluginList = slices.DeleteFunc(exist_strategy.IncludePluginList, func(val string) bool { return val == plugin_id })
 				bindata, _ := json.Marshal(exist_strategy.IncludePluginList)
@@ -131,7 +131,7 @@ func (s *PluginAutoUpgradeService) ExcludePlugin(tenant_id string, plugin_id str
 			}
 		case models.TenantPluginAutoUpgradeStrategyUpgradeMode_ALL:
 			update_strategy := &models.TenantPluginAutoUpgradeStrategy{
-				ID:          exist_strategy.ID,
+				Model:       models.Model{ID: exist_strategy.ID},
 				UpgradeMode: models.TenantPluginAutoUpgradeStrategyUpgradeMode_EXCLUDE,
 			}
 			bindata, _ := json.Marshal([]string{plugin_id})

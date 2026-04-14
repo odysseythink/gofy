@@ -74,7 +74,7 @@ typedef struct { void *data; GoInt len; GoInt cap; } GoSlice;
 extern "C" {
 #endif
 
-extern void DifySeccomp(GoInt uid, GoInt gid, GoUint8 enable_network);
+extern void GofySeccomp(GoInt uid, GoInt gid, GoUint8 enable_network);
 
 #ifdef __cplusplus
 }

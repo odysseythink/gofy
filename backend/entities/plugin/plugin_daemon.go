@@ -49,7 +49,7 @@ type PluginAgentProviderEntity[T1 float64 | int | string, T2 float64 | int] stru
 	PluginID               string                                              `json:"plugin_id"`
 	Declaration            agententities.AgentProviderEntityWithPlugin[T1, T2] `json:"declaration"`
 	Meta                   struct {
-		MinimumDifyVersion string `json:"minimum_dify_version"` // pattern=r"^\d{1,4}(\.\d{1,4}){1,3}(-\w{1,16})?$")
+		MinimumGofyVersion string `json:"minimum_gofy_version"` // pattern=r"^\d{1,4}(\.\d{1,4}){1,3}(-\w{1,16})?$")
 		Version            string `json:"version"`
 	} `json:"meta"`
 }

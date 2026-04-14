@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 )
 
 type WebsiteCrawlProvider struct {

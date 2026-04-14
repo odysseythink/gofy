@@ -4,12 +4,12 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"google.golang.org/grpc/peer"
-	"mlib.com/confy"
-	enumtypes "mlib.com/gofy/server/enum_types"
+	enumtypes "mlib.com/gofy/server/enum_types/rag/vector"
 	pbexceptions "mlib.com/gofy/server/proto/exceptions"
 	"mlib.com/gofy/server/proto/pbapi"
-	"mlib.com/mlog"
 )
 
 var (

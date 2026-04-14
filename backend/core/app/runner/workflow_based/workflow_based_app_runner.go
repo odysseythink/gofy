@@ -1,8 +1,10 @@
 package workflowbased
 
 import (
+	"encoding/json"
 	"slices"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/app/runner/base"
 	"mlib.com/gofy/server/core/exceptions"
 	coreworkflow "mlib.com/gofy/server/core/workflow"
@@ -12,12 +14,12 @@ import (
 	appqueueentities "mlib.com/gofy/server/entities/app/queue"
 	graphengineentities "mlib.com/gofy/server/entities/graph_engine"
 	nodesentities "mlib.com/gofy/server/entities/nodes"
+	ragentities "mlib.com/gofy/server/entities/rag"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
 	appenumtypes "mlib.com/gofy/server/enum_types/app"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 	workflowenumtypes "mlib.com/gofy/server/enum_types/workflow"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 type WorkflowBasedAppRunner[T interface {
@@ -465,7 +467,11 @@ func (r *WorkflowBasedAppRunner[T]) HandleEvent(workflow_entry *coreworkflow.Wor
 		if data == nil {
 			return
 		}
-		r.PublishEvent(&appqueueentities.QueueRetrieverResourcesEvent{RetrieverResources: data.RetrieverResources, InIterationID: data.InIterationID})
+		var rsrc []*ragentities.RetrievalSourceMetadata
+		if b, err := json.Marshal(data.RetrieverResources); err == nil {
+			_ = json.Unmarshal(b, &rsrc)
+		}
+		r.PublishEvent(&appqueueentities.QueueRetrieverResourcesEvent{RetrieverResources: rsrc, InIterationID: data.InIterationID})
 	case *graphengineentities.ParallelBranchRunStartedEvent:
 		if data == nil {
 			return

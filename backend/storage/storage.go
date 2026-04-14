@@ -3,8 +3,8 @@ package storage
 import (
 	"io"
 
-	"mlib.com/confy"
-	"mlib.com/mlog"
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 )
 
 // StorageProvider defines the interface for all storage backends.

@@ -62,7 +62,7 @@ export type EndpointListItem = {
 
 export type PluginDeclarationMeta = {
   version: string
-  minimum_dify_version?: string
+  minimum_gofy_version?: string
 }
 
 // Plugin manifest
@@ -606,7 +606,7 @@ export type StrategyDeclaration = {
 }
 
 export type PluginMeta = {
-  version: string // the version of dify sdk
+  version: string // the version of gofy sdk
 }
 
 export type StrategyPluginDetail = {

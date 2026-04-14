@@ -5,11 +5,11 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/odysseythink/mlog"
 	dbengine "mlib.com/gofy/server/db_engine"
 	enumtypes "mlib.com/gofy/server/enum_types"
 	"mlib.com/gofy/server/models"
 	jwtutils "mlib.com/gofy/server/utils/jwt"
-	"mlib.com/mlog"
 )
 
 func AppAuth() gin.HandlerFunc {

@@ -7,6 +7,7 @@ import (
 	humaninputnodesentities "mlib.com/gofy/server/entities/nodes/human_input"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
+	workflowenumtypes "mlib.com/gofy/server/enum_types/workflow"
 	"mlib.com/gofy/server/models"
 )
 
@@ -34,8 +35,8 @@ func (n *HumanInputNode) Run() (run_result *workflowentities.NodeRunResult, run_
 	run_result = &workflowentities.NodeRunResult{
 		Status:  models.WorkflowNodeExecutionStatus_SUCCEEDED,
 		Outputs: outputs,
-		Metadata: map[string]any{
-			"requires_pause": true,
+		Metadata: map[workflowenumtypes.NodeRunMetadataKey]any{
+			workflowenumtypes.NodeRunMetadataKey("requires_pause"): true,
 		},
 	}
 

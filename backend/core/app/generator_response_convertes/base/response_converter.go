@@ -6,10 +6,10 @@ import (
 	"reflect"
 	"slices"
 
+	"github.com/odysseythink/mlog"
 	appgeneratorentities "mlib.com/gofy/server/entities/app/generator"
 	appresponseentities "mlib.com/gofy/server/entities/app/response"
 	appenumtypes "mlib.com/gofy/server/enum_types/app"
-	"mlib.com/mlog"
 )
 
 type BaseAppGeneratorResponseConvert[T1 interface {
@@ -162,7 +162,7 @@ func (c *BaseAppGeneratorResponseConvert[T1, T2]) ErrorToStreamResponse(e error)
 		"ProviderTokenNotInitError": {"code": "provider_not_initialize", "status": 400},
 		"QuotaExceededError": {
 			"code":    "provider_quota_exceeded",
-			"message": "Your quota for Dify Hosted Model Provider has been exhausted. Please go to Settings -> Model Provider to complete your own provider credentials.",
+			"message": "Your quota for Gofy Hosted Model Provider has been exhausted. Please go to Settings -> Model Provider to complete your own provider credentials.",
 			"status":  400,
 		},
 		"ModelCurrentlyNotSupportError": {"code": "model_currently_not_support", "status": 400},

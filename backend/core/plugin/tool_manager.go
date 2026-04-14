@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 )
 
 // PluginToolManager manages tool-type plugins.

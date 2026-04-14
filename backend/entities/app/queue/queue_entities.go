@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/file"
@@ -17,7 +18,6 @@ import (
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 	workflowenumtypes "mlib.com/gofy/server/enum_types/workflow"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 type AppQueueEventer interface {

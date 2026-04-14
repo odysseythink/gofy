@@ -4,13 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/constants"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/file"
 	"mlib.com/gofy/server/core/variables"
 	variableenumtypes "mlib.com/gofy/server/enum_types/variable"
-	"mlib.com/mlog"
 )
 
 type InvalidSelectorError struct {

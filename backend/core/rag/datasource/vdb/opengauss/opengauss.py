@@ -7,7 +7,7 @@ import psycopg2.extras  # type: ignore
 import psycopg2.pool  # type: ignore
 from pydantic import BaseModel, model_validator
 
-from configs import dify_config
+from configs import gofy_config
 from core.rag.datasource.vdb.vector_base import BaseVector
 from core.rag.datasource.vdb.vector_factory import AbstractVectorFactory
 from core.rag.datasource.vdb.vector_type import VectorType
@@ -252,13 +252,13 @@ class OpenGaussFactory(AbstractVectorFactory):
         return OpenGauss(
             collection_name=collection_name,
             config=OpenGaussConfig(
-                host=dify_config.OPENGAUSS_HOST or "localhost",
-                port=dify_config.OPENGAUSS_PORT,
-                user=dify_config.OPENGAUSS_USER or "postgres",
-                password=dify_config.OPENGAUSS_PASSWORD or "",
-                database=dify_config.OPENGAUSS_DATABASE or "dify",
-                min_connection=dify_config.OPENGAUSS_MIN_CONNECTION,
-                max_connection=dify_config.OPENGAUSS_MAX_CONNECTION,
-                enable_pq=dify_config.OPENGAUSS_ENABLE_PQ or False,
+                host=gofy_config.OPENGAUSS_HOST or "localhost",
+                port=gofy_config.OPENGAUSS_PORT,
+                user=gofy_config.OPENGAUSS_USER or "postgres",
+                password=gofy_config.OPENGAUSS_PASSWORD or "",
+                database=gofy_config.OPENGAUSS_DATABASE or "gofy",
+                min_connection=gofy_config.OPENGAUSS_MIN_CONNECTION,
+                max_connection=gofy_config.OPENGAUSS_MAX_CONNECTION,
+                enable_pq=gofy_config.OPENGAUSS_ENABLE_PQ or False,
             ),
         )

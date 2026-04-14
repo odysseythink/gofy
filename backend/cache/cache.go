@@ -6,10 +6,10 @@ import (
 	"strings"
 	"sync"
 
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 
+	"github.com/odysseythink/confy"
 	"github.com/redis/go-redis/v9"
-	"mlib.com/confy"
 )
 
 type Cache struct {

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 	"mlib.com/gofy/server/core/exceptions"
@@ -11,7 +12,6 @@ import (
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/models/request"
 	"mlib.com/gofy/server/proto/pbapi"
-	"mlib.com/mlog"
 )
 
 type TagService struct {

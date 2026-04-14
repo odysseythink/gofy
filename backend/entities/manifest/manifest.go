@@ -1,8 +1,8 @@
 package manifest
 
-type DifyManifestType string
+type GofyManifestType string
 
 const (
-	PluginType DifyManifestType = "plugin"
-	BundleType DifyManifestType = "bundle"
+	PluginType GofyManifestType = "plugin"
+	BundleType GofyManifestType = "bundle"
 )

@@ -76,7 +76,7 @@ vi.mock('@/context/provider-context', () => ({
 const mockNotify = vi.fn()
 
 vi.mock('@/hooks/use-api-access-url', () => ({
-  useDatasetApiAccessUrl: () => 'https://api.dify.ai/v1/datasets/test-dataset-id',
+  useDatasetApiAccessUrl: () => 'https://api.gofy.ai/v1/datasets/test-dataset-id',
 }))
 
 vi.mock('@/hooks/use-format-time-from-now', () => ({
@@ -751,7 +751,7 @@ describe('publisher', () => {
         renderWithQueryClient(<Popup />)
 
         const apiLink = screen.getByRole('link')
-        expect(apiLink).toHaveAttribute('href', 'https://api.dify.ai/v1/datasets/test-dataset-id')
+        expect(apiLink).toHaveAttribute('href', 'https://api.gofy.ai/v1/datasets/test-dataset-id')
         expect(apiLink).toHaveAttribute('target', '_blank')
       })
     })

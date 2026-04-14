@@ -7,10 +7,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
-	"mlib.com/confy"
-	"mlib.com/mlog"
 )
 
 type GormLogger struct {

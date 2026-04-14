@@ -3,9 +3,9 @@ package workflowvariables
 import (
 	"encoding/json"
 
+	"github.com/odysseythink/mlog"
 	appconfigentities "mlib.com/gofy/server/entities/app/config"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 type WorkflowVariablesConfigManager struct{}

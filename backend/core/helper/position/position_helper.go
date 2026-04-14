@@ -7,9 +7,9 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"gopkg.in/yaml.v3"
-	"mlib.com/confy"
-	"mlib.com/mlog"
 )
 
 func GetPositionMap(folder_path string, file_name string /* = "_position.yaml"*/) map[string]int {

@@ -6,12 +6,12 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
 	"mlib.com/gofy/server/cluster"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/models/response"
 	"mlib.com/gofy/server/proto/pbapi"
-	"mlib.com/mlog"
 )
 
 type MessageApi struct {

@@ -7,7 +7,7 @@ import requireNsOption from './rules/require-ns-option.js'
 /** @type {import('eslint').ESLint.Plugin} */
 const plugin = {
   meta: {
-    name: 'dify-i18n',
+    name: 'gofy-i18n',
     version: '1.0.0',
   },
   rules: {

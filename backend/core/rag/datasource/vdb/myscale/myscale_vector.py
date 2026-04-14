@@ -7,7 +7,7 @@ from typing import Any
 from clickhouse_connect import get_client
 from pydantic import BaseModel
 
-from configs import dify_config
+from configs import gofy_config
 from core.rag.datasource.vdb.vector_base import BaseVector
 from core.rag.datasource.vdb.vector_factory import AbstractVectorFactory
 from core.rag.datasource.vdb.vector_type import VectorType
@@ -171,11 +171,11 @@ class MyScaleVectorFactory(AbstractVectorFactory):
         return MyScaleVector(
             collection_name=collection_name,
             config=MyScaleConfig(
-                host=dify_config.MYSCALE_HOST,
-                port=dify_config.MYSCALE_PORT,
-                user=dify_config.MYSCALE_USER,
-                password=dify_config.MYSCALE_PASSWORD,
-                database=dify_config.MYSCALE_DATABASE,
-                fts_params=dify_config.MYSCALE_FTS_PARAMS,
+                host=gofy_config.MYSCALE_HOST,
+                port=gofy_config.MYSCALE_PORT,
+                user=gofy_config.MYSCALE_USER,
+                password=gofy_config.MYSCALE_PASSWORD,
+                database=gofy_config.MYSCALE_DATABASE,
+                fts_params=gofy_config.MYSCALE_FTS_PARAMS,
             ),
         )

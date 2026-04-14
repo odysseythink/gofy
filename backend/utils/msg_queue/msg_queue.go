@@ -9,9 +9,9 @@ import (
 	"math/rand"
 	"sync"
 
+	"github.com/odysseythink/mlog"
+	"github.com/odysseythink/mrun"
 	uuid "github.com/satori/go.uuid"
-	"mlib.com/mlog"
-	"mlib.com/mrun"
 )
 
 type MsgQueue struct {

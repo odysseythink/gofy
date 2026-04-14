@@ -15,7 +15,7 @@ import Button from '@/app/components/base/button'
 import List from '@/app/components/base/chat/chat-with-history/sidebar/list'
 import RenameModal from '@/app/components/base/chat/chat-with-history/sidebar/rename-modal'
 import Confirm from '@/app/components/base/confirm'
-import DifyLogo from '@/app/components/base/logo/dify-logo'
+import GofyLogo from '@/app/components/base/logo/gofy-logo'
 import MenuDropdown from '@/app/components/share/text-generation/menu-dropdown'
 import { useGlobalPublicStore } from '@/context/global-public-context'
 import { cn } from '@/utils/classnames'
@@ -162,7 +162,7 @@ const Sidebar = ({ isPanel, panelVisible }: Props) => {
                   ? <img src={systemFeatures.branding.workspace_logo} alt="logo" className="block h-5 w-auto" />
                   : appData?.custom_config?.replace_webapp_logo
                     ? <img src={`${appData?.custom_config?.replace_webapp_logo}`} alt="logo" className="block h-5 w-auto" />
-                    : <DifyLogo size="small" />
+                    : <GofyLogo size="small" />
               }
             </div>
           )}

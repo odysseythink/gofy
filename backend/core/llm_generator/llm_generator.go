@@ -6,13 +6,13 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/odysseythink/mlog"
 	modelruntimeexceptions "mlib.com/gofy/server/core/exceptions/model_runtime"
 	"mlib.com/gofy/server/core/manageres"
 	modelmanager "mlib.com/gofy/server/core/manageres/model_manager"
 	promptutils "mlib.com/gofy/server/core/prompt/utils"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
-	"mlib.com/mlog"
 )
 
 type LLMGenerator struct{}

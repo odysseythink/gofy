@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	dbengine "mlib.com/gofy/server/db_engine"
 	toolsentities "mlib.com/gofy/server/entities/tools"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 type ToolsService struct {

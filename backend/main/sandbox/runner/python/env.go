@@ -6,10 +6,10 @@ import (
 	"os/exec"
 	"path"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/main/sandbox/global"
 	"mlib.com/gofy/server/main/sandbox/runner"
-	"mlib.com/mlog"
 )
 
 //go:embed env.sh

@@ -1,0 +1,1 @@
+var r=function(n){return typeof n=="function"},t=function(n){return typeof n=="string"},e=function(n){return typeof n=="number"},i=function(n){return typeof n>"u"};export{r as a,i as b,t as c,e as i};

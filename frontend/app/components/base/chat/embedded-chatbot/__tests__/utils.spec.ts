@@ -2,9 +2,9 @@
  * Tests for embedded-chatbot utility functions.
  */
 
-import { isDify } from '../utils'
+import { isGofy } from '../utils'
 
-describe('isDify', () => {
+describe('isGofy', () => {
   const originalReferrer = document.referrer
 
   afterEach(() => {
@@ -14,31 +14,31 @@ describe('isDify', () => {
     })
   })
 
-  it('should return true when referrer includes dify.ai', () => {
+  it('should return true when referrer includes gofy.ai', () => {
     Object.defineProperty(document, 'referrer', {
-      value: 'https://dify.ai/something',
+      value: 'https://gofy.ai/something',
       writable: true,
     })
 
-    expect(isDify()).toBe(true)
+    expect(isGofy()).toBe(true)
   })
 
-  it('should return true when referrer includes www.dify.ai', () => {
+  it('should return true when referrer includes www.gofy.ai', () => {
     Object.defineProperty(document, 'referrer', {
-      value: 'https://www.dify.ai/app/xyz',
+      value: 'https://www.gofy.ai/app/xyz',
       writable: true,
     })
 
-    expect(isDify()).toBe(true)
+    expect(isGofy()).toBe(true)
   })
 
-  it('should return false when referrer does not include dify.ai', () => {
+  it('should return false when referrer does not include gofy.ai', () => {
     Object.defineProperty(document, 'referrer', {
       value: 'https://example.com',
       writable: true,
     })
 
-    expect(isDify()).toBe(false)
+    expect(isGofy()).toBe(false)
   })
 
   it('should return false when referrer is empty', () => {
@@ -47,116 +47,116 @@ describe('isDify', () => {
       writable: true,
     })
 
-    expect(isDify()).toBe(false)
+    expect(isGofy()).toBe(false)
   })
 
-  it('should return false when referrer does not contain dify.ai domain', () => {
+  it('should return false when referrer does not contain gofy.ai domain', () => {
     Object.defineProperty(document, 'referrer', {
-      value: 'https://example-dify.com',
+      value: 'https://example-gofy.com',
       writable: true,
     })
 
-    expect(isDify()).toBe(false)
+    expect(isGofy()).toBe(false)
   })
 
   it('should handle referrer without protocol', () => {
     Object.defineProperty(document, 'referrer', {
-      value: 'dify.ai',
+      value: 'gofy.ai',
       writable: true,
     })
 
-    expect(isDify()).toBe(true)
+    expect(isGofy()).toBe(true)
   })
 
-  it('should return true when referrer includes api.dify.ai', () => {
+  it('should return true when referrer includes api.gofy.ai', () => {
     Object.defineProperty(document, 'referrer', {
-      value: 'https://api.dify.ai/v1/endpoint',
+      value: 'https://api.gofy.ai/v1/endpoint',
       writable: true,
     })
 
-    expect(isDify()).toBe(true)
+    expect(isGofy()).toBe(true)
   })
 
-  it('should return true when referrer includes app.dify.ai', () => {
+  it('should return true when referrer includes app.gofy.ai', () => {
     Object.defineProperty(document, 'referrer', {
-      value: 'https://app.dify.ai/chat',
+      value: 'https://app.gofy.ai/chat',
       writable: true,
     })
 
-    expect(isDify()).toBe(true)
+    expect(isGofy()).toBe(true)
   })
 
-  it('should return true when referrer includes docs.dify.ai', () => {
+  it('should return true when referrer includes docs.gofy.ai', () => {
     Object.defineProperty(document, 'referrer', {
-      value: 'https://docs.dify.ai/guide',
+      value: 'https://docs.gofy.ai/guide',
       writable: true,
     })
 
-    expect(isDify()).toBe(true)
+    expect(isGofy()).toBe(true)
   })
 
-  it('should return true when referrer has dify.ai with query parameters', () => {
+  it('should return true when referrer has gofy.ai with query parameters', () => {
     Object.defineProperty(document, 'referrer', {
-      value: 'https://dify.ai/?ref=test&id=123',
+      value: 'https://gofy.ai/?ref=test&id=123',
       writable: true,
     })
 
-    expect(isDify()).toBe(true)
+    expect(isGofy()).toBe(true)
   })
 
-  it('should return true when referrer has dify.ai with hash fragment', () => {
+  it('should return true when referrer has gofy.ai with hash fragment', () => {
     Object.defineProperty(document, 'referrer', {
-      value: 'https://dify.ai/page#section',
+      value: 'https://gofy.ai/page#section',
       writable: true,
     })
 
-    expect(isDify()).toBe(true)
+    expect(isGofy()).toBe(true)
   })
 
-  it('should return true when referrer has dify.ai with port number', () => {
+  it('should return true when referrer has gofy.ai with port number', () => {
     Object.defineProperty(document, 'referrer', {
-      value: 'https://dify.ai:8080/app',
+      value: 'https://gofy.ai:8080/app',
       writable: true,
     })
 
-    expect(isDify()).toBe(true)
+    expect(isGofy()).toBe(true)
   })
 
-  it('should return true when dify.ai appears after another domain', () => {
+  it('should return true when gofy.ai appears after another domain', () => {
     Object.defineProperty(document, 'referrer', {
-      value: 'https://example.com/redirect?url=https://dify.ai',
+      value: 'https://example.com/redirect?url=https://gofy.ai',
       writable: true,
     })
 
-    expect(isDify()).toBe(true)
+    expect(isGofy()).toBe(true)
   })
 
-  it('should return true when substring contains dify.ai', () => {
+  it('should return true when substring contains gofy.ai', () => {
     Object.defineProperty(document, 'referrer', {
-      value: 'https://notdify.ai',
+      value: 'https://notgofy.ai',
       writable: true,
     })
 
-    expect(isDify()).toBe(true)
+    expect(isGofy()).toBe(true)
   })
 
-  it('should return true when dify.ai is part of a different domain', () => {
+  it('should return true when gofy.ai is part of a different domain', () => {
     Object.defineProperty(document, 'referrer', {
-      value: 'https://fake-dify.ai.example.com',
+      value: 'https://fake-gofy.ai.example.com',
       writable: true,
     })
 
-    expect(isDify()).toBe(true)
+    expect(isGofy()).toBe(true)
   })
 
   it('should return true with multiple referrer variations', () => {
     const variations = [
-      'https://dify.ai',
-      'http://www.dify.ai',
-      'http://dify.ai/',
-      'https://dify.ai/app?token=123#section',
-      'dify.ai/test',
-      'www.dify.ai/en',
+      'https://gofy.ai',
+      'http://www.gofy.ai',
+      'http://gofy.ai/',
+      'https://gofy.ai/app?token=123#section',
+      'gofy.ai/test',
+      'www.gofy.ai/en',
     ]
 
     variations.forEach((referrer) => {
@@ -164,17 +164,17 @@ describe('isDify', () => {
         value: referrer,
         writable: true,
       })
-      expect(isDify()).toBe(true)
+      expect(isGofy()).toBe(true)
     })
   })
 
-  it('should return false with multiple non-dify referrer variations', () => {
+  it('should return false with multiple non-gofy referrer variations', () => {
     const variations = [
       'https://github.com',
       'https://google.com',
       'https://stackoverflow.com',
-      'https://example.dify',
-      'https://difyai.com',
+      'https://example.gofy',
+      'https://gofyai.com',
       '',
     ]
 
@@ -183,7 +183,7 @@ describe('isDify', () => {
         value: referrer,
         writable: true,
       })
-      expect(isDify()).toBe(false)
+      expect(isGofy()).toBe(false)
     })
   })
 })

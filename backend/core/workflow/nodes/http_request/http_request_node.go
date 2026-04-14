@@ -5,7 +5,8 @@ import (
 	"iter"
 	"strings"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
 	variabletemplateparser "mlib.com/gofy/server/core/workflow/utils/variable_template_parser"
@@ -13,7 +14,6 @@ import (
 	workflowentities "mlib.com/gofy/server/entities/workflow"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 type HttpRequestNode struct {

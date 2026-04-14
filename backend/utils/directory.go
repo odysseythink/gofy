@@ -4,7 +4,7 @@ import (
 	"errors"
 	"os"
 
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 )
 
 //@author: [piexlmax](https://github.com/piexlmax)

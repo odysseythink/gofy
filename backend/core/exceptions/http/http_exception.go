@@ -43,7 +43,7 @@ func NewAlreadySetupError() *AlreadySetupError {
 		BaseHTTPException: &BaseHTTPException{
 			code: "already_setup",
 			ValueError: exceptions.NewValueError(
-				"Dify has been successfully installed. Please refresh the page or return to the dashboard homepage.",
+				"Gofy has been successfully installed. Please refresh the page or return to the dashboard homepage.",
 			),
 			status: 403,
 		},
@@ -59,7 +59,7 @@ func NewNotSetupError() *NotSetupError {
 		BaseHTTPException: &BaseHTTPException{
 			code: "not_setup",
 			ValueError: exceptions.NewValueError(
-				`Dify has not been initialized and installed yet. 
+				`Gofy has not been initialized and installed yet. 
         Please proceed with the initialization and installation process first.`,
 			),
 			status: 401,

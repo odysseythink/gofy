@@ -11,11 +11,11 @@ import (
 	"strings"
 	"time"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	"mlib.com/gofy/server/utils"
-	"mlib.com/mlog"
 )
 
 // ImageConfig represents the configuration for image uploads.
@@ -46,7 +46,7 @@ func NewFileUploadConfigFromDict(config map[string]any) *FileUploadConfig {
 }
 
 type File struct {
-	DifyModelIdentity string `json:"dify_model_identity"`
+	GofyModelIdentity string `json:"gofy_model_identity"`
 
 	ID             string/*# message file id */ `json:"id"`
 	TenantID       string             `json:"tenant_id"`
@@ -75,7 +75,7 @@ func NewFile(id string,
 	size int,
 	storageKey string) *File {
 	return &File{
-		DifyModelIdentity: FILE_MODEL_IDENTITY,
+		GofyModelIdentity: FILE_MODEL_IDENTITY,
 		ID:                id,
 		TenantID:          tenantID,
 		Type:              fileType,

@@ -3,7 +3,7 @@ import { RiCloseLine } from '@remixicon/react'
 import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import Button from '@/app/components/base/button'
-import DifyLogo from '@/app/components/base/logo/dify-logo'
+import GofyLogo from '@/app/components/base/logo/gofy-logo'
 import Modal from '@/app/components/base/modal'
 import { IS_CE_EDITION } from '@/config'
 import { useGlobalPublicStore } from '@/context/global-public-context'
@@ -42,7 +42,7 @@ export default function AccountAbout({
                   alt="logo"
                 />
               )
-            : <DifyLogo size="large" className="mx-auto" />}
+            : <GofyLogo size="large" className="mx-auto" />}
 
           <div className="text-center text-xs font-normal text-text-tertiary">
             Version
@@ -58,12 +58,12 @@ export default function AccountAbout({
             <div className="text-text-accent">
               {
                 IS_CE_EDITION
-                  ? <Link to="https://github.com/langgenius/dify/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Open Source License</Link>
+                  ? <Link to="https://github.com/langgenius/gofy/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Open Source License</Link>
                   : (
                       <>
-                        <Link to="https://dify.ai/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</Link>
+                        <Link to="https://gofy.ai/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</Link>
                         ,&nbsp;
-                        <Link to="https://dify.ai/terms" target="_blank" rel="noopener noreferrer">Terms of Service</Link>
+                        <Link to="https://gofy.ai/terms" target="_blank" rel="noopener noreferrer">Terms of Service</Link>
                       </>
                     )
               }
@@ -82,7 +82,7 @@ export default function AccountAbout({
           <div className="flex items-center">
             <Button className="mr-2" size="small">
               <Link
-                to="https://github.com/langgenius/dify/releases"
+                to="https://github.com/langgenius/gofy/releases"
                 target="_blank"
                 rel="noopener noreferrer"
               >

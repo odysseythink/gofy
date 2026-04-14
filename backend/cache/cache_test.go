@@ -3,7 +3,7 @@ package cache
 import (
 	"testing"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
 )
 
 func TestCluster(t *testing.T) {

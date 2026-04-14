@@ -11,7 +11,8 @@ import (
 	"net/url"
 	"time"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/cluster"
 	codenodesexceptions "mlib.com/gofy/server/core/exceptions/nodes/code"
 	"mlib.com/gofy/server/core/helper/code_executor/template_transformer/base"
@@ -19,7 +20,6 @@ import (
 	"mlib.com/gofy/server/core/helper/code_executor/template_transformer/python3"
 	codeexecutorenumtypes "mlib.com/gofy/server/enum_types/code_executor"
 	"mlib.com/gofy/server/proto/pbapi"
-	"mlib.com/mlog"
 )
 
 var (
@@ -96,7 +96,7 @@ func ExecuteCode(language codeexecutorenumtypes.CodeLanguage, preload string, co
 	// 构建请求头
 	headers := http.Header{
 		"Content-Type": {"application/json"},
-		"X-Api-Key":    {confy.GetWithDefault[string]("code_execution_config.api_key", "dify-sandbox")},
+		"X-Api-Key":    {confy.GetWithDefault[string]("code_execution_config.api_key", "gofy-sandbox")},
 	}
 	if _, ok := code_language_to_running_language[language]; !ok {
 		mlog.Errorf("language(%s) is not surpported", language)

@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 )
 
 // LangSmithTraceConfig configures the LangSmith backend.
@@ -42,17 +42,17 @@ func (ls *LangSmithInstance) Provider() TraceProvider { return TraceProviderLang
 
 func (ls *LangSmithInstance) Trace(ctx context.Context, span *TraceSpan) error {
 	run := map[string]any{
-		"id":             span.SpanID,
-		"trace_id":       span.TraceID,
-		"parent_run_id":  span.ParentID,
-		"name":           span.Name,
-		"run_type":       ls.kindToRunType(span.Kind),
-		"start_time":     span.StartTime.Format(time.RFC3339Nano),
-		"end_time":       span.EndTime.Format(time.RFC3339Nano),
-		"inputs":         span.Input,
-		"outputs":        span.Output,
-		"extra":          span.Metadata,
-		"session_name":   ls.config.Project,
+		"id":            span.SpanID,
+		"trace_id":      span.TraceID,
+		"parent_run_id": span.ParentID,
+		"name":          span.Name,
+		"run_type":      ls.kindToRunType(span.Kind),
+		"start_time":    span.StartTime.Format(time.RFC3339Nano),
+		"end_time":      span.EndTime.Format(time.RFC3339Nano),
+		"inputs":        span.Input,
+		"outputs":       span.Output,
+		"extra":         span.Metadata,
+		"session_name":  ls.config.Project,
 	}
 
 	if span.Status == SpanStatusError {

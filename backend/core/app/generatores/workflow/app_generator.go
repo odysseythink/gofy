@@ -3,6 +3,7 @@ package workflow
 import (
 	"iter"
 
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
 	fileupload "mlib.com/gofy/server/core/app/config_manageres/features/file_upload"
 	wfappcfgmgr "mlib.com/gofy/server/core/app/config_manageres/workflow"
@@ -20,7 +21,6 @@ import (
 	appenumtypes "mlib.com/gofy/server/enum_types/app"
 	filefactory "mlib.com/gofy/server/factories/file_factory"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 type WorkflowAppGenerator[T1 interface {

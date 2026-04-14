@@ -7,6 +7,7 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/odysseythink/mlog"
 	"gorm.io/gorm"
 	"mlib.com/confy/cast"
 	"mlib.com/gofy/server/constants"
@@ -35,7 +36,6 @@ import (
 	workflowenumtypes "mlib.com/gofy/server/enum_types/workflow"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/utils"
-	"mlib.com/mlog"
 )
 
 type LLMNode struct {

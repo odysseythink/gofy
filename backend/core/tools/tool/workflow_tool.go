@@ -73,9 +73,9 @@ package tool
 // 		if _, ok := value.([]any); ok {
 // 			for _, item := range value.([]any) {
 // 				if item_dict, ok := item.(map[string]any); ok {
-// 					if _, ok := item_dict["dify_model_identity"]; ok {
-// 						if _, ok := item_dict["dify_model_identity"].(string); ok {
-// 							if item_dict["dify_model_identity"].(string) == file.FILE_MODEL_IDENTITY {
+// 					if _, ok := item_dict["gofy_model_identity"]; ok {
+// 						if _, ok := item_dict["gofy_model_identity"].(string); ok {
+// 							if item_dict["gofy_model_identity"].(string) == file.FILE_MODEL_IDENTITY {
 // 								item_dict["tool_file_id"] = item_dict["related_id"]
 // 								file := filefactory.BuildFromMapping(item_dict, t.Runtime.TenantID, nil)
 // 								files = append(files, file)
@@ -86,9 +86,9 @@ package tool
 // 				}
 // 			}
 // 		} else if _, ok := value.(map[string]any); ok {
-// 			if _, ok := value.(map[string]any)["dify_model_identity"]; ok {
-// 				if _, ok := value.(map[string]any)["dify_model_identity"].(string); ok {
-// 					if value.(map[string]any)["dify_model_identity"].(string) == file.FILE_MODEL_IDENTITY {
+// 			if _, ok := value.(map[string]any)["gofy_model_identity"]; ok {
+// 				if _, ok := value.(map[string]any)["gofy_model_identity"].(string); ok {
+// 					if value.(map[string]any)["gofy_model_identity"].(string) == file.FILE_MODEL_IDENTITY {
 // 						value.(map[string]any)["tool_file_id"] = value.(map[string]any)["related_id"]
 // 						file := filefactory.BuildFromMapping(value.(map[string]any), t.Runtime.TenantID, nil)
 // 						files = append(files, file)

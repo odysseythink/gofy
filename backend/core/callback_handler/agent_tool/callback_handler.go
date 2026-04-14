@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
 )
 
 var (

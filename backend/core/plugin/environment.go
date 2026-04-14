@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 )
 
 // EnvironmentManager handles Python virtual environment setup for plugins.

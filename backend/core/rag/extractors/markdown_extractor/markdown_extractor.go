@@ -6,9 +6,9 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	ragentities "mlib.com/gofy/server/entities/rag"
-	"mlib.com/mlog"
 )
 
 type MarkdownExtractor struct {
@@ -43,16 +43,16 @@ func (extractor *MarkdownExtractor) Extract() []*ragentities.Document {
 		value := tup[1]
 		value = strings.TrimSpace(value)
 		if header == "" {
-			documents = append(documents, &ragentities.Document{PageContent: value, Provider: "dify"})
+			documents = append(documents, &ragentities.Document{PageContent: value, Provider: "gofy"})
 		} else {
-			documents = append(documents, &ragentities.Document{PageContent: fmt.Sprintf("\n\n%s\n%s", header, value), Provider: "dify"})
+			documents = append(documents, &ragentities.Document{PageContent: fmt.Sprintf("\n\n%s\n%s", header, value), Provider: "gofy"})
 		}
 	}
 	return documents
 	// return []*ragentities.Document{
 	// 	{
 	// 		PageContent: doc.FullText(),
-	// 		Provider:    "dify",
+	// 		Provider:    "gofy",
 	// 		Metadata:    map[string]any{"source": extractor._file_path},
 	// 	},
 	// }

@@ -9,13 +9,13 @@ import (
 	"strings"
 	"time"
 
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"gorm.io/datatypes"
-	"mlib.com/confy"
 	dbengine "mlib.com/gofy/server/db_engine"
 	knowledgeentities "mlib.com/gofy/server/entities/knowledge"
 	ragindexprocessorenumtypes "mlib.com/gofy/server/enum_types/rag/index_processor"
 	retrievalenumtypes "mlib.com/gofy/server/enum_types/rag/retrieval"
-	"mlib.com/mlog"
 )
 
 // Dataset [...]
@@ -702,7 +702,7 @@ func (seg *DocumentSegment) GetChildChunks() []*ChildChunk {
 //         nonce = os.urandom(16).hex()
 //         timestamp = str(int(time.time()))
 //         data_to_sign = f"image-preview|{upload_file_id}|{timestamp}|{nonce}"
-//         secret_key = dify_config.SECRET_KEY.encode() if dify_config.SECRET_KEY else b""
+//         secret_key = gofy_config.SECRET_KEY.encode() if gofy_config.SECRET_KEY else b""
 //         sign = hmac.new(secret_key, data_to_sign.encode(), hashlib.sha256).digest()
 //         encoded_sign = base64.urlsafe_b64encode(sign).decode()
 
@@ -718,7 +718,7 @@ func (seg *DocumentSegment) GetChildChunks() []*ChildChunk {
 //         nonce = os.urandom(16).hex()
 //         timestamp = str(int(time.time()))
 //         data_to_sign = f"file-preview|{upload_file_id}|{timestamp}|{nonce}"
-//         secret_key = dify_config.SECRET_KEY.encode() if dify_config.SECRET_KEY else b""
+//         secret_key = gofy_config.SECRET_KEY.encode() if gofy_config.SECRET_KEY else b""
 //         sign = hmac.new(secret_key, data_to_sign.encode(), hashlib.sha256).digest()
 //         encoded_sign = base64.urlsafe_b64encode(sign).decode()
 

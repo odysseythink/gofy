@@ -7,12 +7,12 @@ import (
 	"slices"
 
 	"github.com/gin-gonic/gin"
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/cluster"
 	"mlib.com/gofy/server/entities/tools"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/models/response"
 	"mlib.com/gofy/server/proto/pbapi"
-	"mlib.com/mlog"
 )
 
 type ToolsApi struct {

@@ -10,14 +10,14 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/odysseythink/confy"
 	"google.golang.org/grpc/peer"
-	"mlib.com/confy"
 	"mlib.com/gofy/server/cache"
 	dbengine "mlib.com/gofy/server/db_engine"
 	"mlib.com/gofy/server/main/link/router"
 	"mlib.com/gofy/server/proto/pbapi"
 
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 )
 
 // http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {

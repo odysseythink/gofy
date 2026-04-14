@@ -145,11 +145,11 @@ class ChromaVectorFactory(AbstractVectorFactory):
         return ChromaVector(
             collection_name=collection_name,
             config=ChromaConfig(
-                host=dify_config.CHROMA_HOST or "",
-                port=dify_config.CHROMA_PORT,
-                tenant=dify_config.CHROMA_TENANT or chromadb.DEFAULT_TENANT,
-                database=dify_config.CHROMA_DATABASE or chromadb.DEFAULT_DATABASE,
-                auth_provider=dify_config.CHROMA_AUTH_PROVIDER,
-                auth_credentials=dify_config.CHROMA_AUTH_CREDENTIALS,
+                host=gofy_config.CHROMA_HOST or "",
+                port=gofy_config.CHROMA_PORT,
+                tenant=gofy_config.CHROMA_TENANT or chromadb.DEFAULT_TENANT,
+                database=gofy_config.CHROMA_DATABASE or chromadb.DEFAULT_DATABASE,
+                auth_provider=gofy_config.CHROMA_AUTH_PROVIDER,
+                auth_credentials=gofy_config.CHROMA_AUTH_CREDENTIALS,
             ),
         )

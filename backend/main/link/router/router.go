@@ -8,10 +8,10 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	v1 "mlib.com/gofy/server/main/link/api/v1"
 	"mlib.com/gofy/server/main/link/middleware"
-	"mlib.com/mlog"
 )
 
 // type RouterGroup struct {

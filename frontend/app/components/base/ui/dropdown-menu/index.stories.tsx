@@ -240,10 +240,10 @@ export const WithLinkItems: Story = {
     <DropdownMenu>
       <TriggerButton label="Open links" />
       <DropdownMenuContent>
-        <DropdownMenuLinkItem href="https://docs.dify.ai" rel="noopener noreferrer" target="_blank">
-          Dify Docs
+        <DropdownMenuLinkItem href="https://docs.gofy.ai" rel="noopener noreferrer" target="_blank">
+          Gofy Docs
         </DropdownMenuLinkItem>
-        <DropdownMenuLinkItem href="https://roadmap.dify.ai" rel="noopener noreferrer" target="_blank">
+        <DropdownMenuLinkItem href="https://roadmap.gofy.ai" rel="noopener noreferrer" target="_blank">
           Product Roadmap
         </DropdownMenuLinkItem>
       </DropdownMenuContent>

@@ -1,8 +1,8 @@
 package eventhandlers
 
 import (
+	"github.com/odysseythink/mrun"
 	"mlib.com/gofy/server/events"
-	"mlib.com/mrun"
 )
 
 func Init() {

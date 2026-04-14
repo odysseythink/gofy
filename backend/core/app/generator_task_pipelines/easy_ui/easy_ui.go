@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
 	messagecyclemgr "mlib.com/gofy/server/core/app/cycle_manage/message"
 	"mlib.com/gofy/server/core/app/generator_task_pipelines/base"
@@ -24,7 +25,6 @@ import (
 	appenumtypes "mlib.com/gofy/server/enum_types/app"
 	"mlib.com/gofy/server/events"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 type EasyUIGenerateTaskPipeline[T1 interface {
@@ -66,7 +66,7 @@ func New[T1 interface {
 		pl.AppConfig = real_entity.AppConfig
 	case *appgeneratorentities.AgentChatAppGenerateEntity:
 		pl.ModelConfig = real_entity.ModelConf
-		pl.AppConfig = real_entity.AppConfig
+		pl.AppConfig = real_entity.AppConfig.EasyUIBasedAppConfig
 	}
 	pl.StartAt = time.Now()
 	task_state := &apptaskentities.EasyUITaskState{

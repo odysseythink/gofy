@@ -10,14 +10,14 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"gorm.io/datatypes"
 	"gorm.io/gen"
-	"mlib.com/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	dbengine "mlib.com/gofy/server/db_engine"
 	ragentities "mlib.com/gofy/server/entities/rag"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 const (
@@ -573,7 +573,7 @@ func (extractor *NotionExtractor) _get_notion_database_data(database_id string, 
 		}
 		database_content = append(database_content, row_content)
 	}
-	return []*ragentities.Document{&ragentities.Document{PageContent: strings.Join(database_content, "\n"), Provider: "dify"}}
+	return []*ragentities.Document{&ragentities.Document{PageContent: strings.Join(database_content, "\n"), Provider: "gofy"}}
 }
 
 func (extractor *NotionExtractor) _get_notion_block_data(page_id string) []string {
@@ -725,7 +725,7 @@ func (extractor *NotionExtractor) _load_data_as_documents(notion_obj_id string, 
 		docs = append(docs, page_text_documents...)
 	} else if notion_page_type == "page" {
 		page_text_list := extractor._get_notion_block_data(notion_obj_id)
-		docs = append(docs, &ragentities.Document{PageContent: strings.Join(page_text_list, "\n"), Provider: "dify"})
+		docs = append(docs, &ragentities.Document{PageContent: strings.Join(page_text_list, "\n"), Provider: "gofy"})
 	} else {
 		panic(exceptions.NewValueError("notion page type not supported"))
 	}

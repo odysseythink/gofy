@@ -46,8 +46,8 @@ ENV EDITION=SELF_HOSTED
 ENV DEPLOY_ENV=PRODUCTION
 ENV CONSOLE_API_URL=http://127.0.0.1:5001
 ENV APP_API_URL=http://127.0.0.1:5001
-ENV MARKETPLACE_API_URL=https://marketplace.dify.ai
-ENV MARKETPLACE_URL=https://marketplace.dify.ai
+ENV MARKETPLACE_API_URL=https://marketplace.gofy.ai
+ENV MARKETPLACE_URL=https://marketplace.gofy.ai
 ENV PORT=3000
 ENV NEXT_TELEMETRY_DISABLED=1
 
@@ -57,24 +57,24 @@ RUN ln -s /usr/share/zoneinfo/${TZ} /etc/localtime \
     && echo ${TZ} > /etc/timezone
 
 # Create non-root user
-ARG dify_uid=1001
-RUN addgroup -S -g ${dify_uid} dify && \
-    adduser -S -u ${dify_uid} -G dify -s /bin/ash -h /home/dify dify && \
+ARG gofy_uid=1001
+RUN addgroup -S -g ${gofy_uid} gofy && \
+    adduser -S -u ${gofy_uid} -G gofy -s /bin/ash -h /home/gofy gofy && \
     mkdir /app && \
-    chown -R dify:dify /app
+    chown -R gofy:gofy /app
 
 
 WORKDIR /app/web
 
-COPY --from=builder --chown=dify:dify /app/web/public ./public
-COPY --from=builder --chown=dify:dify /app/web/.next/standalone ./
-COPY --from=builder --chown=dify:dify /app/web/.next/static ./.next/static
+COPY --from=builder --chown=gofy:gofy /app/web/public ./public
+COPY --from=builder --chown=gofy:gofy /app/web/.next/standalone ./
+COPY --from=builder --chown=gofy:gofy /app/web/.next/static ./.next/static
 
-COPY --chown=dify:dify --chmod=755 docker/entrypoint.sh ./entrypoint.sh
+COPY --chown=gofy:gofy --chmod=755 docker/entrypoint.sh ./entrypoint.sh
 
 ARG COMMIT_SHA
 ENV COMMIT_SHA=${COMMIT_SHA}
 
-USER dify
+USER gofy
 EXPOSE 3000
 ENTRYPOINT ["/bin/sh", "./entrypoint.sh"]

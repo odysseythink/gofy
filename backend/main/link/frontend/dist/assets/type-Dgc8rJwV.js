@@ -1,0 +1,1 @@
+var n=(r=>(r.Number="number",r.String="string",r.Boolean="boolean",r.Object="object",r.ArrayString="array[string]",r.ArrayNumber="array[number]",r.ArrayBoolean="array[boolean]",r.ArrayObject="array[object]",r))(n||{});export{n as C};

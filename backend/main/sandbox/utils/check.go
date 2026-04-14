@@ -3,7 +3,7 @@ package utils
 import (
 	"errors"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
 	"mlib.com/gofy/server/main/sandbox/runner/types"
 )
 

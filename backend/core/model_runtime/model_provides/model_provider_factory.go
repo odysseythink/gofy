@@ -3,6 +3,7 @@ package modelproviders
 import (
 	"fmt"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	_ "mlib.com/gofy/server/core/model_runtime/model_provides/openai_api_compatible"
 	_ "mlib.com/gofy/server/core/model_runtime/model_provides/tongyi"
@@ -10,7 +11,6 @@ import (
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	"mlib.com/gofy/server/global"
-	"mlib.com/mlog"
 )
 
 type ModelProviderFactory struct {

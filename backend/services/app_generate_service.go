@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"iter"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
 	achatgenerator "mlib.com/gofy/server/core/app/generatores/advanced_chat"
 	wfgenerator "mlib.com/gofy/server/core/app/generatores/workflow"
 	"mlib.com/gofy/server/core/exceptions"

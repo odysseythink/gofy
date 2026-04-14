@@ -5,9 +5,9 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/config"
-	"mlib.com/mlog"
 )
 
 // Cors 直接放行所有跨域请求并放行所有 OPTIONS 方法

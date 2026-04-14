@@ -8,7 +8,7 @@ from pyobvector import VECTOR, ObVecClient  # type: ignore
 from sqlalchemy import JSON, Column, String, func
 from sqlalchemy.dialects.mysql import LONGTEXT
 
-from configs import dify_config
+from configs import gofy_config
 from core.rag.datasource.vdb.vector_base import BaseVector
 from core.rag.datasource.vdb.vector_factory import AbstractVectorFactory
 from core.rag.datasource.vdb.vector_type import VectorType
@@ -292,11 +292,11 @@ class OceanBaseVectorFactory(AbstractVectorFactory):
         return OceanBaseVector(
             collection_name,
             OceanBaseVectorConfig(
-                host=dify_config.OCEANBASE_VECTOR_HOST or "",
-                port=dify_config.OCEANBASE_VECTOR_PORT or 0,
-                user=dify_config.OCEANBASE_VECTOR_USER or "",
-                password=(dify_config.OCEANBASE_VECTOR_PASSWORD or ""),
-                database=dify_config.OCEANBASE_VECTOR_DATABASE or "",
-                enable_hybrid_search=dify_config.OCEANBASE_ENABLE_HYBRID_SEARCH or False,
+                host=gofy_config.OCEANBASE_VECTOR_HOST or "",
+                port=gofy_config.OCEANBASE_VECTOR_PORT or 0,
+                user=gofy_config.OCEANBASE_VECTOR_USER or "",
+                password=(gofy_config.OCEANBASE_VECTOR_PASSWORD or ""),
+                database=gofy_config.OCEANBASE_VECTOR_DATABASE or "",
+                enable_hybrid_search=gofy_config.OCEANBASE_ENABLE_HYBRID_SEARCH or False,
             ),
         )

@@ -44,13 +44,13 @@ describe('dev proxy server', () => {
       headers: [
         ['content-encoding', 'br'],
         ['content-length', '123'],
-        ['set-cookie', '__Host-access_token=abc; Path=/console/api; Domain=cloud.dify.ai; Secure; SameSite=None'],
+        ['set-cookie', '__Host-access_token=abc; Path=/console/api; Domain=cloud.gofy.ai; Secure; SameSite=None'],
         ['transfer-encoding', 'chunked'],
       ],
     }))
     const app = createDevProxyApp({
-      consoleApiTarget: 'https://cloud.dify.ai',
-      publicApiTarget: 'https://public.dify.ai',
+      consoleApiTarget: 'https://cloud.gofy.ai',
+      publicApiTarget: 'https://public.gofy.ai',
       fetchImpl,
     })
 
@@ -65,7 +65,7 @@ describe('dev proxy server', () => {
     // Assert
     expect(fetchImpl).toHaveBeenCalledTimes(1)
     expect(fetchImpl).toHaveBeenCalledWith(
-      new URL('https://cloud.dify.ai/console/api/apps?page=1'),
+      new URL('https://cloud.gofy.ai/console/api/apps?page=1'),
       expect.objectContaining({
         method: 'GET',
         headers: expect.any(Headers),
@@ -75,7 +75,7 @@ describe('dev proxy server', () => {
     const [, requestInit] = fetchImpl.mock.calls[0]
     const requestHeaders = requestInit?.headers as Headers
     expect(requestHeaders.get('cookie')).toBe('__Host-access_token=abc')
-    expect(requestHeaders.get('origin')).toBe('https://cloud.dify.ai')
+    expect(requestHeaders.get('origin')).toBe('https://cloud.gofy.ai')
     expect(response.headers.get('access-control-allow-origin')).toBe('http://localhost:3000')
     expect(response.headers.get('access-control-allow-credentials')).toBe('true')
     expect(response.headers.get('content-encoding')).toBeNull()
@@ -90,8 +90,8 @@ describe('dev proxy server', () => {
   it('should answer CORS preflight requests', async () => {
     // Arrange
     const app = createDevProxyApp({
-      consoleApiTarget: 'https://cloud.dify.ai',
-      publicApiTarget: 'https://public.dify.ai',
+      consoleApiTarget: 'https://cloud.gofy.ai',
+      publicApiTarget: 'https://public.gofy.ai',
       fetchImpl: vi.fn<typeof fetch>(),
     })
 

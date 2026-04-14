@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/odysseythink/mlog"
 	"google.golang.org/grpc/peer"
 	"mlib.com/gofy/server/core/exceptions"
 	httpexceptions "mlib.com/gofy/server/core/exceptions/http"
@@ -12,7 +13,6 @@ import (
 	"mlib.com/gofy/server/proto/pbapi"
 	"mlib.com/gofy/server/services"
 	"mlib.com/gofy/server/utils"
-	"mlib.com/mlog"
 )
 
 func (s *AdminService) Logout(ctx context.Context, in *pbapi.LogoutRequest) (out *pbapi.LogoutReply, err error) {

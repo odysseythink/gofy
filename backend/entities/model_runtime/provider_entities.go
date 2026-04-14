@@ -3,7 +3,7 @@ package modelruntime
 import (
 	"fmt"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	commontypes "mlib.com/gofy/server/types/common"
 	"mlib.com/gofy/server/utils"

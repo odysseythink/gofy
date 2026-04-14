@@ -52,7 +52,7 @@ func (extractor *FirecrawlWebExtractor) Extract() []*ragentities.Document {
 				"description": crawl_data["description"],
 				"title":       crawl_data["title"],
 			},
-			Provider: "dify",
+			Provider: "gofy",
 		}
 		documents = append(documents, document)
 	} else if extractor.mode == "scrape" {

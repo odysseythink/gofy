@@ -7,7 +7,7 @@ import psycopg2.extras  # type: ignore
 import psycopg2.pool  # type: ignore
 from pydantic import BaseModel, model_validator
 
-from configs import dify_config
+from configs import gofy_config
 from core.rag.datasource.vdb.vector_base import BaseVector
 from core.rag.datasource.vdb.vector_factory import AbstractVectorFactory
 from core.rag.datasource.vdb.vector_type import VectorType
@@ -232,12 +232,12 @@ class VastbaseVectorFactory(AbstractVectorFactory):
         return VastbaseVector(
             collection_name=collection_name,
             config=VastbaseVectorConfig(
-                host=dify_config.VASTBASE_HOST or "localhost",
-                port=dify_config.VASTBASE_PORT,
-                user=dify_config.VASTBASE_USER or "dify",
-                password=dify_config.VASTBASE_PASSWORD or "",
-                database=dify_config.VASTBASE_DATABASE or "dify",
-                min_connection=dify_config.VASTBASE_MIN_CONNECTION,
-                max_connection=dify_config.VASTBASE_MAX_CONNECTION,
+                host=gofy_config.VASTBASE_HOST or "localhost",
+                port=gofy_config.VASTBASE_PORT,
+                user=gofy_config.VASTBASE_USER or "gofy",
+                password=gofy_config.VASTBASE_PASSWORD or "",
+                database=gofy_config.VASTBASE_DATABASE or "gofy",
+                min_connection=gofy_config.VASTBASE_MIN_CONNECTION,
+                max_connection=gofy_config.VASTBASE_MAX_CONNECTION,
             ),
         )

@@ -1,0 +1,1 @@
+import{r as n}from"./index-m2eZn9zC.js";const e={mobile:"mobile",tablet:"tablet",pc:"pc"},a=()=>{const[t,r]=n.useState(globalThis.innerWidth),s=t<=640?e.mobile:t<=768?e.tablet:e.pc;return n.useEffect(()=>{const i=()=>r(window.innerWidth);return window.addEventListener("resize",i),()=>window.removeEventListener("resize",i)},[]),s};export{e as M,a as u};

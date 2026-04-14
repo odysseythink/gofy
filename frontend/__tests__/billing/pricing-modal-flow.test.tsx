@@ -303,7 +303,7 @@ describe('Pricing Modal Flow', () => {
       const link = screen.getByText(/plansCommon\.comparePlanAndFeatures/i)
       expect(link.closest('a')).toHaveAttribute(
         'href',
-        'https://dify.ai/en/pricing#plans-and-features',
+        'https://gofy.ai/en/pricing#plans-and-features',
       )
     })
   })

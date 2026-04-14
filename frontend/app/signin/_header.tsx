@@ -8,7 +8,7 @@ import { languages } from '@/i18n-config/language'
 import dynamic from '@/next/dynamic'
 
 // Avoid rendering the logo and theme selector on the server
-const DifyLogo = dynamic(() => import('@/app/components/base/logo/dify-logo'), {
+const GofyLogo = dynamic(() => import('@/app/components/base/logo/gofy-logo'), {
   ssr: false,
   loading: () => <div className="h-7 w-16 bg-transparent" />,
 })
@@ -31,7 +31,7 @@ const Header = () => {
               alt="logo"
             />
           )
-        : <DifyLogo size="large" />}
+        : <GofyLogo size="large" />}
       <div className="flex items-center gap-1">
         <LocaleSigninSelect
           value={locale}

@@ -3,7 +3,7 @@ package events
 import (
 	"sync"
 
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 )
 
 // EventHandler processes workflow events.

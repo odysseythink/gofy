@@ -10,7 +10,7 @@ import (
 	// "gorm.io/gorm/logger"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
-	// "mlib.com/mlog"
+	// "github.com/odysseythink/mlog"
 )
 
 // Gorm 初始化数据库并产生数据库全局变量

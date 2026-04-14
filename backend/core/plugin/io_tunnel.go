@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 )
 
 // IOTunnel manages bidirectional communication between gofy and plugins.

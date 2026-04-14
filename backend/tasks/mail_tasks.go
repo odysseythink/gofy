@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 )
 
 // MailPayload is the payload for email tasks.

@@ -6,6 +6,7 @@ import (
 	"iter"
 	"reflect"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	modelruntimeexceptions "mlib.com/gofy/server/core/exceptions/model_runtime"
 	coreentities "mlib.com/gofy/server/entities/core"
@@ -13,7 +14,6 @@ import (
 	providerentities "mlib.com/gofy/server/entities/provider"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
-	"mlib.com/mlog"
 )
 
 type ModelInstance struct {

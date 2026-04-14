@@ -7,11 +7,11 @@ import (
 	"sync"
 	"time"
 
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"mlib.com/confy"
 	"mlib.com/gofy/server/config"
-	"mlib.com/mlog"
 )
 
 type DBEngine struct {

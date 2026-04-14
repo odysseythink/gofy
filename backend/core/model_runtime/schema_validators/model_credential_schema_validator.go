@@ -1,10 +1,10 @@
 package schemavalidators
 
 import (
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
-	"mlib.com/mlog"
 )
 
 type ModelCredentialSchemaValidator struct {

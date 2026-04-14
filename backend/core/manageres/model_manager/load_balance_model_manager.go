@@ -5,10 +5,10 @@ import (
 	"slices"
 	"time"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/cache"
 	providerentities "mlib.com/gofy/server/entities/provider"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
-	"mlib.com/mlog"
 )
 
 type LBModelManager struct {

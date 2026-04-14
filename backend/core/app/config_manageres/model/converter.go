@@ -7,7 +7,7 @@ import (
 	providermanager "mlib.com/gofy/server/core/manageres/provider_manager"
 	appconfigentities "mlib.com/gofy/server/entities/app/config"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	coreenumtypes "mlib.com/gofy/server/enum_types/core"
+	coreenumtypes "mlib.com/gofy/server/enum_types/model"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 )
 

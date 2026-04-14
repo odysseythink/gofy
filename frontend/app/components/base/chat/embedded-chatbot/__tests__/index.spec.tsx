@@ -49,9 +49,9 @@ vi.mock('../theme/theme-context', () => ({
   })),
 }))
 
-const mockIsDify = vi.fn(() => false)
+const mockIsGofy = vi.fn(() => false)
 vi.mock('../utils', () => ({
-  isDify: () => mockIsDify(),
+  isGofy: () => mockIsGofy(),
 }))
 
 type EmbeddedChatbotHookReturn = ReturnType<typeof useEmbeddedChatbot>
@@ -229,7 +229,7 @@ describe('EmbeddedChatbot index', () => {
     it('should not show powered by section on desktop', () => {
       vi.mocked(useBreakpoints).mockReturnValue(MediaType.pc)
       vi.mocked(useEmbeddedChatbot).mockReturnValue(createHookReturn({ appData: null }))
-      mockIsDify.mockReturnValue(true)
+      mockIsGofy.mockReturnValue(true)
 
       render(<EmbeddedChatbot />)
 

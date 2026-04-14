@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/odysseythink/mlog"
 	"google.golang.org/grpc/peer"
 	"mlib.com/gofy/server/cache"
 	"mlib.com/gofy/server/core/exceptions"
@@ -12,7 +13,6 @@ import (
 	"mlib.com/gofy/server/main/plugins/services"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/proto/pbapi"
-	"mlib.com/mlog"
 )
 
 type PluginsService struct {
@@ -53,8 +53,8 @@ func (s *PluginsService) FetchPreferences(ctx context.Context, in *pbapi.FetchPr
 	}
 
 	if auto_upgrade != nil {
-		auto_upgrade.ExcludePlugins.Bind(auto_upgrade.ExcludePluginList)
-		auto_upgrade.IncludePlugins.Bind(auto_upgrade.IncludePluginList)
+		_ = json.Unmarshal(auto_upgrade.ExcludePlugins, &auto_upgrade.ExcludePluginList)
+		_ = json.Unmarshal(auto_upgrade.IncludePlugins, &auto_upgrade.IncludePluginList)
 		auto_upgrade_dict = map[string]any{
 			"strategy_setting":    auto_upgrade.StrategySetting,
 			"upgrade_time_of_day": auto_upgrade.UpgradeTimeOfDay,

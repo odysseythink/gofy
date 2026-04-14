@@ -1,8 +1,8 @@
 package conditionhandlers
 
 import (
+	"github.com/odysseythink/mlog"
 	graphengineentities "mlib.com/gofy/server/entities/graph_engine"
-	"mlib.com/mlog"
 
 	"mlib.com/gofy/server/core/exceptions"
 	wfgraph "mlib.com/gofy/server/core/workflow/graph"

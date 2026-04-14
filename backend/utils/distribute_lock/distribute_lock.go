@@ -8,9 +8,9 @@ import (
 
 	"mlib.com/gofy/server/cache"
 
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
-	"mlib.com/confy"
-	"mlib.com/mlog"
 )
 
 const (

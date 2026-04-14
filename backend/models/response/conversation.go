@@ -3,9 +3,9 @@ package response
 import (
 	"encoding/json"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/confy/cast"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 type AnnotationResponse struct {

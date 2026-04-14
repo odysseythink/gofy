@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/utils"
 	"mlib.com/gofy/server/utils/validate"
-	"mlib.com/mlog"
 )
 
 type RuleConfigGeneratorOutputParser struct{}

@@ -41,15 +41,15 @@ describe('Plugin Installation Flow Integration', () => {
       const mockReleases = [
         {
           tag_name: 'v2.0.0',
-          assets: [{ browser_download_url: 'https://github.com/test/v2.difypkg', name: 'plugin-v2.difypkg' }],
+          assets: [{ browser_download_url: 'https://github.com/test/v2.gofypkg', name: 'plugin-v2.gofypkg' }],
         },
         {
           tag_name: 'v1.5.0',
-          assets: [{ browser_download_url: 'https://github.com/test/v1.5.difypkg', name: 'plugin-v1.5.difypkg' }],
+          assets: [{ browser_download_url: 'https://github.com/test/v1.5.gofypkg', name: 'plugin-v1.5.gofypkg' }],
         },
         {
           tag_name: 'v1.0.0',
-          assets: [{ browser_download_url: 'https://github.com/test/v1.difypkg', name: 'plugin-v1.difypkg' }],
+          assets: [{ browser_download_url: 'https://github.com/test/v1.gofypkg', name: 'plugin-v1.gofypkg' }],
         },
       ]
 
@@ -78,14 +78,14 @@ describe('Plugin Installation Flow Integration', () => {
       const result = await handleUpload(
         'https://github.com/test-org/test-repo',
         'v2.0.0',
-        'plugin-v2.difypkg',
+        'plugin-v2.gofypkg',
         onSuccess,
       )
 
       expect(mockUploadGitHub).toHaveBeenCalledWith(
         'https://github.com/test-org/test-repo',
         'v2.0.0',
-        'plugin-v2.difypkg',
+        'plugin-v2.gofypkg',
       )
       expect(onSuccess).toHaveBeenCalledWith({
         manifest: { name: 'test-plugin', version: '2.0.0' },
@@ -101,7 +101,7 @@ describe('Plugin Installation Flow Integration', () => {
       const mockReleases = [
         {
           tag_name: 'v1.0.0',
-          assets: [{ browser_download_url: 'https://github.com/test/v1.difypkg', name: 'plugin-v1.difypkg' }],
+          assets: [{ browser_download_url: 'https://github.com/test/v1.gofypkg', name: 'plugin-v1.gofypkg' }],
         },
       ]
 
@@ -159,7 +159,7 @@ describe('Plugin Installation Flow Integration', () => {
       const onSuccess = vi.fn()
 
       await expect(
-        handleUpload('https://github.com/test/repo', 'v1.0.0', 'plugin.difypkg', onSuccess),
+        handleUpload('https://github.com/test/repo', 'v1.0.0', 'plugin.gofypkg', onSuccess),
       ).rejects.toThrow('Upload failed')
 
       expect(onSuccess).not.toHaveBeenCalled()

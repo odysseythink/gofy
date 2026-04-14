@@ -4,12 +4,12 @@ import (
 	"context"
 	"encoding/json"
 
+	"github.com/odysseythink/mlog"
 	"google.golang.org/grpc/peer"
 	"mlib.com/gofy/server/core/exceptions"
 	httpexceptions "mlib.com/gofy/server/core/exceptions/http"
 	"mlib.com/gofy/server/proto/pbapi"
 	"mlib.com/gofy/server/services"
-	"mlib.com/mlog"
 )
 
 func (s *AdminService) GetTraceAppConfig(ctx context.Context, in *pbapi.GetTraceAppConfigRequest) (out *pbapi.GetTraceAppConfigReply, err error) {

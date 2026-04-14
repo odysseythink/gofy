@@ -4,8 +4,8 @@ import (
 	"os"
 
 	"github.com/anaskhan96/soup"
+	"github.com/odysseythink/mlog"
 	ragentities "mlib.com/gofy/server/entities/rag"
-	"mlib.com/mlog"
 )
 
 type TextExtractor struct {
@@ -37,7 +37,7 @@ func (extractor *TextExtractor) Extract() []*ragentities.Document {
 	return []*ragentities.Document{
 		{
 			PageContent: doc.FullText(),
-			Provider:    "dify",
+			Provider:    "gofy",
 			Metadata:    map[string]any{"source": extractor._file_path},
 		},
 	}

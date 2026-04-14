@@ -38,7 +38,7 @@ vi.mock('@/context/dataset-detail', () => ({
 }))
 
 vi.mock('@/context/i18n', () => ({
-  useDocLink: () => (path: string) => `https://docs.dify.ai${path}`,
+  useDocLink: () => (path: string) => `https://docs.gofy.ai${path}`,
 }))
 
 vi.mock('../../../base/toast', () => ({

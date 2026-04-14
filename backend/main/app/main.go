@@ -3,12 +3,19 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"flag"
 	"fmt"
+	"log"
+	"os"
 	"reflect"
 	"slices"
 
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
+	"github.com/odysseythink/mrun"
 	"google.golang.org/grpc"
 	"mlib.com/gofy/server/cache"
+	"mlib.com/gofy/server/cluster"
 	"mlib.com/gofy/server/core/exceptions"
 	httpexceptions "mlib.com/gofy/server/core/exceptions/http"
 	modelruntimeexceptions "mlib.com/gofy/server/core/exceptions/model_runtime"
@@ -22,7 +29,6 @@ import (
 	"mlib.com/gofy/server/services"
 	"mlib.com/gofy/server/utils"
 	"mlib.com/gofy/server/utils/validate"
-	"mlib.com/mlog"
 )
 
 type AppService struct {
@@ -198,4 +204,38 @@ func (s *AppService) Destroy() {
 
 func (s *AppService) UserData() any {
 	return nil
+}
+
+func main() {
+	var cfgfile string
+	flag.StringVar(&cfgfile, "c", "", "choose config file.")
+	flag.Parse()
+	if cfgfile == "" {
+		log.Println("usage: ./server -c config.yml")
+		return
+	}
+	confy.SetConfigFile(cfgfile)
+	confy.SetConfigType("yaml")
+	err := confy.ReadInConfig()
+	if err != nil {
+		log.Printf("read config file(%s) failed: %v\n", cfgfile, err)
+		return
+	}
+	{
+		logpath := confy.GetWithDefault[string]("log.path", "logs")
+		loglevel := confy.GetWithDefault[uint32]("log.log_level", 1)
+		log.Println("******loglevel=", loglevel)
+		if loglevel >= 4 {
+			loglevel = 1
+		}
+		mlog.SetLogLevel(loglevel)
+		mlog.SetLogDir(logpath)
+	}
+	defer mlog.Flush()
+	confy.WatchConfig()
+
+	mrun.Register(cluster.Instance(), []mrun.ModuleMgrOption{mrun.NewPriorityModuleMgrOption(0)}, []any{&App})
+
+	err = mrun.Run(&App)
+	mlog.Infof("%s Server End!:%v", os.Args[0], err)
 }

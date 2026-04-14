@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import DifyLogo from '@/app/components/base/logo/dify-logo'
+import GofyLogo from '@/app/components/base/logo/gofy-logo'
 import WorkplaceSelector from '@/app/components/header/account-dropdown/workplace-selector'
 import { ACCOUNT_SETTING_TAB } from '@/app/components/header/account-setting/constants'
 import { useAppContext } from '@/context/app-context'
@@ -45,7 +45,7 @@ const Header = () => {
   const renderLogo = () => (
     <h1>
       <Link to="/apps" className="flex h-8 shrink-0 items-center justify-center overflow-hidden whitespace-nowrap px-0.5 indent-[-9999px]">
-        {isBrandingEnabled && systemFeatures.branding.application_title ? systemFeatures.branding.application_title : 'Dify'}
+        {isBrandingEnabled && systemFeatures.branding.application_title ? systemFeatures.branding.application_title : 'Gofy'}
         {systemFeatures.branding.enabled && systemFeatures.branding.workspace_logo
           ? (
               <img
@@ -54,7 +54,7 @@ const Header = () => {
                 alt="logo"
               />
             )
-          : <DifyLogo />}
+          : <GofyLogo />}
       </Link>
     </h1>
   )

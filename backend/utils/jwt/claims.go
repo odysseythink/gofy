@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 )
 
 // func ClearToken(c *gin.Context) {
@@ -101,7 +101,7 @@ func GetAccountJWTToken(user_id, secretKey, iss string, ep time.Duration) (strin
 	claims := CustomClaims{
 		UserID: user_id,
 		RegisteredClaims: jwt.RegisteredClaims{
-			Audience:  jwt.ClaimStrings{"dify"},           // 受众
+			Audience:  jwt.ClaimStrings{"gofy"},           // 受众
 			NotBefore: jwt.NewNumericDate(now.Add(-1000)), // 签名生效时间
 			ExpiresAt: jwt.NewNumericDate(now.Add(ep)),    // 过期时间 7天  配置文件
 			Issuer:    iss,                                // 签名的发行者

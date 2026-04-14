@@ -243,7 +243,7 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
       import json
 
       def upload_file(file_path, user):
-          upload_url = "https://api.dify.ai/v1/files/upload"
+          upload_url = "https://api.gofy.ai/v1/files/upload"
           headers = {
               "Authorization": "Bearer app-xxxxxxxx",
           }
@@ -271,7 +271,7 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
               return None
 
       def run_workflow(file_id, user, response_mode="blocking"):
-          workflow_url = "https://api.dify.ai/v1/workflows/run"
+          workflow_url = "https://api.gofy.ai/v1/workflows/run"
           headers = {
               "Authorization": "Bearer app-xxxxxxxxx",
               "Content-Type": "application/json"
@@ -304,7 +304,7 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
 
       # 使用示例
       file_path = "{your_file_path}"
-      user = "difyuser"
+      user = "gofyuser"
 
       # 上传文件
       file_id = upload_file(file_path, user)
@@ -934,7 +934,7 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
         "tag2"
       ],
       "mode": "workflow",
-      "author_name": "Dify"
+      "author_name": "Gofy"
     }
     ```
     </CodeGroup>

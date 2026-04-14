@@ -1,0 +1,1 @@
+const t="ArrowUp",n="ArrowDown",o="ArrowLeft",s="ArrowRight",R="Home",c="End",e=new Set([o,s]),E=new Set([t,n]),A=new Set([...e,...E]);[...A];const O=new Set([t,n,o,s,R,"End"]);export{o as A,O as C,c as E,R as H,n as a,s as b,t as c};

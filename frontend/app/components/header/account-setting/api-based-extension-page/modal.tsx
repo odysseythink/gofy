@@ -103,7 +103,7 @@ const ApiBasedExtensionModal: FC<ApiBasedExtensionModalProps> = ({
         <div className="flex h-9 items-center justify-between text-sm font-medium text-text-primary">
           {t('apiBasedExtension.modal.apiEndpoint.title', { ns: 'common' })}
           <a
-            href={docLink('/use-dify/workspace/api-extension/api-extension')}
+            href={docLink('/use-gofy/workspace/api-extension/api-extension')}
             target="_blank"
             rel="noopener noreferrer"
             className="group flex items-center text-xs font-normal text-text-accent"

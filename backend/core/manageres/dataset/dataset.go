@@ -1,10 +1,10 @@
 package dataset
 
 import (
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
 	dbengine "mlib.com/gofy/server/db_engine"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 type DatasetManager struct {

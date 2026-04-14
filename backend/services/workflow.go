@@ -7,6 +7,7 @@ import (
 	"slices"
 	"time"
 
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
 	advancedchatcfgmgr "mlib.com/gofy/server/core/app/config_manageres/advanced_chat"
 	workflowcfgmgr "mlib.com/gofy/server/core/app/config_manageres/workflow"
@@ -23,7 +24,6 @@ import (
 	workflowenumtypes "mlib.com/gofy/server/enum_types/workflow"
 	"mlib.com/gofy/server/events"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 type WorkflowService struct {

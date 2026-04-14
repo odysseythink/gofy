@@ -6,9 +6,10 @@ import (
 	"slices"
 	"time"
 
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
-	"mlib.com/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	httpexceptions "mlib.com/gofy/server/core/exceptions/http"
 	"mlib.com/gofy/server/core/manageres"
@@ -22,7 +23,6 @@ import (
 	"mlib.com/gofy/server/models/response"
 	"mlib.com/gofy/server/proto/pbapi"
 	"mlib.com/gofy/server/utils"
-	"mlib.com/mlog"
 )
 
 type AppService struct {

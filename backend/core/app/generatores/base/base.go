@@ -7,12 +7,12 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/file"
 	appconfigentities "mlib.com/gofy/server/entities/app/config"
 	appconfigenumtypes "mlib.com/gofy/server/enum_types/app_config"
 	filefactory "mlib.com/gofy/server/factories/file_factory"
-	"mlib.com/mlog"
 )
 
 type BaseAppGenerator struct {

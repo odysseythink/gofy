@@ -1,0 +1,1 @@
+import{r as a,j as s,c as t}from"./index-m2eZn9zC.js";const e=({className:r})=>s.jsx("div",{className:t("h-px w-[400px] bg-[linear-gradient(90deg,rgba(255,255,255,0.01)_0%,rgba(16,24,40,0.08)_50.5%,rgba(255,255,255,0.01)_100%)]",r)}),p=a.memo(e);export{p as S};

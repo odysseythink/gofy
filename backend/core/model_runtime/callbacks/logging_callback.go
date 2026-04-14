@@ -3,8 +3,8 @@ package callbacks
 import (
 	"fmt"
 
+	"github.com/odysseythink/mlog"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	"mlib.com/mlog"
 )
 
 type LoggingCallback struct {

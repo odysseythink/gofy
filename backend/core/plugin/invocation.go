@@ -26,8 +26,8 @@ const (
 	INVOKE_TYPE_FETCH_APP                InvokeType = "fetch_app"
 )
 
-// BaseInvokeDifyRequest is the common base for all backwards invocation requests.
-type BaseInvokeDifyRequest struct {
+// BaseInvokeGofyRequest is the common base for all backwards invocation requests.
+type BaseInvokeGofyRequest struct {
 	TenantID string     `json:"tenant_id"`
 	UserID   string     `json:"user_id"`
 	Type     InvokeType `json:"type"`
@@ -50,7 +50,7 @@ type UploadFileResponse struct {
 	URL string `json:"url"`
 }
 
-// BackwardsInvocation defines the interface for plugins to call back into Dify.
+// BackwardsInvocation defines the interface for plugins to call back into Gofy.
 // Each method corresponds to a backwards invocation type that a plugin may trigger.
 //
 // For streaming responses, methods return a read-only channel. Callers should range

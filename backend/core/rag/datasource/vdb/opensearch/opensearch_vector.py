@@ -7,7 +7,7 @@ from opensearchpy import OpenSearch, Urllib3AWSV4SignerAuth, Urllib3HttpConnecti
 from opensearchpy.helpers import BulkIndexError
 from pydantic import BaseModel, model_validator
 
-from configs import dify_config
+from configs import gofy_config
 from core.rag.datasource.vdb.field import Field
 from core.rag.datasource.vdb.vector_base import BaseVector
 from core.rag.datasource.vdb.vector_factory import AbstractVectorFactory
@@ -289,15 +289,15 @@ class OpenSearchVectorFactory(AbstractVectorFactory):
             dataset.index_struct = json.dumps(self.gen_index_struct_dict(VectorType.OPENSEARCH, collection_name))
 
         open_search_config = OpenSearchConfig(
-            host=dify_config.OPENSEARCH_HOST or "localhost",
-            port=dify_config.OPENSEARCH_PORT,
-            secure=dify_config.OPENSEARCH_SECURE,
-            verify_certs=dify_config.OPENSEARCH_VERIFY_CERTS,
-            auth_method=dify_config.OPENSEARCH_AUTH_METHOD.value,
-            user=dify_config.OPENSEARCH_USER,
-            password=dify_config.OPENSEARCH_PASSWORD,
-            aws_region=dify_config.OPENSEARCH_AWS_REGION,
-            aws_service=dify_config.OPENSEARCH_AWS_SERVICE,
+            host=gofy_config.OPENSEARCH_HOST or "localhost",
+            port=gofy_config.OPENSEARCH_PORT,
+            secure=gofy_config.OPENSEARCH_SECURE,
+            verify_certs=gofy_config.OPENSEARCH_VERIFY_CERTS,
+            auth_method=gofy_config.OPENSEARCH_AUTH_METHOD.value,
+            user=gofy_config.OPENSEARCH_USER,
+            password=gofy_config.OPENSEARCH_PASSWORD,
+            aws_region=gofy_config.OPENSEARCH_AWS_REGION,
+            aws_service=gofy_config.OPENSEARCH_AWS_SERVICE,
         )
 
         return OpenSearchVector(collection_name=collection_name, config=open_search_config)

@@ -11,7 +11,7 @@ service_array=( link admin app tools plugins sandbox datasets )
 if [ $1 = "start" ]; then
 	for exename in ${service_array[*]}
 	do
-		./fys ${exename} &	
+		./gys ${exename} &	
 	done
 
 elif [ $1 = "restart" ]; then
@@ -21,11 +21,11 @@ elif [ $1 = "restart" ]; then
         if [ -n ${Pid} ]; then
 		    kill -15 ${Pid}	
         fi
-		./fys ${exename} &	
+		./gys ${exename} &	
 	done	
 
 elif [ $1 = "stop" ]; then
-	Pid=`ps -ef | grep ./fys | grep -v "grep" | awk -F ' ' '{print $2}'`
+	Pid=`ps -ef | grep ./gys | grep -v "grep" | awk -F ' ' '{print $2}'`
 	kill -15 ${Pid}
 	for exename in ${service_array[*]}
 	do

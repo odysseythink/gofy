@@ -6,6 +6,7 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/confy/cast"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/file"
@@ -13,7 +14,6 @@ import (
 	workflowentities "mlib.com/gofy/server/entities/workflow"
 	conditionentities "mlib.com/gofy/server/entities/workflow/condition"
 	conditionenumtypes "mlib.com/gofy/server/enum_types/workflow/condition"
-	"mlib.com/mlog"
 )
 
 type ConditionProcessor struct{}

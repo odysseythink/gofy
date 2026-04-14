@@ -3,8 +3,8 @@ package externaldatatool
 import (
 	"sync"
 
+	"github.com/odysseythink/mlog"
 	appconfigentities "mlib.com/gofy/server/entities/app/config"
-	"mlib.com/mlog"
 )
 
 type ExternalDataFetch struct{}

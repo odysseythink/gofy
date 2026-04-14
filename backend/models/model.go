@@ -6,13 +6,13 @@ import (
 	"slices"
 	"time"
 
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/datatypes"
-	"mlib.com/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	dbengine "mlib.com/gofy/server/db_engine"
 	"mlib.com/gofy/server/utils"
-	"mlib.com/mlog"
 )
 
 var (
@@ -354,15 +354,15 @@ func NewApp(args map[string]any) *App {
 	return app
 }
 
-// DifySetup [...]
-type DifySetup struct {
+// GofySetup [...]
+type GofySetup struct {
 	Version string     `gorm:"primaryKey;column:version;type:varchar(255);not null" json:"version"`
 	SetupAt *time.Time `gorm:"column:setup_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"setup_at"`
 }
 
 // TableName get sql table name.获取数据库表名
-func (DifySetup) TableName() string {
-	return "dify_setups"
+func (GofySetup) TableName() string {
+	return "gofy_setups"
 }
 
 // AppModelConfig [...]
@@ -875,14 +875,14 @@ func (c *Conversation) Inputs() map[string]any {
 	//     // NOTE: It's not the best way to implement this, but it's the only way to avoid circular import for now.
 	//     from factories import file_factory
 
-	//     if isinstance(value, dict) and value.get("dify_model_identity") == FILE_MODEL_IDENTITY:
+	//     if isinstance(value, dict) and value.get("gofy_model_identity") == FILE_MODEL_IDENTITY:
 	//         if value["transfer_method"] == FileTransferMethod.TOOL_FILE:
 	//             value["tool_file_id"] = value["related_id"]
 	//         }else if value["transfer_method"] == FileTransferMethod.LOCAL_FILE:
 	//             value["upload_file_id"] = value["related_id"]
 	//         inputs[key] = file_factory.build_from_mapping(mapping=value, tenant_id=value["tenant_id"])
 	//     }else if isinstance(value, list) and all(
-	//         isinstance(item, dict) and item.get("dify_model_identity") == FILE_MODEL_IDENTITY for item in value
+	//         isinstance(item, dict) and item.get("gofy_model_identity") == FILE_MODEL_IDENTITY for item in value
 	//     ):
 	//         inputs[key] = []
 	//         for item in value:
@@ -1157,14 +1157,14 @@ func (msg *Message) Inputs() map[string]any {
 	//     // NOTE: It's not the best way to implement this, but it's the only way to avoid circular import for now.
 	//     from factories import file_factory
 
-	//     if isinstance(value, dict) and value.get("dify_model_identity") == FILE_MODEL_IDENTITY:
+	//     if isinstance(value, dict) and value.get("gofy_model_identity") == FILE_MODEL_IDENTITY:
 	//         if value["transfer_method"] == FileTransferMethod.TOOL_FILE:
 	//             value["tool_file_id"] = value["related_id"]
 	//         }else if value["transfer_method"] == FileTransferMethod.LOCAL_FILE:
 	//             value["upload_file_id"] = value["related_id"]
 	//         inputs[key] = file_factory.build_from_mapping(mapping=value, tenant_id=value["tenant_id"])
 	//     }else if isinstance(value, list) and all(
-	//         isinstance(item, dict) and item.get("dify_model_identity") == FILE_MODEL_IDENTITY for item in value
+	//         isinstance(item, dict) and item.get("gofy_model_identity") == FILE_MODEL_IDENTITY for item in value
 	//     ):
 	//         inputs[key] = []
 	//         for item in value:

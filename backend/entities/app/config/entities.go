@@ -3,6 +3,7 @@ package config
 import (
 	"encoding/json"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/file"
 	agententities "mlib.com/gofy/server/entities/agent"
 	coreentities "mlib.com/gofy/server/entities/core"
@@ -10,7 +11,6 @@ import (
 	conditionentities "mlib.com/gofy/server/entities/workflow/condition"
 	appconfigenumtypes "mlib.com/gofy/server/enum_types/app_config"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 var SupportedComparisonOperator = []string{

@@ -5,6 +5,7 @@ import (
 	"slices"
 	"time"
 
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
 	easyuigeneratortaskpipeline "mlib.com/gofy/server/core/app/generator_task_pipelines/easy_ui"
 	"mlib.com/gofy/server/core/app/generatores/base"
@@ -16,7 +17,6 @@ import (
 	appenumtypes "mlib.com/gofy/server/enum_types/app"
 	appconfigenumtypes "mlib.com/gofy/server/enum_types/app_config"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 type MessageBasedAppGenerator[T1 interface {

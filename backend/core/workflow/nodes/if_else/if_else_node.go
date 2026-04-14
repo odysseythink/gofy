@@ -3,6 +3,7 @@ package ifelse
 import (
 	"iter"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
 	"mlib.com/gofy/server/core/workflow/utils/condition"
 	ifelsenodesentities "mlib.com/gofy/server/entities/nodes/if_else"
@@ -10,7 +11,6 @@ import (
 	conditionentities "mlib.com/gofy/server/entities/workflow/condition"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 type IfElseNode struct {

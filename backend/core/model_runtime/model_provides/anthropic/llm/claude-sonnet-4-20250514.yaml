@@ -1,0 +1,36 @@
+model: claude-sonnet-4-20250514
+label:
+  en_US: Claude Sonnet 4
+model_type: llm
+features:
+  - multi-tool-call
+  - agent-thought
+  - stream-tool-call
+  - vision
+model_properties:
+  mode: chat
+  context_size: 200000
+parameter_rules:
+  - name: temperature
+    use_template: temperature
+    type: float
+    default: 1.0
+    min: 0.0
+    max: 1.0
+  - name: max_tokens
+    use_template: max_tokens
+    type: int
+    default: 4096
+    min: 1
+    max: 8192
+  - name: top_p
+    use_template: top_p
+    type: float
+    default: 0.999
+    min: 0.0
+    max: 1.0
+pricing:
+  input: 3.0
+  output: 15.0
+  unit: 0.000001
+  currency: USD

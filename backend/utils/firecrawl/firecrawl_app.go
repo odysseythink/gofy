@@ -11,10 +11,10 @@ import (
 	"slices"
 	"time"
 
+	"github.com/odysseythink/mlog"
 	"golang.org/x/exp/errors/fmt"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/utils"
-	"mlib.com/mlog"
 )
 
 type FirecrawlApp struct {

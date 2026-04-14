@@ -20,7 +20,7 @@ describe('ApiBasedExtensionModal', () => {
   const mockOnCancel = vi.fn()
   const mockOnSave = vi.fn()
   const mockNotify = vi.fn()
-  const mockDocLink = vi.fn((path?: string) => `https://docs.dify.ai${path || ''}`)
+  const mockDocLink = vi.fn((path?: string) => `https://docs.gofy.ai${path || ''}`)
 
   const render = (ui: React.ReactElement) => RTLRender(
     <ToastContext.Provider value={{

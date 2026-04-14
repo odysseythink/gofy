@@ -49,9 +49,9 @@ func GetFileVarFromValue(value any /* Union[dict, list]*/) map[string]any {
 	}
 	switch data := value.(type) {
 	case map[string]any:
-		if _, ok := data["dify_model_identity"]; ok {
-			if _, ok := data["dify_model_identity"].(string); ok {
-				if data["dify_model_identity"].(string) == FILE_MODEL_IDENTITY {
+		if _, ok := data["gofy_model_identity"]; ok {
+			if _, ok := data["gofy_model_identity"].(string); ok {
+				if data["gofy_model_identity"].(string) == FILE_MODEL_IDENTITY {
 					return data
 				}
 			}

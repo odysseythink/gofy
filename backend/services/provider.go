@@ -1,10 +1,10 @@
 package services
 
 import (
+	"github.com/odysseythink/mlog"
 	dbengine "mlib.com/gofy/server/db_engine"
 	coreentities "mlib.com/gofy/server/entities/core"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 type ProviderService struct {
@@ -75,8 +75,8 @@ func (s *ProviderService) GetConfigurations(tenantId string) *coreentities.Provi
 	// for _, providerEntity := range providerEntities {
 	// 	// handle include, exclude
 	// 	if isFiltered(
-	// 		cast.ToStringSet(difyConfig.POSITION_PROVIDER_INCLUDES_SET),
-	// 		cast.ToStringSet(difyConfig.POSITION_PROVIDER_EXCLUDES_SET),
+	// 		cast.ToStringSet(gofyConfig.POSITION_PROVIDER_INCLUDES_SET),
+	// 		cast.ToStringSet(gofyConfig.POSITION_PROVIDER_EXCLUDES_SET),
 	// 		providerEntity,
 	// 		func(x any) string {
 	// 			if p, ok := x.(*ProviderEntity); ok {

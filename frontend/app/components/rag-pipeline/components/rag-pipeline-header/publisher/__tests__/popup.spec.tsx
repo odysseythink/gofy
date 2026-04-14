@@ -127,7 +127,7 @@ vi.mock('@/context/dataset-detail', () => ({
 }))
 
 vi.mock('@/context/i18n', () => ({
-  useDocLink: () => () => 'https://docs.dify.ai',
+  useDocLink: () => () => 'https://docs.gofy.ai',
 }))
 
 vi.mock('@/context/modal-context', () => ({

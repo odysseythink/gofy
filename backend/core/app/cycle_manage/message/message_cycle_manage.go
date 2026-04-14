@@ -1,6 +1,7 @@
 package message
 
 import (
+	"github.com/odysseythink/mlog"
 	llmgenerator "mlib.com/gofy/server/core/llm_generator"
 	dbengine "mlib.com/gofy/server/db_engine"
 	appgeneratorentities "mlib.com/gofy/server/entities/app/generator"
@@ -8,7 +9,6 @@ import (
 	appresponseentities "mlib.com/gofy/server/entities/app/response"
 	apptaskentities "mlib.com/gofy/server/entities/app/task"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 type MessageCycleManage[T1 *appgeneratorentities.ChatAppGenerateEntity | *appgeneratorentities.CompletionAppGenerateEntity | *appgeneratorentities.AgentChatAppGenerateEntity | *appgeneratorentities.AdvancedChatAppGenerateEntity, T2 *apptaskentities.EasyUITaskState | *apptaskentities.WorkflowTaskState] struct {

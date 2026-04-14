@@ -27,7 +27,7 @@ const NewMCPCard = ({ handleCreate }: Props) => {
     handleCreate(provider)
   }
 
-  const linkUrl = useMemo(() => docLink('/use-dify/build/mcp'), [docLink])
+  const linkUrl = useMemo(() => docLink('/use-gofy/build/mcp'), [docLink])
 
   const [showModal, setShowModal] = useState(false)
 

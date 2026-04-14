@@ -96,7 +96,7 @@ const CustomizeModal: FC<IShareLinkProps> = ({
               {' '}
               <br />
               NEXT_PUBLIC_APP_KEY=
-              {'\'<Web API Key From Dify>\''}
+              {'\'<Web API Key From Gofy>\''}
               {' '}
               <br />
               NEXT_PUBLIC_API_URL=
@@ -117,7 +117,7 @@ const CustomizeModal: FC<IShareLinkProps> = ({
           className="mt-2"
           onClick={() =>
             window.open(
-              docLink('/use-dify/publish/developing-with-apis'),
+              docLink('/use-gofy/publish/developing-with-apis'),
               '_blank',
             )}
         >

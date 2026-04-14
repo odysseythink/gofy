@@ -6,13 +6,13 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/cluster"
 	servicesentities "mlib.com/gofy/server/entities/services"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/models/response"
 	"mlib.com/gofy/server/proto/pbapi"
-	"mlib.com/mlog"
 )
 
 var (
@@ -1945,8 +1945,8 @@ var (
                     "en_US": "How to integrate with Ollama"
                 },
                 "url": {
-                    "zh_Hans": "https://docs.dify.ai/tutorials/model-configuration/ollama",
-                    "en_US": "https://docs.dify.ai/tutorials/model-configuration/ollama"
+                    "zh_Hans": "https://docs.gofy.ai/tutorials/model-configuration/ollama",
+                    "en_US": "https://docs.gofy.ai/tutorials/model-configuration/ollama"
                 }
             },
             "supported_model_types": [
@@ -5243,8 +5243,8 @@ var (
                     "en_US": "How to deploy customized model on Sagemaker"
                 },
                 "url": {
-                    "zh_Hans": "https://github.com/aws-samples/dify-aws-tool/blob/main/README_ZH.md#%E5%A6%82%E4%BD%95%E9%83%A8%E7%BD%B2sagemaker%E6%8E%A8%E7%90%86%E7%AB%AF%E7%82%B9",
-                    "en_US": "https://github.com/aws-samples/dify-aws-tool/blob/main/README.md#how-to-deploy-sagemaker-endpoint"
+                    "zh_Hans": "https://github.com/aws-samples/gofy-aws-tool/blob/main/README_ZH.md#%E5%A6%82%E4%BD%95%E9%83%A8%E7%BD%B2sagemaker%E6%8E%A8%E7%90%86%E7%AB%AF%E7%82%B9",
+                    "en_US": "https://github.com/aws-samples/gofy-aws-tool/blob/main/README.md#how-to-deploy-sagemaker-endpoint"
                 }
             },
             "supported_model_types": [
@@ -5482,8 +5482,8 @@ var (
                     "en_US": "Get your API key from novita.ai"
                 },
                 "url": {
-                    "zh_Hans": "https://novita.ai/settings#key-management?utm_source=dify&utm_medium=ch&utm_campaign=api",
-                    "en_US": "https://novita.ai/settings#key-management?utm_source=dify&utm_medium=ch&utm_campaign=api"
+                    "zh_Hans": "https://novita.ai/settings#key-management?utm_source=gofy&utm_medium=ch&utm_campaign=api",
+                    "en_US": "https://novita.ai/settings#key-management?utm_source=gofy&utm_medium=ch&utm_campaign=api"
                 }
             },
             "supported_model_types": [

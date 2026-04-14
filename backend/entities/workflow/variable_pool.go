@@ -4,13 +4,13 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/constants"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/file"
 	"mlib.com/gofy/server/core/variables"
 	workflowenumtypes "mlib.com/gofy/server/enum_types/workflow"
 	variablefactory "mlib.com/gofy/server/factories/variable_factory"
-	"mlib.com/mlog"
 )
 
 // VariableValue is a union type for variable values

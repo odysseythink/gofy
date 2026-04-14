@@ -4,12 +4,12 @@ import (
 	"iter"
 	"slices"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/workflow/graph"
 	streamprocessor "mlib.com/gofy/server/core/workflow/stream_processor"
 	graphengineentities "mlib.com/gofy/server/entities/graph_engine"
 	endnodesentities "mlib.com/gofy/server/entities/nodes/end"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
-	"mlib.com/mlog"
 )
 
 // EndStreamProcessor implements StreamProcessor

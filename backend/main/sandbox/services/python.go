@@ -3,13 +3,13 @@ package services
 import (
 	"time"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/main/sandbox/runner/python"
 	runnertypes "mlib.com/gofy/server/main/sandbox/runner/types"
 	"mlib.com/gofy/server/main/sandbox/types"
 	"mlib.com/gofy/server/main/sandbox/utils"
 	"mlib.com/gofy/server/proto/pbapi"
-	"mlib.com/mlog"
 )
 
 type PythonService struct {

@@ -9,8 +9,8 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
-	"mlib.com/mlog"
 )
 
 func RoundWithPrecision(x float64, precision int) float64 {

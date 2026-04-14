@@ -12,12 +12,12 @@ import (
 	"strings"
 	"time"
 
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
-	"mlib.com/confy"
 	"mlib.com/gofy/server/main/sandbox/global"
 	"mlib.com/gofy/server/main/sandbox/runner"
 	"mlib.com/gofy/server/main/sandbox/runner/types"
-	"mlib.com/mlog"
 )
 
 type PythonRunner struct {

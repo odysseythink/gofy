@@ -243,7 +243,7 @@ const NormalForm = () => {
                   className="text-text-secondary system-xs-medium hover:underline"
                   target="_blank"
                   rel="noopener noreferrer"
-                  to="https://dify.ai/terms"
+                  to="https://gofy.ai/terms"
                 >
                   {t('tos', { ns: 'login' })}
                 </Link>
@@ -252,7 +252,7 @@ const NormalForm = () => {
                   className="text-text-secondary system-xs-medium hover:underline"
                   target="_blank"
                   rel="noopener noreferrer"
-                  to="https://dify.ai/privacy"
+                  to="https://gofy.ai/privacy"
                 >
                   {t('pp', { ns: 'login' })}
                 </Link>

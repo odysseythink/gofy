@@ -61,10 +61,10 @@ describe('PlugInfo', () => {
   })
 
   it('should display package name', () => {
-    render(<PlugInfo packageName="my-plugin.difypkg" onHide={vi.fn()} />)
+    render(<PlugInfo packageName="my-plugin.gofypkg" onHide={vi.fn()} />)
 
     const values = screen.getAllByTestId('kv-value')
-    expect(values.some(v => v.textContent === 'my-plugin.difypkg')).toBe(true)
+    expect(values.some(v => v.textContent === 'my-plugin.gofypkg')).toBe(true)
   })
 
   it('should not show items for undefined props', () => {

@@ -5,7 +5,7 @@ import (
 	"io"
 	"sync"
 
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 )
 
 // DatasourceType defines the type of data source.

@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/confy/cast"
-	"mlib.com/mlog"
 )
 
 const (

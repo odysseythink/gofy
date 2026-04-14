@@ -4,14 +4,14 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	modelentities "mlib.com/gofy/server/entities/model"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	providerentities "mlib.com/gofy/server/entities/provider"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
 	commontypes "mlib.com/gofy/server/types/common"
-	"mlib.com/mlog"
 )
 
 // CustomConfigurationStatus represents the status of custom configuration.
@@ -197,7 +197,7 @@ func NewModelWithProviderEntityResponse(model *modelentities.ModelWithProviderEn
 // 	rsp := &SimpleProviderEntityResponse{
 // 		SimpleProviderEntity: simple_provider,
 // 	}
-// 	// url_prefix = dify_config.CONSOLE_API_URL + f"/console/api/workspaces/current/model-providers/{self.provider}"
+// 	// url_prefix = gofy_config.CONSOLE_API_URL + f"/console/api/workspaces/current/model-providers/{self.provider}"
 // 	rsp.UrlPrefix = console_api_url + "/console/api/workspaces/current/model-providers/" + rsp.Provider
 // 	if rsp.IconSmall == nil {
 // 		rsp.IconSmall = &commontypes.I18nObject{

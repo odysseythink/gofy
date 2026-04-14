@@ -8,14 +8,14 @@ import (
 	"reflect"
 	"time"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/cache"
 	"mlib.com/gofy/server/core/exceptions"
 	dbengine "mlib.com/gofy/server/db_engine"
 	"mlib.com/gofy/server/global"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/utils/validate"
-	"mlib.com/mlog"
 )
 
 type RegisterService struct {
@@ -100,7 +100,7 @@ func (s *RegisterService) GetInvitationIfTokenValid(workspace_id, email, token s
 
 func (cls *RegisterService) Setup(email string, name string, password string, ip_address string) {
 	/*
-	   Setup dify
+	   Setup gofy
 
 	   :param email: email
 	   :param name: username
@@ -109,7 +109,7 @@ func (cls *RegisterService) Setup(email string, name string, password string, ip
 	*/
 	defer func() {
 		if r := recover(); r != nil {
-			// db.session.query(DifySetup).delete()
+			// db.session.query(GofySetup).delete()
 			// db.session.query(TenantAccountJoin).delete()
 			// db.session.query(Account).delete()
 			// db.session.query(Tenant).delete()
@@ -133,10 +133,10 @@ func (cls *RegisterService) Setup(email string, name string, password string, ip
 
 		ServiceGroupApp.Tenant.CreateOwnerTenantIfNotExist(account, "", true)
 
-		dify_setup := &models.DifySetup{
+		gofy_setup := &models.GofySetup{
 			Version: confy.Get[string]("CURRENT_VERSION"),
 			SetupAt: &now,
 		}
-		dbengine.Instance().DB.Create(dify_setup)
+		dbengine.Instance().DB.Create(gofy_setup)
 	}()
 }

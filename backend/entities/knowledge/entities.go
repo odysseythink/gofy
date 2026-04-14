@@ -3,7 +3,7 @@ package knowledge
 import (
 	"encoding/json"
 
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 )
 
 type ParentModeType string

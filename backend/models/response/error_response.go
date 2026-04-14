@@ -116,7 +116,7 @@ func ProviderQuotaExceededError(c *gin.Context) {
 		Code:    "provider_quota_exceeded",
 		Status:  400,
 		Data:    nil,
-		Message: "Your quota for Dify Hosted Model Provider has been exhausted. \nPlease go to Settings -> Model Provider to complete your own provider credentials.",
+		Message: "Your quota for Gofy Hosted Model Provider has been exhausted. \nPlease go to Settings -> Model Provider to complete your own provider credentials.",
 	})
 }
 
@@ -125,7 +125,7 @@ func ProviderModelCurrentlyNotSupportError(c *gin.Context) {
 		Code:    "model_currently_not_support",
 		Status:  400,
 		Data:    nil,
-		Message: "Dify Hosted OpenAI trial currently not support the GPT-4 model.",
+		Message: "Gofy Hosted OpenAI trial currently not support the GPT-4 model.",
 	})
 }
 

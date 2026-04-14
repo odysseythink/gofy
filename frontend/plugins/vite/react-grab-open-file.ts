@@ -14,7 +14,7 @@ export const reactGrabOpenFilePlugin = ({
   const reactGrabOpenFileClientSnippet = `/* ${reactGrabOpenFileClientMarker} */
 if (typeof window !== 'undefined') {
   const projectRoot = ${JSON.stringify(projectRoot)};
-  const pluginName = 'dify-vite-open-file';
+  const pluginName = 'gofy-vite-open-file';
   const rootRelativeSourcePathPattern = /^\\/(?!@|node_modules)(?:.+)\\.(?:[cm]?[jt]sx?|mdx?)$/;
 
   const normalizeProjectRoot = (input) => {
@@ -39,7 +39,7 @@ if (typeof window !== 'undefined') {
   };
 
   const registerPlugin = () => {
-    if (window.__DIFY_REACT_GRAB_OPEN_FILE_PLUGIN_REGISTERED__) {
+    if (window.__GOFY_REACT_GRAB_OPEN_FILE_PLUGIN_REGISTERED__) {
       return;
     }
 
@@ -67,7 +67,7 @@ if (typeof window !== 'undefined') {
       },
     });
 
-    window.__DIFY_REACT_GRAB_OPEN_FILE_PLUGIN_REGISTERED__ = true;
+    window.__GOFY_REACT_GRAB_OPEN_FILE_PLUGIN_REGISTERED__ = true;
   };
 
   registerPlugin();

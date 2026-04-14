@@ -14,11 +14,11 @@ import (
 	"strings"
 	"time"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	httprequestnodesentities "mlib.com/gofy/server/entities/nodes/http_request"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
-	"mlib.com/mlog"
 )
 
 var (
@@ -53,7 +53,7 @@ func NewExecutor(
 	node_data *httprequestnodesentities.HttpRequestNodeData,
 	timeout *httprequestnodesentities.HttpRequestNodeTimeout,
 	variable_pool *workflowentities.VariablePool,
-	max_retries int, /* dify_config.SSRF_DEFAULT_MAX_RETRIES*/
+	max_retries int, /* gofy_config.SSRF_DEFAULT_MAX_RETRIES*/
 ) *Executor {
 	// If authorization API key is present, convert the API key using the variable pool
 	if node_data.Authorization != nil && node_data.Authorization.Type == "api-key" {
@@ -276,9 +276,9 @@ func (e *Executor) assembling_headers() map[string]string {
 //         executor_response := &httprequestnodesentities.NewResponse(response)
 
 //         threshold_size = (
-//             dify_config.HTTP_REQUEST_NODE_MAX_BINARY_SIZE
+//             gofy_config.HTTP_REQUEST_NODE_MAX_BINARY_SIZE
 //             if executor_response.is_file
-//             else dify_config.HTTP_REQUEST_NODE_MAX_TEXT_SIZE
+//             else gofy_config.HTTP_REQUEST_NODE_MAX_TEXT_SIZE
 //         )
 //         if executor_response.size > threshold_size:
 //             raise ResponseSizeError(

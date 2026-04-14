@@ -69,7 +69,7 @@ describe('useDatasourceIcon', () => {
           {
             plugin_id: 'plugin-abc',
             provider: 'web-scraper',
-            declaration: { identity: { icon: mockIcon, author: 'dify' } },
+            declaration: { identity: { icon: mockIcon, author: 'gofy' } },
           },
         ],
         isSuccess: true,
@@ -92,7 +92,7 @@ describe('useDatasourceIcon', () => {
           {
             plugin_id: 'plugin-xyz',
             provider: 'other',
-            declaration: { identity: { icon: '/icon.svg', author: 'dify' } },
+            declaration: { identity: { icon: '/icon.svg', author: 'gofy' } },
           },
         ],
         isSuccess: true,
@@ -120,7 +120,7 @@ describe('useDatasourceIcon', () => {
           {
             plugin_id: 'plugin-abc',
             provider: 'web-scraper',
-            declaration: { identity: { icon: '/icon.png', author: 'dify' } },
+            declaration: { identity: { icon: '/icon.png', author: 'gofy' } },
           },
         ],
         isSuccess: true,

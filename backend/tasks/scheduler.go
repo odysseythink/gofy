@@ -4,7 +4,7 @@ import (
 	"sync"
 	"time"
 
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 )
 
 // ScheduledTask represents a recurring task.

@@ -4,13 +4,13 @@ import (
 	"encoding/json"
 	"slices"
 
+	"github.com/odysseythink/mlog"
 	varassignernodesexceptions "mlib.com/gofy/server/core/exceptions/nodes/variable_assigner"
 	"mlib.com/gofy/server/core/variables"
 	dbengine "mlib.com/gofy/server/db_engine"
 	vaenumtypes "mlib.com/gofy/server/enum_types/nodes/variable_assigner"
 	variableenumtypes "mlib.com/gofy/server/enum_types/variable"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 func update_conversation_variable(conversation_id string, variable variables.Variabler) {

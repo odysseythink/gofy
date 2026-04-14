@@ -3,7 +3,7 @@ package rag
 import (
 	"encoding/json"
 
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 )
 
 var (

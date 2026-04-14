@@ -5,10 +5,10 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/odysseythink/mlog"
 	"github.com/xuri/excelize/v2"
 	"mlib.com/gofy/server/core/exceptions"
 	ragentities "mlib.com/gofy/server/entities/rag"
-	"mlib.com/mlog"
 )
 
 type ExcelExtractor struct {
@@ -90,7 +90,7 @@ func (extractor *ExcelExtractor) Extract() []*ragentities.Document {
 				documents = append(documents, &ragentities.Document{
 					PageContent: strings.Join(page_content, ";"),
 					Metadata:    map[string]any{"source": extractor._file_path},
-					Provider:    "dify",
+					Provider:    "gofy",
 				})
 			}
 		}

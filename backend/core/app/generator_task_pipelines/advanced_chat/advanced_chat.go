@@ -7,6 +7,7 @@ import (
 	"slices"
 	"time"
 
+	"github.com/odysseythink/mlog"
 	msgcyclemgr "mlib.com/gofy/server/core/app/cycle_manage/message"
 	wfcyclemgr "mlib.com/gofy/server/core/app/cycle_manage/workflow"
 	"mlib.com/gofy/server/core/app/generator_task_pipelines/base"
@@ -25,7 +26,6 @@ import (
 	wfenumtypes "mlib.com/gofy/server/enum_types/workflow"
 	"mlib.com/gofy/server/events"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 type AdvancedChatAppGenerateTaskPipeline struct {

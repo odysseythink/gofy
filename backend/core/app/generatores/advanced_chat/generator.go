@@ -4,6 +4,7 @@ import (
 	"iter"
 	"strings"
 
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
 	achatconfigmgr "mlib.com/gofy/server/core/app/config_manageres/advanced_chat"
 	acresponseconverter "mlib.com/gofy/server/core/app/generator_response_convertes/advanced_chat"
@@ -23,7 +24,6 @@ import (
 	appenumtypes "mlib.com/gofy/server/enum_types/app"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/utils"
-	"mlib.com/mlog"
 )
 
 type AdvancedChatAppGenerator[T1 interface {

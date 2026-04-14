@@ -1,0 +1,1 @@
+const e={key:"@node",shortcut:"@node",title:"Search RAG Pipeline Nodes",description:"Find and jump to nodes in the current RAG pipeline by name or type",searchFn:void 0,search:async(o,n="",i)=>{try{return e.searchFn?e.searchFn(n):[]}catch(r){return console.warn("RAG pipeline nodes search failed:",r),[]}}};export{e as r};

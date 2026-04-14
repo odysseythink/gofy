@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
 	penodesexceptions "mlib.com/gofy/server/core/exceptions/nodes/parameter_extractor"
 	"mlib.com/gofy/server/core/file"
@@ -30,7 +31,6 @@ import (
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 	workflowenumtypes "mlib.com/gofy/server/enum_types/workflow"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 type ParameterExtractorNode struct {
@@ -275,7 +275,7 @@ func (n *ParameterExtractorNode) _get_function_calling_prompt_template(
 	memory_str := ""
 	instruction := variable_pool.ConvertTemplate(node_data.Instruction).Text()
 
-	if mem != nil && node_data.Memory != nil && node_data.Memory.Window != nil {
+	if mem != nil && node_data.Memory != nil && node_data.Memory.Window.Enabled {
 		memory_str = mem.GetHistoryPromptText("", "", max_token_limit, node_data.Memory.Window.Size)
 	}
 	if model_mode == modelruntimeentities.LLMMode_CHAT {
@@ -304,7 +304,7 @@ func (n *ParameterExtractorNode) _get_prompt_engineering_prompt_template(
 	memory_str := ""
 	instruction := variable_pool.ConvertTemplate(node_data.Instruction).Text()
 
-	if mem != nil && node_data.Memory != nil && node_data.Memory.Window != nil {
+	if mem != nil && node_data.Memory != nil && node_data.Memory.Window.Enabled {
 		memory_str = mem.GetHistoryPromptText("", "", max_token_limit, node_data.Memory.Window.Size)
 	}
 	if model_mode == modelruntimeentities.LLMMode_CHAT {

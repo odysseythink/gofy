@@ -6,6 +6,7 @@ import (
 	"reflect"
 	"time"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/confy/cast"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/variables"
@@ -14,7 +15,6 @@ import (
 	variablefactory "mlib.com/gofy/server/factories/variable_factory"
 	"mlib.com/gofy/server/libs/helper"
 	"mlib.com/gofy/server/utils/validate"
-	"mlib.com/mlog"
 )
 
 type WorkflowAppLogCreatedFrom string

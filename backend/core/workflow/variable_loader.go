@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/variables"
 	variablefactory "mlib.com/gofy/server/factories/variable_factory"
-	"mlib.com/mlog"
 )
 
 // VariableLoader loads and initializes variables for a workflow execution.

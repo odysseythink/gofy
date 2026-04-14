@@ -3,11 +3,11 @@ package openai_api_compatible
 import (
 	"fmt"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/model_runtime/model_provides/base"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	"mlib.com/gofy/server/global"
-	"mlib.com/mlog"
 )
 
 // OpenAICompatibleProvider works with any OpenAI-compatible API endpoint.

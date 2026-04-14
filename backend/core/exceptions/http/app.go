@@ -51,7 +51,7 @@ func NewProviderQuotaExceededError() *ProviderQuotaExceededError {
 		BaseHTTPException: &BaseHTTPException{
 			code: "provider_quota_exceeded",
 			ValueError: exceptions.NewValueError(
-				"Your quota for Dify Hosted Model Provider has been exhausted. Please go to Settings -> Model Provider to complete your own provider credentials.",
+				"Your quota for Gofy Hosted Model Provider has been exhausted. Please go to Settings -> Model Provider to complete your own provider credentials.",
 			),
 			status: 400,
 		},
@@ -67,7 +67,7 @@ func NewProviderModelCurrentlyNotSupportError() *ProviderModelCurrentlyNotSuppor
 		BaseHTTPException: &BaseHTTPException{
 			code: "model_currently_not_support",
 			ValueError: exceptions.NewValueError(
-				"Dify Hosted OpenAI trial currently not support the GPT-4 model.",
+				"Gofy Hosted OpenAI trial currently not support the GPT-4 model.",
 			),
 			status: 400,
 		},

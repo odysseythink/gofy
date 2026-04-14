@@ -11,7 +11,7 @@ from sqlalchemy import text as sql_text
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm import Mapped, Session, mapped_column
 
-from configs import dify_config
+from configs import gofy_config
 from core.rag.datasource.vdb.pgvecto_rs.collection import CollectionORM
 from core.rag.datasource.vdb.vector_base import BaseVector
 from core.rag.datasource.vdb.vector_factory import AbstractVectorFactory
@@ -225,11 +225,11 @@ class PGVectoRSFactory(AbstractVectorFactory):
         return PGVectoRS(
             collection_name=collection_name,
             config=PgvectoRSConfig(
-                host=dify_config.PGVECTO_RS_HOST or "localhost",
-                port=dify_config.PGVECTO_RS_PORT or 5432,
-                user=dify_config.PGVECTO_RS_USER or "postgres",
-                password=dify_config.PGVECTO_RS_PASSWORD or "",
-                database=dify_config.PGVECTO_RS_DATABASE or "postgres",
+                host=gofy_config.PGVECTO_RS_HOST or "localhost",
+                port=gofy_config.PGVECTO_RS_PORT or 5432,
+                user=gofy_config.PGVECTO_RS_USER or "postgres",
+                password=gofy_config.PGVECTO_RS_PASSWORD or "",
+                database=gofy_config.PGVECTO_RS_DATABASE or "postgres",
             ),
             dim=dim,
         )

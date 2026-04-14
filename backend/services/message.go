@@ -1,6 +1,7 @@
 package services
 
 import (
+	"github.com/odysseythink/mlog"
 	achatcfgmanage "mlib.com/gofy/server/core/app/config_manageres/advanced_chat"
 	"mlib.com/gofy/server/core/exceptions"
 	httpexceptions "mlib.com/gofy/server/core/exceptions/http"
@@ -12,7 +13,6 @@ import (
 	appenumtypes "mlib.com/gofy/server/enum_types/app"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 type MessageService[T interface {

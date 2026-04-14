@@ -102,7 +102,7 @@ package embedding
 //             if np.isnan(embedding_results).any():
 //                 raise ValueError("Normalized embedding is nan please try again")
 //         except Exception as ex:
-//             if dify_config.DEBUG:
+//             if gofy_config.DEBUG:
 //                 logging.exception("Failed to embed query text '%s...(%s chars)'", text[:10], len(text))
 //             raise ex
 
@@ -116,7 +116,7 @@ package embedding
 //             encoded_str = encoded_vector.decode("utf-8")
 //             redis_client.setex(embedding_cache_key, 600, encoded_str)
 //         except Exception as ex:
-//             if dify_config.DEBUG:
+//             if gofy_config.DEBUG:
 //                 logging.exception(
 //                     "Failed to add embedding to redis for the text '%s...(%s chars)'", text[:10], len(text)
 //                 )

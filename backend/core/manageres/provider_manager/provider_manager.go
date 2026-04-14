@@ -6,6 +6,7 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
 	"mlib.com/gofy/server/core/exceptions"
 	hostingconfiguration "mlib.com/gofy/server/core/hosting_configuration"
@@ -19,7 +20,6 @@ import (
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 var (
@@ -725,8 +725,8 @@ func (pm *ProviderManager) GetConfigurations(tenant_id string) *coreentities.Pro
 	for _, provider_entity := range provider_entities {
 		// handle include, exclude
 		// if is_filtered(
-		//     include_set=cast(set[str], dify_config.POSITION_PROVIDER_INCLUDES_SET),
-		//     exclude_set=cast(set[str], dify_config.POSITION_PROVIDER_EXCLUDES_SET),
+		//     include_set=cast(set[str], gofy_config.POSITION_PROVIDER_INCLUDES_SET),
+		//     exclude_set=cast(set[str], gofy_config.POSITION_PROVIDER_EXCLUDES_SET),
 		//     data=provider_entity,
 		//     name_func=lambda x: x.Provider,
 		// ){

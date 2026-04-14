@@ -1,0 +1,38 @@
+model: o1
+label:
+  en_US: o1
+model_type: llm
+features:
+  - multi-tool-call
+  - agent-thought
+  - stream-tool-call
+  - vision
+model_properties:
+  mode: chat
+  context_size: 200000
+parameter_rules:
+  - name: max_tokens
+    use_template: max_tokens
+    type: int
+    default: 4096
+    min: 1
+    max: 100000
+  - name: frequency_penalty
+    use_template: frequency_penalty
+    type: float
+    default: 0.0
+    min: -2.0
+    max: 2.0
+  - name: presence_penalty
+    use_template: presence_penalty
+    type: float
+    default: 0.0
+    min: -2.0
+    max: 2.0
+  - name: response_format
+    use_template: response_format
+pricing:
+  input: 15.0
+  output: 60.0
+  unit: 0.000001
+  currency: USD

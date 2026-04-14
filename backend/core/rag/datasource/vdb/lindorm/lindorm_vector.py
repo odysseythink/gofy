@@ -9,7 +9,7 @@ from opensearchpy.helpers import BulkIndexError
 from pydantic import BaseModel, model_validator
 from tenacity import retry, stop_after_attempt, wait_exponential
 
-from configs import dify_config
+from configs import gofy_config
 from core.rag.datasource.vdb.field import Field
 from core.rag.datasource.vdb.vector_base import BaseVector
 from core.rag.datasource.vdb.vector_factory import AbstractVectorFactory
@@ -336,8 +336,8 @@ class LindormVectorStore(BaseVector):
             shards = kwargs.pop("shards", 4)
 
             engine = kwargs.pop("engine", "lvector")
-            method_name = kwargs.pop("method_name", dify_config.DEFAULT_INDEX_TYPE)
-            space_type = kwargs.pop("space_type", dify_config.DEFAULT_DISTANCE_TYPE)
+            method_name = kwargs.pop("method_name", gofy_config.DEFAULT_INDEX_TYPE)
+            space_type = kwargs.pop("space_type", gofy_config.DEFAULT_DISTANCE_TYPE)
             data_type = kwargs.pop("data_type", "float")
 
             hnsw_m = kwargs.pop("hnsw_m", 24)
@@ -551,13 +551,13 @@ def default_vector_search_query(
 class LindormVectorStoreFactory(AbstractVectorFactory):
     def init_vector(self, dataset: Dataset, attributes: list, embeddings: Embeddings) -> LindormVectorStore:
         lindorm_config = LindormVectorStoreConfig(
-            hosts=dify_config.LINDORM_URL or "",
-            username=dify_config.LINDORM_USERNAME,
-            password=dify_config.LINDORM_PASSWORD,
-            using_ugc=dify_config.USING_UGC_INDEX,
-            request_timeout=dify_config.LINDORM_QUERY_TIMEOUT,
+            hosts=gofy_config.LINDORM_URL or "",
+            username=gofy_config.LINDORM_USERNAME,
+            password=gofy_config.LINDORM_PASSWORD,
+            using_ugc=gofy_config.USING_UGC_INDEX,
+            request_timeout=gofy_config.LINDORM_QUERY_TIMEOUT,
         )
-        using_ugc = dify_config.USING_UGC_INDEX
+        using_ugc = gofy_config.USING_UGC_INDEX
         if using_ugc is None:
             raise ValueError("USING_UGC_INDEX is not set")
         routing_value = None
@@ -577,8 +577,8 @@ class LindormVectorStoreFactory(AbstractVectorFactory):
         else:
             embedding_vector = embeddings.embed_query("hello word")
             dimension = len(embedding_vector)
-            index_type = dify_config.DEFAULT_INDEX_TYPE
-            distance_type = dify_config.DEFAULT_DISTANCE_TYPE
+            index_type = gofy_config.DEFAULT_INDEX_TYPE
+            distance_type = gofy_config.DEFAULT_DISTANCE_TYPE
             class_prefix = Dataset.gen_collection_name_by_id(dataset.id)
             index_struct_dict = {
                 "type": VectorType.LINDORM,

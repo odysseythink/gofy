@@ -7,9 +7,9 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	ragentities "mlib.com/gofy/server/entities/rag"
-	"mlib.com/mlog"
 )
 
 type CSVExtractor struct {
@@ -83,7 +83,7 @@ func (extractor *CSVExtractor) _read_from_file(csvfile *os.File) []*ragentities.
 			doc := &ragentities.Document{
 				PageContent: content,
 				Metadata:    metadata,
-				Provider:    "dify",
+				Provider:    "gofy",
 			}
 			docs = append(docs, doc)
 		}

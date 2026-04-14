@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
-	"mlib.com/mlog"
 )
 
 const (

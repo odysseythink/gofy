@@ -6,7 +6,7 @@ import tablestore  # type: ignore
 from pydantic import BaseModel, model_validator
 from tablestore import BatchGetRowRequest, TableInBatchGetRowItem
 
-from configs import dify_config
+from configs import gofy_config
 from core.rag.datasource.vdb.field import Field
 from core.rag.datasource.vdb.vector_base import BaseVector
 from core.rag.datasource.vdb.vector_factory import AbstractVectorFactory
@@ -371,9 +371,9 @@ class TableStoreVectorFactory(AbstractVectorFactory):
         return TableStoreVector(
             collection_name=collection_name,
             config=TableStoreConfig(
-                endpoint=dify_config.TABLESTORE_ENDPOINT,
-                instance_name=dify_config.TABLESTORE_INSTANCE_NAME,
-                access_key_id=dify_config.TABLESTORE_ACCESS_KEY_ID,
-                access_key_secret=dify_config.TABLESTORE_ACCESS_KEY_SECRET,
+                endpoint=gofy_config.TABLESTORE_ENDPOINT,
+                instance_name=gofy_config.TABLESTORE_INSTANCE_NAME,
+                access_key_id=gofy_config.TABLESTORE_ACCESS_KEY_ID,
+                access_key_secret=gofy_config.TABLESTORE_ACCESS_KEY_SECRET,
             ),
         )

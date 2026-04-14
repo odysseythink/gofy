@@ -3,10 +3,10 @@ package utils
 import (
 	"slices"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/constants"
 	dbengine "mlib.com/gofy/server/db_engine"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 func ExtractThreadMessages(messages []*models.Message) []*models.Message {

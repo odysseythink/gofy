@@ -1,19 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import type { ReactNode } from 'react'
 import { ThemeProvider } from 'next-themes'
-import DifyLogo from './dify-logo'
+import GofyLogo from './gofy-logo'
 import LogoEmbeddedChatAvatar from './logo-embedded-chat-avatar'
 import LogoEmbeddedChatHeader from './logo-embedded-chat-header'
 import LogoSite from './logo-site'
 
 const meta = {
   title: 'Base/General/Logo',
-  component: DifyLogo,
+  component: GofyLogo,
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Brand assets rendered in different contexts. DifyLogo adapts to the active theme while other variants target specific surfaces.',
+        component: 'Brand assets rendered in different contexts. GofyLogo adapts to the active theme while other variants target specific surfaces.',
       },
     },
   },
@@ -32,7 +32,7 @@ const meta = {
     },
   },
   tags: ['autodocs'],
-} satisfies Meta<typeof DifyLogo>
+} satisfies Meta<typeof GofyLogo>
 
 export default meta
 type Story = StoryObj<typeof meta>
@@ -57,7 +57,7 @@ export const Playground: Story = {
           <div className="flex flex-col gap-2">
             <span className="text-xs uppercase tracking-[0.18em] text-text-tertiary">Primary logo</span>
             <div className="flex items-center justify-between rounded-xl border border-divider-subtle bg-background-default p-4">
-              <DifyLogo size={size} style={style} />
+              <GofyLogo size={size} style={style} />
               <code className="text-[11px] text-text-tertiary">{`size="${size}" | style="${style}"`}</code>
             </div>
           </div>

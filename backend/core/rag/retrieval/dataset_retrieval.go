@@ -8,6 +8,7 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/odysseythink/mlog"
 	"gorm.io/gorm/clause"
 	"mlib.com/confy/cast"
 	"mlib.com/gofy/server/core/exceptions"
@@ -27,7 +28,6 @@ import (
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/utils"
 	"mlib.com/gofy/server/utils/mapstruct"
-	"mlib.com/mlog"
 )
 
 var (
@@ -78,7 +78,7 @@ func _fetch_model_config(
 	if provider_model.Status == modelenumtypes.ModelStatus_NO_CONFIGURE {
 		panic(exceptions.NewValueError(fmt.Sprintf("Model {%s} credentials is not initialized.", model_name)))
 	} else if provider_model.Status == modelenumtypes.ModelStatus_NO_PERMISSION {
-		panic(exceptions.NewValueError(fmt.Sprintf("Dify Hosted OpenAI {%s} currently not support.", model_name)))
+		panic(exceptions.NewValueError(fmt.Sprintf("Gofy Hosted OpenAI {%s} currently not support.", model_name)))
 	} else if provider_model.Status == modelenumtypes.ModelStatus_QUOTA_EXCEEDED {
 		panic(exceptions.NewValueError(fmt.Sprintf("Model provider {%s} quota exceeded.", provider_name)))
 	}

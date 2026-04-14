@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/odysseythink/mlog"
 	"github.com/redis/go-redis/v9"
 	"mlib.com/gofy/server/cache"
-	"mlib.com/mlog"
 )
 
 // redisCli returns the project's shared Redis UniversalClient.

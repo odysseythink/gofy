@@ -5,7 +5,7 @@ import (
 	"io"
 	"net/http"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
 	basenodesentities "mlib.com/gofy/server/entities/nodes/base"
 )
 

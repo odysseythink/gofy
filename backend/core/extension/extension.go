@@ -3,8 +3,8 @@ package extension
 import (
 	"fmt"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
-	"mlib.com/mlog"
 )
 
 type Extension struct {

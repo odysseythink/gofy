@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 )
 
 // LangfuseTraceConfig configures the Langfuse backend.

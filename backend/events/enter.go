@@ -1,6 +1,6 @@
 package events
 
-import "mlib.com/mrun"
+import "github.com/odysseythink/mrun"
 
 type EventGroup struct {
 	MessageWasCreatedSig              *mrun.Signal

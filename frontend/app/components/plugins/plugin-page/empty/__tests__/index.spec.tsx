@@ -147,7 +147,7 @@ describe('Empty Component', () => {
       const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement
       expect(fileInput).toBeInTheDocument()
       expect(fileInput.style.display).toBe('none')
-      expect(fileInput.accept).toBe('.difypkg,.difybndl')
+      expect(fileInput.accept).toBe('.gofypkg,.gofybndl')
 
       // Assert - skeleton cards (20 in the grid + 1 icon container)
       const skeletonCards = container.querySelectorAll('.rounded-xl.bg-components-card-bg')
@@ -362,7 +362,7 @@ describe('Empty Component', () => {
       render(<Empty />)
       await flushEffects()
       const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement
-      const mockFile = createMockFile('test-plugin.difypkg')
+      const mockFile = createMockFile('test-plugin.gofypkg')
 
       // Assert - initially no modal
       expect(screen.queryByTestId('install-from-local-modal')).not.toBeInTheDocument()
@@ -373,7 +373,7 @@ describe('Empty Component', () => {
 
       // Assert - modal is open with correct file
       expect(screen.getByTestId('install-from-local-modal')).toBeInTheDocument()
-      expect(screen.getByTestId('install-from-local-modal')).toHaveAttribute('data-file-name', 'test-plugin.difypkg')
+      expect(screen.getByTestId('install-from-local-modal')).toHaveAttribute('data-file-name', 'test-plugin.gofypkg')
 
       // Act - close modal
       fireEvent.click(screen.getByTestId('local-modal-close'))
@@ -421,16 +421,16 @@ describe('Empty Component', () => {
       await flushEffects()
       const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement
 
-      // Act - select .difypkg file
-      Object.defineProperty(fileInput, 'files', { value: [createMockFile('my-plugin.difypkg')], writable: true })
+      // Act - select .gofypkg file
+      Object.defineProperty(fileInput, 'files', { value: [createMockFile('my-plugin.gofypkg')], writable: true })
       fireEvent.change(fileInput)
-      expect(screen.getByTestId('install-from-local-modal')).toHaveAttribute('data-file-name', 'my-plugin.difypkg')
+      expect(screen.getByTestId('install-from-local-modal')).toHaveAttribute('data-file-name', 'my-plugin.gofypkg')
 
-      // Close and select .difybndl file
+      // Close and select .gofybndl file
       fireEvent.click(screen.getByTestId('local-modal-close'))
-      Object.defineProperty(fileInput, 'files', { value: [createMockFile('test-bundle.difybndl')], writable: true })
+      Object.defineProperty(fileInput, 'files', { value: [createMockFile('test-bundle.gofybndl')], writable: true })
       fireEvent.change(fileInput)
-      expect(screen.getByTestId('install-from-local-modal')).toHaveAttribute('data-file-name', 'test-bundle.difybndl')
+      expect(screen.getByTestId('install-from-local-modal')).toHaveAttribute('data-file-name', 'test-bundle.gofybndl')
     })
   })
 
@@ -533,7 +533,7 @@ describe('Empty Component', () => {
       fireEvent.click(screen.getByTestId('github-modal-close'))
 
       const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement
-      Object.defineProperty(fileInput, 'files', { value: [createMockFile('test-plugin.difypkg')], writable: true })
+      Object.defineProperty(fileInput, 'files', { value: [createMockFile('test-plugin.gofypkg')], writable: true })
       fireEvent.change(fileInput)
 
       fireEvent.click(screen.getByTestId('local-modal-success'))

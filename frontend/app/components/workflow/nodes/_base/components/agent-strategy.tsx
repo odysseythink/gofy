@@ -263,7 +263,7 @@ export const AgentStrategy = memo((props: AgentStrategyProps) => {
                     {' '}
                     <br />
                     <Link
-                      to={docLink('/use-dify/nodes/agent')}
+                      to={docLink('/use-gofy/nodes/agent')}
                       className="text-text-accent-secondary"
                       target="_blank"
                     >

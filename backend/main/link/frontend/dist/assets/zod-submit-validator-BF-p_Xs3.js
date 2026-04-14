@@ -1,0 +1,1 @@
+const c=i=>({value:n})=>{const r=i.safeParse(n);if(!r.success){const s={};for(const e of r.error.issues){const t=e.path[0];if(t===void 0)continue;const o=String(t);s[o]||(s[o]=e.message)}return{fields:s}}};export{c as z};

@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 )
 
 // type JWT struct {
@@ -30,7 +30,7 @@ func CreateClaims(userID, iss string, ep time.Duration) CustomClaims {
 	claims := CustomClaims{
 		UserID: userID,
 		RegisteredClaims: jwt.RegisteredClaims{
-			Audience:  jwt.ClaimStrings{"dify"},           // 受众
+			Audience:  jwt.ClaimStrings{"gofy"},           // 受众
 			NotBefore: jwt.NewNumericDate(now.Add(-1000)), // 签名生效时间
 			ExpiresAt: jwt.NewNumericDate(now.Add(ep)),    // 过期时间 7天  配置文件
 			Issuer:    iss,                                // 签名的发行者

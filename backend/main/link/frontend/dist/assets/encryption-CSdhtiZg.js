@@ -1,0 +1,1 @@
+function n(e){try{const r=new TextEncoder().encode(e);return btoa(String.fromCharCode(...r))}catch(r){throw console.error("Field encoding failed:",r),new Error("Encoding failed. Please check your input.")}}function t(e){return n(e)}function c(e){return n(e)}export{t as a,c as e};

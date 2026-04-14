@@ -11,8 +11,8 @@ def excepthook(type, value, tb):
 sys.excepthook = excepthook
 
 # lib = ctypes.CDLL("./python.so")
-# lib.DifySeccomp.argtypes = [ctypes.c_uint32, ctypes.c_uint32, ctypes.c_bool]
-# lib.DifySeccomp.restype = None
+# lib.GofySeccomp.argtypes = [ctypes.c_uint32, ctypes.c_uint32, ctypes.c_bool]
+# lib.GofySeccomp.restype = None
 
 # get running path
 running_path = sys.argv[1]
@@ -31,7 +31,7 @@ os.chdir(running_path)
 
 {{preload}}
 
-# lib.DifySeccomp({{uid}}, {{gid}}, {{enable_network}})
+# lib.GofySeccomp({{uid}}, {{gid}}, {{enable_network}})
 
 code = b64decode("{{code}}")
 

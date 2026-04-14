@@ -7,9 +7,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"google.golang.org/grpc/resolver"
-	"mlib.com/confy"
-	"mlib.com/mlog"
 	"mlib.com/zkmgr"
 )
 

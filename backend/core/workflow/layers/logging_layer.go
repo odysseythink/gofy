@@ -3,8 +3,8 @@ package layers
 import (
 	"time"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/workflow/events"
-	"mlib.com/mlog"
 )
 
 // LoggingLayer logs workflow execution events.

@@ -3,12 +3,12 @@ package llm
 import (
 	"encoding/json"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	basenodesentities "mlib.com/gofy/server/entities/nodes/base"
 	promptentities "mlib.com/gofy/server/entities/prompt"
 	workflowentities "mlib.com/gofy/server/entities/workflow"
-	"mlib.com/mlog"
 )
 
 type ModelConfig struct {

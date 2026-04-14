@@ -1,6 +1,6 @@
 package mapstruct
 
-import "mlib.com/mlog"
+import "github.com/odysseythink/mlog"
 
 func Get[T int | bool | string | map[string]any | float64 | []map[string]any | []string | map[string][]string | [][]string](val map[string]any, key string, default_val T) T {
 	if _, ok := val[key]; ok {

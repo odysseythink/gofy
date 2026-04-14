@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strings"
 
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 )
 
 type SuggestedQuestionsAfterAnswerOutputParser struct {

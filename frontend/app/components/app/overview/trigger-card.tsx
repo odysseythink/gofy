@@ -207,7 +207,7 @@ function TriggerCard({ appInfo, onToggleResult }: ITriggerCardProps) {
               {t('overview.triggerInfo.triggerStatusDescription', { ns: 'appOverview' })}
               {' '}
               <Link
-                to={docLink('/use-dify/nodes/trigger/overview')}
+                to={docLink('/use-gofy/nodes/trigger/overview')}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-text-accent hover:underline"

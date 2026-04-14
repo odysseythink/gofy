@@ -21,7 +21,7 @@ class TestPromptBuilder {
 
     return `
 ╔════════════════════════════════════════════════════════════════════════════╗
-║                 📋 GENERATE TEST FOR DIFY COMPONENT                         ║
+║                 📋 GENERATE TEST FOR GOFY COMPONENT                         ║
 ╚════════════════════════════════════════════════════════════════════════════╝
 
 📍 Component: ${analysis.name}
@@ -315,7 +315,7 @@ class TestReviewPromptBuilder {
 
     return `
 ╔════════════════════════════════════════════════════════════════════════════╗
-║                 ✅ REVIEW TEST FOR DIFY COMPONENT                           ║
+║                 ✅ REVIEW TEST FOR GOFY COMPONENT                           ║
 ╚════════════════════════════════════════════════════════════════════════════╝
 
 📂 Component Path: ${analysis.path}

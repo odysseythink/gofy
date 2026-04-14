@@ -212,7 +212,7 @@ export const IndexingModeSection: FC<IndexingModeSectionProps> = ({
                   <a
                     target="_blank"
                     rel="noopener noreferrer"
-                    href={docLink('/use-dify/knowledge/create-knowledge/setting-indexing-methods')}
+                    href={docLink('/use-gofy/knowledge/create-knowledge/setting-indexing-methods')}
                     className="text-text-accent"
                   >
                     {t('form.retrievalSetting.learnMore', { ns: 'datasetSettings' })}

@@ -5,10 +5,10 @@ import (
 	"path/filepath"
 	"slices"
 
+	"github.com/odysseythink/mlog"
 	"gopkg.in/yaml.v3"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
-	"mlib.com/mlog"
 )
 
 type BaseModelProvide struct {

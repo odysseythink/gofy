@@ -3,10 +3,10 @@ package main
 import (
 	"context"
 
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"google.golang.org/grpc/peer"
-	"mlib.com/confy"
 	"mlib.com/gofy/server/proto/pbapi"
-	"mlib.com/mlog"
 )
 
 func (s *AdminService) GetVersion(ctx context.Context, in *pbapi.GetVersionRequest) (out *pbapi.GetVersionReply, err error) {

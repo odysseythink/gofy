@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
 	"mlib.com/gofy/server/constants"
 	"mlib.com/gofy/server/core/exceptions"
@@ -20,7 +21,6 @@ import (
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 type ProviderConfigurationService struct {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"iter"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/constants"
 	varassignernodesexceptions "mlib.com/gofy/server/core/exceptions/nodes/variable_assigner"
 	"mlib.com/gofy/server/core/variables"
@@ -15,7 +16,6 @@ import (
 	variableenumtypes "mlib.com/gofy/server/enum_types/variable"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/utils"
-	"mlib.com/mlog"
 )
 
 var (

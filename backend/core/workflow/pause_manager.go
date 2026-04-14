@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
 	dbengine "mlib.com/gofy/server/db_engine"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/storage"
-	"mlib.com/mlog"
 )
 
 // PauseReasonType defines why a workflow was paused.

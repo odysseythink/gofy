@@ -7,10 +7,10 @@ import (
 
 	uuid "github.com/satori/go.uuid"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/plugin"
 	dbengine "mlib.com/gofy/server/db_engine"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 type PluginService struct{}

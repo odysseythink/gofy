@@ -3,10 +3,10 @@ package main
 import (
 	"context"
 
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"google.golang.org/grpc/peer"
-	"mlib.com/confy"
 	"mlib.com/gofy/server/proto/pbapi"
-	"mlib.com/mlog"
 )
 
 func (s *AdminService) GetFileUploadConfig(ctx context.Context, in *pbapi.GetFileUploadConfigRequest) (out *pbapi.GetFileUploadConfigReply, err error) {

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 )
 
 // Task represents a background task.

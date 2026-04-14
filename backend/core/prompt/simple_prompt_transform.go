@@ -8,6 +8,7 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/core/file"
 	"mlib.com/gofy/server/core/memory"
@@ -17,7 +18,6 @@ import (
 	promptentities "mlib.com/gofy/server/entities/prompt"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/utils/mapstruct"
-	"mlib.com/mlog"
 )
 
 var (

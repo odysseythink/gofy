@@ -11,11 +11,11 @@ import (
 	"strings"
 	"time"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/model_runtime/model_provides/base"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 	commontypes "mlib.com/gofy/server/types/common"
-	"mlib.com/mlog"
 )
 
 type OpenAICompatibleLLM struct {
@@ -41,14 +41,12 @@ func (l *OpenAICompatibleLLM) ModelType() modelruntimeenumtypes.ModelType {
 }
 
 func (l *OpenAICompatibleLLM) ValidateCredentials(model string, credentials map[string]any) {
-	_, err := l.Invoke(model, credentials,
+	// Invoke panics on failure; if it returns, credentials are valid.
+	_ = l.Invoke(model, credentials,
 		[]modelruntimeentities.PromptMessager{modelruntimeentities.NewUserPromptMessage("ping", "")},
 		map[string]any{"max_tokens": 10},
 		nil, nil, "",
 	)
-	if err != nil {
-		panic(fmt.Errorf("credentials validation failed: %w", err))
-	}
 }
 
 func (l *OpenAICompatibleLLM) GetCustomizableModelSchema(model string, credentials map[string]any) *modelruntimeentities.AIModelEntity {

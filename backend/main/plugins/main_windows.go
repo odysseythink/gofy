@@ -8,11 +8,11 @@ import (
 	"log"
 	"os"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mrun"
 	"mlib.com/gofy/server/cluster"
-	"mlib.com/mrun"
 
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 )
 
 func main() {

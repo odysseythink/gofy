@@ -5,7 +5,7 @@ package plugin
 
 // from pydantic import BaseModel, Field, model_validator
 
-// from configs import dify_config
+// from configs import gofy_config
 // from core.entities.provider_entities import ProviderConfig
 // from core.plugin.entities.base import BasePluginEntity
 

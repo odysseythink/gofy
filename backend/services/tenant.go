@@ -6,9 +6,10 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
-	"mlib.com/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	httpexceptions "mlib.com/gofy/server/core/exceptions/http"
 	dbengine "mlib.com/gofy/server/db_engine"
@@ -17,7 +18,6 @@ import (
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/models/request"
 	cryptutils "mlib.com/gofy/server/utils/crypt"
-	"mlib.com/mlog"
 )
 
 type TenantService struct {
@@ -252,10 +252,12 @@ func (s *TenantService) CreateTenant(name string, is_setup bool, is_from_dashboa
 	}
 	now := time.Now()
 	tenant := &models.Tenant{
-		ID:        uuid.NewV4().String(),
-		Name:      name,
-		CreatedAt: &now,
-		UpdatedAt: &now,
+		Model: models.Model{
+			ID:        uuid.NewV4().String(),
+			CreatedAt: &now,
+			UpdatedAt: &now,
+		},
+		Name: name,
 	}
 
 	tenant.EncryptPublicKey = cryptutils.GenerateKeyPair(tenant.ID)
@@ -283,16 +285,18 @@ func (s *TenantService) CreateTenantMember(tenant *models.Tenant, account *model
 
 	if ta != nil {
 		ta.Role = role
-		dbengine.Instance().DB.Updates(&models.TenantAccountJoin{ID: ta.ID, Role: role})
+		dbengine.Instance().DB.Updates(&models.TenantAccountJoin{Model: models.Model{ID: ta.ID}, Role: role})
 	} else {
 		now := time.Now()
 		ta = &models.TenantAccountJoin{
-			ID:        uuid.NewV4().String(),
+			Model: models.Model{
+				ID:        uuid.NewV4().String(),
+				CreatedAt: &now,
+				UpdatedAt: &now,
+			},
 			TenantID:  tenant.ID,
 			AccountID: account.ID,
 			Role:      role,
-			CreatedAt: &now,
-			UpdatedAt: &now,
 		}
 		dbengine.Instance().DB.Create(ta)
 	}
@@ -352,7 +356,7 @@ func (s *TenantService) SwitchTenant(account *models.Account, tenant_id string) 
 	} else {
 		dbengine.Instance().DB.Model(&models.TenantAccountJoin{}).Update("current", false).Where("account_id = ? and tenant_id=?", account.ID, tenant_id)
 		tenant_account_join.Current = true
-		dbengine.Instance().DB.Updates(&models.TenantAccountJoin{ID: tenant_account_join.ID, Current: true})
+		dbengine.Instance().DB.Updates(&models.TenantAccountJoin{Model: models.Model{ID: tenant_account_join.ID}, Current: true})
 
 		// Set the current tenant for the account
 		account.SetCurrentTenantID(tenant_account_join.TenantID)

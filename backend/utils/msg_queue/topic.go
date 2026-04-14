@@ -5,7 +5,7 @@ import (
 	"context"
 	"sync"
 
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 )
 
 type Topic struct {

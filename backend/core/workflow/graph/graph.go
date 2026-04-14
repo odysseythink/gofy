@@ -7,7 +7,7 @@ import (
 	"slices"
 	"sort"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	answergeneraterouter "mlib.com/gofy/server/core/workflow/nodes_generate_router/answer"
 	endgeneraterouter "mlib.com/gofy/server/core/workflow/nodes_generate_router/end"
@@ -16,9 +16,9 @@ import (
 	endnodesentities "mlib.com/gofy/server/entities/nodes/end"
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
 	"mlib.com/gofy/server/utils/validate"
-	"mlib.com/mlog"
 )
 
 // Graph represents a graph structure

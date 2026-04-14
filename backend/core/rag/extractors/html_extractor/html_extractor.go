@@ -4,8 +4,8 @@ import (
 	"os"
 
 	"github.com/anaskhan96/soup"
+	"github.com/odysseythink/mlog"
 	ragentities "mlib.com/gofy/server/entities/rag"
-	"mlib.com/mlog"
 )
 
 type HtmlExtractor struct {
@@ -31,7 +31,7 @@ func (extractor *HtmlExtractor) Extract() []*ragentities.Document {
 	return []*ragentities.Document{
 		&ragentities.Document{
 			PageContent: doc.FullText(),
-			Provider:    "dify",
+			Provider:    "gofy",
 		},
 	}
 }

@@ -25,7 +25,7 @@ type Document struct {
 	*/
 	Metadata map[string]any `json:"metadata"`
 
-	Provider string/*"dify"*/ `json:"provider"`
+	Provider string/*"gofy"*/ `json:"provider"`
 
 	Children []*ChildDocument `json:"children"`
 }

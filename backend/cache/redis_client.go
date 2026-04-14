@@ -8,8 +8,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/odysseythink/mlog"
 	"github.com/redis/go-redis/v9"
-	"mlib.com/mlog"
 )
 
 func (c *Cache) Unlink(keys ...string) error {
@@ -2364,4 +2364,33 @@ func (c *Cache) DistributedLock_unlock(key string) {
 }
 func (c *Cache) Client() redis.UniversalClient {
 	return c.rdsCli
+}
+
+// ZRemRangeByScore removes members in the sorted set `key` whose score is
+// within the given range. Scores are strings to allow "-inf"/"+inf"/numeric.
+func (c *Cache) ZRemRangeByScore(key, min, max string) int64 {
+	if c.rdsCli == nil {
+		mlog.Errorf("redis don't have client")
+		return 0
+	}
+	n, err := c.rdsCli.ZRemRangeByScore(context.Background(), key, min, max).Result()
+	if err != nil {
+		mlog.Errorf("ZRemRangeByScore(%s,%s,%s) failed: %v", key, min, max, err)
+		return 0
+	}
+	return n
+}
+
+// ZCard returns the cardinality of the sorted set stored at key.
+func (c *Cache) ZCard(key string) int64 {
+	if c.rdsCli == nil {
+		mlog.Errorf("redis don't have client")
+		return 0
+	}
+	n, err := c.rdsCli.ZCard(context.Background(), key).Result()
+	if err != nil {
+		mlog.Errorf("ZCard(%s) failed: %v", key, err)
+		return 0
+	}
+	return n
 }

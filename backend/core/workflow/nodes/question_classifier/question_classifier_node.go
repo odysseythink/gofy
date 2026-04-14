@@ -8,6 +8,7 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	qcfnodesexceptions "mlib.com/gofy/server/core/exceptions/nodes/question_classifier"
 	modelmanager "mlib.com/gofy/server/core/manageres/model_manager"
@@ -30,7 +31,6 @@ import (
 	workflowenumtypes "mlib.com/gofy/server/enum_types/workflow"
 	"mlib.com/gofy/server/models"
 	"mlib.com/gofy/server/utils"
-	"mlib.com/mlog"
 )
 
 type QuestionClassifierNode struct {

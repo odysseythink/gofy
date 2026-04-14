@@ -17,7 +17,7 @@ import {
   OVERLAY_MIGRATION_LEGACY_BASE_FILES,
   OVERLAY_RESTRICTED_IMPORT_PATTERNS,
 } from './eslint.constants.mjs'
-import dify from './plugins/eslint/index.js'
+import gofy from './plugins/eslint/index.js'
 
 // Enable Tailwind CSS IntelliSense mode for ESLint runs
 // See: tailwind-css-plugin.ts
@@ -135,9 +135,9 @@ export default antfu(
     },
   },
   {
-    name: 'dify/custom/setup',
+    name: 'gofy/custom/setup',
     plugins: {
-      dify,
+      gofy,
       hyoban,
     },
   },
@@ -155,8 +155,8 @@ export default antfu(
       'jsonc/sort-keys': 'error',
 
       'hyoban/i18n-flat-key': 'error',
-      'dify/no-extra-keys': 'error',
-      'dify/consistent-placeholders': 'error',
+      'gofy/no-extra-keys': 'error',
+      'gofy/consistent-placeholders': 'error',
     },
   },
   {
@@ -166,14 +166,14 @@ export default antfu(
     },
   },
   {
-    name: 'dify/base-ui-primitives',
+    name: 'gofy/base-ui-primitives',
     files: ['app/components/base/ui/**/*.tsx', 'app/components/base/avatar/**/*.tsx'],
     rules: {
       'react-refresh/only-export-components': 'off',
     },
   },
   {
-    name: 'dify/no-direct-next-imports',
+    name: 'gofy/no-direct-next-imports',
     files: [GLOB_TS, GLOB_TSX],
     ignores: ['next/**'],
     rules: {
@@ -184,7 +184,7 @@ export default antfu(
     },
   },
   {
-    name: 'dify/overlay-migration',
+    name: 'gofy/overlay-migration',
     files: [GLOB_TS, GLOB_TSX],
     ignores: [
       'next/**',

@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"sync"
 
+	"github.com/odysseythink/mlog"
+	uuid "github.com/satori/go.uuid"
 	dbengine "mlib.com/gofy/server/db_engine"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
-	uuid "github.com/satori/go.uuid"
 )
 
 // TriggerType defines the type of trigger.

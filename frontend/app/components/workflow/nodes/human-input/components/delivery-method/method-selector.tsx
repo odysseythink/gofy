@@ -208,7 +208,7 @@ const MethodSelector: FC<MethodSelectorProps> = ({
                 <Trans
                   i18nKey={`${i18nPrefix}.deliveryMethod.contactTip2`}
                   ns="workflow"
-                  components={{ email: <a href="mailto:support@dify.ai" className="text-text-accent-light-mode-only">support@dify.ai</a> }}
+                  components={{ email: <a href="mailto:support@gofy.ai" className="text-text-accent-light-mode-only">support@gofy.ai</a> }}
                 />
               </div>
             </div>

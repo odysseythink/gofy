@@ -8,10 +8,10 @@ import (
 	"net/url"
 	"time"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 var (

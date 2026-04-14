@@ -3,6 +3,7 @@ package answer
 import (
 	"iter"
 
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/core/file"
 	"mlib.com/gofy/server/core/variables"
 	"mlib.com/gofy/server/core/workflow/nodes/base"
@@ -13,7 +14,6 @@ import (
 	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 	answernodesenumtypes "mlib.com/gofy/server/enum_types/nodes/answer"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 type AnswerNode struct {

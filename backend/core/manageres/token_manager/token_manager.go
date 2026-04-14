@@ -6,12 +6,12 @@ import (
 	"maps"
 	"time"
 
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
-	"mlib.com/confy"
 	"mlib.com/gofy/server/cache"
 	"mlib.com/gofy/server/core/exceptions"
 	"mlib.com/gofy/server/models"
-	"mlib.com/mlog"
 )
 
 // TokenManager handles token generation, revocation, and retrieval.

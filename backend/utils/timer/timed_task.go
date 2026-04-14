@@ -3,7 +3,7 @@ package timer
 import (
 	"sync"
 
-	"mlib.com/mcron"
+	mcron "github.com/robfig/cron/v3"
 )
 
 type Timer interface {

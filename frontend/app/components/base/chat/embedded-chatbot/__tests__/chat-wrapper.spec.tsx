@@ -98,9 +98,9 @@ vi.mock('@/service/workflow', () => ({
   submitHumanInputForm: vi.fn(),
 }))
 
-const mockIsDify = vi.fn(() => false)
+const mockIsGofy = vi.fn(() => false)
 vi.mock('../utils', () => ({
-  isDify: () => mockIsDify(),
+  isGofy: () => mockIsGofy(),
 }))
 
 type UseChatReturn = ReturnType<typeof useChat>
@@ -377,7 +377,7 @@ describe('EmbeddedChatbot chat-wrapper', () => {
         inputsForms: [{ variable: 'topic', label: 'Topic', required: false, type: InputVarType.textInput }],
         currentConversationId: 'conversation-1',
       }))
-      mockIsDify.mockReturnValue(true)
+      mockIsGofy.mockReturnValue(true)
 
       render(<ChatWrapper />)
 

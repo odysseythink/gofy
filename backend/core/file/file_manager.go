@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
 	"mlib.com/gofy/server/core/exceptions"
 	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 )
@@ -227,8 +227,8 @@ func toURL(f *File) (string, error) {
 //         raise ValueError("Missing file mime_type")
 
 //     params = {
-//         "base64_data": _get_encoded_string(f) if dify_config.MULTIMODAL_SEND_FORMAT == "base64" else "",
-//         "url": _to_url(f) if dify_config.MULTIMODAL_SEND_FORMAT == "url" else "",
+//         "base64_data": _get_encoded_string(f) if gofy_config.MULTIMODAL_SEND_FORMAT == "base64" else "",
+//         "url": _to_url(f) if gofy_config.MULTIMODAL_SEND_FORMAT == "url" else "",
 //         "format": f.extension.removeprefix("."),
 //         "mime_type": f.mime_type,
 //     }

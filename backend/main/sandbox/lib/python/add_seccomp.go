@@ -6,7 +6,7 @@ import (
 	"strings"
 	"syscall"
 
-	"mlib.com/mlog"
+	"github.com/odysseythink/mlog"
 
 	"mlib.com/gofy/server/main/sandbox/global"
 	"mlib.com/gofy/server/main/sandbox/lib"

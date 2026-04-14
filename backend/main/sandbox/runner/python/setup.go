@@ -10,12 +10,12 @@ import (
 	"regexp"
 	"strings"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/main/sandbox/global"
 	"mlib.com/gofy/server/main/sandbox/runner"
 	python_dependencies "mlib.com/gofy/server/main/sandbox/runner/python/dependencies"
 	"mlib.com/gofy/server/proto/pbapi"
-	"mlib.com/mlog"
 )
 
 //go:embed python.so

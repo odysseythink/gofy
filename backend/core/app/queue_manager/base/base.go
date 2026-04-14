@@ -5,12 +5,12 @@ import (
 	"slices"
 	"time"
 
-	"mlib.com/confy"
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 	"mlib.com/gofy/server/cache"
 	"mlib.com/gofy/server/core/exceptions"
 	appqueueentities "mlib.com/gofy/server/entities/app/queue"
 	appenumtypes "mlib.com/gofy/server/enum_types/app"
-	"mlib.com/mlog"
 )
 
 type baseAppQueueMessageType interface {

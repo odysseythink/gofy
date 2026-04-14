@@ -52,3 +52,6 @@ web/.vscode
 web/.next
 web/.stfolder
 web/.stignore
+
+# Local-only SQL schema + generator (repo-root only)
+/script/

@@ -3,6 +3,7 @@ package cluster
 import (
 	"context"
 	"fmt"
+	"path/filepath"
 	"strings"
 
 	"google.golang.org/grpc/resolver"
@@ -42,6 +43,8 @@ func (p *staticServiceDiscoveryProvide) Init(args ...any) error {
 				p.portMap[k] = int(port)
 			} else if port, ok := v.(float64); ok {
 				p.portMap[k] = int(port)
+			} else {
+				mlog.Warningf("static: ignoring invalid port config for module %s: %v", k, v)
 			}
 		}
 	}
@@ -85,6 +88,9 @@ func (p *staticServiceDiscoveryProvide) Build(
 	moduleName := strings.TrimPrefix(target.URL.Path, "/")
 	if moduleName == "" {
 		moduleName = strings.TrimPrefix(target.URL.Opaque, "/")
+		if moduleName == "" {
+			moduleName = filepath.Join(target.URL.Scheme, target.URL.Host)
+		}
 	}
 
 	port, ok := p.portMap[moduleName]

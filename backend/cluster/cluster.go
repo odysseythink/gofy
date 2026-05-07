@@ -5,10 +5,11 @@ import (
 	"errors"
 	"fmt"
 
-	"google.golang.org/grpc"
 	"github.com/odysseythink/confy"
 	"github.com/odysseythink/mlog"
 	"github.com/odysseythink/mrun"
+
+	"google.golang.org/grpc"
 )
 
 type Cluster struct {

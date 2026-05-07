@@ -5,10 +5,10 @@ import (
 	"errors"
 	"fmt"
 
+	"google.golang.org/grpc"
 	"github.com/odysseythink/confy"
 	"github.com/odysseythink/mlog"
 	"github.com/odysseythink/mrun"
-	"google.golang.org/grpc"
 )
 
 type Cluster struct {
@@ -48,6 +48,10 @@ func (c *Cluster) Init(args ...any) error {
 		etcd_service_discovery_provider := &etcdServiceDiscoveryProvide{}
 		c.subsMgr.Register(etcd_service_discovery_provider, []mrun.ModuleMgrOption{mrun.NewPriorityModuleMgrOption(0)})
 		c.service_discovery_provider = etcd_service_discovery_provider
+	case "static":
+		static_provider := &staticServiceDiscoveryProvide{}
+		c.subsMgr.Register(static_provider, []mrun.ModuleMgrOption{mrun.NewPriorityModuleMgrOption(0)})
+		c.service_discovery_provider = static_provider
 	default:
 		mlog.Errorf("unsupported provider=%s", provider_name)
 		return fmt.Errorf("unsupported provider=%s", provider_name)

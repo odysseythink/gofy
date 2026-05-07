@@ -1,7 +1,7 @@
 /**
  * @deprecated Use `@/app/components/base/ui/tooltip` instead.
  * This component will be removed after migration is complete.
- * See: https://github.com/langgenius/gofy/issues/32767
+ * See: https://github.com/odysseythink/gofy/issues/32767
  */
 import type { OffsetOptions, Placement } from '@floating-ui/react'
 import type { FC } from 'react'

@@ -174,7 +174,7 @@ const PluginPage = ({
               isExploringMarketplace && (
                 <>
                   <Link
-                    to="https://github.com/langgenius/gofy-plugins/issues/new?template=plugin_request.yaml"
+                    to="https://github.com/odysseythink/gofy-plugins/issues/new?template=plugin_request.yaml"
                     target="_blank"
                   >
                     <Button

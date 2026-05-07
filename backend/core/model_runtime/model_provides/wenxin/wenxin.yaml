@@ -1,0 +1,54 @@
+provider: wenxin
+label:
+  zh_Hans: 百度千帆（文心一言）
+  en_US: Baidu Qianfan (Wenxin)
+icon_small:
+  en_US: icon_s_en.svg
+icon_large:
+  en_US: icon_l_en.svg
+background: "#E0E7FF"
+help:
+  title:
+    en_US: Get your IAM Bearer Token from Baidu Qianfan (V2 OpenAI-compatible)
+    zh_Hans: 从百度千帆获取 IAM Bearer Token（V2 OpenAI 兼容接口）
+  url:
+    en_US: https://cloud.baidu.com/doc/WENXINWORKSHOP/s/Um2wxbaps
+supported_model_types:
+  - llm
+  - text-embedding
+configurate_methods:
+  - customizable-model
+model_credential_schema:
+  model:
+    label:
+      en_US: Model Name
+      zh_Hans: 模型名称
+    placeholder:
+      en_US: Enter your model name (e.g. ernie-4.0-8k)
+      zh_Hans: 输入模型名称（如 ernie-4.0-8k）
+  credential_form_schemas:
+    - variable: api_key
+      label:
+        zh_Hans: IAM Bearer Token
+        en_US: IAM Bearer Token
+      type: secret-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入您的 IAM Bearer Token
+        en_US: Enter your IAM Bearer Token
+    - variable: context_size
+      label:
+        zh_Hans: 模型上下文长度
+        en_US: Model context size
+      required: false
+      type: text-input
+      default: '8192'
+    - variable: max_tokens
+      label:
+        zh_Hans: 最大 token 上限
+        en_US: Upper bound for max tokens
+      default: '4096'
+      type: text-input
+      show_on:
+        - variable: __model_type
+          value: llm

@@ -355,7 +355,7 @@ export const IS_MARKETPLACE = env.VITE_IS_MARKETPLACE
 
 export const RAG_PIPELINE_PREVIEW_CHUNK_NUM = 20
 
-export const PROVIDER_WITH_PRESET_TONE = ['langgenius/openai/openai', 'langgenius/azure_openai/azure_openai']
+export const PROVIDER_WITH_PRESET_TONE = ['odysseythink/openai/openai', 'odysseythink/azure_openai/azure_openai']
 
 export const STOP_PARAMETER_RULE: ModelParameterRule = {
   default: [],

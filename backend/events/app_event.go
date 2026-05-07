@@ -3,8 +3,8 @@ package events
 import (
 	"log"
 
+	"github.com/odysseythink/gofy/backend/models"
 	"github.com/odysseythink/mrun"
-	"mlib.com/gofy/server/models"
 )
 
 func init() {

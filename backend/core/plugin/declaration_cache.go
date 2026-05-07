@@ -5,8 +5,8 @@ import (
 	"sync"
 	"time"
 
-	dbengine "mlib.com/gofy/server/db_engine"
-	"mlib.com/gofy/server/models"
+	dbengine "github.com/odysseythink/gofy/backend/db_engine"
+	"github.com/odysseythink/gofy/backend/models"
 )
 
 // DeclarationCache caches plugin declarations in memory.
@@ -135,4 +135,3 @@ func (dc *DeclarationCache) load(uniqueIdentifier string) (*models.PluginDeclara
 
 	return &decl, parsed
 }
-

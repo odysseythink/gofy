@@ -29,12 +29,12 @@ package plugin
 // )
 
 import (
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	llmnodesentities "mlib.com/gofy/server/entities/nodes/llm"
-	parameterextractornodesentities "mlib.com/gofy/server/entities/nodes/parameter_extractor"
-	questionclassifiernodesentities "mlib.com/gofy/server/entities/nodes/question_classifier"
-	providerentities "mlib.com/gofy/server/entities/provider"
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	llmnodesentities "github.com/odysseythink/gofy/backend/entities/nodes/llm"
+	parameterextractornodesentities "github.com/odysseythink/gofy/backend/entities/nodes/parameter_extractor"
+	questionclassifiernodesentities "github.com/odysseythink/gofy/backend/entities/nodes/question_classifier"
+	providerentities "github.com/odysseythink/gofy/backend/entities/provider"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
 )
 
 type InvokeCredentials struct {

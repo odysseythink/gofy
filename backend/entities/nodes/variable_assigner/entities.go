@@ -1,8 +1,8 @@
 package variableassigner
 
 import (
-	basenodesentities "mlib.com/gofy/server/entities/nodes/base"
-	vaenumtypes "mlib.com/gofy/server/enum_types/nodes/variable_assigner"
+	basenodesentities "github.com/odysseythink/gofy/backend/entities/nodes/base"
+	vaenumtypes "github.com/odysseythink/gofy/backend/enum_types/nodes/variable_assigner"
 )
 
 type VariableOperationItem struct {

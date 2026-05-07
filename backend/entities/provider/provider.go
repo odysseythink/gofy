@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"errors"
 
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
-	parameterenumtypes "mlib.com/gofy/server/enum_types/parameter"
-	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
-	commontypes "mlib.com/gofy/server/types/common"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
+	parameterenumtypes "github.com/odysseythink/gofy/backend/enum_types/parameter"
+	providerenumtypes "github.com/odysseythink/gofy/backend/enum_types/provider"
+	commontypes "github.com/odysseythink/gofy/backend/types/common"
 )
 
 type RestrictModel struct {

@@ -1,7 +1,7 @@
 package humaninput
 
 import (
-	basenodesentities "mlib.com/gofy/server/entities/nodes/base"
+	basenodesentities "github.com/odysseythink/gofy/backend/entities/nodes/base"
 )
 
 // FormInput represents a single form input field

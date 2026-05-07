@@ -8,7 +8,7 @@ import { getPluginCardIconUrl, getValidCategoryKeys, getValidTagKeys } from '../
 const createPlugin = (overrides: Partial<Pick<Plugin, 'from' | 'name' | 'org' | 'type'>> = {}): Pick<Plugin, 'from' | 'name' | 'org' | 'type'> => ({
   from: 'github',
   name: 'demo-plugin',
-  org: 'langgenius',
+  org: 'odysseythink',
   type: 'plugin',
   ...overrides,
 })
@@ -70,9 +70,9 @@ describe('plugins/utils', () => {
 
     it('builds the marketplace icon url for plugins and bundles', () => {
       expect(getPluginCardIconUrl(createPlugin({ from: 'marketplace' }), 'icon.png', 'tenant-1'))
-        .toBe(`${MARKETPLACE_API_PREFIX}/plugins/langgenius/demo-plugin/icon`)
+        .toBe(`${MARKETPLACE_API_PREFIX}/plugins/odysseythink/demo-plugin/icon`)
       expect(getPluginCardIconUrl(createPlugin({ from: 'marketplace', type: 'bundle' }), 'icon.png', 'tenant-1'))
-        .toBe(`${MARKETPLACE_API_PREFIX}/bundles/langgenius/demo-plugin/icon`)
+        .toBe(`${MARKETPLACE_API_PREFIX}/bundles/odysseythink/demo-plugin/icon`)
     })
 
     it('falls back to the raw icon when tenant id is missing for non-marketplace plugins', () => {

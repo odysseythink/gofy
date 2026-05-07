@@ -206,8 +206,8 @@ export default function AccountPage() {
       }
       <div className="mb-6 border-[1px] border-divider-subtle" />
       <div className="mb-8">
-        <div className={titleClassName}>{t('account.langGeniusAccount', { ns: 'common' })}</div>
-        <div className={descriptionClassName}>{t('account.langGeniusAccountTip', { ns: 'common' })}</div>
+        <div className={titleClassName}>{t('account.odysseythinkAccount', { ns: 'common' })}</div>
+        <div className={descriptionClassName}>{t('account.odysseythinkAccountTip', { ns: 'common' })}</div>
         {!!apps.length && (
           <Collapse
             title={`${t('account.showAppLength', { ns: 'common', length: apps.length })}`}

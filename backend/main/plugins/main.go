@@ -3,16 +3,22 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"flag"
 	"fmt"
+	"log"
+	"os"
 
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/gofy/backend/cache"
+	"github.com/odysseythink/gofy/backend/cluster"
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	dbengine "github.com/odysseythink/gofy/backend/db_engine"
+	"github.com/odysseythink/gofy/backend/main/plugins/services"
+	"github.com/odysseythink/gofy/backend/models"
+	"github.com/odysseythink/gofy/backend/proto/pbapi"
 	"github.com/odysseythink/mlog"
+	"github.com/odysseythink/mrun"
 	"google.golang.org/grpc/peer"
-	"mlib.com/gofy/server/cache"
-	"mlib.com/gofy/server/core/exceptions"
-	dbengine "mlib.com/gofy/server/db_engine"
-	"mlib.com/gofy/server/main/plugins/services"
-	"mlib.com/gofy/server/models"
-	"mlib.com/gofy/server/proto/pbapi"
 )
 
 type PluginsService struct {
@@ -118,4 +124,38 @@ func (s *PluginsService) Destroy() {
 
 func (s *PluginsService) UserData() any {
 	return nil
+}
+
+func main() {
+	var cfgfile string
+	flag.StringVar(&cfgfile, "c", "", "choose config file.")
+	flag.Parse()
+	if cfgfile == "" {
+		log.Println("usage: ./server -c config.yml")
+		return
+	}
+	confy.SetConfigFile(cfgfile)
+	confy.SetConfigType("yaml")
+	err := confy.ReadInConfig()
+	if err != nil {
+		log.Printf("read config file(%s) failed: %v\n", cfgfile, err)
+		return
+	}
+	{
+		logpath := confy.GetWithDefault[string]("log.path", "logs")
+		loglevel := confy.GetWithDefault[uint32]("log.log_level", 1)
+		log.Println("******loglevel=", loglevel)
+		if loglevel >= 4 {
+			loglevel = 1
+		}
+		mlog.SetLogLevel(loglevel)
+		mlog.SetLogDir(logpath)
+	}
+	defer mlog.Flush()
+	confy.WatchConfig()
+
+	mrun.Register(cluster.Instance(), []mrun.ModuleMgrOption{mrun.NewPriorityModuleMgrOption(0)}, []any{&Plugins})
+
+	err = mrun.Run(&Plugins)
+	mlog.Infof("%s Server End!:%v", os.Args[0], err)
 }

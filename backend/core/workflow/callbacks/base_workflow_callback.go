@@ -1,7 +1,7 @@
 package callbacks
 
 import (
-	graphengineentities "mlib.com/gofy/server/entities/graph_engine"
+	graphengineentities "github.com/odysseythink/gofy/backend/entities/graph_engine"
 )
 
 type WorkflowCallback interface {

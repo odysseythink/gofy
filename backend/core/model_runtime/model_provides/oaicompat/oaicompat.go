@@ -12,10 +12,10 @@ import (
 	"strings"
 	"time"
 
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
+	commontypes "github.com/odysseythink/gofy/backend/types/common"
 	"github.com/odysseythink/mlog"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
-	commontypes "mlib.com/gofy/server/types/common"
 )
 
 // ConvertPromptMessages converts PromptMessagers to OpenAI message format.

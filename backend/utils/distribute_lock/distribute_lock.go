@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"mlib.com/gofy/server/cache"
+	"github.com/odysseythink/gofy/backend/cache"
 
 	"github.com/odysseythink/confy"
 	"github.com/odysseythink/mlog"

@@ -180,7 +180,7 @@ const Configuration: FC = () => {
   }
 
   const [modelConfig, doSetModelConfig] = useState<ModelConfig>({
-    provider: 'langgenius/openai/openai',
+    provider: 'odysseythink/openai/openai',
     model_id: 'gpt-3.5-turbo',
     mode: ModelModeType.unset,
     configs: {
@@ -212,7 +212,7 @@ const Configuration: FC = () => {
   })
   const isAgent = mode === AppModeEnum.AGENT_CHAT
 
-  const isOpenAI = modelConfig.provider === 'langgenius/openai/openai'
+  const isOpenAI = modelConfig.provider === 'odysseythink/openai/openai'
 
   const [collectionList, setCollectionList] = useState<Collection[]>([])
   const [datasetConfigs, doSetDatasetConfigs] = useState<DatasetConfigs>({

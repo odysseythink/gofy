@@ -6,9 +6,9 @@ import (
 	"os"
 	"testing"
 
-	"mlib.com/gofy/server/core/rag/datasource/vdb/pgvector"
-	"mlib.com/gofy/server/core/rag/datasource/vdb/vdbtest"
-	ragentities "mlib.com/gofy/server/entities/rag"
+	"github.com/odysseythink/gofy/backend/core/rag/datasource/vdb/pgvector"
+	"github.com/odysseythink/gofy/backend/core/rag/datasource/vdb/vdbtest"
+	ragentities "github.com/odysseythink/gofy/backend/entities/rag"
 )
 
 func TestPgvectorContract(t *testing.T) {

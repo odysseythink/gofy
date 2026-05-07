@@ -8,17 +8,17 @@ import (
 	"os"
 
 	"github.com/odysseythink/confy"
+	"github.com/odysseythink/gofy/backend/cache"
+	"github.com/odysseythink/gofy/backend/cluster"
+	dbengine "github.com/odysseythink/gofy/backend/db_engine"
+	eventhandlers "github.com/odysseythink/gofy/backend/events/event_handlers"
 	"github.com/odysseythink/mrun"
-	"mlib.com/gofy/server/cache"
-	"mlib.com/gofy/server/cluster"
-	dbengine "mlib.com/gofy/server/db_engine"
-	eventhandlers "mlib.com/gofy/server/events/event_handlers"
 
-	_ "mlib.com/gofy/server/events"
-	"mlib.com/gofy/server/proto/pbapi"
+	_ "github.com/odysseythink/gofy/backend/events"
+	"github.com/odysseythink/gofy/backend/proto/pbapi"
 
+	_ "github.com/odysseythink/gofy/backend/core/model_runtime/model_provides"
 	"github.com/odysseythink/mlog"
-	_ "mlib.com/gofy/server/core/model_runtime/model_provides"
 )
 
 type AdminService struct {

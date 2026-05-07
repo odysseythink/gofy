@@ -1,10 +1,10 @@
 package services
 
 import (
+	dbengine "github.com/odysseythink/gofy/backend/db_engine"
+	coreentities "github.com/odysseythink/gofy/backend/entities/core"
+	"github.com/odysseythink/gofy/backend/models"
 	"github.com/odysseythink/mlog"
-	dbengine "mlib.com/gofy/server/db_engine"
-	coreentities "mlib.com/gofy/server/entities/core"
-	"mlib.com/gofy/server/models"
 )
 
 type ProviderService struct {

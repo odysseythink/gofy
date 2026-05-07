@@ -6,8 +6,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/odysseythink/confy"
+	"github.com/odysseythink/gofy/backend/config"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/config"
 )
 
 // Cors 直接放行所有跨域请求并放行所有 OPTIONS 方法

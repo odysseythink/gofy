@@ -3,8 +3,8 @@ package workflow
 import (
 	"encoding/json"
 
-	dbengine "mlib.com/gofy/server/db_engine"
-	"mlib.com/gofy/server/models"
+	dbengine "github.com/odysseythink/gofy/backend/db_engine"
+	"github.com/odysseythink/gofy/backend/models"
 )
 
 // ConversationVariableUpdater updates conversation variables after workflow execution.

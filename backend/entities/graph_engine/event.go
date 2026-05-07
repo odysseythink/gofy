@@ -3,8 +3,8 @@ package graphengine
 import (
 	"time"
 
-	basenodesentities "mlib.com/gofy/server/entities/nodes/base"
-	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
+	basenodesentities "github.com/odysseythink/gofy/backend/entities/nodes/base"
+	nodesenumtypes "github.com/odysseythink/gofy/backend/enum_types/nodes"
 )
 
 // GraphEngineEvent is a base event for the graph engine.

@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"strings"
 
+	"github.com/odysseythink/gofy/backend/core/file"
+	variableenumtypes "github.com/odysseythink/gofy/backend/enum_types/variable"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/core/file"
-	variableenumtypes "mlib.com/gofy/server/enum_types/variable"
 )
 
 type BooleanVariable struct {

@@ -17,17 +17,17 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	dashscopeexception "github.com/odysseythink/gofy/backend/core/exceptions/dashscope"
+	modelruntimeexceptions "github.com/odysseythink/gofy/backend/core/exceptions/model_runtime"
+	"github.com/odysseythink/gofy/backend/core/model_runtime/model_provides/base"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
+	commontypes "github.com/odysseythink/gofy/backend/types/common"
+	dashscopetypes "github.com/odysseythink/gofy/backend/types/dashscope"
 	"github.com/odysseythink/mlog"
 	"github.com/pkoukk/tiktoken-go"
 	uuid "github.com/satori/go.uuid"
-	"mlib.com/gofy/server/core/exceptions"
-	dashscopeexception "mlib.com/gofy/server/core/exceptions/dashscope"
-	modelruntimeexceptions "mlib.com/gofy/server/core/exceptions/model_runtime"
-	"mlib.com/gofy/server/core/model_runtime/model_provides/base"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
-	commontypes "mlib.com/gofy/server/types/common"
-	dashscopetypes "mlib.com/gofy/server/types/dashscope"
 )
 
 type Message struct {

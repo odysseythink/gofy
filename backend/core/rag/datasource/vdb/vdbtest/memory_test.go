@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	ragentities "mlib.com/gofy/server/entities/rag"
+	ragentities "github.com/odysseythink/gofy/backend/entities/rag"
 )
 
 // Apply the contract suite to the reference in-memory implementation.

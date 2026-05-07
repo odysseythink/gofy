@@ -6,14 +6,14 @@ import (
 	"strings"
 
 	"github.com/odysseythink/confy"
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	"github.com/odysseythink/gofy/backend/core/workflow/nodes/base"
+	variabletemplateparser "github.com/odysseythink/gofy/backend/core/workflow/utils/variable_template_parser"
+	httprequestnodesentities "github.com/odysseythink/gofy/backend/entities/nodes/http_request"
+	workflowentities "github.com/odysseythink/gofy/backend/entities/workflow"
+	nodesenumtypes "github.com/odysseythink/gofy/backend/enum_types/nodes"
+	"github.com/odysseythink/gofy/backend/models"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/core/exceptions"
-	"mlib.com/gofy/server/core/workflow/nodes/base"
-	variabletemplateparser "mlib.com/gofy/server/core/workflow/utils/variable_template_parser"
-	httprequestnodesentities "mlib.com/gofy/server/entities/nodes/http_request"
-	workflowentities "mlib.com/gofy/server/entities/workflow"
-	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
-	"mlib.com/gofy/server/models"
 )
 
 type HttpRequestNode struct {

@@ -1,1 +1,0 @@
-import{g as e,p as a}from"./index-m2eZn9zC.js";const o=({url:t,params:s})=>e(t,{params:s}),r=({url:t,body:s})=>a(t,{body:s}),c=({url:t,body:s})=>a(t,{body:s}),g=t=>e(t),u=({url:t})=>e(t),p=({appID:t,params:s})=>e(`/apps/${t}/agent/logs`,{params:s});export{u as a,o as b,r as c,p as d,g as f,c as u};

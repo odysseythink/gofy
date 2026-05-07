@@ -71,7 +71,7 @@ describe('Support', () => {
     isCurrentWorkspaceEditor: true,
     isCurrentWorkspaceDatasetOperator: false,
     mutateCurrentWorkspace: vi.fn(),
-    langGeniusVersionInfo: {
+    odysseythinkVersionInfo: {
       current_env: 'testing',
       current_version: '0.6.0',
       latest_version: '0.6.0',

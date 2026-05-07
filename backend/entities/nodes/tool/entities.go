@@ -1,9 +1,9 @@
 package tool
 
 import (
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	basenodesentities "github.com/odysseythink/gofy/backend/entities/nodes/base"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/core/exceptions"
-	basenodesentities "mlib.com/gofy/server/entities/nodes/base"
 )
 
 type ToolEntity struct {

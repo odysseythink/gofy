@@ -1,0 +1,1 @@
+import{r,j as e,c as t}from"./index-C6MQE079.js";const o=({className:s})=>e.jsx("div",{className:t("absolute size-[112px] rounded-full bg-util-colors-blue-brand-blue-brand-500 blur-[80px]",s)}),c=r.memo(o);export{c as E};

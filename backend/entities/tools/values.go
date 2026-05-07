@@ -4,8 +4,8 @@ import (
 	"iter"
 	"maps"
 
-	toolsenumtypes "mlib.com/gofy/server/enum_types/tools"
-	commontypes "mlib.com/gofy/server/types/common"
+	toolsenumtypes "github.com/odysseythink/gofy/backend/enum_types/tools"
+	commontypes "github.com/odysseythink/gofy/backend/types/common"
 )
 
 var (

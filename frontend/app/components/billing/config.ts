@@ -8,7 +8,7 @@ export const contractSales = 'contractSales'
 export const unAvailable = 'unAvailable'
 
 export const contactSalesUrl = 'https://vikgc6bnu1s.typeform.com/gofy-business'
-export const getStartedWithCommunityUrl = 'https://github.com/langgenius/gofy'
+export const getStartedWithCommunityUrl = 'https://github.com/odysseythink/gofy'
 export const getWithPremiumUrl = 'https://aws.amazon.com/marketplace/pp/prodview-t22mebxzwjhu6'
 
 export const ALL_PLANS: Record<BasicPlan, PlanInfo> = {

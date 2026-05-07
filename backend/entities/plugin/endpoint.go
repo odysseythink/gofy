@@ -12,7 +12,7 @@ package plugin
 import (
 	"time"
 
-	providerentities "mlib.com/gofy/server/entities/provider"
+	providerentities "github.com/odysseythink/gofy/backend/entities/provider"
 )
 
 type EndpointDeclaration struct {

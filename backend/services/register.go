@@ -9,13 +9,13 @@ import (
 	"time"
 
 	"github.com/odysseythink/confy"
+	"github.com/odysseythink/gofy/backend/cache"
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	dbengine "github.com/odysseythink/gofy/backend/db_engine"
+	"github.com/odysseythink/gofy/backend/global"
+	"github.com/odysseythink/gofy/backend/models"
+	"github.com/odysseythink/gofy/backend/utils/validate"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/cache"
-	"mlib.com/gofy/server/core/exceptions"
-	dbengine "mlib.com/gofy/server/db_engine"
-	"mlib.com/gofy/server/global"
-	"mlib.com/gofy/server/models"
-	"mlib.com/gofy/server/utils/validate"
 )
 
 type RegisterService struct {

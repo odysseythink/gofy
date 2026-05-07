@@ -1,7 +1,7 @@
 package modelruntime
 
 import (
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
 )
 
 type ModelProvider interface {

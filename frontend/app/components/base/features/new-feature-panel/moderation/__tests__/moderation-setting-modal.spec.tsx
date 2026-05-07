@@ -23,7 +23,7 @@ let mockModelProvidersData: {
 } = {
   data: {
     data: [{
-      provider: 'langgenius/openai/openai',
+      provider: 'odysseythink/openai/openai',
       system_configuration: {
         enabled: true,
         current_quota_type: 'paid',
@@ -82,7 +82,7 @@ describe('ModerationSettingModal', () => {
     mockModelProvidersData = {
       data: {
         data: [{
-          provider: 'langgenius/openai/openai',
+          provider: 'odysseythink/openai/openai',
           system_configuration: {
             enabled: true,
             current_quota_type: 'paid',
@@ -615,7 +615,7 @@ describe('ModerationSettingModal', () => {
     mockModelProvidersData = {
       data: {
         data: [{
-          provider: 'langgenius/openai/openai',
+          provider: 'odysseythink/openai/openai',
           system_configuration: {
             enabled: false,
             current_quota_type: 'free',
@@ -643,7 +643,7 @@ describe('ModerationSettingModal', () => {
     mockModelProvidersData = {
       data: {
         data: [{
-          provider: 'langgenius/openai/openai',
+          provider: 'odysseythink/openai/openai',
           system_configuration: {
             enabled: false,
             current_quota_type: 'free',
@@ -677,7 +677,7 @@ describe('ModerationSettingModal', () => {
     mockModelProvidersData = {
       data: {
         data: [{
-          provider: 'langgenius/openai/openai',
+          provider: 'odysseythink/openai/openai',
           system_configuration: {
             enabled: false,
             current_quota_type: 'free',

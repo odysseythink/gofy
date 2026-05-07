@@ -971,7 +971,7 @@ describe('PluginPage Integration', () => {
 
     vi.mocked(fetchManifestFromMarketPlace).mockResolvedValue({
       data: {
-        plugin: { org: 'langgenius', name: 'test-plugin', category: 'tool' },
+        plugin: { org: 'odysseythink', name: 'test-plugin', category: 'tool' },
         version: { version: '1.0.0' },
       },
     } as Awaited<ReturnType<typeof fetchManifestFromMarketPlace>>)

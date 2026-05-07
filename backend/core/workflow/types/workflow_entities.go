@@ -3,13 +3,13 @@ package types
 import (
 	"time"
 
-	"mlib.com/gofy/server/core/workflow/nodes/base"
-	nodesentities "mlib.com/gofy/server/entities/nodes"
-	basenodesentities "mlib.com/gofy/server/entities/nodes/base"
-	workflowentities "mlib.com/gofy/server/entities/workflow"
-	conditionentities "mlib.com/gofy/server/entities/workflow/condition"
-	appenumtypes "mlib.com/gofy/server/enum_types/app"
-	"mlib.com/gofy/server/models"
+	"github.com/odysseythink/gofy/backend/core/workflow/nodes/base"
+	nodesentities "github.com/odysseythink/gofy/backend/entities/nodes"
+	basenodesentities "github.com/odysseythink/gofy/backend/entities/nodes/base"
+	workflowentities "github.com/odysseythink/gofy/backend/entities/workflow"
+	conditionentities "github.com/odysseythink/gofy/backend/entities/workflow/condition"
+	appenumtypes "github.com/odysseythink/gofy/backend/enum_types/app"
+	"github.com/odysseythink/gofy/backend/models"
 )
 
 // WorkflowNodeAndResult represents a node and its result in a workflow

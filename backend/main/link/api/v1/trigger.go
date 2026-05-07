@@ -5,9 +5,9 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/odysseythink/gofy/backend/models"
+	"github.com/odysseythink/gofy/backend/services"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/models"
-	"mlib.com/gofy/server/services"
 )
 
 type TriggerApi struct{}

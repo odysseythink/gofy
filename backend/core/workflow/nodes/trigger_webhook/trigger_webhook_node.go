@@ -4,12 +4,12 @@ import (
 	"iter"
 	"strings"
 
-	"mlib.com/gofy/server/constants"
-	"mlib.com/gofy/server/core/workflow/nodes/base"
-	triggerwebhookentities "mlib.com/gofy/server/entities/nodes/trigger_webhook"
-	workflowentities "mlib.com/gofy/server/entities/workflow"
-	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
-	"mlib.com/gofy/server/models"
+	"github.com/odysseythink/gofy/backend/constants"
+	"github.com/odysseythink/gofy/backend/core/workflow/nodes/base"
+	triggerwebhookentities "github.com/odysseythink/gofy/backend/entities/nodes/trigger_webhook"
+	workflowentities "github.com/odysseythink/gofy/backend/entities/workflow"
+	nodesenumtypes "github.com/odysseythink/gofy/backend/enum_types/nodes"
+	"github.com/odysseythink/gofy/backend/models"
 )
 
 type TriggerWebhookNode struct {

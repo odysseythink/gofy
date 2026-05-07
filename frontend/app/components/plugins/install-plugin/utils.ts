@@ -27,7 +27,7 @@ export const pluginManifestToCardPluginProps = (pluginManifest: PluginDeclaratio
     },
     tags: pluginManifest.tags.map(tag => ({ name: tag })),
     badges: [],
-    verification: { authorized_category: 'langgenius' },
+    verification: { authorized_category: 'odysseythink' },
     from: 'package',
   }
 }
@@ -55,7 +55,7 @@ export const pluginManifestInMarketToPluginProps = (pluginManifest: PluginManife
     },
     tags: [],
     badges: pluginManifest.badges,
-    verification: isEmpty(pluginManifest.verification) ? { authorized_category: 'langgenius' } : pluginManifest.verification,
+    verification: isEmpty(pluginManifest.verification) ? { authorized_category: 'odysseythink' } : pluginManifest.verification,
     from: pluginManifest.from,
   }
 }

@@ -23,10 +23,10 @@ vi.mock('@/app/components/plugins/install-plugin/install-bundle', () => ({
 const createDependency = (): Dependency => ({
   type: 'marketplace',
   value: {
-    organization: 'langgenius',
+    organization: 'odysseythink',
     plugin: 'sample-plugin',
     version: '1.0.0',
-    plugin_unique_identifier: 'langgenius/sample-plugin:1.0.0',
+    plugin_unique_identifier: 'odysseythink/sample-plugin:1.0.0',
   },
 })
 

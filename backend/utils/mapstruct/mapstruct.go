@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"mlib.com/confy/cast"
+	"github.com/odysseythink/confy/cast"
 )
 
 const (

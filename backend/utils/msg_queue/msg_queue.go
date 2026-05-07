@@ -1,7 +1,7 @@
 package msgqueue
 
 import (
-	"cache"
+	"github.com/odysseythink/gofy/backend/cache"
 	"context"
 	"encoding/json"
 	"errors"
@@ -11,6 +11,7 @@ import (
 
 	"github.com/odysseythink/mlog"
 	"github.com/odysseythink/mrun"
+	"github.com/odysseythink/mrun/fleets"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -111,7 +112,7 @@ func (mq *MsgQueue) Subscribe(topic_name, channel_name string, cb func(topic, ch
 				return
 			case msg := <-subscriber.pubsub.Channel():
 				mlog.Infof("----------receive message=%s", msg)
-				mrun.WorkerSubmit(func() {
+				fleets.Submit(func() {
 					subscriber.cb(subscriber.Topic, subscriber.Channel, msg.Payload, "")
 				})
 			}

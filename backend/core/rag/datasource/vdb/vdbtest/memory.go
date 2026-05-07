@@ -11,7 +11,7 @@ import (
 	"sort"
 	"sync"
 
-	ragentities "mlib.com/gofy/server/entities/rag"
+	ragentities "github.com/odysseythink/gofy/backend/entities/rag"
 )
 
 // Memory is a simple thread-safe in-memory IVector. It supports vector search

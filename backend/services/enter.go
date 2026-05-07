@@ -1,6 +1,6 @@
 package services
 
-import "mlib.com/gofy/server/models"
+import "github.com/odysseythink/gofy/backend/models"
 
 type ServiceGroup struct {
 	App                    *AppService

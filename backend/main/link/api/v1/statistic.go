@@ -7,11 +7,11 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/odysseythink/gofy/backend/cluster"
+	"github.com/odysseythink/gofy/backend/models"
+	"github.com/odysseythink/gofy/backend/models/response"
+	"github.com/odysseythink/gofy/backend/proto/pbapi"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/cluster"
-	"mlib.com/gofy/server/models"
-	"mlib.com/gofy/server/models/response"
-	"mlib.com/gofy/server/proto/pbapi"
 )
 
 type StatisticApi struct {

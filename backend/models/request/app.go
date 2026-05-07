@@ -1,8 +1,8 @@
 package request
 
 import (
+	"github.com/odysseythink/gofy/backend/core/exceptions"
 	uuid "github.com/satori/go.uuid"
-	"mlib.com/gofy/server/core/exceptions"
 )
 
 type AppPageReq struct {

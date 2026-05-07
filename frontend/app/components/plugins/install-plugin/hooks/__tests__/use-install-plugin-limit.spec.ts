@@ -17,7 +17,7 @@ vi.mock('@/context/global-public-context', () => ({
 
 const basePlugin = {
   from: 'marketplace' as const,
-  verification: { authorized_category: 'langgenius' },
+  verification: { authorized_category: 'odysseythink' },
 }
 
 describe('pluginInstallLimit', () => {
@@ -43,7 +43,7 @@ describe('pluginInstallLimit', () => {
     expect(pluginInstallLimit(basePlugin as never, features as never).canInstall).toBe(false)
   })
 
-  it('should allow langgenius plugins when scope is OFFICIAL_ONLY', () => {
+  it('should allow odysseythink plugins when scope is OFFICIAL_ONLY', () => {
     const features = {
       plugin_installation_permission: {
         restrict_to_marketplace_only: false,
@@ -113,7 +113,7 @@ describe('pluginInstallLimit', () => {
     expect(pluginInstallLimit(basePlugin as never, features as never).canInstall).toBe(true)
   })
 
-  it('should default to langgenius when no verification info', () => {
+  it('should default to odysseythink when no verification info', () => {
     const features = {
       plugin_installation_permission: {
         restrict_to_marketplace_only: false,
@@ -140,7 +140,7 @@ describe('pluginInstallLimit', () => {
 describe('usePluginInstallLimit', () => {
   it('should return canInstall from pluginInstallLimit using global store', async () => {
     const { default: usePluginInstallLimit } = await import('../use-install-plugin-limit')
-    const plugin = { from: 'marketplace' as const, verification: { authorized_category: 'langgenius' } }
+    const plugin = { from: 'marketplace' as const, verification: { authorized_category: 'odysseythink' } }
 
     const { result } = renderHook(() => usePluginInstallLimit(plugin as never))
 

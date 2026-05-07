@@ -11,7 +11,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const DOCS_JSON_URL = 'https://raw.githubusercontent.com/langgenius/gofy-docs/refs/heads/main/docs.json'
+const DOCS_JSON_URL = 'https://raw.githubusercontent.com/odysseythink/gofy-docs/refs/heads/main/docs.json'
 const OUTPUT_PATH = path.resolve(__dirname, '../types/doc-paths.ts')
 
 type NavItem = string | NavObject | NavItem[]
@@ -58,7 +58,7 @@ type DocsJson = {
   [key: string]: unknown
 }
 
-const OPENAPI_BASE_URL = 'https://raw.githubusercontent.com/langgenius/gofy-docs/refs/heads/main/'
+const OPENAPI_BASE_URL = 'https://raw.githubusercontent.com/odysseythink/gofy-docs/refs/heads/main/'
 
 /**
  * Convert summary to URL slug
@@ -258,7 +258,7 @@ function generateTypeDefinitions(
     '// GENERATE BY script',
     '// DON NOT EDIT IT MANUALLY',
     '//',
-    '// Generated from: https://raw.githubusercontent.com/langgenius/gofy-docs/refs/heads/main/docs.json',
+    '// Generated from: https://raw.githubusercontent.com/odysseythink/gofy-docs/refs/heads/main/docs.json',
     `// Generated at: ${new Date().toISOString()}`,
     '',
     '// Language prefixes',

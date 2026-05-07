@@ -1,7 +1,7 @@
 package msgqueue
 
 import (
-	"cache"
+	"github.com/odysseythink/gofy/backend/cache"
 	"context"
 	"encoding/json"
 	"fmt"

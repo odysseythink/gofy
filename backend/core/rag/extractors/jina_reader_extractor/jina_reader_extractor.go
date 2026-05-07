@@ -1,8 +1,8 @@
 package jinareaderextractor
 
 import (
-	ragentities "mlib.com/gofy/server/entities/rag"
-	"mlib.com/gofy/server/services"
+	ragentities "github.com/odysseythink/gofy/backend/entities/rag"
+	"github.com/odysseythink/gofy/backend/services"
 )
 
 type JinaReaderWebExtractor struct {

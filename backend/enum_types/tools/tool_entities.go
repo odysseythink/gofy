@@ -3,7 +3,7 @@ package tools
 import (
 	"strings"
 
-	pluginenumtypes "mlib.com/gofy/server/enum_types/plugin"
+	pluginenumtypes "github.com/odysseythink/gofy/backend/enum_types/plugin"
 )
 
 type ToolLabelType string

@@ -3,13 +3,13 @@ package trigger_plugin
 import (
 	"iter"
 
-	"mlib.com/gofy/server/constants"
-	"mlib.com/gofy/server/core/workflow/nodes/base"
-	triggerpluginentities "mlib.com/gofy/server/entities/nodes/trigger_plugin"
-	workflowentities "mlib.com/gofy/server/entities/workflow"
-	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
-	workflowenumtypes "mlib.com/gofy/server/enum_types/workflow"
-	"mlib.com/gofy/server/models"
+	"github.com/odysseythink/gofy/backend/constants"
+	"github.com/odysseythink/gofy/backend/core/workflow/nodes/base"
+	triggerpluginentities "github.com/odysseythink/gofy/backend/entities/nodes/trigger_plugin"
+	workflowentities "github.com/odysseythink/gofy/backend/entities/workflow"
+	nodesenumtypes "github.com/odysseythink/gofy/backend/enum_types/nodes"
+	workflowenumtypes "github.com/odysseythink/gofy/backend/enum_types/workflow"
+	"github.com/odysseythink/gofy/backend/models"
 )
 
 type TriggerPluginNode struct {
@@ -27,7 +27,7 @@ func (n *TriggerPluginNode) Run() (*workflowentities.NodeRunResult, iter.Seq[any
 	metadata := map[workflowenumtypes.NodeRunMetadataKey]any{
 		workflowenumtypes.NodeRunMetadataKey_TRIGGER_INFO: map[string]any{
 			"provider_id":              nodeData.ProviderID,
-			"event_name":              nodeData.EventName,
+			"event_name":               nodeData.EventName,
 			"plugin_unique_identifier": nodeData.PluginUniqueIdentifier,
 		},
 	}

@@ -128,7 +128,7 @@ const setupContexts = (
   mockAppCtx = {
     isCurrentWorkspaceManager: true,
     userProfile: { email: 'student@university.edu' },
-    langGeniusVersionInfo: { current_version: '1.0.0' },
+    odysseythinkVersionInfo: { current_version: '1.0.0' },
     ...appOverrides,
   }
 }

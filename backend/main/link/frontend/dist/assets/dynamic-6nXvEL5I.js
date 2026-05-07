@@ -1,0 +1,1 @@
+import{r as n,j as e}from"./index-C6MQE079.js";function d(c,r){const l=n.lazy(c);return function(m){var a;const u=((a=r==null?void 0:r.loading)==null?void 0:a.call(r))??null;return e.jsx(n.Suspense,{fallback:u,children:e.jsx(l,{...m})})}}export{d};

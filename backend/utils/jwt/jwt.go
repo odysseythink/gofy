@@ -55,7 +55,6 @@ func CreateToken(claims CustomClaims, secretKey string) (string, error) {
 
 // 解析 token
 func ParseToken(tokenString, secretKey string) (*CustomClaims, error) {
-	mlog.Debugf("---tokenString=%s, secretKey=%s", tokenString, secretKey)
 	token, err := jwt.ParseWithClaims(tokenString, &CustomClaims{}, func(token *jwt.Token) (i any, e error) {
 		return []byte(secretKey), nil
 	})

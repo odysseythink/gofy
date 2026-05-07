@@ -3,12 +3,12 @@ package model
 import (
 	"fmt"
 
-	"mlib.com/gofy/server/core/exceptions"
-	providermanager "mlib.com/gofy/server/core/manageres/provider_manager"
-	appconfigentities "mlib.com/gofy/server/entities/app/config"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	coreenumtypes "mlib.com/gofy/server/enum_types/model"
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	providermanager "github.com/odysseythink/gofy/backend/core/manageres/provider_manager"
+	appconfigentities "github.com/odysseythink/gofy/backend/entities/app/config"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	coreenumtypes "github.com/odysseythink/gofy/backend/enum_types/model"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
 )
 
 type ModelConfigConverter struct {

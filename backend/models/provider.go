@@ -3,8 +3,8 @@ package models
 import (
 	"time"
 
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
-	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
+	providerenumtypes "github.com/odysseythink/gofy/backend/enum_types/provider"
 )
 
 // Provider [...]

@@ -11,7 +11,7 @@ import {
 } from '../plugin-install-check'
 
 const createTool = (overrides: Partial<ToolWithProvider> = {}): ToolWithProvider => ({
-  id: 'langgenius/search/search',
+  id: 'odysseythink/search/search',
   name: 'search',
   plugin_id: 'plugin-search',
   provider: 'search-provider',

@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"iter"
 
+	modelmanager "github.com/odysseythink/gofy/backend/core/manageres/model_manager"
+	modelproviders "github.com/odysseythink/gofy/backend/core/model_runtime/model_provides"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
 	"github.com/odysseythink/mlog"
-	modelmanager "mlib.com/gofy/server/core/manageres/model_manager"
-	modelproviders "mlib.com/gofy/server/core/model_runtime/model_provides"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 )
 
 // PluginModelClient manages model-type plugins (LLM, embedding, rerank, TTS, STT, moderation).

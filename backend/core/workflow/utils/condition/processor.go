@@ -6,14 +6,14 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/odysseythink/confy/cast"
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	"github.com/odysseythink/gofy/backend/core/file"
+	"github.com/odysseythink/gofy/backend/core/variables"
+	workflowentities "github.com/odysseythink/gofy/backend/entities/workflow"
+	conditionentities "github.com/odysseythink/gofy/backend/entities/workflow/condition"
+	conditionenumtypes "github.com/odysseythink/gofy/backend/enum_types/workflow/condition"
 	"github.com/odysseythink/mlog"
-	"mlib.com/confy/cast"
-	"mlib.com/gofy/server/core/exceptions"
-	"mlib.com/gofy/server/core/file"
-	"mlib.com/gofy/server/core/variables"
-	workflowentities "mlib.com/gofy/server/entities/workflow"
-	conditionentities "mlib.com/gofy/server/entities/workflow/condition"
-	conditionenumtypes "mlib.com/gofy/server/enum_types/workflow/condition"
 )
 
 type ConditionProcessor struct{}

@@ -1,0 +1,63 @@
+provider: replicate
+label:
+  zh_Hans: Replicate
+  en_US: Replicate
+icon_small:
+  en_US: icon_s_en.svg
+icon_large:
+  en_US: icon_l_en.svg
+background: "#FDF2F8"
+help:
+  title:
+    en_US: Get your API token from Replicate
+    zh_Hans: 从 Replicate 获取 API Token
+  url:
+    en_US: https://replicate.com/account/api-tokens
+supported_model_types:
+  - llm
+  - text-embedding
+configurate_methods:
+  - customizable-model
+model_credential_schema:
+  model:
+    label:
+      en_US: Model Name
+      zh_Hans: 模型名称
+    placeholder:
+      en_US: Enter your model name (e.g. meta/meta-llama-3-70b-instruct)
+      zh_Hans: 输入模型名称（如 meta/meta-llama-3-70b-instruct）
+  credential_form_schemas:
+    - variable: replicate_api_token
+      label:
+        zh_Hans: API Token
+        en_US: API Token
+      type: secret-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入您的 Replicate API Token
+        en_US: Enter your Replicate API Token
+    - variable: model_version
+      label:
+        zh_Hans: 模型版本
+        en_US: Model Version
+      type: text-input
+      required: false
+      placeholder:
+        zh_Hans: 可选，填写具体版本哈希
+        en_US: Optional, specific version hash
+    - variable: context_size
+      label:
+        zh_Hans: 模型上下文长度
+        en_US: Model context size
+      required: false
+      type: text-input
+      default: '4096'
+    - variable: max_tokens
+      label:
+        zh_Hans: 最大 token 上限
+        en_US: Upper bound for max tokens
+      default: '4096'
+      type: text-input
+      show_on:
+        - variable: __model_type
+          value: llm

@@ -1,10 +1,10 @@
 package model
 
 import (
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	modelenumtypes "mlib.com/gofy/server/enum_types/model"
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
-	commontypes "mlib.com/gofy/server/types/common"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	modelenumtypes "github.com/odysseythink/gofy/backend/enum_types/model"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
+	commontypes "github.com/odysseythink/gofy/backend/types/common"
 )
 
 // SimpleModelProviderEntity represents a simple provider entity

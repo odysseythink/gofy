@@ -1,0 +1,53 @@
+provider: upstage
+label:
+  zh_Hans: Upstage
+  en_US: Upstage
+icon_small:
+  en_US: icon_s_en.svg
+icon_large:
+  en_US: icon_l_en.svg
+background: "#F5F3FF"
+help:
+  title:
+    en_US: Get your API key from Upstage
+    zh_Hans: 从 Upstage 获取 API Key
+  url:
+    en_US: https://console.upstage.ai/api-keys
+supported_model_types:
+  - llm
+  - text-embedding
+configurate_methods:
+  - customizable-model
+model_credential_schema:
+  model:
+    label:
+      en_US: Model Name
+      zh_Hans: 模型名称
+    placeholder:
+      en_US: Enter your model name (e.g. solar-pro)
+      zh_Hans: 输入模型名称（如 solar-pro）
+  credential_form_schemas:
+    - variable: api_key
+      label:
+        en_US: API Key
+      type: secret-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入您的 API Key
+        en_US: Enter your API Key
+    - variable: context_size
+      label:
+        zh_Hans: 模型上下文长度
+        en_US: Model context size
+      required: false
+      type: text-input
+      default: '32768'
+    - variable: max_tokens
+      label:
+        zh_Hans: 最大 token 上限
+        en_US: Upper bound for max tokens
+      default: '4096'
+      type: text-input
+      show_on:
+        - variable: __model_type
+          value: llm

@@ -9,9 +9,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/odysseythink/confy"
+	v1 "github.com/odysseythink/gofy/backend/main/link/api/v1"
+	"github.com/odysseythink/gofy/backend/main/link/middleware"
 	"github.com/odysseythink/mlog"
-	v1 "mlib.com/gofy/server/main/link/api/v1"
-	"mlib.com/gofy/server/main/link/middleware"
 )
 
 // type RouterGroup struct {
@@ -117,7 +117,10 @@ func InitRouters() *gin.Engine {
 	{
 		apiRouter.GET("setup", v1.ApiGroupApp.SetupApi.GetSetupStatus)
 		apiRouter.POST("setup", v1.ApiGroupApp.SetupApi.Setup)
+		apiRouter.GET("init", v1.ApiGroupApp.InitValidateApi.GetInitValidateStatus)
+		apiRouter.POST("init", v1.ApiGroupApp.InitValidateApi.InitValidate)
 		apiRouter.POST("login", v1.ApiGroupApp.LoginApi.Login)
+		apiRouter.POST("refresh-token", v1.ApiGroupApp.LoginApi.Refresh)
 		apiRouter.GET("system-features", v1.ApiGroupApp.FeatureApi.ListSystem)
 		apiRouter.GET("version", v1.ApiGroupApp.VersionApi.GetVersion)
 	}
@@ -157,10 +160,10 @@ func InitRouters() *gin.Engine {
 
 		authapiRouter.GET("apps/:app_id/api-keys", v1.ApiGroupApp.ApiKeyApi.GetApiKeyListResource)
 		authapiRouter.POST("apps/:app_id/api-keys", v1.ApiGroupApp.ApiKeyApi.SetApiKeyListResource)
-		authapiRouter.GET("datasets/:app_id/api-keys", v1.ApiGroupApp.ApiKeyApi.GetApiKeyListResource)
-		authapiRouter.POST("datasets/:app_id/api-keys", v1.ApiGroupApp.ApiKeyApi.SetApiKeyListResource)
+		authapiRouter.GET("datasets/:dataset_id/api-keys", v1.ApiGroupApp.ApiKeyApi.GetApiKeyListResource)
+		authapiRouter.POST("datasets/:dataset_id/api-keys", v1.ApiGroupApp.ApiKeyApi.SetApiKeyListResource)
 		authapiRouter.DELETE("apps/:app_id/api-keys/:api_key_id", v1.ApiGroupApp.ApiKeyApi.DelApiKeyResource)
-		authapiRouter.DELETE("datasets/:app_id/api-keys/:api_key_id", v1.ApiGroupApp.ApiKeyApi.DelApiKeyResource)
+		authapiRouter.DELETE("datasets/:dataset_id/api-keys/:api_key_id", v1.ApiGroupApp.ApiKeyApi.DelApiKeyResource)
 
 		authapiRouter.GET("account/profile", v1.ApiGroupApp.AccountApi.Profile)
 		authapiRouter.POST("/account/name", v1.ApiGroupApp.AccountApi.Update)
@@ -221,6 +224,7 @@ func InitRouters() *gin.Engine {
 		authapiRouter.GET("workspaces/current/members", v1.ApiGroupApp.MemberApi.List)
 
 		authapiRouter.GET("datasets/retrieval-setting", v1.ApiGroupApp.DatasetApi.RetrievalSetting)
+		authapiRouter.GET("datasets/api-base-info", v1.ApiGroupApp.DatasetApi.ApiBaseInfo)
 		authapiRouter.GET("datasets", v1.ApiGroupApp.DatasetApi.DatasetList)
 		authapiRouter.GET("datasets/external-knowledge-api", v1.ApiGroupApp.DatasetApi.ExternalKnowledgeApiList)
 

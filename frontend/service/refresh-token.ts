@@ -57,7 +57,10 @@ async function getNewAccessToken(timeout: number): Promise<void> {
         return Promise.reject(error)
       }
       else {
-        if (ret.status === 401)
+        // Treat any non-2xx as refresh failure. Previously only 401 rejected,
+        // which let 404 ("endpoint not registered") look like success and
+        // triggered an infinite baseFetch retry loop.
+        if (!ret.ok)
           return Promise.reject(ret)
       }
     }

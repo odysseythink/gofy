@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/odysseythink/confy"
-	basenodesentities "mlib.com/gofy/server/entities/nodes/base"
+	basenodesentities "github.com/odysseythink/gofy/backend/entities/nodes/base"
 )
 
 var (

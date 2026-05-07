@@ -1,7 +1,7 @@
 package texttospeech
 
 import (
-	appconfigentities "mlib.com/gofy/server/entities/app/config"
+	appconfigentities "github.com/odysseythink/gofy/backend/entities/app/config"
 )
 
 type TextToSpeechConfigManager struct{}

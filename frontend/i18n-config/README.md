@@ -146,7 +146,7 @@ export const languages = [
 1. Don't forget to mark the supported field as `true` if the language is supported.
 
 1. Sometimes you might need to do some changes in the server side. Please change this file as well. 👇
-   <https://github.com/langgenius/gofy/blob/61e4bbabaf2758354db4073cbea09fdd21a5bec1/api/constants/languages.py#L5>
+   <https://github.com/odysseythink/gofy/blob/61e4bbabaf2758354db4073cbea09fdd21a5bec1/api/constants/languages.py#L5>
 
 > Note: `I18nText` type is automatically derived from `LanguagesSupported`, so you don't need to manually add types.
 

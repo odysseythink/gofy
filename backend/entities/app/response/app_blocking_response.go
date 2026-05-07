@@ -3,8 +3,8 @@ package response
 import (
 	"encoding/json"
 
-	appresponserentities "mlib.com/gofy/server/entities/app/responser"
-	"mlib.com/gofy/server/models"
+	appresponserentities "github.com/odysseythink/gofy/backend/entities/app/responser"
+	"github.com/odysseythink/gofy/backend/models"
 )
 
 type AppBlockingResponse struct {

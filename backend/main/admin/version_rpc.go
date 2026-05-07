@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"github.com/odysseythink/confy"
+	"github.com/odysseythink/gofy/backend/proto/pbapi"
 	"github.com/odysseythink/mlog"
 	"google.golang.org/grpc/peer"
-	"mlib.com/gofy/server/proto/pbapi"
 )
 
 func (s *AdminService) GetVersion(ctx context.Context, in *pbapi.GetVersionRequest) (out *pbapi.GetVersionReply, err error) {

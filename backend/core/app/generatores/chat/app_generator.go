@@ -1,7 +1,7 @@
 package chat
 
 import (
-	"mlib.com/gofy/server/core/app/generatores/base"
+	"github.com/odysseythink/gofy/backend/core/app/generatores/base"
 )
 
 type ChatAppGenerator struct {

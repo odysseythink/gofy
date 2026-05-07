@@ -113,7 +113,7 @@ export default function AppSelector() {
 
   const { t } = useTranslation()
   const docLink = useDocLink()
-  const { userProfile, langGeniusVersionInfo, isCurrentWorkspaceOwner } = useAppContext()
+  const { userProfile, odysseythinkVersionInfo, isCurrentWorkspaceOwner } = useAppContext()
   const { isEducationAccount } = useProviderContext()
   const { setShowAccountSettingModal } = useModalContext()
 
@@ -195,7 +195,7 @@ export default function AppSelector() {
                   trailing={<ExternalLinkIndicator />}
                 />
                 <AccountMenuExternalItem
-                  href="https://github.com/langgenius/gofy"
+                  href="https://github.com/odysseythink/gofy"
                   iconClassName="i-ri-github-line"
                   label={t('userProfile.github', { ns: 'common' })}
                   trailing={(
@@ -216,8 +216,8 @@ export default function AppSelector() {
                       }}
                       trailing={(
                         <div className="flex shrink-0 items-center">
-                          <div className="mr-2 text-text-tertiary system-xs-regular">{langGeniusVersionInfo.current_version}</div>
-                          <Indicator color={langGeniusVersionInfo.current_version === langGeniusVersionInfo.latest_version ? 'green' : 'orange'} />
+                          <div className="mr-2 text-text-tertiary system-xs-regular">{odysseythinkVersionInfo.current_version}</div>
+                          <Indicator color={odysseythinkVersionInfo.current_version === odysseythinkVersionInfo.latest_version ? 'green' : 'orange'} />
                         </div>
                       )}
                     />
@@ -252,7 +252,7 @@ export default function AppSelector() {
         </DropdownMenuContent>
       </DropdownMenu>
       {
-        aboutVisible && <AccountAbout onCancel={() => setAboutVisible(false)} langGeniusVersionInfo={langGeniusVersionInfo} />
+        aboutVisible && <AccountAbout onCancel={() => setAboutVisible(false)} odysseythinkVersionInfo={odysseythinkVersionInfo} />
       }
     </div>
   )

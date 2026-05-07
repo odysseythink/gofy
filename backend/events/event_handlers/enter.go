@@ -1,8 +1,8 @@
 package eventhandlers
 
 import (
+	"github.com/odysseythink/gofy/backend/events"
 	"github.com/odysseythink/mrun"
-	"mlib.com/gofy/server/events"
 )
 
 func Init() {

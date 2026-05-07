@@ -3,9 +3,9 @@ package event
 import (
 	"time"
 
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	workflowentities "mlib.com/gofy/server/entities/workflow"
-	"mlib.com/gofy/server/models"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	workflowentities "github.com/odysseythink/gofy/backend/entities/workflow"
+	"github.com/odysseythink/gofy/backend/models"
 )
 
 type NodeEventType string

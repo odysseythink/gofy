@@ -3,8 +3,8 @@ package agent
 import (
 	"strings"
 
-	toolsentities "mlib.com/gofy/server/entities/tools"
-	toolsenumtypes "mlib.com/gofy/server/enum_types/tools"
+	toolsentities "github.com/odysseythink/gofy/backend/entities/tools"
+	toolsenumtypes "github.com/odysseythink/gofy/backend/enum_types/tools"
 )
 
 type AgentToolEntity struct {

@@ -13,11 +13,11 @@ import (
 	"time"
 
 	"github.com/odysseythink/confy"
+	"github.com/odysseythink/gofy/backend/main/sandbox/global"
+	"github.com/odysseythink/gofy/backend/main/sandbox/runner"
+	"github.com/odysseythink/gofy/backend/main/sandbox/runner/types"
 	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
-	"mlib.com/gofy/server/main/sandbox/global"
-	"mlib.com/gofy/server/main/sandbox/runner"
-	"mlib.com/gofy/server/main/sandbox/runner/types"
 )
 
 type PythonRunner struct {

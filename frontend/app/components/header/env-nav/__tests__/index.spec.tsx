@@ -17,7 +17,7 @@ describe('EnvNav', () => {
 
   it('should render null when environment is PRODUCTION', () => {
     mockUseAppContext.mockReturnValue({
-      langGeniusVersionInfo: {
+      odysseythinkVersionInfo: {
         current_env: 'PRODUCTION',
       },
     } as unknown as AppContextValue)
@@ -28,7 +28,7 @@ describe('EnvNav', () => {
 
   it('should render TESTING tag and icon when environment is TESTING', () => {
     mockUseAppContext.mockReturnValue({
-      langGeniusVersionInfo: {
+      odysseythinkVersionInfo: {
         current_env: 'TESTING',
       },
     } as unknown as AppContextValue)
@@ -39,7 +39,7 @@ describe('EnvNav', () => {
 
   it('should render DEVELOPMENT tag and icon when environment is DEVELOPMENT', () => {
     mockUseAppContext.mockReturnValue({
-      langGeniusVersionInfo: {
+      odysseythinkVersionInfo: {
         current_env: 'DEVELOPMENT',
       },
     } as unknown as AppContextValue)

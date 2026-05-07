@@ -1,10 +1,10 @@
 package conditionhandlers
 
 import (
-	graphengineentities "mlib.com/gofy/server/entities/graph_engine"
+	graphengineentities "github.com/odysseythink/gofy/backend/entities/graph_engine"
 
-	wfgraph "mlib.com/gofy/server/core/workflow/graph"
-	"mlib.com/gofy/server/core/workflow/utils/condition"
+	wfgraph "github.com/odysseythink/gofy/backend/core/workflow/graph"
+	"github.com/odysseythink/gofy/backend/core/workflow/utils/condition"
 )
 
 type ConditionRunConditionHandlerHandler struct {

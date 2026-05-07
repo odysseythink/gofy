@@ -2,8 +2,8 @@ package http
 
 import (
 	"github.com/gin-gonic/gin"
-	"mlib.com/gofy/server/core/exceptions"
-	pbexceptions "mlib.com/gofy/server/proto/exceptions"
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	pbexceptions "github.com/odysseythink/gofy/backend/proto/exceptions"
 )
 
 type HTTPException interface {

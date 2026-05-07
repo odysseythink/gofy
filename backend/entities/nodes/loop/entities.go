@@ -1,7 +1,7 @@
 package loop
 
 import (
-	basenodesentities "mlib.com/gofy/server/entities/nodes/base"
+	basenodesentities "github.com/odysseythink/gofy/backend/entities/nodes/base"
 )
 
 // LoopNodeData represents answer node data

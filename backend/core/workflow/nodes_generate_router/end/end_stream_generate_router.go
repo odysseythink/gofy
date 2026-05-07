@@ -5,10 +5,10 @@ import (
 	"maps"
 	"slices"
 
+	graphengineentities "github.com/odysseythink/gofy/backend/entities/graph_engine"
+	endnodesentities "github.com/odysseythink/gofy/backend/entities/nodes/end"
+	nodesenumtypes "github.com/odysseythink/gofy/backend/enum_types/nodes"
 	"github.com/odysseythink/mlog"
-	graphengineentities "mlib.com/gofy/server/entities/graph_engine"
-	endnodesentities "mlib.com/gofy/server/entities/nodes/end"
-	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
 )
 
 type EndStreamGeneratorRouter struct {

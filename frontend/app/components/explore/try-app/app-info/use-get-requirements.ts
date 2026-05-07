@@ -43,7 +43,7 @@ const parseProviderId = (providerId: string): ProviderInfo | null => {
 
   if (segments.length === 1) {
     return {
-      organization: 'langgenius',
+      organization: 'odysseythink',
       providerName: segments[0],
     }
   }

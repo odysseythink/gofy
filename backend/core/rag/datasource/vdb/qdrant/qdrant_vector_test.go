@@ -6,9 +6,9 @@ import (
 	"os"
 	"testing"
 
-	"mlib.com/gofy/server/core/rag/datasource/vdb/qdrant"
-	"mlib.com/gofy/server/core/rag/datasource/vdb/vdbtest"
-	ragentities "mlib.com/gofy/server/entities/rag"
+	"github.com/odysseythink/gofy/backend/core/rag/datasource/vdb/qdrant"
+	"github.com/odysseythink/gofy/backend/core/rag/datasource/vdb/vdbtest"
+	ragentities "github.com/odysseythink/gofy/backend/entities/rag"
 )
 
 func TestQdrantContract(t *testing.T) {

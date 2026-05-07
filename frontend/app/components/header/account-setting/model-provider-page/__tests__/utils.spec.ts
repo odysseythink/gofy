@@ -50,7 +50,7 @@ describe('utils', () => {
 
   describe('providerToPluginId', () => {
     it('should return the plugin id prefix when the provider key contains a provider segment', () => {
-      expect(providerToPluginId('langgenius/openai/openai')).toBe('langgenius/openai')
+      expect(providerToPluginId('odysseythink/openai/openai')).toBe('odysseythink/openai')
     })
 
     it('should return an empty string when the provider key has no plugin prefix', () => {

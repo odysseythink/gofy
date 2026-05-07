@@ -1,9 +1,9 @@
 package questionclassifier
 
 import (
-	basenodesentities "mlib.com/gofy/server/entities/nodes/base"
-	"mlib.com/gofy/server/entities/nodes/llm"
-	"mlib.com/gofy/server/entities/prompt"
+	basenodesentities "github.com/odysseythink/gofy/backend/entities/nodes/base"
+	"github.com/odysseythink/gofy/backend/entities/nodes/llm"
+	"github.com/odysseythink/gofy/backend/entities/prompt"
 )
 
 type ClassConfig struct {

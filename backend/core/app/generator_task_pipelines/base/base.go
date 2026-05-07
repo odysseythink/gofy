@@ -3,14 +3,14 @@ package base
 import (
 	"time"
 
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	modelruntimeexceptions "github.com/odysseythink/gofy/backend/core/exceptions/model_runtime"
+	dbengine "github.com/odysseythink/gofy/backend/db_engine"
+	appgeneratorentities "github.com/odysseythink/gofy/backend/entities/app/generator"
+	appqueueentities "github.com/odysseythink/gofy/backend/entities/app/queue"
+	appresponseentities "github.com/odysseythink/gofy/backend/entities/app/response"
+	"github.com/odysseythink/gofy/backend/models"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/core/exceptions"
-	modelruntimeexceptions "mlib.com/gofy/server/core/exceptions/model_runtime"
-	dbengine "mlib.com/gofy/server/db_engine"
-	appgeneratorentities "mlib.com/gofy/server/entities/app/generator"
-	appqueueentities "mlib.com/gofy/server/entities/app/queue"
-	appresponseentities "mlib.com/gofy/server/entities/app/response"
-	"mlib.com/gofy/server/models"
 )
 
 // BaseGeneratorTaskPipeline 类的 Go 实现

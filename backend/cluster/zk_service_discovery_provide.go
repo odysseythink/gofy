@@ -7,10 +7,9 @@ import (
 	"strings"
 	"time"
 
+	"google.golang.org/grpc/resolver"
 	"github.com/odysseythink/confy"
 	"github.com/odysseythink/mlog"
-	"google.golang.org/grpc/resolver"
-	"mlib.com/zkmgr"
 )
 
 type zkServiceDiscoveryProvide struct {
@@ -18,7 +17,7 @@ type zkServiceDiscoveryProvide struct {
 	zkRootKeyStr     string
 	zkClusterStr     string
 	zkSessionTimeout int
-	zkClient         zkmgr.Client
+	zkClient         IZooClient
 }
 
 func (provide *zkServiceDiscoveryProvide) Init(args ...interface{}) error {
@@ -51,14 +50,14 @@ func (provide *zkServiceDiscoveryProvide) Init(args ...interface{}) error {
 
 	// 超时时间
 	provide.zkSessionTimeout = confy.Get[int]("ZooKeeper.TIMEOUT")
-	if provide.zkSessionTimeout > zkmgr.MAX_ZK_RECV_TIMEOUT || provide.zkSessionTimeout < zkmgr.MIN_ZK_RECV_TIMEOUT {
-		provide.zkSessionTimeout = zkmgr.DEFAULT_RECV_TIMEOUT
+	if provide.zkSessionTimeout > MAX_ZK_RECV_TIMEOUT || provide.zkSessionTimeout < MIN_ZK_RECV_TIMEOUT {
+		provide.zkSessionTimeout = DEFAULT_RECV_TIMEOUT
 	}
 	mlog.Info("ZooKeeper timeout: ", provide.zkSessionTimeout)
 	hosts := strings.Split(provide.zkHostStr, ",")
 	var err error
 	for iLoop := 0; iLoop < 5; iLoop++ {
-		provide.zkClient, err = zkmgr.NewClient(hosts)
+		provide.zkClient, err = NewZooClient(hosts)
 		if err != nil {
 			mlog.Warning("connect zookeeper failed:", err)
 			time.Sleep(100 * time.Microsecond)
@@ -139,7 +138,7 @@ func (provide *zkServiceDiscoveryProvide) Scheme() string {
 
 type zkResolver struct {
 	cc         resolver.ClientConn
-	cli        zkmgr.Client
+	cli        IZooClient
 	serverList map[string]*server //服务列表
 	endpoint   string
 }

@@ -1,6 +1,6 @@
 
 import type { FC, ReactNode } from 'react'
-import type { ICurrentWorkspace, LangGeniusVersionResponse, UserProfileResponse } from '@/models/common'
+import type { ICurrentWorkspace, OdysseythinkVersionResponse, UserProfileResponse } from '@/models/common'
 import { useQueryClient } from '@tanstack/react-query'
 import { useCallback, useEffect, useMemo } from 'react'
 import { setUserId, setUserProperties } from '@/app/components/base/amplitude'
@@ -9,7 +9,7 @@ import MaintenanceNotice from '@/app/components/header/maintenance-notice'
 import { ZENDESK_FIELD_IDS } from '@/config'
 import {
   AppContext,
-  initialLangGeniusVersionInfo,
+  initialOdysseythinkVersionInfo,
   initialWorkspaceInfo,
   userProfilePlaceholder,
   useSelector,
@@ -17,7 +17,7 @@ import {
 import { env } from '@/env'
 import {
   useCurrentWorkspace,
-  useLangGeniusVersion,
+  useOdysseythinkVersion,
   useUserProfile,
 } from '@/service/use-common'
 import { useGlobalPublicStore } from './global-public-context'
@@ -31,27 +31,27 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({ children }) =>
   const systemFeatures = useGlobalPublicStore(s => s.systemFeatures)
   const { data: userProfileResp } = useUserProfile()
   const { data: currentWorkspaceResp, isPending: isLoadingCurrentWorkspace, isFetching: isValidatingCurrentWorkspace } = useCurrentWorkspace()
-  const langGeniusVersionQuery = useLangGeniusVersion(
+  const odysseythinkVersionQuery = useOdysseythinkVersion(
     userProfileResp?.meta.currentVersion,
     !systemFeatures.branding.enabled,
   )
 
   const userProfile = useMemo<UserProfileResponse>(() => userProfileResp?.profile || userProfilePlaceholder, [userProfileResp?.profile])
   const currentWorkspace = useMemo<ICurrentWorkspace>(() => currentWorkspaceResp || initialWorkspaceInfo, [currentWorkspaceResp])
-  const langGeniusVersionInfo = useMemo<LangGeniusVersionResponse>(() => {
-    if (!userProfileResp?.meta?.currentVersion || !langGeniusVersionQuery.data)
-      return initialLangGeniusVersionInfo
+  const odysseythinkVersionInfo = useMemo<OdysseythinkVersionResponse>(() => {
+    if (!userProfileResp?.meta?.currentVersion || !odysseythinkVersionQuery.data)
+      return initialOdysseythinkVersionInfo
 
     const current_version = userProfileResp.meta.currentVersion
     const current_env = userProfileResp.meta.currentEnv || ''
-    const versionData = langGeniusVersionQuery.data
+    const versionData = odysseythinkVersionQuery.data
     return {
       ...versionData,
       current_version,
       latest_version: versionData.version,
       current_env,
     }
-  }, [langGeniusVersionQuery.data, userProfileResp?.meta])
+  }, [odysseythinkVersionQuery.data, userProfileResp?.meta])
 
   const isCurrentWorkspaceManager = useMemo(() => ['owner', 'admin'].includes(currentWorkspace.role), [currentWorkspace.role])
   const isCurrentWorkspaceOwner = useMemo(() => currentWorkspace.role === 'owner', [currentWorkspace.role])
@@ -68,22 +68,22 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({ children }) =>
 
   // #region Zendesk conversation fields
   useEffect(() => {
-    if (ZENDESK_FIELD_IDS.ENVIRONMENT && langGeniusVersionInfo?.current_env) {
+    if (ZENDESK_FIELD_IDS.ENVIRONMENT && odysseythinkVersionInfo?.current_env) {
       setZendeskConversationFields([{
         id: ZENDESK_FIELD_IDS.ENVIRONMENT,
-        value: langGeniusVersionInfo.current_env.toLowerCase(),
+        value: odysseythinkVersionInfo.current_env.toLowerCase(),
       }])
     }
-  }, [langGeniusVersionInfo?.current_env])
+  }, [odysseythinkVersionInfo?.current_env])
 
   useEffect(() => {
-    if (ZENDESK_FIELD_IDS.VERSION && langGeniusVersionInfo?.version) {
+    if (ZENDESK_FIELD_IDS.VERSION && odysseythinkVersionInfo?.version) {
       setZendeskConversationFields([{
         id: ZENDESK_FIELD_IDS.VERSION,
-        value: langGeniusVersionInfo.version,
+        value: odysseythinkVersionInfo.version,
       }])
     }
-  }, [langGeniusVersionInfo?.version])
+  }, [odysseythinkVersionInfo?.version])
 
   useEffect(() => {
     if (ZENDESK_FIELD_IDS.EMAIL && userProfile?.email) {
@@ -130,7 +130,7 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({ children }) =>
     <AppContext.Provider value={{
       userProfile,
       mutateUserProfile,
-      langGeniusVersionInfo,
+      odysseythinkVersionInfo,
       useSelector,
       currentWorkspace,
       isCurrentWorkspaceManager,

@@ -1,11 +1,11 @@
 package conversation
 
 import (
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	httpexceptions "github.com/odysseythink/gofy/backend/core/exceptions/http"
+	dbengine "github.com/odysseythink/gofy/backend/db_engine"
+	"github.com/odysseythink/gofy/backend/models"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/core/exceptions"
-	httpexceptions "mlib.com/gofy/server/core/exceptions/http"
-	dbengine "mlib.com/gofy/server/db_engine"
-	"mlib.com/gofy/server/models"
 )
 
 type ConversationManager struct {

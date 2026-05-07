@@ -1,1 +1,0 @@
-import{r as o,u as s,j as r,O as a}from"./index-m2eZn9zC.js";import{u as e}from"./use-document-title-b7CVaUln.js";import"./index-CLpNJDRZ.js";import"./index-DFyQXjKv.js";import"./isBrowser-CU3-RGUT.js";const m=()=>{const{t}=s();return e(t("menus.appDetail",{ns:"common"})),r.jsx(a,{})},c=o.memo(m);export{c as default};

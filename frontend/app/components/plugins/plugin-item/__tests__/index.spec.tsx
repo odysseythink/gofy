@@ -45,12 +45,12 @@ vi.mock('@/app/components/plugins/install-plugin/hooks/use-refresh-plugin-list',
   default: () => ({ refreshPluginList: mockRefreshPluginList }),
 }))
 
-const mockLangGeniusVersionInfo = vi.fn(() => ({
+const mockOdysseythinkVersionInfo = vi.fn(() => ({
   current_version: '1.0.0',
 }))
 vi.mock('@/context/app-context', () => ({
   useAppContext: () => ({
-    langGeniusVersionInfo: mockLangGeniusVersionInfo(),
+    odysseythinkVersionInfo: mockOdysseythinkVersionInfo(),
   }),
 }))
 
@@ -159,7 +159,7 @@ describe('PluginItem', () => {
     mockTheme.mockReturnValue('light')
     mockCurrentPluginID.mockReturnValue(undefined)
     mockEnableMarketplace.mockReturnValue(true)
-    mockLangGeniusVersionInfo.mockReturnValue({ current_version: '1.0.0' })
+    mockOdysseythinkVersionInfo.mockReturnValue({ current_version: '1.0.0' })
     mockGetValueFromI18nObject.mockImplementation((obj: Record<string, string>) => obj?.en_US || '')
   })
 
@@ -346,7 +346,7 @@ describe('PluginItem', () => {
   describe('Version Compatibility', () => {
     it('should show warning icon when Gofy version is not compatible', () => {
       // Arrange
-      mockLangGeniusVersionInfo.mockReturnValue({ current_version: '0.3.0' })
+      mockOdysseythinkVersionInfo.mockReturnValue({ current_version: '0.3.0' })
       const plugin = createPluginDetail({
         declaration: createPluginDeclaration({
           meta: { version: '1.0.0', minimum_gofy_version: '0.5.0' },
@@ -363,7 +363,7 @@ describe('PluginItem', () => {
 
     it('should not show warning when Gofy version is compatible', () => {
       // Arrange
-      mockLangGeniusVersionInfo.mockReturnValue({ current_version: '1.0.0' })
+      mockOdysseythinkVersionInfo.mockReturnValue({ current_version: '1.0.0' })
       const plugin = createPluginDetail({
         declaration: createPluginDeclaration({
           meta: { version: '1.0.0', minimum_gofy_version: '0.5.0' },
@@ -380,7 +380,7 @@ describe('PluginItem', () => {
 
     it('should handle missing current_version gracefully', () => {
       // Arrange
-      mockLangGeniusVersionInfo.mockReturnValue({ current_version: '' })
+      mockOdysseythinkVersionInfo.mockReturnValue({ current_version: '' })
       const plugin = createPluginDetail()
 
       // Act

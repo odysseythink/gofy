@@ -31,7 +31,7 @@ type Props = {
   searchText: string
 }
 
-const FixedModelProvider = ['langgenius/openai/openai', 'langgenius/anthropic/anthropic']
+const FixedModelProvider = ['odysseythink/openai/openai', 'odysseythink/anthropic/anthropic']
 
 const ModelProviderPage = ({ searchText }: Props) => {
   const debouncedSearchText = useDebounce(searchText, { wait: 500 })

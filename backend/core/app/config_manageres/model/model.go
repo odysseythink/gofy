@@ -5,13 +5,13 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	providermanager "github.com/odysseythink/gofy/backend/core/manageres/provider_manager"
+	modelproviders "github.com/odysseythink/gofy/backend/core/model_runtime/model_provides"
+	appconfigentities "github.com/odysseythink/gofy/backend/entities/app/config"
+	pluginentities "github.com/odysseythink/gofy/backend/entities/plugin"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/core/exceptions"
-	providermanager "mlib.com/gofy/server/core/manageres/provider_manager"
-	modelproviders "mlib.com/gofy/server/core/model_runtime/model_provides"
-	appconfigentities "mlib.com/gofy/server/entities/app/config"
-	pluginentities "mlib.com/gofy/server/entities/plugin"
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 )
 
 type ModelConfigManager struct {

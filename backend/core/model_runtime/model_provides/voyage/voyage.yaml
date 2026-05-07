@@ -1,0 +1,44 @@
+provider: voyage
+label:
+  zh_Hans: Voyage AI
+  en_US: Voyage AI
+icon_small:
+  en_US: icon_s_en.svg
+icon_large:
+  en_US: icon_l_en.svg
+background: "#F5F3FF"
+help:
+  title:
+    en_US: Get your API key from Voyage AI
+    zh_Hans: 从 Voyage AI 获取 API Key
+  url:
+    en_US: https://dash.voyageai.com/api-keys
+supported_model_types:
+  - text-embedding
+  - rerank
+configurate_methods:
+  - customizable-model
+model_credential_schema:
+  model:
+    label:
+      en_US: Model Name
+      zh_Hans: 模型名称
+    placeholder:
+      en_US: Enter your model name (e.g. voyage-3)
+      zh_Hans: 输入模型名称（如 voyage-3）
+  credential_form_schemas:
+    - variable: api_key
+      label:
+        en_US: API Key
+      type: secret-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入您的 API Key
+        en_US: Enter your API Key
+    - variable: context_size
+      label:
+        zh_Hans: 模型上下文长度
+        en_US: Model context size
+      required: false
+      type: text-input
+      default: '16000'

@@ -1,10 +1,10 @@
 package moonshot
 
 import (
-	"mlib.com/gofy/server/core/model_runtime/model_provides/base"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
-	"mlib.com/gofy/server/global"
+	"github.com/odysseythink/gofy/backend/core/model_runtime/model_provides/base"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
+	"github.com/odysseythink/gofy/backend/global"
 )
 
 type MoonshotProvider struct {

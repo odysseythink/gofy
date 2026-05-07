@@ -5,11 +5,11 @@ import { useQuery } from '@tanstack/react-query'
 import { IS_DEV } from '@/config'
 
 const defaultData = {
-  stargazers_count: 110918,
+  stargazers_count: 0,
 }
 
 const getStar = async () => {
-  const res = await fetch('https://api.github.com/repos/langgenius/gofy')
+  const res = await fetch('https://api.github.com/repos/odysseythink/gofy')
 
   if (!res.ok)
     throw new Error('Failed to fetch github star')

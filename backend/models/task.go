@@ -3,9 +3,9 @@ package models
 import (
 	"time"
 
-	pluginidentityentities "mlib.com/gofy/server/entities/plugin/identity"
-	pluginenumtypes "mlib.com/gofy/server/enum_types/plugin"
-	commontypes "mlib.com/gofy/server/types/common"
+	pluginidentityentities "github.com/odysseythink/gofy/backend/entities/plugin/identity"
+	pluginenumtypes "github.com/odysseythink/gofy/backend/enum_types/plugin"
+	commontypes "github.com/odysseythink/gofy/backend/types/common"
 )
 
 // CeleryTask [...]

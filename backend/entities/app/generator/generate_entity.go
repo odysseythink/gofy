@@ -3,9 +3,9 @@ package generator
 import (
 	"fmt"
 
-	"mlib.com/gofy/server/core/file"
-	appconfigentities "mlib.com/gofy/server/entities/app/config"
-	appenumtypes "mlib.com/gofy/server/enum_types/app"
+	"github.com/odysseythink/gofy/backend/core/file"
+	appconfigentities "github.com/odysseythink/gofy/backend/entities/app/config"
+	appenumtypes "github.com/odysseythink/gofy/backend/enum_types/app"
 )
 
 type SingleIterationRunEntity struct {

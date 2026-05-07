@@ -3,10 +3,10 @@ package workflow
 import (
 	"fmt"
 
+	workflowentities "github.com/odysseythink/gofy/backend/entities/workflow"
+	workflowenumtypes "github.com/odysseythink/gofy/backend/enum_types/workflow"
+	"github.com/odysseythink/gofy/backend/models"
 	"github.com/odysseythink/mlog"
-	workflowentities "mlib.com/gofy/server/entities/workflow"
-	workflowenumtypes "mlib.com/gofy/server/enum_types/workflow"
-	"mlib.com/gofy/server/models"
 )
 
 // ErrorStrategy defines how to handle node execution errors.

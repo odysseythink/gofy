@@ -7,15 +7,15 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/odysseythink/gofy/backend/cluster"
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	servicesentities "github.com/odysseythink/gofy/backend/entities/services"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
+	"github.com/odysseythink/gofy/backend/models"
+	"github.com/odysseythink/gofy/backend/models/response"
+	"github.com/odysseythink/gofy/backend/proto/pbapi"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/cluster"
-	"mlib.com/gofy/server/core/exceptions"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	servicesentities "mlib.com/gofy/server/entities/services"
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
-	"mlib.com/gofy/server/models"
-	"mlib.com/gofy/server/models/response"
-	"mlib.com/gofy/server/proto/pbapi"
 )
 
 type ModelsApi struct {

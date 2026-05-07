@@ -2,7 +2,7 @@ import type { Mock } from 'vitest'
 import type { UsagePlanInfo } from '@/app/components/billing/type'
 import type { AppContextValue } from '@/context/app-context'
 import type { ProviderContextState } from '@/context/provider-context'
-import type { ICurrentWorkspace, LangGeniusVersionResponse, UserProfileResponse } from '@/models/common'
+import type { ICurrentWorkspace, OdysseythinkVersionResponse, UserProfileResponse } from '@/models/common'
 import { render, screen } from '@testing-library/react'
 import { Plan } from '@/app/components/billing/type'
 import { mailToSupport } from '@/app/components/header/utils/util'
@@ -79,7 +79,7 @@ const buildAppContext = (overrides: Partial<AppContextValue> = {}): AppContextVa
     trial_credits_used: 0,
     next_credit_reset_date: 0,
   }
-  const langGeniusVersionInfo: LangGeniusVersionResponse = {
+  const odysseythinkVersionInfo: OdysseythinkVersionResponse = {
     current_env: '',
     current_version: '1.0.0',
     latest_version: '',
@@ -97,7 +97,7 @@ const buildAppContext = (overrides: Partial<AppContextValue> = {}): AppContextVa
     isCurrentWorkspaceDatasetOperator: false,
     mutateUserProfile: vi.fn(),
     mutateCurrentWorkspace: vi.fn(),
-    langGeniusVersionInfo,
+    odysseythinkVersionInfo,
     isLoadingCurrentWorkspace: false,
     isValidatingCurrentWorkspace: false,
   }

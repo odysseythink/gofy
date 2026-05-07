@@ -3,9 +3,9 @@ package modelmanager
 import (
 	"fmt"
 
-	"mlib.com/gofy/server/core/exceptions"
-	providermanager "mlib.com/gofy/server/core/manageres/provider_manager"
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	providermanager "github.com/odysseythink/gofy/backend/core/manageres/provider_manager"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
 )
 
 type ModelManager struct {

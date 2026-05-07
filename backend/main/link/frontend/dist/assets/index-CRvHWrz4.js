@@ -1,0 +1,1 @@
+import{r as s,j as o,c as r}from"./index-C6MQE079.js";const n="_text_1ttqr_46",i="_avatar_1ttqr_71",t={"dot-flashing":"_dot-flashing_1ttqr_1",text:n,avatar:i,"dot-flashing-avatar":"_dot-flashing-avatar_1ttqr_1"},_=({type:a})=>o.jsx("div",{className:r(t["dot-flashing"],t[a])}),e=s.memo(_);export{e as L};

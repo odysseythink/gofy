@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"iter"
 
-	"mlib.com/gofy/server/core/model_runtime/model_provides/base"
-	"mlib.com/gofy/server/core/model_runtime/model_provides/oaicompat"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
+	"github.com/odysseythink/gofy/backend/core/model_runtime/model_provides/base"
+	"github.com/odysseythink/gofy/backend/core/model_runtime/model_provides/oaicompat"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
 )
 
 const openaiEndpoint = "https://api.openai.com/v1"
@@ -26,8 +26,10 @@ func NewOpenAILLM() *OpenAILLM {
 	}
 }
 
-func (l *OpenAILLM) ProviderName() string                       { return "openai" }
-func (l *OpenAILLM) ModelType() modelruntimeenumtypes.ModelType { return modelruntimeenumtypes.Model_LLM }
+func (l *OpenAILLM) ProviderName() string { return "openai" }
+func (l *OpenAILLM) ModelType() modelruntimeenumtypes.ModelType {
+	return modelruntimeenumtypes.Model_LLM
+}
 
 func (l *OpenAILLM) ValidateCredentials(model string, credentials map[string]any) {
 	result := l.Invoke(model, credentials,

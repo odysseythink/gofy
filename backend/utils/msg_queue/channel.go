@@ -1,10 +1,10 @@
 package msgqueue
 
 import (
-	"cache"
 	"context"
 	"sync"
 
+	"github.com/odysseythink/gofy/backend/cache"
 	"github.com/odysseythink/mlog"
 )
 

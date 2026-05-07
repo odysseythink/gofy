@@ -6,10 +6,10 @@ import (
 	"math/rand"
 	"time"
 
+	dbengine "github.com/odysseythink/gofy/backend/db_engine"
+	"github.com/odysseythink/gofy/backend/models"
+	"github.com/odysseythink/gofy/backend/tasks"
 	uuid "github.com/satori/go.uuid"
-	dbengine "mlib.com/gofy/server/db_engine"
-	"mlib.com/gofy/server/models"
-	"mlib.com/gofy/server/tasks"
 )
 
 type DocumentService struct{}
@@ -276,7 +276,7 @@ func (s *DocumentService) UpdateDocumentWithDatasetID(
 	}
 
 	updates := map[string]any{
-		"indexing_status":        "waiting",
+		"indexing_status":       "waiting",
 		"processing_started_at": nil,
 		"completed_at":          nil,
 		"error":                 nil,
@@ -380,7 +380,7 @@ func (s *DocumentService) SaveDocumentWithoutDatasetID(
 func (s *DocumentService) RetryDocument(datasetID string, documents []*models.Document) error {
 	for _, doc := range documents {
 		dbengine.Instance().DB.Model(doc).Updates(map[string]any{
-			"indexing_status":        "waiting",
+			"indexing_status":       "waiting",
 			"processing_started_at": nil,
 			"completed_at":          nil,
 			"error":                 nil,
@@ -402,7 +402,7 @@ func (s *DocumentService) RetryDocument(datasetID string, documents []*models.Do
 // SyncWebsiteDocument re-crawls and re-indexes a website document.
 func (s *DocumentService) SyncWebsiteDocument(datasetID string, document *models.Document) error {
 	dbengine.Instance().DB.Model(document).Updates(map[string]any{
-		"indexing_status":        "waiting",
+		"indexing_status":       "waiting",
 		"processing_started_at": nil,
 		"completed_at":          nil,
 	})
@@ -601,12 +601,12 @@ func (s *DocumentService) EnrichDocumentsWithSummaryStatus(documents []*models.D
 			"id":               doc.ID,
 			"name":             doc.Name,
 			"indexing_status":  doc.IndexingStatus,
-			"enabled":         doc.Enabled,
-			"archived":        doc.Archived,
-			"position":        doc.Position,
-			"word_count":      doc.WordCount,
+			"enabled":          doc.Enabled,
+			"archived":         doc.Archived,
+			"position":         doc.Position,
+			"word_count":       doc.WordCount,
 			"data_source_type": doc.DataSourceType,
-			"created_at":      doc.CreatedAt,
+			"created_at":       doc.CreatedAt,
 		}
 		// Add summary status
 		summaryService := &SummaryIndexService{}

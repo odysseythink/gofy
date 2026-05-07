@@ -15,9 +15,9 @@ import (
 	"sync"
 	"time"
 
+	pluginentities "github.com/odysseythink/gofy/backend/entities/plugin"
 	"github.com/odysseythink/mlog"
 	"gopkg.in/yaml.v3"
-	pluginentities "mlib.com/gofy/server/entities/plugin"
 )
 
 // LocalRuntime manages a Python plugin subprocess.

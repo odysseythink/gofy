@@ -1,6 +1,6 @@
 package services
 
-import "mlib.com/gofy/server/proto/pbapi"
+import "github.com/odysseythink/gofy/backend/proto/pbapi"
 
 type ExtensionService struct {
 }

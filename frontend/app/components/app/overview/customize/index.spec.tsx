@@ -190,7 +190,7 @@ describe('CustomizeModal', () => {
       // Assert
       await waitFor(() => {
         const githubLink = screen.getByRole('link', { name: /step1Operation/i })
-        expect(githubLink).toHaveAttribute('href', 'https://github.com/langgenius/webapp-conversation')
+        expect(githubLink).toHaveAttribute('href', 'https://github.com/odysseythink/webapp-conversation')
       })
     })
 
@@ -204,7 +204,7 @@ describe('CustomizeModal', () => {
       // Assert
       await waitFor(() => {
         const githubLink = screen.getByRole('link', { name: /step1Operation/i })
-        expect(githubLink).toHaveAttribute('href', 'https://github.com/langgenius/webapp-conversation')
+        expect(githubLink).toHaveAttribute('href', 'https://github.com/odysseythink/webapp-conversation')
       })
     })
 
@@ -218,7 +218,7 @@ describe('CustomizeModal', () => {
       // Assert
       await waitFor(() => {
         const githubLink = screen.getByRole('link', { name: /step1Operation/i })
-        expect(githubLink).toHaveAttribute('href', 'https://github.com/langgenius/webapp-text-generator')
+        expect(githubLink).toHaveAttribute('href', 'https://github.com/odysseythink/webapp-text-generator')
       })
     })
 
@@ -232,7 +232,7 @@ describe('CustomizeModal', () => {
       // Assert
       await waitFor(() => {
         const githubLink = screen.getByRole('link', { name: /step1Operation/i })
-        expect(githubLink).toHaveAttribute('href', 'https://github.com/langgenius/webapp-text-generator')
+        expect(githubLink).toHaveAttribute('href', 'https://github.com/odysseythink/webapp-text-generator')
       })
     })
 
@@ -246,7 +246,7 @@ describe('CustomizeModal', () => {
       // Assert
       await waitFor(() => {
         const githubLink = screen.getByRole('link', { name: /step1Operation/i })
-        expect(githubLink).toHaveAttribute('href', 'https://github.com/langgenius/webapp-text-generator')
+        expect(githubLink).toHaveAttribute('href', 'https://github.com/odysseythink/webapp-text-generator')
       })
     })
   })

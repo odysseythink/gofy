@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	"github.com/odysseythink/confy"
-	"mlib.com/gofy/server/main/sandbox/runner/types"
+	"github.com/odysseythink/gofy/backend/main/sandbox/runner/types"
 )
 
 var (

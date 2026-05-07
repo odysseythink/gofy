@@ -113,7 +113,7 @@ const setupContexts = (planOverrides: Record<string, unknown> = {}, appOverrides
   mockAppCtx = {
     isCurrentWorkspaceManager: true,
     userProfile: { email: 'test@example.com' },
-    langGeniusVersionInfo: { current_version: '1.0.0' },
+    odysseythinkVersionInfo: { current_version: '1.0.0' },
     ...appOverrides,
   }
 }

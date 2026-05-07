@@ -93,7 +93,7 @@ const createMockPluginPayload = (overrides: Partial<Plugin> = {}): Plugin => ({
   endpoint: { settings: [] },
   tags: [],
   badges: [],
-  verification: { authorized_category: 'langgenius' },
+  verification: { authorized_category: 'odysseythink' },
   from: 'github',
   ...overrides,
 })

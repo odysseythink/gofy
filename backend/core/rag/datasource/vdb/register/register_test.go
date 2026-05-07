@@ -3,9 +3,9 @@ package register_test
 import (
 	"testing"
 
-	vdb "mlib.com/gofy/server/core/rag/datasource/vdb"
-	_ "mlib.com/gofy/server/core/rag/datasource/vdb/register"
-	vectorenumtypes "mlib.com/gofy/server/enum_types/rag/vector"
+	vdb "github.com/odysseythink/gofy/backend/core/rag/datasource/vdb"
+	_ "github.com/odysseythink/gofy/backend/core/rag/datasource/vdb/register"
+	vectorenumtypes "github.com/odysseythink/gofy/backend/enum_types/rag/vector"
 )
 
 // TestAllRegistered guards against someone adding a new VectorType enum value

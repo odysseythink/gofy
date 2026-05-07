@@ -11,4 +11,4 @@ package tidb_on_qdrant
 // The actual Factory registration for Vector_TIDB_ON_QDRANT happens in the
 // qdrant package's init() — imported here for side effects so callers that
 // only pull in this package transitively get the registration.
-import _ "mlib.com/gofy/server/core/rag/datasource/vdb/qdrant"
+import _ "github.com/odysseythink/gofy/backend/core/rag/datasource/vdb/qdrant"

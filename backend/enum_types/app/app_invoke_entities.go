@@ -1,6 +1,6 @@
 package app
 
-import "mlib.com/gofy/server/core/exceptions"
+import "github.com/odysseythink/gofy/backend/core/exceptions"
 
 type InvokeFrom string
 

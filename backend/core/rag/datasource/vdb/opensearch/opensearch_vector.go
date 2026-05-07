@@ -5,4 +5,4 @@ package opensearch
 
 // Side-effect import only — the elasticsearch package registers
 // Vector_OPENSEARCH in its init().
-import _ "mlib.com/gofy/server/core/rag/datasource/vdb/elasticsearch"
+import _ "github.com/odysseythink/gofy/backend/core/rag/datasource/vdb/elasticsearch"

@@ -7,11 +7,11 @@ import (
 	"regexp"
 	"slices"
 
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	appconfigentities "github.com/odysseythink/gofy/backend/entities/app/config"
+	appconfigenumtypes "github.com/odysseythink/gofy/backend/enum_types/app_config"
+	"github.com/odysseythink/gofy/backend/utils/mapstruct"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/core/exceptions"
-	appconfigentities "mlib.com/gofy/server/entities/app/config"
-	appconfigenumtypes "mlib.com/gofy/server/enum_types/app_config"
-	"mlib.com/gofy/server/utils/mapstruct"
 )
 
 type BasicVariablesConfigManager struct {

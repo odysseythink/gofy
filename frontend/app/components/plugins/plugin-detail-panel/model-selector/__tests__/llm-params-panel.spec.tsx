@@ -70,7 +70,7 @@ vi.mock('@/config', () => ({
       zh_Hans: '输入序列并按 Tab 键',
     },
   },
-  PROVIDER_WITH_PRESET_TONE: ['langgenius/openai/openai', 'langgenius/azure_openai/azure_openai'],
+  PROVIDER_WITH_PRESET_TONE: ['odysseythink/openai/openai', 'odysseythink/azure_openai/azure_openai'],
 }))
 
 // Mock PresetsParameter component
@@ -135,7 +135,7 @@ const createDefaultProps = (overrides: Partial<{
   onCompletionParamsChange: (newParams: FormValue) => void
 }> = {}) => ({
   isAdvancedMode: false,
-  provider: 'langgenius/openai/openai',
+  provider: 'odysseythink/openai/openai',
   modelId: 'gpt-4',
   completionParams: {},
   onCompletionParamsChange: vi.fn(),
@@ -203,7 +203,7 @@ describe('LLMParamsPanel', () => {
     it('should render PresetsParameter for openai provider', () => {
       // Arrange
       setupModelParameterRulesMock({ data: [], isPending: false })
-      const props = createDefaultProps({ provider: 'langgenius/openai/openai' })
+      const props = createDefaultProps({ provider: 'odysseythink/openai/openai' })
 
       // Act
       render(<LLMParamsPanel {...props} />)
@@ -215,7 +215,7 @@ describe('LLMParamsPanel', () => {
     it('should render PresetsParameter for azure_openai provider', () => {
       // Arrange
       setupModelParameterRulesMock({ data: [], isPending: false })
-      const props = createDefaultProps({ provider: 'langgenius/azure_openai/azure_openai' })
+      const props = createDefaultProps({ provider: 'odysseythink/azure_openai/azure_openai' })
 
       // Act
       render(<LLMParamsPanel {...props} />)
@@ -362,7 +362,7 @@ describe('LLMParamsPanel', () => {
         const onCompletionParamsChange = vi.fn()
         setupModelParameterRulesMock({ data: [], isPending: false })
         const props = createDefaultProps({
-          provider: 'langgenius/openai/openai',
+          provider: 'odysseythink/openai/openai',
           onCompletionParamsChange,
           completionParams: { existing: 'value' },
         })
@@ -386,7 +386,7 @@ describe('LLMParamsPanel', () => {
         const onCompletionParamsChange = vi.fn()
         setupModelParameterRulesMock({ data: [], isPending: false })
         const props = createDefaultProps({
-          provider: 'langgenius/openai/openai',
+          provider: 'odysseythink/openai/openai',
           onCompletionParamsChange,
           completionParams: {},
         })
@@ -409,7 +409,7 @@ describe('LLMParamsPanel', () => {
         const onCompletionParamsChange = vi.fn()
         setupModelParameterRulesMock({ data: [], isPending: false })
         const props = createDefaultProps({
-          provider: 'langgenius/openai/openai',
+          provider: 'odysseythink/openai/openai',
           onCompletionParamsChange,
           completionParams: {},
         })
@@ -432,7 +432,7 @@ describe('LLMParamsPanel', () => {
         const onCompletionParamsChange = vi.fn()
         setupModelParameterRulesMock({ data: [], isPending: false })
         const props = createDefaultProps({
-          provider: 'langgenius/openai/openai',
+          provider: 'odysseythink/openai/openai',
           onCompletionParamsChange,
           completionParams: { existing: 'value' },
         })

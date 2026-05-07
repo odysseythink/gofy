@@ -3,7 +3,7 @@ package exceptions
 import (
 	"net/http"
 
-	pbexceptions "mlib.com/gofy/server/proto/exceptions"
+	pbexceptions "github.com/odysseythink/gofy/backend/proto/exceptions"
 )
 
 func NewInvalidArgsPbHttpExp(desc string) *pbexceptions.HTTPException {

@@ -67,7 +67,7 @@ const DataSources = ({
       plugin_unique_identifier: toolDefaultValue?.plugin_unique_identifier,
     }
     // Update defaultValue with fileExtensions if this is the local file data source
-    if (toolDefaultValue?.provider_id === 'langgenius/file' && toolDefaultValue?.provider_name === 'file') {
+    if (toolDefaultValue?.provider_id === 'odysseythink/file' && toolDefaultValue?.provider_name === 'file') {
       defaultValue = {
         ...defaultValue,
         fileExtensions: DEFAULT_FILE_EXTENSIONS_IN_LOCAL_FILE_DATA_SOURCE,

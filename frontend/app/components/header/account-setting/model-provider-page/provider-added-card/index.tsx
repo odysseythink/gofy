@@ -92,8 +92,8 @@ const ProviderAddedCard: FC<ProviderAddedCardProps> = ({
       data-testid="provider-added-card"
       className={cn(
         'mb-2 rounded-xl border-[0.5px] border-divider-regular bg-third-party-model-bg-default shadow-xs',
-        currentProviderName === 'langgenius/openai/openai' && 'bg-third-party-model-bg-openai',
-        currentProviderName === 'langgenius/anthropic/anthropic' && 'bg-third-party-model-bg-anthropic',
+        currentProviderName === 'odysseythink/openai/openai' && 'bg-third-party-model-bg-openai',
+        currentProviderName === 'odysseythink/anthropic/anthropic' && 'bg-third-party-model-bg-anthropic',
       )}
     >
       <div className="flex rounded-t-xl py-2 pl-3 pr-2">

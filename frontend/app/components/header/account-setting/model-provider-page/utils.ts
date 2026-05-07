@@ -40,12 +40,12 @@ export const providerIconMap: Record<ModelProviderQuotaGetPaid, ComponentType<{ 
 }
 
 export const providerKeyToPluginId: Record<ModelProviderQuotaGetPaid, string> = {
-  [ModelProviderQuotaGetPaid.OPENAI]: 'langgenius/openai',
-  [ModelProviderQuotaGetPaid.ANTHROPIC]: 'langgenius/anthropic',
-  [ModelProviderQuotaGetPaid.GEMINI]: 'langgenius/gemini',
-  [ModelProviderQuotaGetPaid.X]: 'langgenius/x',
-  [ModelProviderQuotaGetPaid.DEEPSEEK]: 'langgenius/deepseek',
-  [ModelProviderQuotaGetPaid.TONGYI]: 'langgenius/tongyi',
+  [ModelProviderQuotaGetPaid.OPENAI]: 'odysseythink/openai',
+  [ModelProviderQuotaGetPaid.ANTHROPIC]: 'odysseythink/anthropic',
+  [ModelProviderQuotaGetPaid.GEMINI]: 'odysseythink/gemini',
+  [ModelProviderQuotaGetPaid.X]: 'odysseythink/x',
+  [ModelProviderQuotaGetPaid.DEEPSEEK]: 'odysseythink/deepseek',
+  [ModelProviderQuotaGetPaid.TONGYI]: 'odysseythink/tongyi',
 }
 
 export const modelNameMap = {

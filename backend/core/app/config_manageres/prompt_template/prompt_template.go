@@ -3,12 +3,12 @@ package prompttemplate
 import (
 	"fmt"
 
-	"mlib.com/gofy/server/core/exceptions"
-	appconfigentities "mlib.com/gofy/server/entities/app/config"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	appconfigenumtypes "mlib.com/gofy/server/enum_types/app_config"
-	promptenumtypes "mlib.com/gofy/server/enum_types/prompt"
-	"mlib.com/gofy/server/models"
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	appconfigentities "github.com/odysseythink/gofy/backend/entities/app/config"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	appconfigenumtypes "github.com/odysseythink/gofy/backend/enum_types/app_config"
+	promptenumtypes "github.com/odysseythink/gofy/backend/enum_types/prompt"
+	"github.com/odysseythink/gofy/backend/models"
 )
 
 type PromptTemplateConfigManager struct {

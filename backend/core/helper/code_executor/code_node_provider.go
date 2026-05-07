@@ -1,6 +1,6 @@
 package codeexecutor
 
-import codeexecutorenumtypes "mlib.com/gofy/server/enum_types/code_executor"
+import codeexecutorenumtypes "github.com/odysseythink/gofy/backend/enum_types/code_executor"
 
 type CodeNodeProvider interface {
 	GetLanguage() codeexecutorenumtypes.CodeLanguage

@@ -24,7 +24,7 @@ export default function RegisterLayout() {
               {' '}
               {new Date().getFullYear()}
               {' '}
-              LangGenius, Inc. All rights reserved.
+              Odysseythink, Inc. All rights reserved.
             </div>
           )}
         </div>

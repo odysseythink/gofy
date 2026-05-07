@@ -1,8 +1,8 @@
 package agent
 
 import (
-	parameterenumtypes "mlib.com/gofy/server/enum_types/parameter"
-	pluginenumtypes "mlib.com/gofy/server/enum_types/plugin"
+	parameterenumtypes "github.com/odysseythink/gofy/backend/enum_types/parameter"
+	pluginenumtypes "github.com/odysseythink/gofy/backend/enum_types/plugin"
 )
 
 type AgentStrategyParameterType string

@@ -3,7 +3,7 @@ package workflow
 import (
 	"fmt"
 
-	"mlib.com/gofy/server/core/workflow/nodes/base"
+	"github.com/odysseythink/gofy/backend/core/workflow/nodes/base"
 )
 
 type WorkflowNodeRunFailedError struct {

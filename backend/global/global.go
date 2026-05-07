@@ -8,9 +8,9 @@ import (
 	"slices"
 	"sync"
 
+	"github.com/odysseythink/gofy/backend/core/extension"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
 	"golang.org/x/sync/singleflight"
-	"mlib.com/gofy/server/core/extension"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
 )
 
 var (

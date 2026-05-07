@@ -6,10 +6,10 @@ import (
 	"time"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/timeout"
-	"github.com/odysseythink/confy"
-	"github.com/odysseythink/mlog"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/mlog"
 )
 
 // peerServer 服务发现

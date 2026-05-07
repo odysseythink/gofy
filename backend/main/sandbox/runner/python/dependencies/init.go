@@ -3,7 +3,7 @@ package dependencies
 import (
 	"sync"
 
-	"mlib.com/gofy/server/proto/pbapi"
+	"github.com/odysseythink/gofy/backend/proto/pbapi"
 )
 
 var preload_script_map = map[string]string{}

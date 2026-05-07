@@ -3,7 +3,7 @@ package plugin
 import (
 	"iter"
 
-	"mlib.com/gofy/server/models"
+	"github.com/odysseythink/gofy/backend/models"
 )
 
 // ServiceBridge abstracts the service-layer calls that backwards invocation needs.

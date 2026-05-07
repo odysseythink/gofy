@@ -1,8 +1,8 @@
 package datasetretriever
 
 import (
-	"mlib.com/gofy/server/core/tools/base"
-	toolsentities "mlib.com/gofy/server/entities/tools"
+	"github.com/odysseythink/gofy/backend/core/tools/base"
+	toolsentities "github.com/odysseythink/gofy/backend/entities/tools"
 )
 
 type DatasetRetrieverTool struct {

@@ -1,8 +1,8 @@
 package start
 
 import (
-	appconfigentities "mlib.com/gofy/server/entities/app/config"
-	basenodesentities "mlib.com/gofy/server/entities/nodes/base"
+	appconfigentities "github.com/odysseythink/gofy/backend/entities/app/config"
+	basenodesentities "github.com/odysseythink/gofy/backend/entities/nodes/base"
 )
 
 // AnswerNodeData represents answer node data

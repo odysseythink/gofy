@@ -1,7 +1,7 @@
 package documentextractor
 
 import (
-	basenodesentities "mlib.com/gofy/server/entities/nodes/base"
+	basenodesentities "github.com/odysseythink/gofy/backend/entities/nodes/base"
 )
 
 // CodeNodeData represents answer node data

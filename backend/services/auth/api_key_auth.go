@@ -3,8 +3,8 @@ package auth
 import (
 	"fmt"
 
-	dbengine "mlib.com/gofy/server/db_engine"
-	"mlib.com/gofy/server/models"
+	dbengine "github.com/odysseythink/gofy/backend/db_engine"
+	"github.com/odysseythink/gofy/backend/models"
 )
 
 // APIKeyAuthService handles API key based authentication.

@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	ragentities "mlib.com/gofy/server/entities/rag"
+	ragentities "github.com/odysseythink/gofy/backend/entities/rag"
 )
 
 // NewAdapter produces a fresh IVector bound to a unique collection name.

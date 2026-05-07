@@ -36,7 +36,7 @@ const mockUseMarketplacePlugins = vi.mocked(useMarketplacePlugins)
 type UseMarketplacePluginsReturn = ReturnType<typeof useMarketplacePlugins>
 
 const createToolProvider = (overrides: Partial<ToolWithProvider> = {}): ToolWithProvider => ({
-  id: 'langgenius/file',
+  id: 'odysseythink/file',
   name: 'file',
   author: 'Gofy',
   description: { en_US: 'desc', zh_Hans: '描述' },
@@ -47,7 +47,7 @@ const createToolProvider = (overrides: Partial<ToolWithProvider> = {}): ToolWith
   is_team_authorization: false,
   allow_delete: false,
   labels: [],
-  plugin_id: 'langgenius/file',
+  plugin_id: 'odysseythink/file',
   meta: { version: '1.0.0' },
   tools: [
     {

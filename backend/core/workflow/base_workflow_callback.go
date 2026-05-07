@@ -1,8 +1,8 @@
 package workflow
 
 import (
-	appqueueentities "mlib.com/gofy/server/entities/app/queue"
-	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
+	appqueueentities "github.com/odysseythink/gofy/backend/entities/app/queue"
+	nodesenumtypes "github.com/odysseythink/gofy/backend/enum_types/nodes"
 )
 
 type WorkflowCallback interface {

@@ -3,7 +3,7 @@ package queue
 import (
 	"iter"
 
-	appenumtypes "mlib.com/gofy/server/enum_types/app"
+	appenumtypes "github.com/odysseythink/gofy/backend/enum_types/app"
 )
 
 type AppQueueManager[T interface {

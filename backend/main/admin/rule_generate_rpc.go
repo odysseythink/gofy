@@ -4,13 +4,13 @@ import (
 	"context"
 	"encoding/json"
 
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	httpexceptions "github.com/odysseythink/gofy/backend/core/exceptions/http"
+	modelruntimeexceptions "github.com/odysseythink/gofy/backend/core/exceptions/model_runtime"
+	llmgenerator "github.com/odysseythink/gofy/backend/core/llm_generator"
+	"github.com/odysseythink/gofy/backend/proto/pbapi"
 	"github.com/odysseythink/mlog"
 	"google.golang.org/grpc/peer"
-	"mlib.com/gofy/server/core/exceptions"
-	httpexceptions "mlib.com/gofy/server/core/exceptions/http"
-	modelruntimeexceptions "mlib.com/gofy/server/core/exceptions/model_runtime"
-	llmgenerator "mlib.com/gofy/server/core/llm_generator"
-	"mlib.com/gofy/server/proto/pbapi"
 )
 
 func (s *AdminService) RuleGenerate(ctx context.Context, in *pbapi.RuleGenerateRequest) (out *pbapi.RuleGenerateReply, err error) {

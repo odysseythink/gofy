@@ -1,0 +1,1 @@
+import{F as e}from"./file-type-icon-DVdGQedx.js";const a=c=>{switch(c){case"pdf":return e.pdf;case"doc":case"docx":return e.word;case"md":case"mdx":case"markdown":return e.markdown;case"csv":case"xls":case"xlsx":return e.excel;case"txt":case"epub":case"html":case"htm":case"xml":return e.document;case"ppt":case"pptx":return e.ppt;default:return e.custom}};export{a as e};

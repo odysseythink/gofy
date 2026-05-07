@@ -40,7 +40,7 @@ vi.mock('../model-list', () => ({
   default: ({ onCollapse, onChange }: { onCollapse: () => void, onChange: (provider: string) => void }) => (
     <div data-testid="model-list">
       <button type="button" onClick={onCollapse}>collapse list</button>
-      <button type="button" onClick={() => onChange('langgenius/openai/openai')}>refresh list</button>
+      <button type="button" onClick={() => onChange('odysseythink/openai/openai')}>refresh list</button>
     </div>
   ),
 }))
@@ -80,10 +80,10 @@ const ExternalExpandControls = () => {
   const expandModelProviderList = useExpandModelProviderList()
   return (
     <>
-      <button type="button" data-testid="expand-other-provider" onClick={() => expandModelProviderList('langgenius/anthropic/anthropic')}>
+      <button type="button" data-testid="expand-other-provider" onClick={() => expandModelProviderList('odysseythink/anthropic/anthropic')}>
         expand other
       </button>
-      <button type="button" data-testid="expand-current-provider" onClick={() => expandModelProviderList('langgenius/openai/openai')}>
+      <button type="button" data-testid="expand-current-provider" onClick={() => expandModelProviderList('odysseythink/openai/openai')}>
         expand current
       </button>
     </>
@@ -92,7 +92,7 @@ const ExternalExpandControls = () => {
 
 describe('ProviderAddedCard', () => {
   const mockProvider = {
-    provider: 'langgenius/openai/openai',
+    provider: 'odysseythink/openai/openai',
     configurate_methods: ['predefinedModel'],
     system_configuration: { enabled: true },
     supported_model_types: ['llm'],

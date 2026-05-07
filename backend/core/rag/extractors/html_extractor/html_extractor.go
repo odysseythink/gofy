@@ -4,8 +4,8 @@ import (
 	"os"
 
 	"github.com/anaskhan96/soup"
+	ragentities "github.com/odysseythink/gofy/backend/entities/rag"
 	"github.com/odysseythink/mlog"
-	ragentities "mlib.com/gofy/server/entities/rag"
 )
 
 type HtmlExtractor struct {

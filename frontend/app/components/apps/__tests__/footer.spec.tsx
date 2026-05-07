@@ -27,7 +27,7 @@ describe('Footer', () => {
   describe('Links', () => {
     it('should render GitHub link with correct href', () => {
       const { container } = render(<Footer />)
-      const githubLink = container.querySelector('a[href="https://github.com/langgenius/gofy"]')
+      const githubLink = container.querySelector('a[href="https://github.com/odysseythink/gofy"]')
       expect(githubLink).toBeInTheDocument()
     })
 

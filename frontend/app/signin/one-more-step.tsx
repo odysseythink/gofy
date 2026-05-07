@@ -91,7 +91,7 @@ const OneMoreStep = () => {
                   <div className="w-[256px] text-xs font-medium">
                     <div className="font-medium">{t('sendUsMail', { ns: 'login' })}</div>
                     <div className="cursor-pointer text-xs font-medium text-text-accent-secondary">
-                      <a href="mailto:request-invitation@langgenius.ai">request-invitation@langgenius.ai</a>
+                      <a href="mailto:request-invitation@odysseythink.ai">request-invitation@odysseythink.ai</a>
                     </div>
                   </div>
                 )}

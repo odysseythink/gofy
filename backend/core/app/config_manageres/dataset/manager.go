@@ -4,9 +4,9 @@ import (
 	"maps"
 	"slices"
 
-	appconfigentities "mlib.com/gofy/server/entities/app/config"
-	appconfigenumtypes "mlib.com/gofy/server/enum_types/app_config"
-	"mlib.com/gofy/server/utils/mapstruct"
+	appconfigentities "github.com/odysseythink/gofy/backend/entities/app/config"
+	appconfigenumtypes "github.com/odysseythink/gofy/backend/enum_types/app_config"
+	"github.com/odysseythink/gofy/backend/utils/mapstruct"
 )
 
 type DatasetConfigManager struct {

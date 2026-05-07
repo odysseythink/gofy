@@ -60,7 +60,7 @@ const mockStopTaskStatus = vi.fn()
 const mockHandleRefetch = vi.fn()
 let mockPluginDeclaration: { manifest: { meta: { minimum_gofy_version: string } } } | undefined
 let mockCanInstall = true
-let mockLangGeniusVersionInfo = { current_version: '1.0.0' }
+let mockOdysseythinkVersionInfo = { current_version: '1.0.0' }
 
 // Mock useCheckInstalled
 vi.mock('@/app/components/plugins/install-plugin/hooks/use-check-installed', () => ({
@@ -98,7 +98,7 @@ vi.mock('../../../base/check-task-status', () => ({
 // Mock useAppContext
 vi.mock('@/context/app-context', () => ({
   useAppContext: () => ({
-    langGeniusVersionInfo: mockLangGeniusVersionInfo,
+    odysseythinkVersionInfo: mockOdysseythinkVersionInfo,
   }),
 }))
 
@@ -163,7 +163,7 @@ describe('Install Component (steps/install.tsx)', () => {
     mockIsLoading = false
     mockPluginDeclaration = undefined
     mockCanInstall = true
-    mockLangGeniusVersionInfo = { current_version: '1.0.0' }
+    mockOdysseythinkVersionInfo = { current_version: '1.0.0' }
     mockInstallPackageFromMarketPlace.mockResolvedValue({
       all_installed: false,
       task_id: 'task-123',
@@ -274,7 +274,7 @@ describe('Install Component (steps/install.tsx)', () => {
     })
 
     it('should not show warning when gofy version is compatible', () => {
-      mockLangGeniusVersionInfo = { current_version: '2.0.0' }
+      mockOdysseythinkVersionInfo = { current_version: '2.0.0' }
       mockPluginDeclaration = {
         manifest: { meta: { minimum_gofy_version: '1.0.0' } },
       }
@@ -284,7 +284,7 @@ describe('Install Component (steps/install.tsx)', () => {
     })
 
     it('should show warning when gofy version is incompatible', () => {
-      mockLangGeniusVersionInfo = { current_version: '1.0.0' }
+      mockOdysseythinkVersionInfo = { current_version: '1.0.0' }
       mockPluginDeclaration = {
         manifest: { meta: { minimum_gofy_version: '2.0.0' } },
       }
@@ -700,8 +700,8 @@ describe('Install Component (steps/install.tsx)', () => {
       expect(screen.getByTestId('has-installed')).toHaveTextContent('false')
     })
 
-    it('should handle null current_version in langGeniusVersionInfo', () => {
-      mockLangGeniusVersionInfo = { current_version: null as unknown as string }
+    it('should handle null current_version in odysseythinkVersionInfo', () => {
+      mockOdysseythinkVersionInfo = { current_version: null as unknown as string }
       mockPluginDeclaration = {
         manifest: { meta: { minimum_gofy_version: '1.0.0' } },
       }

@@ -1,0 +1,1 @@
+import{d as t}from"./dayjs.min-DdW-s3EH.js";import{u as o}from"./utc-7AxelFwI.js";t.extend(o);const d=(n,r)=>t(n).isAfter(t(r)),i=({date:n,dateFormat:r})=>t(n).format(r),m=(n=t())=>{const r=t(n).startOf("day"),f=t(n).endOf("month").startOf("day").diff(r,"day");return Math.max(f,0)};export{i as f,m as g,d as i};

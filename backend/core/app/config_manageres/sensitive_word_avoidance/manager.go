@@ -1,8 +1,8 @@
 package sensitivewordavoidance
 
 import (
-	"mlib.com/gofy/server/core/exceptions"
-	appconfigentities "mlib.com/gofy/server/entities/app/config"
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	appconfigentities "github.com/odysseythink/gofy/backend/entities/app/config"
 )
 
 type SensitiveWordAvoidanceConfigManager struct{}

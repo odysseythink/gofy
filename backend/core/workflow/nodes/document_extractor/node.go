@@ -3,11 +3,11 @@ package documentextractor
 import (
 	"iter"
 
-	"mlib.com/gofy/server/core/workflow/nodes/base"
-	documentextractornodesentities "mlib.com/gofy/server/entities/nodes/document_extractor"
-	workflowentities "mlib.com/gofy/server/entities/workflow"
-	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
-	"mlib.com/gofy/server/models"
+	"github.com/odysseythink/gofy/backend/core/workflow/nodes/base"
+	documentextractornodesentities "github.com/odysseythink/gofy/backend/entities/nodes/document_extractor"
+	workflowentities "github.com/odysseythink/gofy/backend/entities/workflow"
+	nodesenumtypes "github.com/odysseythink/gofy/backend/enum_types/nodes"
+	"github.com/odysseythink/gofy/backend/models"
 )
 
 type DocumentExtractorNode struct {

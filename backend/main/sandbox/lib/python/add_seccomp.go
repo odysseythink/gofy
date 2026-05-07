@@ -8,8 +8,8 @@ import (
 
 	"github.com/odysseythink/mlog"
 
-	"mlib.com/gofy/server/main/sandbox/global"
-	"mlib.com/gofy/server/main/sandbox/lib"
+	"github.com/odysseythink/gofy/backend/main/sandbox/global"
+	"github.com/odysseythink/gofy/backend/main/sandbox/lib"
 )
 
 //var allow_syscalls = []int{}

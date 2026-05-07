@@ -1,11 +1,11 @@
 package tongyi
 
 import (
-	"mlib.com/gofy/server/core/model_runtime/model_provides/base"
-	"mlib.com/gofy/server/core/model_runtime/model_provides/tongyi/llm"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
-	"mlib.com/gofy/server/global"
+	"github.com/odysseythink/gofy/backend/core/model_runtime/model_provides/base"
+	"github.com/odysseythink/gofy/backend/core/model_runtime/model_provides/tongyi/llm"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
+	"github.com/odysseythink/gofy/backend/global"
 )
 
 func init() {

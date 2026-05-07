@@ -5,8 +5,8 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	dbengine "mlib.com/gofy/server/db_engine"
-	"mlib.com/gofy/server/models"
+	dbengine "github.com/odysseythink/gofy/backend/db_engine"
+	"github.com/odysseythink/gofy/backend/models"
 	uuid "github.com/satori/go.uuid"
 )
 

@@ -5,8 +5,8 @@ import (
 	"iter"
 	"maps"
 
-	"mlib.com/gofy/server/core/app/generator_response_convertes/base"
-	appresponseentities "mlib.com/gofy/server/entities/app/response"
+	"github.com/odysseythink/gofy/backend/core/app/generator_response_convertes/base"
+	appresponseentities "github.com/odysseythink/gofy/backend/entities/app/response"
 )
 
 type WorkflowAppGenerateResponseConvert struct {

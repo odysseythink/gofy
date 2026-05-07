@@ -1,8 +1,8 @@
 package builtintool
 
 import (
-	"mlib.com/gofy/server/core/tools/base"
-	toolsenumtypes "mlib.com/gofy/server/enum_types/tools"
+	"github.com/odysseythink/gofy/backend/core/tools/base"
+	toolsenumtypes "github.com/odysseythink/gofy/backend/enum_types/tools"
 )
 
 type BuiltinToolProviderController struct {

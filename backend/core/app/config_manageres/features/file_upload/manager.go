@@ -1,6 +1,6 @@
 package fileupload
 
-import "mlib.com/gofy/server/core/file"
+import "github.com/odysseythink/gofy/backend/core/file"
 
 type FileUploadConfigManager struct{}
 

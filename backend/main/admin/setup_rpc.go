@@ -8,15 +8,15 @@ import (
 	"time"
 
 	"github.com/odysseythink/confy"
+	httpexceptions "github.com/odysseythink/gofy/backend/core/exceptions/http"
+	"github.com/odysseythink/gofy/backend/global"
+	"github.com/odysseythink/gofy/backend/libs/password"
+	pbexceptions "github.com/odysseythink/gofy/backend/proto/exceptions"
+	"github.com/odysseythink/gofy/backend/proto/pbapi"
+	"github.com/odysseythink/gofy/backend/services"
+	"github.com/odysseythink/gofy/backend/utils"
 	"github.com/odysseythink/mlog"
 	"google.golang.org/grpc/peer"
-	httpexceptions "mlib.com/gofy/server/core/exceptions/http"
-	"mlib.com/gofy/server/global"
-	"mlib.com/gofy/server/libs/password"
-	pbexceptions "mlib.com/gofy/server/proto/exceptions"
-	"mlib.com/gofy/server/proto/pbapi"
-	"mlib.com/gofy/server/services"
-	"mlib.com/gofy/server/utils"
 )
 
 func (s *AdminService) GetSetupStatus(ctx context.Context, in *pbapi.GetSetupStatusRequest) (out *pbapi.GetSetupStatusReply, err error) {

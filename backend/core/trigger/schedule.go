@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	dbengine "mlib.com/gofy/server/db_engine"
-	"mlib.com/gofy/server/models"
+	dbengine "github.com/odysseythink/gofy/backend/db_engine"
+	"github.com/odysseythink/gofy/backend/models"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -16,9 +16,9 @@ func NewScheduleProvider() *ScheduleProvider {
 	return &ScheduleProvider{}
 }
 
-func (sp *ScheduleProvider) Type() TriggerType { return TriggerTypeSchedule }
-func (sp *ScheduleProvider) Setup(config map[string]any) error { return nil }
-func (sp *ScheduleProvider) Teardown() error { return nil }
+func (sp *ScheduleProvider) Type() TriggerType                     { return TriggerTypeSchedule }
+func (sp *ScheduleProvider) Setup(config map[string]any) error     { return nil }
+func (sp *ScheduleProvider) Teardown() error                       { return nil }
 func (sp *ScheduleProvider) HandleEvent(event *TriggerEvent) error { return nil }
 
 // CreateSchedulePlan creates a new scheduled trigger plan.

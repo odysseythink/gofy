@@ -117,7 +117,7 @@ const baseAppContextValue: AppContextValue = {
   isCurrentWorkspaceEditor: true,
   isCurrentWorkspaceDatasetOperator: false,
   mutateCurrentWorkspace: vi.fn(),
-  langGeniusVersionInfo: {
+  odysseythinkVersionInfo: {
     current_env: 'testing',
     current_version: '0.6.0',
     latest_version: '0.6.0',
@@ -240,7 +240,7 @@ describe('AccountDropdown', () => {
         ...baseAppContextValue,
         userProfile: { ...baseAppContextValue.userProfile, name: 'User' },
         isCurrentWorkspaceOwner: true,
-        langGeniusVersionInfo: { ...baseAppContextValue.langGeniusVersionInfo, current_version: '0.6.0', latest_version: '0.6.0' },
+        odysseythinkVersionInfo: { ...baseAppContextValue.odysseythinkVersionInfo, current_version: '0.6.0', latest_version: '0.6.0' },
       })
 
       // Act
@@ -350,8 +350,8 @@ describe('AccountDropdown', () => {
       vi.mocked(useAppContext).mockReturnValue({
         ...baseAppContextValue,
         userProfile: { ...baseAppContextValue.userProfile, name: 'User' },
-        langGeniusVersionInfo: {
-          ...baseAppContextValue.langGeniusVersionInfo,
+        odysseythinkVersionInfo: {
+          ...baseAppContextValue.odysseythinkVersionInfo,
           current_version: '0.6.0',
           latest_version: '0.7.0',
         },
@@ -371,8 +371,8 @@ describe('AccountDropdown', () => {
       vi.mocked(useAppContext).mockReturnValue({
         ...baseAppContextValue,
         userProfile: { ...baseAppContextValue.userProfile, name: 'User' },
-        langGeniusVersionInfo: {
-          ...baseAppContextValue.langGeniusVersionInfo,
+        odysseythinkVersionInfo: {
+          ...baseAppContextValue.odysseythinkVersionInfo,
           current_version: '0.7.0',
           latest_version: '0.7.0',
         },

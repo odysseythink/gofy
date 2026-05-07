@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strings"
 
-	workflowentities "mlib.com/gofy/server/entities/workflow"
+	workflowentities "github.com/odysseythink/gofy/backend/entities/workflow"
 )
 
 var (

@@ -120,13 +120,13 @@ const Installed: FC<Props> = ({
     }
   }
 
-  const { langGeniusVersionInfo } = useAppContext()
+  const { odysseythinkVersionInfo } = useAppContext()
   const { data: pluginDeclaration } = usePluginDeclarationFromMarketPlace(uniqueIdentifier)
   const isGofyVersionCompatible = useMemo(() => {
-    if (!pluginDeclaration || !langGeniusVersionInfo.current_version)
+    if (!pluginDeclaration || !odysseythinkVersionInfo.current_version)
       return true
-    return isEqualOrLaterThanVersion(langGeniusVersionInfo.current_version, pluginDeclaration?.manifest.meta.minimum_gofy_version ?? '0.0.0')
-  }, [langGeniusVersionInfo.current_version, pluginDeclaration])
+    return isEqualOrLaterThanVersion(odysseythinkVersionInfo.current_version, pluginDeclaration?.manifest.meta.minimum_gofy_version ?? '0.0.0')
+  }, [odysseythinkVersionInfo.current_version, pluginDeclaration])
 
   const { canInstall } = useInstallPluginLimit({ ...payload, from: 'marketplace' })
   return (

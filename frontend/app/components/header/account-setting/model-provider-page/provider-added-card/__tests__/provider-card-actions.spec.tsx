@@ -109,7 +109,7 @@ const createDetail = (overrides: Partial<PluginDetail> = {}): PluginDetail => ({
   latest_version: '2.0.0',
   latest_unique_identifier: 'plugin-id@2.0.0',
   declaration: {
-    author: 'langgenius',
+    author: 'odysseythink',
     name: 'provider-plugin',
   },
   meta: undefined,
@@ -136,7 +136,7 @@ describe('ProviderCardActions', () => {
       isFromMarketplace: true,
       isFromGitHub: false,
     }
-    mockGetMarketplaceUrl.mockReturnValue('https://marketplace.example.com/plugins/langgenius/provider-plugin')
+    mockGetMarketplaceUrl.mockReturnValue('https://marketplace.example.com/plugins/odysseythink/provider-plugin')
   })
 
   it('should render version controls for marketplace plugins and handle manual version selection', () => {
@@ -170,13 +170,13 @@ describe('ProviderCardActions', () => {
   it('should pass the marketplace detail url to the operation dropdown', () => {
     render(<ProviderCardActions detail={createDetail()} />)
 
-    expect(mockGetMarketplaceUrl).toHaveBeenCalledWith('/plugins/langgenius/provider-plugin', {
+    expect(mockGetMarketplaceUrl).toHaveBeenCalledWith('/plugins/odysseythink/provider-plugin', {
       language: 'en-US',
       theme: 'light',
     })
     expect(screen.getByTestId('operation-dropdown')).toHaveAttribute(
       'data-detail-url',
-      'https://marketplace.example.com/plugins/langgenius/provider-plugin',
+      'https://marketplace.example.com/plugins/odysseythink/provider-plugin',
     )
   })
 
@@ -204,7 +204,7 @@ describe('ProviderCardActions', () => {
       <ProviderCardActions detail={createDetail({
         source: PluginSource.github,
         meta: {
-          repo: 'langgenius/provider-plugin',
+          repo: 'odysseythink/provider-plugin',
           version: '1.0.0',
           package: 'provider-plugin.gofypkg',
         },
@@ -215,7 +215,7 @@ describe('ProviderCardActions', () => {
     expect(screen.getByTestId('plugin-version-picker')).toHaveAttribute('data-disabled', 'true')
     expect(screen.getByTestId('operation-dropdown')).toHaveAttribute(
       'data-detail-url',
-      'https://github.com/langgenius/provider-plugin',
+      'https://github.com/odysseythink/provider-plugin',
     )
 
     fireEvent.click(screen.getByRole('button', { name: 'plugin.detailPanel.operation.update' }))

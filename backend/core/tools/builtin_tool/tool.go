@@ -3,11 +3,11 @@ package builtintool
 import (
 	"strings"
 
-	"mlib.com/gofy/server/core/exceptions"
-	"mlib.com/gofy/server/core/tools/base"
-	modelinvocationutils "mlib.com/gofy/server/core/tools/utils/model_invocation_utils"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	toolsenumtypes "mlib.com/gofy/server/enum_types/tools"
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	"github.com/odysseythink/gofy/backend/core/tools/base"
+	modelinvocationutils "github.com/odysseythink/gofy/backend/core/tools/utils/model_invocation_utils"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	toolsenumtypes "github.com/odysseythink/gofy/backend/enum_types/tools"
 )
 
 const (

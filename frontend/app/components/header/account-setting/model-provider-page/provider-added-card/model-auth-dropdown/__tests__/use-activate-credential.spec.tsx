@@ -21,7 +21,7 @@ vi.mock('../../../hooks', () => ({
 }))
 
 const createProvider = (overrides: Partial<ModelProvider> = {}): ModelProvider => ({
-  provider: 'langgenius/openai/openai',
+  provider: 'odysseythink/openai/openai',
   supported_model_types: ['llm', 'text-embedding'],
   custom_configuration: {
     current_credential_id: 'cred-1',

@@ -3,8 +3,8 @@ package extractor
 import (
 	"encoding/json"
 
-	extractorenumtypes "mlib.com/gofy/server/enum_types/rag/extractor"
-	"mlib.com/gofy/server/models"
+	extractorenumtypes "github.com/odysseythink/gofy/backend/enum_types/rag/extractor"
+	"github.com/odysseythink/gofy/backend/models"
 )
 
 // NotionInfo represents the import info from Notion

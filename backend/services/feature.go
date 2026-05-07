@@ -2,8 +2,8 @@ package services
 
 import (
 	"github.com/odysseythink/confy"
-	servicesenumtypes "mlib.com/gofy/server/enum_types/services"
-	pbentities "mlib.com/gofy/server/proto/entities"
+	servicesenumtypes "github.com/odysseythink/gofy/backend/enum_types/services"
+	pbentities "github.com/odysseythink/gofy/backend/proto/entities"
 )
 
 func NewSubscriptionModel(plan, interval string) *pbentities.SubscriptionModel {

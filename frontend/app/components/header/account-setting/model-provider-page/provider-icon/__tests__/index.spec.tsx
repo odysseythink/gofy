@@ -58,7 +58,7 @@ describe('ProviderIcon', () => {
   it('should render Anthropic icon based on theme', () => {
     const mockTheme = vi.mocked(useTheme)
     mockTheme.mockReturnValue({ theme: Theme.dark, themes: [], setTheme: vi.fn() } as UseThemeReturnType)
-    const provider = createProvider({ provider: 'langgenius/anthropic/anthropic' })
+    const provider = createProvider({ provider: 'odysseythink/anthropic/anthropic' })
 
     render(<ProviderIcon provider={provider} />)
     expect(screen.getByTestId('anthropic-light')).toBeInTheDocument()
@@ -69,7 +69,7 @@ describe('ProviderIcon', () => {
   })
 
   it('should render OpenAI icon', () => {
-    const provider = createProvider({ provider: 'langgenius/openai/openai' })
+    const provider = createProvider({ provider: 'odysseythink/openai/openai' })
     render(<ProviderIcon provider={provider} />)
     expect(screen.getByTestId('openai-icon')).toBeInTheDocument()
   })
@@ -77,7 +77,7 @@ describe('ProviderIcon', () => {
   it('should apply custom className to special provider wrappers', () => {
     const { rerender, container } = render(
       <ProviderIcon
-        provider={createProvider({ provider: 'langgenius/anthropic/anthropic' })}
+        provider={createProvider({ provider: 'odysseythink/anthropic/anthropic' })}
         className="custom-wrapper"
       />,
     )
@@ -86,7 +86,7 @@ describe('ProviderIcon', () => {
 
     rerender(
       <ProviderIcon
-        provider={createProvider({ provider: 'langgenius/openai/openai' })}
+        provider={createProvider({ provider: 'odysseythink/openai/openai' })}
         className="custom-wrapper"
       />,
     )

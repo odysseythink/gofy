@@ -7,11 +7,11 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/odysseythink/confy/cast"
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	parameterenumtypes "github.com/odysseythink/gofy/backend/enum_types/parameter"
+	"github.com/odysseythink/gofy/backend/utils"
 	"github.com/odysseythink/mlog"
-	"mlib.com/confy/cast"
-	"mlib.com/gofy/server/core/exceptions"
-	parameterenumtypes "mlib.com/gofy/server/enum_types/parameter"
-	"mlib.com/gofy/server/utils"
 )
 
 type PluginParameterType string

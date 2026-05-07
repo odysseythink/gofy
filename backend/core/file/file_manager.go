@@ -9,8 +9,8 @@ import (
 	"strings"
 
 	"github.com/odysseythink/confy"
-	"mlib.com/gofy/server/core/exceptions"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
 )
 
 // GetAttr retrieves the specified attribute of a file.

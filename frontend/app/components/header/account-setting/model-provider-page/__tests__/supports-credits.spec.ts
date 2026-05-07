@@ -8,7 +8,7 @@ vi.mock('@/config', async (importOriginal) => {
 })
 
 const makeProvider = (overrides: Partial<ModelProvider> = {}): ModelProvider => ({
-  provider: 'langgenius/openai/openai',
+  provider: 'odysseythink/openai/openai',
   system_configuration: {
     enabled: true,
     current_quota_type: CurrentSystemQuotaTypeEnum.trial,
@@ -19,11 +19,11 @@ const makeProvider = (overrides: Partial<ModelProvider> = {}): ModelProvider => 
 
 describe('providerSupportsCredits', () => {
   it('returns true when the provider is system-enabled and listed in trial_models', () => {
-    expect(providerSupportsCredits(makeProvider(), ['langgenius/openai/openai'])).toBe(true)
+    expect(providerSupportsCredits(makeProvider(), ['odysseythink/openai/openai'])).toBe(true)
   })
 
   it('returns false when the provider is not listed in trial_models', () => {
-    expect(providerSupportsCredits(makeProvider(), ['langgenius/anthropic/anthropic'])).toBe(false)
+    expect(providerSupportsCredits(makeProvider(), ['odysseythink/anthropic/anthropic'])).toBe(false)
   })
 
   it('returns false when system hosting is disabled', () => {
@@ -33,10 +33,10 @@ describe('providerSupportsCredits', () => {
         current_quota_type: CurrentSystemQuotaTypeEnum.trial,
         quota_configurations: [],
       },
-    }), ['langgenius/openai/openai'])).toBe(false)
+    }), ['odysseythink/openai/openai'])).toBe(false)
   })
 
   it('returns false for an undefined provider', () => {
-    expect(providerSupportsCredits(undefined, ['langgenius/openai/openai'])).toBe(false)
+    expect(providerSupportsCredits(undefined, ['odysseythink/openai/openai'])).toBe(false)
   })
 })

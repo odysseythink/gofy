@@ -1,1 +1,0 @@
-import{r as t,ap as s}from"./index-m2eZn9zC.js";import{F as r}from"./status-BrKkURpM.js";function a(o){const e=t.useContext(r);if(!e)throw new Error("Missing FeaturesContext.Provider in the tree");return s(e,o)}function i(){return t.useContext(r)}export{i as a,a as u};

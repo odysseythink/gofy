@@ -1,8 +1,8 @@
 package end
 
 import (
-	basenodesentities "mlib.com/gofy/server/entities/nodes/base"
-	workflowentities "mlib.com/gofy/server/entities/workflow"
+	basenodesentities "github.com/odysseythink/gofy/backend/entities/nodes/base"
+	workflowentities "github.com/odysseythink/gofy/backend/entities/workflow"
 )
 
 // AnswerNodeData represents answer node data

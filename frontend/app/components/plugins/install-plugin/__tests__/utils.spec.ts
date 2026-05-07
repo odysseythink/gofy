@@ -158,11 +158,11 @@ describe('pluginManifestToCardPluginProps', () => {
       expect(result.badges).toEqual([])
     })
 
-    it('should set verification with langgenius category', () => {
+    it('should set verification with odysseythink category', () => {
       const manifest = createMockPluginDeclaration()
       const result = pluginManifestToCardPluginProps(manifest)
 
-      expect(result.verification).toEqual({ authorized_category: 'langgenius' })
+      expect(result.verification).toEqual({ authorized_category: 'odysseythink' })
     })
 
     it('should set from to package', () => {
@@ -218,7 +218,7 @@ describe('pluginManifestInMarketToPluginProps', () => {
     verified: true,
     install_count: 5000,
     badges: ['partner', 'verified'],
-    verification: { authorized_category: 'langgenius' },
+    verification: { authorized_category: 'odysseythink' },
     from: 'marketplace',
     ...overrides,
   })
@@ -295,7 +295,7 @@ describe('pluginManifestInMarketToPluginProps', () => {
       })
       const result = pluginManifestInMarketToPluginProps(manifest)
 
-      expect(result.verification).toEqual({ authorized_category: 'langgenius' })
+      expect(result.verification).toEqual({ authorized_category: 'odysseythink' })
     })
   })
 

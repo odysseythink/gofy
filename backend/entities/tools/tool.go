@@ -7,13 +7,13 @@ import (
 	"maps"
 	"slices"
 
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	pluginparameter "github.com/odysseythink/gofy/backend/entities/plugin/parameter"
+	providerentities "github.com/odysseythink/gofy/backend/entities/provider"
+	ragentities "github.com/odysseythink/gofy/backend/entities/rag"
+	toolsenumtypes "github.com/odysseythink/gofy/backend/enum_types/tools"
+	commontypes "github.com/odysseythink/gofy/backend/types/common"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/core/exceptions"
-	pluginparameter "mlib.com/gofy/server/entities/plugin/parameter"
-	providerentities "mlib.com/gofy/server/entities/provider"
-	ragentities "mlib.com/gofy/server/entities/rag"
-	toolsenumtypes "mlib.com/gofy/server/enum_types/tools"
-	commontypes "mlib.com/gofy/server/types/common"
 )
 
 type Messager interface {

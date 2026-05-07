@@ -8,9 +8,9 @@
 package keywordor
 
 import (
-	ragentities "mlib.com/gofy/server/entities/rag"
-	"mlib.com/gofy/server/models"
-	"mlib.com/gofy/server/utils/mapstruct"
+	ragentities "github.com/odysseythink/gofy/backend/entities/rag"
+	"github.com/odysseythink/gofy/backend/models"
+	"github.com/odysseythink/gofy/backend/utils/mapstruct"
 )
 
 type Keywordor interface {

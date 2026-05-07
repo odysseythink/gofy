@@ -6,10 +6,10 @@ import (
 	"reflect"
 	"slices"
 
+	appgeneratorentities "github.com/odysseythink/gofy/backend/entities/app/generator"
+	appresponseentities "github.com/odysseythink/gofy/backend/entities/app/response"
+	appenumtypes "github.com/odysseythink/gofy/backend/enum_types/app"
 	"github.com/odysseythink/mlog"
-	appgeneratorentities "mlib.com/gofy/server/entities/app/generator"
-	appresponseentities "mlib.com/gofy/server/entities/app/response"
-	appenumtypes "mlib.com/gofy/server/enum_types/app"
 )
 
 type BaseAppGeneratorResponseConvert[T1 interface {

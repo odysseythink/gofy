@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"slices"
 
-	"mlib.com/gofy/server/core/exceptions"
-	pluginenumtypes "mlib.com/gofy/server/enum_types/plugin"
-	commontypes "mlib.com/gofy/server/types/common"
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	pluginenumtypes "github.com/odysseythink/gofy/backend/enum_types/plugin"
+	commontypes "github.com/odysseythink/gofy/backend/types/common"
 )
 
 type PluginParameterOption struct {

@@ -9,13 +9,13 @@ import (
 	"sync"
 	"time"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/resolver"
+	"google.golang.org/grpc/status"
 	"github.com/odysseythink/confy"
 	"github.com/odysseythink/mlog"
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"go.etcd.io/etcd/client/v3/naming/endpoints"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/resolver"
-	"google.golang.org/grpc/status"
 )
 
 type etcdServiceDiscoveryProvide struct {

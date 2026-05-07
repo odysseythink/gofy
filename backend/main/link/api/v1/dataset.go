@@ -2,17 +2,30 @@ package v1
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/odysseythink/confy"
+	"github.com/odysseythink/gofy/backend/cluster"
+	"github.com/odysseythink/gofy/backend/models"
+	"github.com/odysseythink/gofy/backend/models/response"
+	"github.com/odysseythink/gofy/backend/proto/pbapi"
+	"github.com/odysseythink/gofy/backend/utils"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/cluster"
-	"mlib.com/gofy/server/models"
-	"mlib.com/gofy/server/models/response"
-	"mlib.com/gofy/server/proto/pbapi"
 )
 
 type DatasetApi struct {
+}
+
+func (api *DatasetApi) ApiBaseInfo(c *gin.Context) {
+	serviceApiURL := confy.Get[string]("service_api_url")
+	if serviceApiURL == "" {
+		serviceApiURL = fmt.Sprintf("http://%s:%d", utils.GetIP(), confy.Get[int]("system.addr"))
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"api_base_url": serviceApiURL + "/v1",
+	})
 }
 
 func (api *DatasetApi) RetrievalSetting(c *gin.Context) {

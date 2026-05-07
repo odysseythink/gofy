@@ -2,7 +2,7 @@ package manifest
 
 import (
 	"github.com/go-playground/validator/v10"
-	"mlib.com/gofy/server/utils/validate"
+	"github.com/odysseythink/gofy/backend/utils/validate"
 )
 
 type PluginTag string

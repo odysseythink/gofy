@@ -1,4 +1,4 @@
-import type { LangGeniusVersionResponse } from '@/models/common'
+import type { OdysseythinkVersionResponse } from '@/models/common'
 import type { SystemFeatures } from '@/types/feature'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { useGlobalPublicStore } from '@/context/global-public-context'
@@ -19,10 +19,10 @@ type GlobalPublicStore = {
 }
 
 describe('AccountAbout', () => {
-  const mockVersionInfo: LangGeniusVersionResponse = {
+  const mockVersionInfo: OdysseythinkVersionResponse = {
     current_version: '0.6.0',
     latest_version: '0.6.0',
-    release_notes: 'https://github.com/langgenius/gofy/releases/tag/0.6.0',
+    release_notes: 'https://github.com/odysseythink/gofy/releases/tag/0.6.0',
     version: '0.6.0',
     release_date: '2024-01-01',
     can_auto_update: false,
@@ -42,7 +42,7 @@ describe('AccountAbout', () => {
   describe('Rendering', () => {
     it('should render correctly with version information', () => {
       // Act
-      render(<AccountAbout langGeniusVersionInfo={mockVersionInfo} onCancel={mockOnCancel} />)
+      render(<AccountAbout odysseythinkVersionInfo={mockVersionInfo} onCancel={mockOnCancel} />)
 
       // Assert
       expect(screen.getByText(/^Version/)).toBeInTheDocument()
@@ -56,7 +56,7 @@ describe('AccountAbout', () => {
       } as unknown as GlobalPublicStore))
 
       // Act
-      render(<AccountAbout langGeniusVersionInfo={mockVersionInfo} onCancel={mockOnCancel} />)
+      render(<AccountAbout odysseythinkVersionInfo={mockVersionInfo} onCancel={mockOnCancel} />)
 
       // Assert
       const img = screen.getByAltText('logo')
@@ -68,7 +68,7 @@ describe('AccountAbout', () => {
   describe('Version Logic', () => {
     it('should show "Latest Available" when current version equals latest', () => {
       // Act
-      render(<AccountAbout langGeniusVersionInfo={mockVersionInfo} onCancel={mockOnCancel} />)
+      render(<AccountAbout odysseythinkVersionInfo={mockVersionInfo} onCancel={mockOnCancel} />)
 
       // Assert
       expect(screen.getByText(/about.latestAvailable/)).toBeInTheDocument()
@@ -79,7 +79,7 @@ describe('AccountAbout', () => {
       const behindVersionInfo = { ...mockVersionInfo, latest_version: '0.7.0' }
 
       // Act
-      render(<AccountAbout langGeniusVersionInfo={behindVersionInfo} onCancel={mockOnCancel} />)
+      render(<AccountAbout odysseythinkVersionInfo={behindVersionInfo} onCancel={mockOnCancel} />)
 
       // Assert
       expect(screen.getByText(/about.nowAvailable/)).toBeInTheDocument()
@@ -93,7 +93,7 @@ describe('AccountAbout', () => {
       mockIsCEEdition = true
 
       // Act
-      render(<AccountAbout langGeniusVersionInfo={mockVersionInfo} onCancel={mockOnCancel} />)
+      render(<AccountAbout odysseythinkVersionInfo={mockVersionInfo} onCancel={mockOnCancel} />)
 
       // Assert
       expect(screen.getByText(/Open Source License/)).toBeInTheDocument()
@@ -105,7 +105,7 @@ describe('AccountAbout', () => {
       const behindVersionInfo = { ...mockVersionInfo, latest_version: '0.7.0' }
 
       // Act
-      render(<AccountAbout langGeniusVersionInfo={behindVersionInfo} onCancel={mockOnCancel} />)
+      render(<AccountAbout odysseythinkVersionInfo={behindVersionInfo} onCancel={mockOnCancel} />)
 
       // Assert
       expect(screen.queryByText(/about.updateNow/)).not.toBeInTheDocument()
@@ -115,7 +115,7 @@ describe('AccountAbout', () => {
   describe('User Interactions', () => {
     it('should call onCancel when close button is clicked', () => {
       // Act
-      render(<AccountAbout langGeniusVersionInfo={mockVersionInfo} onCancel={mockOnCancel} />)
+      render(<AccountAbout odysseythinkVersionInfo={mockVersionInfo} onCancel={mockOnCancel} />)
       // Modal uses Headless UI Dialog which renders into a portal, so we need to use document
       const closeButton = document.querySelector('div.absolute.cursor-pointer')
 

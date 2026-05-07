@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/odysseythink/gofy/backend/storage"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/storage"
 )
 
 // AssetManager handles plugin static assets (icons, images).

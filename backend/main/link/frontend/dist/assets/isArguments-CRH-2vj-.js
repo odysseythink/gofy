@@ -1,0 +1,1 @@
+import{g as n}from"./use-tools-DjCCSUR3.js";function r(t){return Number.isSafeInteger(t)&&t>=0}function i(t){return t!=null&&typeof t!="function"&&r(t.length)}function o(t){return t!==null&&typeof t=="object"&&n(t)==="[object Arguments]"}export{o as a,i};

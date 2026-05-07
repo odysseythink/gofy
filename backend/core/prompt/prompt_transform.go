@@ -3,12 +3,12 @@ package prompt
 import (
 	"math"
 
-	modelmanager "mlib.com/gofy/server/core/manageres/model_manager"
-	"mlib.com/gofy/server/core/memory"
-	appconfigentities "mlib.com/gofy/server/entities/app/config"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	promptentities "mlib.com/gofy/server/entities/prompt"
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
+	modelmanager "github.com/odysseythink/gofy/backend/core/manageres/model_manager"
+	"github.com/odysseythink/gofy/backend/core/memory"
+	appconfigentities "github.com/odysseythink/gofy/backend/entities/app/config"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	promptentities "github.com/odysseythink/gofy/backend/entities/prompt"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
 )
 
 type PromptTransform struct {

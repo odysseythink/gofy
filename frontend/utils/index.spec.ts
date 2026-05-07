@@ -180,11 +180,11 @@ describe('correctModelProvider', () => {
   })
 
   it('should format google provider correctly', () => {
-    expect(correctModelProvider('google')).toBe('langgenius/gemini/google')
+    expect(correctModelProvider('google')).toBe('odysseythink/gemini/google')
   })
 
   it('should format standard providers correctly', () => {
-    expect(correctModelProvider('openai')).toBe('langgenius/openai/openai')
+    expect(correctModelProvider('openai')).toBe('odysseythink/openai/openai')
   })
 })
 
@@ -202,12 +202,12 @@ describe('correctToolProvider', () => {
   })
 
   it('should format special tool providers correctly', () => {
-    expect(correctToolProvider('stepfun')).toBe('langgenius/stepfun_tool/stepfun')
-    expect(correctToolProvider('jina')).toBe('langgenius/jina_tool/jina')
+    expect(correctToolProvider('stepfun')).toBe('odysseythink/stepfun_tool/stepfun')
+    expect(correctToolProvider('jina')).toBe('odysseythink/jina_tool/jina')
   })
 
   it('should format standard tool providers correctly', () => {
-    expect(correctToolProvider('standard')).toBe('langgenius/standard/standard')
+    expect(correctToolProvider('standard')).toBe('odysseythink/standard/standard')
   })
 })
 
@@ -217,11 +217,11 @@ describe('canFindTool', () => {
   })
 
   it('should match when provider ID is formatted with standard pattern', () => {
-    expect(canFindTool('langgenius/tool-id/tool-id', 'tool-id')).toBe(true)
+    expect(canFindTool('odysseythink/tool-id/tool-id', 'tool-id')).toBe(true)
   })
 
   it('should match when provider ID is formatted with tool pattern', () => {
-    expect(canFindTool('langgenius/tool-id_tool/tool-id', 'tool-id')).toBe(true)
+    expect(canFindTool('odysseythink/tool-id_tool/tool-id', 'tool-id')).toBe(true)
   })
 
   it('should not match when IDs are completely different', () => {
@@ -435,12 +435,12 @@ describe('correctModelProvider extended', () => {
   })
 
   it('should handle google provider', () => {
-    expect(correctModelProvider('google')).toBe('langgenius/gemini/google')
+    expect(correctModelProvider('google')).toBe('odysseythink/gemini/google')
   })
 
   it('should handle standard providers', () => {
-    expect(correctModelProvider('openai')).toBe('langgenius/openai/openai')
-    expect(correctModelProvider('anthropic')).toBe('langgenius/anthropic/anthropic')
+    expect(correctModelProvider('openai')).toBe('odysseythink/openai/openai')
+    expect(correctModelProvider('anthropic')).toBe('odysseythink/anthropic/anthropic')
   })
 
   it('should handle null/undefined', () => {
@@ -460,14 +460,14 @@ describe('correctToolProvider extended', () => {
   })
 
   it('should handle special tool providers', () => {
-    expect(correctToolProvider('stepfun', false)).toBe('langgenius/stepfun_tool/stepfun')
-    expect(correctToolProvider('jina', false)).toBe('langgenius/jina_tool/jina')
-    expect(correctToolProvider('siliconflow', false)).toBe('langgenius/siliconflow_tool/siliconflow')
-    expect(correctToolProvider('gitee_ai', false)).toBe('langgenius/gitee_ai_tool/gitee_ai')
+    expect(correctToolProvider('stepfun', false)).toBe('odysseythink/stepfun_tool/stepfun')
+    expect(correctToolProvider('jina', false)).toBe('odysseythink/jina_tool/jina')
+    expect(correctToolProvider('siliconflow', false)).toBe('odysseythink/siliconflow_tool/siliconflow')
+    expect(correctToolProvider('gitee_ai', false)).toBe('odysseythink/gitee_ai_tool/gitee_ai')
   })
 
   it('should handle standard tool providers', () => {
-    expect(correctToolProvider('standard', false)).toBe('langgenius/standard/standard')
+    expect(correctToolProvider('standard', false)).toBe('odysseythink/standard/standard')
   })
 })
 
@@ -476,12 +476,12 @@ describe('canFindTool extended', () => {
     expect(canFindTool('openai', 'openai')).toBe(true)
   })
 
-  it('should match langgenius format', () => {
-    expect(canFindTool('langgenius/openai/openai', 'openai')).toBe(true)
+  it('should match odysseythink format', () => {
+    expect(canFindTool('odysseythink/openai/openai', 'openai')).toBe(true)
   })
 
   it('should match tool format', () => {
-    expect(canFindTool('langgenius/jina_tool/jina', 'jina')).toBe(true)
+    expect(canFindTool('odysseythink/jina_tool/jina', 'jina')).toBe(true)
   })
 
   it('should not match different providers', () => {

@@ -44,9 +44,9 @@ describe('Tools Utilities', () => {
     })
 
     it('should handle provider names with slashes', () => {
-      const result = buildProviderQuery('langgenius/openai/gpt-4')
+      const result = buildProviderQuery('odysseythink/openai/gpt-4')
       expect(result).toContain('provider=')
-      expect(decodeURIComponent(result)).toBe('provider=langgenius/openai/gpt-4')
+      expect(decodeURIComponent(result)).toBe('provider=odysseythink/openai/gpt-4')
     })
   })
 })

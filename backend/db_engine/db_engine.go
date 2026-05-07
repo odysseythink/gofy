@@ -8,10 +8,10 @@ import (
 	"time"
 
 	"github.com/odysseythink/confy"
+	"github.com/odysseythink/gofy/backend/config"
 	"github.com/odysseythink/mlog"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"mlib.com/gofy/server/config"
 )
 
 type DBEngine struct {
@@ -34,7 +34,7 @@ func (m *DBEngine) Init() error {
 	}
 
 	if cfg.Dbname == "" {
-		return nil
+		return fmt.Errorf("mysql config missing db-name (check yml keys: path/port/db-name/username/password)")
 	}
 	mysqlConfig := mysql.Config{
 		DSN:                       cfg.Dsn(), // DSN data source name

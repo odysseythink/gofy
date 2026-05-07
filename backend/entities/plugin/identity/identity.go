@@ -6,9 +6,9 @@ import (
 	"strings"
 
 	"github.com/go-playground/validator/v10"
+	manifestentities "github.com/odysseythink/gofy/backend/entities/manifest"
+	"github.com/odysseythink/gofy/backend/utils/validate"
 	uuid "github.com/satori/go.uuid"
-	manifestentities "mlib.com/gofy/server/entities/manifest"
-	"mlib.com/gofy/server/utils/validate"
 )
 
 type PluginUniqueIdentifier string

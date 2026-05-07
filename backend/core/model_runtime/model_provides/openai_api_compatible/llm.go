@@ -11,11 +11,11 @@ import (
 	"strings"
 	"time"
 
+	"github.com/odysseythink/gofy/backend/core/model_runtime/model_provides/base"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
+	commontypes "github.com/odysseythink/gofy/backend/types/common"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/core/model_runtime/model_provides/base"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
-	commontypes "mlib.com/gofy/server/types/common"
 )
 
 type OpenAICompatibleLLM struct {

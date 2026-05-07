@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"time"
 
-	"mlib.com/gofy/server/cache"
+	"github.com/odysseythink/gofy/backend/cache"
 )
 
 type RateLimiter struct {

@@ -1,6 +1,6 @@
 package base
 
-import "mlib.com/gofy/server/core/extension"
+import "github.com/odysseythink/gofy/backend/core/extension"
 
 type ExternalDataToolor interface {
 	extension.Extensiblor

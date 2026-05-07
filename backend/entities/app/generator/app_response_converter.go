@@ -3,8 +3,8 @@ package generator
 import (
 	"iter"
 
-	appresponseentities "mlib.com/gofy/server/entities/app/response"
-	appenumtypes "mlib.com/gofy/server/enum_types/app"
+	appresponseentities "github.com/odysseythink/gofy/backend/entities/app/response"
+	appenumtypes "github.com/odysseythink/gofy/backend/enum_types/app"
 )
 
 type AppGeneratorResponseConverter[T1 interface {

@@ -3,8 +3,8 @@ package ifelse
 import (
 	"encoding/json"
 
-	basenodesentities "mlib.com/gofy/server/entities/nodes/base"
-	conditionentities "mlib.com/gofy/server/entities/workflow/condition"
+	basenodesentities "github.com/odysseythink/gofy/backend/entities/nodes/base"
+	conditionentities "github.com/odysseythink/gofy/backend/entities/workflow/condition"
 )
 
 type Case struct {

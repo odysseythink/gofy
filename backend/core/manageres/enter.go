@@ -1,10 +1,10 @@
 package manageres
 
 import (
-	"mlib.com/gofy/server/core/manageres/conversation"
-	datasetmanager "mlib.com/gofy/server/core/manageres/dataset"
-	modelmanager "mlib.com/gofy/server/core/manageres/model_manager"
-	workflownodeexecutionmanager "mlib.com/gofy/server/core/manageres/workflow_node_execution"
+	"github.com/odysseythink/gofy/backend/core/manageres/conversation"
+	datasetmanager "github.com/odysseythink/gofy/backend/core/manageres/dataset"
+	modelmanager "github.com/odysseythink/gofy/backend/core/manageres/model_manager"
+	workflownodeexecutionmanager "github.com/odysseythink/gofy/backend/core/manageres/workflow_node_execution"
 )
 
 type ManagerGroup struct {

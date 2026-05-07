@@ -20,7 +20,7 @@ const (
 type AuthorizedCategoryType string
 
 const (
-	AuthorizedCategory_Langgenius AuthorizedCategoryType = "langgenius"
-	AuthorizedCategory_Partner    AuthorizedCategoryType = "partner"
-	AuthorizedCategory_Community  AuthorizedCategoryType = "community"
+	AuthorizedCategory_Odysseythink AuthorizedCategoryType = "odysseythink"
+	AuthorizedCategory_Partner      AuthorizedCategoryType = "partner"
+	AuthorizedCategory_Community    AuthorizedCategoryType = "community"
 )

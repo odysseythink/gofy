@@ -24,15 +24,15 @@ import (
 	"time"
 
 	"github.com/odysseythink/confy"
+	"github.com/odysseythink/gofy/backend/core/rag/datasource/keywordor"
+	dbengine "github.com/odysseythink/gofy/backend/db_engine"
+	ragentities "github.com/odysseythink/gofy/backend/entities/rag"
+	"github.com/odysseythink/gofy/backend/models"
+	distributelock "github.com/odysseythink/gofy/backend/utils/distribute_lock"
+	"github.com/odysseythink/gofy/backend/utils/mapstruct"
 	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/datatypes"
-	"mlib.com/gofy/server/core/rag/datasource/keywordor"
-	dbengine "mlib.com/gofy/server/db_engine"
-	ragentities "mlib.com/gofy/server/entities/rag"
-	"mlib.com/gofy/server/models"
-	distributelock "mlib.com/gofy/server/utils/distribute_lock"
-	"mlib.com/gofy/server/utils/mapstruct"
 )
 
 type KeywordTableConfig struct {

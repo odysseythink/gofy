@@ -1,0 +1,72 @@
+provider: xinference
+label:
+  zh_Hans: Xorbits Inference
+  en_US: Xorbits Inference
+icon_small:
+  en_US: icon_s_en.svg
+icon_large:
+  en_US: icon_l_en.svg
+background: "#E0F2FE"
+help:
+  title:
+    en_US: How to deploy Xinference
+    zh_Hans: 如何部署 Xinference
+  url:
+    en_US: https://github.com/xorbitsai/inference
+supported_model_types:
+  - llm
+  - text-embedding
+  - rerank
+configurate_methods:
+  - customizable-model
+model_credential_schema:
+  model:
+    label:
+      en_US: Model Name
+      zh_Hans: 模型名称
+    placeholder:
+      en_US: Enter your model name
+      zh_Hans: 输入模型名称
+  credential_form_schemas:
+    - variable: server_url
+      label:
+        zh_Hans: 服务器 URL
+        en_US: Server URL
+      type: text-input
+      required: true
+      placeholder:
+        zh_Hans: Base URL, 例如 http://127.0.0.1:9997
+        en_US: Base URL, e.g. http://127.0.0.1:9997
+    - variable: model_uid
+      label:
+        zh_Hans: 模型 UID
+        en_US: Model UID
+      type: text-input
+      required: true
+      placeholder:
+        zh_Hans: 模型 UID
+        en_US: Model UID
+    - variable: api_key
+      label:
+        en_US: API Key
+      type: secret-input
+      required: false
+      placeholder:
+        zh_Hans: 在此输入您的 API Key（可选）
+        en_US: Enter your API Key (optional)
+    - variable: context_size
+      label:
+        zh_Hans: 模型上下文长度
+        en_US: Model context size
+      required: false
+      type: text-input
+      default: '4096'
+    - variable: max_tokens
+      label:
+        zh_Hans: 最大 token 上限
+        en_US: Upper bound for max tokens
+      default: '4096'
+      type: text-input
+      show_on:
+        - variable: __model_type
+          value: llm

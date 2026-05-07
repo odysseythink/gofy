@@ -48,19 +48,15 @@ func GetToken(c *gin.Context) string {
 	if authHeader != "" {
 		// 假设token紧跟在Bearer后面，用空格分隔
 		tokenParts := strings.Split(authHeader, " ")
-		if len(tokenParts) == 2 {
-			if strings.ToLower(tokenParts[0]) != "bearer" {
-				return ""
-			}
-			token := tokenParts[1]
-
-			return token
-		} else {
-			return ""
+		if len(tokenParts) == 2 && strings.ToLower(tokenParts[0]) == "bearer" {
+			return tokenParts[1]
 		}
-	} else {
-		return ""
 	}
+	// Fallback to cookie — console frontend relies on HttpOnly cookie auth.
+	if cookie, err := c.Cookie("access_token"); err == nil && cookie != "" {
+		return cookie
+	}
+	return ""
 }
 
 func GetClaims(c *gin.Context, secretKey string) (*CustomClaims, error) {

@@ -1,7 +1,7 @@
 package workflow
 
 import (
-	workflowenumtypes "mlib.com/gofy/server/enum_types/workflow"
+	workflowenumtypes "github.com/odysseythink/gofy/backend/enum_types/workflow"
 )
 
 // SystemVariable defines a system variable with its type and description.

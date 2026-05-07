@@ -1,7 +1,7 @@
 package task
 
 import (
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
 )
 
 // TaskState represents the state of a task.

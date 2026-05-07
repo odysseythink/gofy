@@ -1,7 +1,7 @@
 package trigger_plugin
 
 import (
-	basenodesentities "mlib.com/gofy/server/entities/nodes/base"
+	basenodesentities "github.com/odysseythink/gofy/backend/entities/nodes/base"
 )
 
 // TriggerEventInput represents a plugin trigger event input

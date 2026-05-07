@@ -27,7 +27,7 @@ const createMockAppDetail = (mode: string, overrides: Partial<TryAppInfo> = {}):
   },
   model_config: {
     model: {
-      provider: 'langgenius/openai/openai',
+      provider: 'odysseythink/openai/openai',
       name: 'gpt-4',
       mode: 'chat',
     },
@@ -60,7 +60,7 @@ describe('useGetRequirements', () => {
 
       expect(result.current.requirements).toHaveLength(1)
       expect(result.current.requirements[0].name).toBe('openai')
-      expect(result.current.requirements[0].iconUrl).toBe('https://marketplace.api/plugins/langgenius/openai/icon')
+      expect(result.current.requirements[0].iconUrl).toBe('https://marketplace.api/plugins/odysseythink/openai/icon')
     })
 
     it('returns model provider for completion mode', () => {
@@ -93,7 +93,7 @@ describe('useGetRequirements', () => {
       const appDetail = createMockAppDetail('agent-chat', {
         model_config: {
           model: {
-            provider: 'langgenius/openai/openai',
+            provider: 'odysseythink/openai/openai',
             name: 'gpt-4',
             mode: 'chat',
           },
@@ -102,17 +102,17 @@ describe('useGetRequirements', () => {
             tools: [
               {
                 enabled: true,
-                provider_id: 'langgenius/google_search/google_search',
+                provider_id: 'odysseythink/google_search/google_search',
                 tool_label: 'Google Search',
               },
               {
                 enabled: true,
-                provider_id: 'langgenius/web_scraper/web_scraper',
+                provider_id: 'odysseythink/web_scraper/web_scraper',
                 tool_label: 'Web Scraper',
               },
               {
                 enabled: false,
-                provider_id: 'langgenius/disabled_tool/disabled_tool',
+                provider_id: 'odysseythink/disabled_tool/disabled_tool',
                 tool_label: 'Disabled Tool',
               },
             ],
@@ -138,7 +138,7 @@ describe('useGetRequirements', () => {
       const appDetail = createMockAppDetail('agent-chat', {
         model_config: {
           model: {
-            provider: 'langgenius/openai/openai',
+            provider: 'odysseythink/openai/openai',
             name: 'gpt-4',
             mode: 'chat',
           },
@@ -147,12 +147,12 @@ describe('useGetRequirements', () => {
             tools: [
               {
                 enabled: false,
-                provider_id: 'langgenius/tool1/tool1',
+                provider_id: 'odysseythink/tool1/tool1',
                 tool_label: 'Tool 1',
               },
               {
                 enabled: false,
-                provider_id: 'langgenius/tool2/tool2',
+                provider_id: 'odysseythink/tool2/tool2',
                 tool_label: 'Tool 2',
               },
             ],
@@ -180,7 +180,7 @@ describe('useGetRequirements', () => {
                 data: {
                   type: 'llm',
                   model: {
-                    provider: 'langgenius/openai/openai',
+                    provider: 'odysseythink/openai/openai',
                     name: 'gpt-4',
                   },
                 },
@@ -188,7 +188,7 @@ describe('useGetRequirements', () => {
               {
                 data: {
                   type: 'tool',
-                  provider_id: 'langgenius/google/google',
+                  provider_id: 'odysseythink/google/google',
                   tool_label: 'Google Tool',
                 },
               },
@@ -274,7 +274,7 @@ describe('useGetRequirements', () => {
                 data: {
                   type: 'llm',
                   model: {
-                    provider: 'langgenius/openai/openai',
+                    provider: 'odysseythink/openai/openai',
                     name: 'gpt-4',
                   },
                 },
@@ -311,14 +311,14 @@ describe('useGetRequirements', () => {
               {
                 data: {
                   type: 'tool',
-                  provider_id: 'langgenius/tool1/tool1',
+                  provider_id: 'odysseythink/tool1/tool1',
                   tool_label: 'Tool 1',
                 },
               },
               {
                 data: {
                   type: 'tool',
-                  provider_id: 'langgenius/tool2/tool2',
+                  provider_id: 'odysseythink/tool2/tool2',
                   tool_label: 'Tool 2',
                 },
               },
@@ -348,7 +348,7 @@ describe('useGetRequirements', () => {
                 data: {
                   type: 'llm',
                   model: {
-                    provider: 'langgenius/openai/openai',
+                    provider: 'odysseythink/openai/openai',
                     name: 'gpt-4',
                   },
                 },
@@ -357,7 +357,7 @@ describe('useGetRequirements', () => {
                 data: {
                   type: 'llm',
                   model: {
-                    provider: 'langgenius/openai/openai',
+                    provider: 'odysseythink/openai/openai',
                     name: 'gpt-4',
                   },
                 },
@@ -407,7 +407,7 @@ describe('useGetRequirements', () => {
       const appDetail = createMockAppDetail('chat', {
         model_config: {
           model: {
-            provider: 'langgenius/google/google',
+            provider: 'odysseythink/google/google',
             name: 'gemini-2.0',
             mode: 'chat',
           },
@@ -421,7 +421,7 @@ describe('useGetRequirements', () => {
         useGetRequirements({ appDetail, appId: 'test-app-id' }),
       )
 
-      expect(result.current.requirements[0].iconUrl).toBe('https://marketplace.api/plugins/langgenius/gemini/icon')
+      expect(result.current.requirements[0].iconUrl).toBe('https://marketplace.api/plugins/odysseythink/gemini/icon')
     })
 
     it('maps special builtin tool providers to *_tool plugin icon URL', () => {
@@ -430,7 +430,7 @@ describe('useGetRequirements', () => {
       const appDetail = createMockAppDetail('agent-chat', {
         model_config: {
           model: {
-            provider: 'langgenius/openai/openai',
+            provider: 'odysseythink/openai/openai',
             name: 'gpt-4',
             mode: 'chat',
           },
@@ -439,7 +439,7 @@ describe('useGetRequirements', () => {
             tools: [
               {
                 enabled: true,
-                provider_id: 'langgenius/jina/jina',
+                provider_id: 'odysseythink/jina/jina',
                 tool_label: 'Jina Search',
               },
             ],
@@ -453,7 +453,7 @@ describe('useGetRequirements', () => {
       )
 
       const toolRequirement = result.current.requirements.find(item => item.name === 'Jina Search')
-      expect(toolRequirement?.iconUrl).toBe('https://marketplace.api/plugins/langgenius/jina_tool/icon')
+      expect(toolRequirement?.iconUrl).toBe('https://marketplace.api/plugins/odysseythink/jina_tool/icon')
     })
   })
 

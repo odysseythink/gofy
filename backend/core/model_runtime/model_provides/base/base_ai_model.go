@@ -8,11 +8,11 @@ import (
 	"time"
 
 	"github.com/odysseythink/confy"
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
 	"github.com/odysseythink/mlog"
 	"gopkg.in/yaml.v2"
-	"mlib.com/gofy/server/core/exceptions"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
 )
 
 type BaseAIModel struct {

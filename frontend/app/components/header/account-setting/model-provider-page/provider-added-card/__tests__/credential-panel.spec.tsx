@@ -29,7 +29,7 @@ vi.mock('@/config', async (importOriginal) => {
 })
 
 vi.mock('@/context/global-public-context', () => ({
-  useSystemFeaturesQuery: () => ({ data: { trial_models: ['langgenius/openai/openai'] } }),
+  useSystemFeaturesQuery: () => ({ data: { trial_models: ['odysseythink/openai/openai'] } }),
 }))
 
 vi.mock('@/app/components/base/toast', () => ({
@@ -90,7 +90,7 @@ const createTestQueryClient = () => new QueryClient({
 })
 
 const createProvider = (overrides: Partial<ModelProvider> = {}): ModelProvider => ({
-  provider: 'langgenius/openai/openai',
+  provider: 'odysseythink/openai/openai',
   provider_credential_schema: { credential_form_schemas: [] },
   custom_configuration: {
     status: CustomConfigurationStatusEnum.active,
@@ -339,7 +339,7 @@ describe('CredentialPanel', () => {
 
       await waitFor(() => {
         expect(mockChangePriorityFn.mock.calls[0]?.[0]).toEqual({
-          params: { provider: 'langgenius/openai/openai' },
+          params: { provider: 'odysseythink/openai/openai' },
           body: { preferred_provider_type: 'custom' },
         })
       })

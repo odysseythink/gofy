@@ -16,7 +16,7 @@ type SupportProps = {
 export default function Support({ closeAccountDropdown }: SupportProps) {
   const { t } = useTranslation()
   const { plan } = useProviderContext()
-  const { userProfile, langGeniusVersionInfo } = useAppContext()
+  const { userProfile, odysseythinkVersionInfo } = useAppContext()
   const hasDedicatedChannel = plan.type !== Plan.sandbox || Boolean(SUPPORT_EMAIL_ADDRESS.trim())
   const hasZendeskWidget = Boolean(ZENDESK_WIDGET_KEY.trim())
 
@@ -49,7 +49,7 @@ export default function Support({ closeAccountDropdown }: SupportProps) {
           {hasDedicatedChannel && !hasZendeskWidget && (
             <DropdownMenuLinkItem
               className="justify-between"
-              href={mailToSupport(userProfile.email, plan.type, langGeniusVersionInfo?.current_version, SUPPORT_EMAIL_ADDRESS)}
+              href={mailToSupport(userProfile.email, plan.type, odysseythinkVersionInfo?.current_version, SUPPORT_EMAIL_ADDRESS)}
               rel="noopener noreferrer"
               target="_blank"
             >

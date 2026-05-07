@@ -4,11 +4,11 @@ import (
 	"iter"
 	"strings"
 
-	"mlib.com/gofy/server/core/workflow/nodes/base"
-	variableaggregatornodesentities "mlib.com/gofy/server/entities/nodes/variable_aggregator"
-	workflowentities "mlib.com/gofy/server/entities/workflow"
-	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
-	"mlib.com/gofy/server/models"
+	"github.com/odysseythink/gofy/backend/core/workflow/nodes/base"
+	variableaggregatornodesentities "github.com/odysseythink/gofy/backend/entities/nodes/variable_aggregator"
+	workflowentities "github.com/odysseythink/gofy/backend/entities/workflow"
+	nodesenumtypes "github.com/odysseythink/gofy/backend/enum_types/nodes"
+	"github.com/odysseythink/gofy/backend/models"
 )
 
 type VariableAggregatorNode struct {

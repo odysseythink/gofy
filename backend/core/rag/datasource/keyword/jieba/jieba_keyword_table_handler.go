@@ -6,8 +6,8 @@ import (
 	"strings"
 	"sync"
 
-	gojieba "mlib.com/gofy/server/utils/jieba"
-	jiebautils "mlib.com/gofy/server/utils/jieba"
+	gojieba "github.com/odysseythink/gofy/backend/utils/jieba"
+	jiebautils "github.com/odysseythink/gofy/backend/utils/jieba"
 )
 
 var (

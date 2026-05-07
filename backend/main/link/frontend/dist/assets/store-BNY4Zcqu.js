@@ -1,0 +1,1 @@
+import{a as t}from"./index-C6MQE079.js";const s=t(e=>({tagList:[],setTagList:a=>e(()=>({tagList:a})),showTagManagementModal:!1,setShowTagManagementModal:a=>e(()=>({showTagManagementModal:a}))}));export{s as u};

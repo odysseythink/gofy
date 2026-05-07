@@ -27,7 +27,7 @@ const ModelIcon: FC<ModelIconProps> = ({
 }) => {
   const { theme } = useTheme()
   const language = useLanguage()
-  if (provider?.provider && ['openai', 'langgenius/openai/openai'].includes(provider.provider) && modelName?.startsWith('o'))
+  if (provider?.provider && ['openai', 'odysseythink/openai/openai'].includes(provider.provider) && modelName?.startsWith('o'))
     return <div className="flex items-center justify-center"><OpenaiYellow className={cn('h-5 w-5', className)} /></div>
 
   if (provider?.icon_small) {

@@ -1,9 +1,9 @@
 package providermanager
 
 import (
-	coreentities "mlib.com/gofy/server/entities/core"
-	modelentities "mlib.com/gofy/server/entities/model"
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
+	coreentities "github.com/odysseythink/gofy/backend/entities/core"
+	modelentities "github.com/odysseythink/gofy/backend/entities/model"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
 )
 
 type ProviderConfigurationsManager struct {

@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	pbexceptions "mlib.com/gofy/server/proto/exceptions"
+	pbexceptions "github.com/odysseythink/gofy/backend/proto/exceptions"
 )
 
 func Unauthorized(c *gin.Context) {

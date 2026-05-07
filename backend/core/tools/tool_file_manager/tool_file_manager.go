@@ -15,13 +15,13 @@ import (
 	"time"
 
 	"github.com/odysseythink/confy"
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	dbengine "github.com/odysseythink/gofy/backend/db_engine"
+	"github.com/odysseythink/gofy/backend/models"
+	"github.com/odysseythink/gofy/backend/utils"
+	"github.com/odysseythink/gofy/backend/utils/mimetypes"
 	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
-	"mlib.com/gofy/server/core/exceptions"
-	dbengine "mlib.com/gofy/server/db_engine"
-	"mlib.com/gofy/server/models"
-	"mlib.com/gofy/server/utils"
-	"mlib.com/gofy/server/utils/mimetypes"
 )
 
 type ToolFileManager struct{}

@@ -5,12 +5,12 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	dbengine "github.com/odysseythink/gofy/backend/db_engine"
+	ragentities "github.com/odysseythink/gofy/backend/entities/rag"
+	"github.com/odysseythink/gofy/backend/models"
+	"github.com/odysseythink/gofy/backend/utils/mapstruct"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/core/exceptions"
-	dbengine "mlib.com/gofy/server/db_engine"
-	ragentities "mlib.com/gofy/server/entities/rag"
-	"mlib.com/gofy/server/models"
-	"mlib.com/gofy/server/utils/mapstruct"
 )
 
 type ExternalDatasetService struct {

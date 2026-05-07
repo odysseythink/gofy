@@ -11,11 +11,11 @@ import (
 	"strings"
 
 	"github.com/odysseythink/confy"
+	"github.com/odysseythink/gofy/backend/main/sandbox/global"
+	"github.com/odysseythink/gofy/backend/main/sandbox/runner"
+	python_dependencies "github.com/odysseythink/gofy/backend/main/sandbox/runner/python/dependencies"
+	"github.com/odysseythink/gofy/backend/proto/pbapi"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/main/sandbox/global"
-	"mlib.com/gofy/server/main/sandbox/runner"
-	python_dependencies "mlib.com/gofy/server/main/sandbox/runner/python/dependencies"
-	"mlib.com/gofy/server/proto/pbapi"
 )
 
 //go:embed python.so

@@ -1,10 +1,10 @@
 package base
 
 import (
-	retrievalresource "mlib.com/gofy/server/core/app/config_manageres/features/retrieval_resource"
-	suggestedquestionsafteranswer "mlib.com/gofy/server/core/app/config_manageres/features/suggested_questions_after_answer"
-	appconfigentities "mlib.com/gofy/server/entities/app/config"
-	"mlib.com/gofy/server/models"
+	retrievalresource "github.com/odysseythink/gofy/backend/core/app/config_manageres/features/retrieval_resource"
+	suggestedquestionsafteranswer "github.com/odysseythink/gofy/backend/core/app/config_manageres/features/suggested_questions_after_answer"
+	appconfigentities "github.com/odysseythink/gofy/backend/entities/app/config"
+	"github.com/odysseythink/gofy/backend/models"
 )
 
 type IManager interface {

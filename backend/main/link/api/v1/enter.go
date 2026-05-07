@@ -11,6 +11,7 @@ type ApiGroup struct {
 	DraftWorkflowApi
 	LoginApi
 	SetupApi
+	InitValidateApi
 	FileApi
 	MemberApi
 	WorkflowRunApi

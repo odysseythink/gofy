@@ -4,9 +4,9 @@ import (
 	"fmt"
 
 	"github.com/odysseythink/confy"
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
-	commontypes "mlib.com/gofy/server/types/common"
-	"mlib.com/gofy/server/utils"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
+	commontypes "github.com/odysseythink/gofy/backend/types/common"
+	"github.com/odysseythink/gofy/backend/utils"
 )
 
 type ConfigurateMethod string

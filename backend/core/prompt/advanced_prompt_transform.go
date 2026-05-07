@@ -5,13 +5,13 @@ import (
 	"slices"
 	"strings"
 
-	"mlib.com/gofy/server/core/file"
-	"mlib.com/gofy/server/core/memory"
-	promptutils "mlib.com/gofy/server/core/prompt/utils"
-	appconfigentities "mlib.com/gofy/server/entities/app/config"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	promptentities "mlib.com/gofy/server/entities/prompt"
-	workflowentities "mlib.com/gofy/server/entities/workflow"
+	"github.com/odysseythink/gofy/backend/core/file"
+	"github.com/odysseythink/gofy/backend/core/memory"
+	promptutils "github.com/odysseythink/gofy/backend/core/prompt/utils"
+	appconfigentities "github.com/odysseythink/gofy/backend/entities/app/config"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	promptentities "github.com/odysseythink/gofy/backend/entities/prompt"
+	workflowentities "github.com/odysseythink/gofy/backend/entities/workflow"
 )
 
 type AdvancedPromptTransform[T []*promptentities.ChatModelMessage | *promptentities.CompletionModelPromptTemplate] struct {

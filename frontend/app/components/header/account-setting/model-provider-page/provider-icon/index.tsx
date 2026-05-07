@@ -19,7 +19,7 @@ const ProviderIcon: FC<ProviderIconProps> = ({
   const { theme } = useTheme()
   const language = useLanguage()
 
-  if (provider.provider === 'langgenius/anthropic/anthropic') {
+  if (provider.provider === 'odysseythink/anthropic/anthropic') {
     return (
       <div className={cn('py-[7px]', className)}>
         {theme === Theme.dark && <AnthropicLight className="h-2.5 w-[90px]" />}
@@ -28,7 +28,7 @@ const ProviderIcon: FC<ProviderIconProps> = ({
     )
   }
 
-  if (provider.provider === 'langgenius/openai/openai') {
+  if (provider.provider === 'odysseythink/openai/openai') {
     return (
       <div className={className}>
         <Openai className="h-6 w-auto text-text-inverted-dimmed" />

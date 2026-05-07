@@ -1,1 +1,0 @@
-import{e as s,r as t}from"./index-m2eZn9zC.js";const a=e=>{const r=s();return t.useCallback(()=>{e&&r.invalidateQueries({queryKey:e})},[r,e])},n=e=>{const r=s();return t.useCallback(()=>{e&&r.resetQueries({queryKey:e})},[r,e])};export{n as a,a as u};

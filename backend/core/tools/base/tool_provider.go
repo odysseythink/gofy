@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"slices"
 
-	"mlib.com/gofy/server/core/exceptions"
-	providerentities "mlib.com/gofy/server/entities/provider"
-	toolsentities "mlib.com/gofy/server/entities/tools"
-	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
-	toolsenumtypes "mlib.com/gofy/server/enum_types/tools"
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	providerentities "github.com/odysseythink/gofy/backend/entities/provider"
+	toolsentities "github.com/odysseythink/gofy/backend/entities/tools"
+	providerenumtypes "github.com/odysseythink/gofy/backend/enum_types/provider"
+	toolsenumtypes "github.com/odysseythink/gofy/backend/enum_types/tools"
 )
 
 type ToolProviderController interface {

@@ -1,0 +1,79 @@
+provider: huggingface_hub
+label:
+  zh_Hans: Hugging Face
+  en_US: Hugging Face
+icon_small:
+  en_US: icon_s_en.svg
+icon_large:
+  en_US: icon_l_en.svg
+background: "#FFF7ED"
+help:
+  title:
+    en_US: Get your access token from Hugging Face
+    zh_Hans: 从 Hugging Face 获取 Access Token
+  url:
+    en_US: https://huggingface.co/settings/tokens
+supported_model_types:
+  - llm
+  - text-embedding
+configurate_methods:
+  - customizable-model
+model_credential_schema:
+  model:
+    label:
+      en_US: Model Name
+      zh_Hans: 模型名称
+    placeholder:
+      en_US: Enter your model name (e.g. meta-llama/Meta-Llama-3-8B-Instruct)
+      zh_Hans: 输入模型名称（如 meta-llama/Meta-Llama-3-8B-Instruct）
+  credential_form_schemas:
+    - variable: huggingfacehub_api_type
+      label:
+        zh_Hans: API 类型
+        en_US: API Type
+      type: select
+      required: true
+      default: inference_endpoints
+      options:
+        - label:
+            zh_Hans: Inference Endpoints 或 OpenAI 兼容
+            en_US: Inference Endpoints / OpenAI Compatible
+          value: inference_endpoints
+        - label:
+            zh_Hans: Hosted Inference API
+            en_US: Hosted Inference API
+          value: hosted_inference_api
+    - variable: huggingfacehub_api_token
+      label:
+        zh_Hans: Access Token
+        en_US: Access Token
+      type: secret-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入您的 Access Token
+        en_US: Enter your Access Token
+    - variable: huggingfacehub_endpoint_url
+      label:
+        zh_Hans: Endpoint URL
+        en_US: Endpoint URL
+      type: text-input
+      required: false
+      placeholder:
+        zh_Hans: Inference Endpoints 的 Base URL
+        en_US: Base URL of the Inference Endpoint
+    - variable: context_size
+      label:
+        zh_Hans: 模型上下文长度
+        en_US: Model context size
+      required: false
+      type: text-input
+      default: '4096'
+    - variable: max_tokens
+      label:
+        zh_Hans: 最大 token 上限
+        en_US: Upper bound for max tokens
+      default: '4096'
+      type: text-input
+      show_on:
+        - variable: __model_type
+          value: llm

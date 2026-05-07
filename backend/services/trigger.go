@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"mlib.com/gofy/server/core/trigger"
-	dbengine "mlib.com/gofy/server/db_engine"
-	"mlib.com/gofy/server/models"
+	"github.com/odysseythink/gofy/backend/core/trigger"
+	dbengine "github.com/odysseythink/gofy/backend/db_engine"
+	"github.com/odysseythink/gofy/backend/models"
 
 	uuid "github.com/satori/go.uuid"
 )

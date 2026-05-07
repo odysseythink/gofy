@@ -3,9 +3,9 @@ package eventhandlers
 import (
 	"time"
 
-	dbengine "mlib.com/gofy/server/db_engine"
-	appgeneratorentities "mlib.com/gofy/server/entities/app/generator"
-	"mlib.com/gofy/server/models"
+	dbengine "github.com/odysseythink/gofy/backend/db_engine"
+	appgeneratorentities "github.com/odysseythink/gofy/backend/entities/app/generator"
+	"github.com/odysseythink/gofy/backend/models"
 )
 
 // @message_was_created.connect

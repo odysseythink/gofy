@@ -1,0 +1,1 @@
+import{i as s,a as m}from"./iteratee-C1ebTsk1.js";import{i as a}from"./isArguments-CRH-2vj-.js";function f(t,n){const e={};for(let i=0;i<t.length;i++){const o=t[i],r=n(o,i,t);Object.hasOwn(e,r)||(e[r]=[]),e[r].push(o)}return e}function c(t,n){if(t==null)return{};const e=a(t)?Array.from(t):Object.values(t),i=s(n??m);return f(e,i)}export{c as g};

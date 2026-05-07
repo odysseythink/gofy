@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	jwtutils "mlib.com/gofy/server/utils/jwt"
+	jwtutils "github.com/odysseythink/gofy/backend/utils/jwt"
 )
 
 func TestJwt(t *testing.T) {

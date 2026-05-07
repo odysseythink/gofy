@@ -1,17 +1,17 @@
 package trigger_schedule
 
 import (
-	basenodesentities "mlib.com/gofy/server/entities/nodes/base"
+	basenodesentities "github.com/odysseythink/gofy/backend/entities/nodes/base"
 )
 
 // TriggerScheduleNodeData represents the schedule trigger node configuration
 type TriggerScheduleNodeData struct {
 	*basenodesentities.BaseNodeData
-	Mode           string            `json:"mode"`
-	Frequency      string            `json:"frequency,omitempty"`
-	CronExpression string            `json:"cron_expression,omitempty"`
-	VisualConfig   *VisualConfig     `json:"visual_config,omitempty"`
-	Timezone       string            `json:"timezone"`
+	Mode           string        `json:"mode"`
+	Frequency      string        `json:"frequency,omitempty"`
+	CronExpression string        `json:"cron_expression,omitempty"`
+	VisualConfig   *VisualConfig `json:"visual_config,omitempty"`
+	Timezone       string        `json:"timezone"`
 }
 
 // VisualConfig represents visual configuration for schedule trigger

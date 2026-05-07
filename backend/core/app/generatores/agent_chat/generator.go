@@ -1,10 +1,10 @@
 package agentchat
 
 import (
-	achatconfigmgr "mlib.com/gofy/server/core/app/config_manageres/agent_chat"
-	msggenerator "mlib.com/gofy/server/core/app/generatores/message_based"
-	appgeneratorentities "mlib.com/gofy/server/entities/app/generator"
-	"mlib.com/gofy/server/models"
+	achatconfigmgr "github.com/odysseythink/gofy/backend/core/app/config_manageres/agent_chat"
+	msggenerator "github.com/odysseythink/gofy/backend/core/app/generatores/message_based"
+	appgeneratorentities "github.com/odysseythink/gofy/backend/entities/app/generator"
+	"github.com/odysseythink/gofy/backend/models"
 )
 
 type AgentChatAppGenerator[T1 interface {

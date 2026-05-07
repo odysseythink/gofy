@@ -117,7 +117,7 @@ const setupAppContext = (overrides: Record<string, unknown> = {}) => {
   mockAppCtx = {
     isCurrentWorkspaceManager: true,
     userProfile: { email: 'test@example.com' },
-    langGeniusVersionInfo: { current_version: '1.0.0' },
+    odysseythinkVersionInfo: { current_version: '1.0.0' },
     ...overrides,
   }
 }

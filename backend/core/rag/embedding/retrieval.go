@@ -1,6 +1,6 @@
 package embedding
 
-import "mlib.com/gofy/server/models"
+import "github.com/odysseythink/gofy/backend/models"
 
 type RetrievalChildChunk struct {
 	ID       string  `json:"id"`

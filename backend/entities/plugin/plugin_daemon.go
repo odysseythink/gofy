@@ -20,12 +20,12 @@ package plugin
 import (
 	"time"
 
-	agententities "mlib.com/gofy/server/entities/agent"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	parametertentities "mlib.com/gofy/server/entities/plugin/parameter"
-	toolsentities "mlib.com/gofy/server/entities/tools"
-	pluginenumtypes "mlib.com/gofy/server/enum_types/plugin"
-	commontypes "mlib.com/gofy/server/types/common"
+	agententities "github.com/odysseythink/gofy/backend/entities/agent"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	parametertentities "github.com/odysseythink/gofy/backend/entities/plugin/parameter"
+	toolsentities "github.com/odysseythink/gofy/backend/entities/tools"
+	pluginenumtypes "github.com/odysseythink/gofy/backend/enum_types/plugin"
+	commontypes "github.com/odysseythink/gofy/backend/types/common"
 )
 
 type PluginDaemonBasicResponse[T map[string]any | []any | bool | string] struct {

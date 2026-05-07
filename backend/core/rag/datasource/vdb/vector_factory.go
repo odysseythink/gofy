@@ -2,13 +2,13 @@ package vdb
 
 import (
 	"github.com/odysseythink/confy"
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	"github.com/odysseythink/gofy/backend/core/rag/embedding"
+	dbengine "github.com/odysseythink/gofy/backend/db_engine"
+	ragentities "github.com/odysseythink/gofy/backend/entities/rag"
+	vectorenumtypes "github.com/odysseythink/gofy/backend/enum_types/rag/vector"
+	"github.com/odysseythink/gofy/backend/models"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/core/exceptions"
-	"mlib.com/gofy/server/core/rag/embedding"
-	dbengine "mlib.com/gofy/server/db_engine"
-	ragentities "mlib.com/gofy/server/entities/rag"
-	vectorenumtypes "mlib.com/gofy/server/enum_types/rag/vector"
-	"mlib.com/gofy/server/models"
 )
 
 type AbstractVectorFactory interface {

@@ -57,10 +57,10 @@ vi.mock('../../../base/check-task-status', () => ({
   }),
 }))
 
-const mockLangGeniusVersionInfo = { current_version: '1.0.0' }
+const mockOdysseythinkVersionInfo = { current_version: '1.0.0' }
 vi.mock('@/context/app-context', () => ({
   useAppContext: () => ({
-    langGeniusVersionInfo: mockLangGeniusVersionInfo,
+    odysseythinkVersionInfo: mockOdysseythinkVersionInfo,
   }),
 }))
 
@@ -466,7 +466,7 @@ describe('Install', () => {
   // ================================
   describe('Gofy Version Compatibility', () => {
     it('should not show warning when gofy version is compatible', () => {
-      mockLangGeniusVersionInfo.current_version = '1.0.0'
+      mockOdysseythinkVersionInfo.current_version = '1.0.0'
       const payload = createMockManifest({ meta: { version: '1.0.0', minimum_gofy_version: '0.8.0' } })
 
       render(<Install {...defaultProps} payload={payload} />)
@@ -475,7 +475,7 @@ describe('Install', () => {
     })
 
     it('should show warning when gofy version is incompatible', () => {
-      mockLangGeniusVersionInfo.current_version = '1.0.0'
+      mockOdysseythinkVersionInfo.current_version = '1.0.0'
       const payload = createMockManifest({ meta: { version: '1.0.0', minimum_gofy_version: '2.0.0' } })
 
       render(<Install {...defaultProps} payload={payload} />)
@@ -484,7 +484,7 @@ describe('Install', () => {
     })
 
     it('should be compatible when minimum_gofy_version is undefined', () => {
-      mockLangGeniusVersionInfo.current_version = '1.0.0'
+      mockOdysseythinkVersionInfo.current_version = '1.0.0'
       const payload = createMockManifest({ meta: { version: '1.0.0' } })
 
       render(<Install {...defaultProps} payload={payload} />)
@@ -493,7 +493,7 @@ describe('Install', () => {
     })
 
     it('should be compatible when current_version is empty', () => {
-      mockLangGeniusVersionInfo.current_version = ''
+      mockOdysseythinkVersionInfo.current_version = ''
       const payload = createMockManifest({ meta: { version: '1.0.0', minimum_gofy_version: '2.0.0' } })
 
       render(<Install {...defaultProps} payload={payload} />)
@@ -503,7 +503,7 @@ describe('Install', () => {
     })
 
     it('should be compatible when current_version is undefined', () => {
-      mockLangGeniusVersionInfo.current_version = undefined as unknown as string
+      mockOdysseythinkVersionInfo.current_version = undefined as unknown as string
       const payload = createMockManifest({ meta: { version: '1.0.0', minimum_gofy_version: '2.0.0' } })
 
       render(<Install {...defaultProps} payload={payload} />)

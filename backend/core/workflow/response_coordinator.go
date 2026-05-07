@@ -3,15 +3,15 @@ package workflow
 import (
 	"sync"
 
-	"mlib.com/gofy/server/core/workflow/events"
+	"github.com/odysseythink/gofy/backend/core/workflow/events"
 )
 
 // ResponseCoordinator manages ordered streaming responses from parallel execution.
 type ResponseCoordinator struct {
 	mu       sync.Mutex
 	buffer   map[string][]events.GraphEvent // nodeID -> buffered events
-	order    []string                         // expected node ordering
-	position int                              // current emit position
+	order    []string                       // expected node ordering
+	position int                            // current emit position
 	outCh    chan events.GraphEvent
 }
 

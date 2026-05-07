@@ -1,12 +1,12 @@
 package eventhandlers
 
 import (
+	dbengine "github.com/odysseythink/gofy/backend/db_engine"
+	appconfigentities "github.com/odysseythink/gofy/backend/entities/app/config"
+	appgeneratorentities "github.com/odysseythink/gofy/backend/entities/app/generator"
+	providerenumtypes "github.com/odysseythink/gofy/backend/enum_types/provider"
+	"github.com/odysseythink/gofy/backend/models"
 	"gorm.io/gorm"
-	dbengine "mlib.com/gofy/server/db_engine"
-	appconfigentities "mlib.com/gofy/server/entities/app/config"
-	appgeneratorentities "mlib.com/gofy/server/entities/app/generator"
-	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
-	"mlib.com/gofy/server/models"
 )
 
 // @message_was_created.connect

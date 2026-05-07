@@ -1,10 +1,10 @@
 package agent
 
 import (
-	parameterentities "mlib.com/gofy/server/entities/plugin/parameter"
-	toolsentities "mlib.com/gofy/server/entities/tools"
-	agentenumtypes "mlib.com/gofy/server/enum_types/agent"
-	commontypes "mlib.com/gofy/server/types/common"
+	parameterentities "github.com/odysseythink/gofy/backend/entities/plugin/parameter"
+	toolsentities "github.com/odysseythink/gofy/backend/entities/tools"
+	agentenumtypes "github.com/odysseythink/gofy/backend/enum_types/agent"
+	commontypes "github.com/odysseythink/gofy/backend/types/common"
 )
 
 type AgentStrategyProviderIdentity struct {

@@ -1,0 +1,44 @@
+provider: mixedbread
+label:
+  zh_Hans: mixedbread ai
+  en_US: mixedbread ai
+icon_small:
+  en_US: icon_s_en.svg
+icon_large:
+  en_US: icon_l_en.svg
+background: "#F5F3FF"
+help:
+  title:
+    en_US: Get your API key from mixedbread ai
+    zh_Hans: 从 mixedbread ai 获取 API Key
+  url:
+    en_US: https://www.mixedbread.ai/api-reference
+supported_model_types:
+  - text-embedding
+  - rerank
+configurate_methods:
+  - customizable-model
+model_credential_schema:
+  model:
+    label:
+      en_US: Model Name
+      zh_Hans: 模型名称
+    placeholder:
+      en_US: Enter your model name (e.g. mxbai-embed-large-v1)
+      zh_Hans: 输入模型名称（如 mxbai-embed-large-v1）
+  credential_form_schemas:
+    - variable: api_key
+      label:
+        en_US: API Key
+      type: secret-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入您的 API Key
+        en_US: Enter your API Key
+    - variable: context_size
+      label:
+        zh_Hans: 模型上下文长度
+        en_US: Model context size
+      required: false
+      type: text-input
+      default: '512'

@@ -102,9 +102,9 @@ describe('ModelIcon', () => {
     expect(container.firstChild).not.toBeNull()
   })
 
-  it('should render OpenAI Yellow icon for langgenius/openai/openai provider with model starting with o', () => {
+  it('should render OpenAI Yellow icon for odysseythink/openai/openai provider with model starting with o', () => {
     const provider = createModel({
-      provider: 'langgenius/openai/openai',
+      provider: 'odysseythink/openai/openai',
       icon_small: createI18nText('openai.png'),
     })
 

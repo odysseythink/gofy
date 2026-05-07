@@ -18,9 +18,9 @@ import (
 
 	"github.com/odysseythink/confy"
 
-	vdb "mlib.com/gofy/server/core/rag/datasource/vdb"
-	ragentities "mlib.com/gofy/server/entities/rag"
-	vectorenumtypes "mlib.com/gofy/server/enum_types/rag/vector"
+	vdb "github.com/odysseythink/gofy/backend/core/rag/datasource/vdb"
+	ragentities "github.com/odysseythink/gofy/backend/entities/rag"
+	vectorenumtypes "github.com/odysseythink/gofy/backend/enum_types/rag/vector"
 )
 
 func init() {

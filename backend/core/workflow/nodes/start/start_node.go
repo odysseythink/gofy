@@ -3,12 +3,12 @@ package start
 import (
 	"iter"
 
-	"mlib.com/gofy/server/constants"
-	"mlib.com/gofy/server/core/workflow/nodes/base"
-	startnodesentities "mlib.com/gofy/server/entities/nodes/start"
-	workflowentities "mlib.com/gofy/server/entities/workflow"
-	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
-	"mlib.com/gofy/server/models"
+	"github.com/odysseythink/gofy/backend/constants"
+	"github.com/odysseythink/gofy/backend/core/workflow/nodes/base"
+	startnodesentities "github.com/odysseythink/gofy/backend/entities/nodes/start"
+	workflowentities "github.com/odysseythink/gofy/backend/entities/workflow"
+	nodesenumtypes "github.com/odysseythink/gofy/backend/enum_types/nodes"
+	"github.com/odysseythink/gofy/backend/models"
 )
 
 type StartNode struct {

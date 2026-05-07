@@ -1,5 +1,0 @@
-import{R as v,j as r,c as l,Q as f,r as R}from"./index-m2eZn9zC.js";const p=v(null),j="_container_1vnf5_1",_="_label_1vnf5_6",d={container:j,label:_};function h({children:n,value:a,onChange:o,className:c=""}){const t=s=>{o==null||o(s)};return r.jsx("div",{className:l("flex items-center bg-workflow-block-parma-bg text-text-secondary",d.container,c),children:r.jsx(p.Provider,{value:{value:a,onChange:t},children:n})})}function N({className:n="",labelClassName:a,children:o="",checked:c,value:t,disabled:s,onChange:i}){const e=f(p),u=R.useId(),m=x=>{s||(i==null||i(x),e==null||e.onChange(x))},b=e?e.value===t:c;return r.jsx("div",{className:l(d.label,s?d.disabled:"",b?"bg-components-option-card-option-bg-hover shadow-xs":"",`
-    flex items-center py-1 relative
-    px-7 cursor-pointer text-text-secondary rounded
-    hover:bg-components-option-card-option-bg-hover hover:shadow-xs
-  `,n),onClick:()=>m(t),children:!!o&&r.jsx("label",{className:l(a,"cursor-pointer text-sm"),id:u,children:o})})}const k=N;k.Group=h;export{k as R};

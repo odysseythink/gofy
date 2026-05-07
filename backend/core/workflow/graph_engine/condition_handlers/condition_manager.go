@@ -1,8 +1,8 @@
 package conditionhandlers
 
 import (
-	wfgraph "mlib.com/gofy/server/core/workflow/graph"
-	graphengineentities "mlib.com/gofy/server/entities/graph_engine"
+	wfgraph "github.com/odysseythink/gofy/backend/core/workflow/graph"
+	graphengineentities "github.com/odysseythink/gofy/backend/entities/graph_engine"
 )
 
 type ConditionManager struct{}

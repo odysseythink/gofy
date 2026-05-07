@@ -12,10 +12,10 @@ import (
 	"time"
 
 	"github.com/odysseythink/confy"
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	"github.com/odysseythink/gofy/backend/utils"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/core/exceptions"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	"mlib.com/gofy/server/utils"
 )
 
 // ImageConfig represents the configuration for image uploads.

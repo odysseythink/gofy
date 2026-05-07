@@ -10,7 +10,7 @@ import (
 	"os"
 	"slices"
 
-	"mlib.com/gofy/server/core/exceptions"
+	"github.com/odysseythink/gofy/backend/core/exceptions"
 )
 
 type BillingService struct {

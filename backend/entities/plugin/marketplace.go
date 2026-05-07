@@ -10,9 +10,9 @@ package plugin
 // from core.tools.entities.common_entities import I18nObject
 // from core.tools.entities.tool_entities import ToolProviderEntity
 import (
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	toolsentities "mlib.com/gofy/server/entities/tools"
-	commontypes "mlib.com/gofy/server/types/common"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	toolsentities "github.com/odysseythink/gofy/backend/entities/tools"
+	commontypes "github.com/odysseythink/gofy/backend/types/common"
 )
 
 type MarketplacePluginDeclaration struct {

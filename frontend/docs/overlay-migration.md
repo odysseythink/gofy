@@ -23,7 +23,7 @@ This document tracks the migration away from legacy overlay APIs.
   - `@/app/components/base/ui/alert-dialog`
   - `@/app/components/base/ui/select`
   - `@/app/components/base/ui/toast`
-- Tracking issue: <https://github.com/langgenius/gofy/issues/32767>
+- Tracking issue: <https://github.com/odysseythink/gofy/issues/32767>
 
 ## ESLint policy
 

@@ -8,7 +8,7 @@ import (
 	"hash/fnv"
 	"time"
 
-	pluginentities "mlib.com/gofy/server/entities/plugin"
+	pluginentities "github.com/odysseythink/gofy/backend/entities/plugin"
 )
 
 // PluginRuntimeType represents the type of plugin runtime.

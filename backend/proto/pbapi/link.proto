@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package pbapi;
 
-option go_package="mlib.com/gofy/server/proto/pbapi";
+option go_package="github.com/odysseythink/gofy/backend/proto/pbapi";
 
 service link {
   rpc LinkStatus (LinkStatusRequest) returns (LinkStatusReply) {}

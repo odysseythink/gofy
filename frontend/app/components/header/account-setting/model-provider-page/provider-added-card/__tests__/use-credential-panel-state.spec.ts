@@ -9,7 +9,7 @@ import {
 import { isDestructiveVariant, useCredentialPanelState } from '../use-credential-panel-state'
 
 const mockTrialCredits = { credits: 100, totalCredits: 10_000, isExhausted: false, isLoading: false, nextCreditResetDate: undefined }
-const mockTrialModels = ['langgenius/openai/openai', 'langgenius/anthropic/anthropic']
+const mockTrialModels = ['odysseythink/openai/openai', 'odysseythink/anthropic/anthropic']
 
 vi.mock('../use-trial-credits', () => ({
   useTrialCredits: () => mockTrialCredits,
@@ -25,7 +25,7 @@ vi.mock('@/config', async (importOriginal) => {
 })
 
 const createProvider = (overrides: Partial<ModelProvider> = {}): ModelProvider => ({
-  provider: 'langgenius/openai/openai',
+  provider: 'odysseythink/openai/openai',
   provider_credential_schema: { credential_form_schemas: [] },
   custom_configuration: {
     status: CustomConfigurationStatusEnum.active,
@@ -207,7 +207,7 @@ describe('useCredentialPanelState', () => {
 
     it('should return apiKeyOnly when provider not in trial_models even if system enabled', () => {
       const provider = createProvider({
-        provider: 'langgenius/minimax/minimax',
+        provider: 'odysseythink/minimax/minimax',
         system_configuration: { enabled: true, current_quota_type: CurrentSystemQuotaTypeEnum.trial, quota_configurations: [] },
         preferred_provider_type: PreferredProviderTypeEnum.system,
       })
@@ -254,7 +254,7 @@ describe('useCredentialPanelState', () => {
 
     it('should hide priority switcher when provider not in trial_models', () => {
       const provider = createProvider({
-        provider: 'langgenius/zhipuai/zhipuai',
+        provider: 'odysseythink/zhipuai/zhipuai',
         system_configuration: { enabled: true, current_quota_type: CurrentSystemQuotaTypeEnum.trial, quota_configurations: [] },
       })
 

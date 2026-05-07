@@ -1,0 +1,1 @@
+import{r as t,a3 as o}from"./index-C6MQE079.js";import{a as c}from"./app-context-BaKmc3Lv.js";const u=()=>{const e=c(r=>r.currentWorkspace);return{getIconUrl:t.useCallback(r=>`${o}/workspaces/current/plugin/icon?tenant_id=${e.id}&filename=${r}`,[e.id])}};export{u};

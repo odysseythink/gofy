@@ -3,10 +3,10 @@ package agent
 import (
 	"slices"
 
-	agententities "mlib.com/gofy/server/entities/agent"
-	promptentities "mlib.com/gofy/server/entities/prompt"
-	toolsenumtypes "mlib.com/gofy/server/enum_types/tools"
-	"mlib.com/gofy/server/utils/mapstruct"
+	agententities "github.com/odysseythink/gofy/backend/entities/agent"
+	promptentities "github.com/odysseythink/gofy/backend/entities/prompt"
+	toolsenumtypes "github.com/odysseythink/gofy/backend/enum_types/tools"
+	"github.com/odysseythink/gofy/backend/utils/mapstruct"
 )
 
 type AgentConfigManager struct {

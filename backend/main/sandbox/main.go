@@ -3,24 +3,28 @@ package main
 import (
 	"context"
 	"errors"
+	"flag"
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 	"os/exec"
 	"strconv"
 	"strings"
 
 	"github.com/odysseythink/confy"
+	"github.com/odysseythink/gofy/backend/cache"
+	"github.com/odysseythink/gofy/backend/cluster"
+	"github.com/odysseythink/gofy/backend/main/sandbox/global"
+	"github.com/odysseythink/gofy/backend/main/sandbox/runner/python"
+	runnertypes "github.com/odysseythink/gofy/backend/main/sandbox/runner/types"
+	"github.com/odysseythink/gofy/backend/main/sandbox/services"
+	pbexceptions "github.com/odysseythink/gofy/backend/proto/exceptions"
+	"github.com/odysseythink/gofy/backend/proto/pbapi"
 	"github.com/odysseythink/mlog"
+	"github.com/odysseythink/mrun"
 	"golang.org/x/time/rate"
 	"google.golang.org/grpc/peer"
-	"mlib.com/gofy/server/cache"
-	dbengine "mlib.com/gofy/server/db_engine"
-	"mlib.com/gofy/server/main/sandbox/global"
-	"mlib.com/gofy/server/main/sandbox/runner/python"
-	runnertypes "mlib.com/gofy/server/main/sandbox/runner/types"
-	"mlib.com/gofy/server/main/sandbox/services"
-	pbexceptions "mlib.com/gofy/server/proto/exceptions"
-	"mlib.com/gofy/server/proto/pbapi"
 )
 
 func (s *SandboxService) sandbox_user_init() error {
@@ -183,11 +187,7 @@ func (s *SandboxService) Init(args ...any) error {
 		mlog.Errorf("cahe init failed:%v", err)
 		return fmt.Errorf("cahe init failed:%v", err)
 	}
-	err = dbengine.Instance().Init()
-	if err != nil {
-		mlog.Errorf("mysql init failed:%v", err)
-		return fmt.Errorf("mysql init failed:%v", err)
-	}
+
 	limiter = rate.NewLimiter(rate.Limit(confy.GetWithDefault[int]("max_requests", 10000)), confy.GetWithDefault[int]("max_requests", 10000)) // 每秒最多10000个请求，桶大小为10000
 
 	return nil
@@ -202,4 +202,38 @@ func (s *SandboxService) Destroy() {
 
 func (s *SandboxService) UserData() any {
 	return nil
+}
+
+func main() {
+	var cfgfile string
+	flag.StringVar(&cfgfile, "c", "", "choose config file.")
+	flag.Parse()
+	if cfgfile == "" {
+		log.Println("usage: ./server -c config.yml")
+		return
+	}
+	confy.SetConfigFile(cfgfile)
+	confy.SetConfigType("yaml")
+	err := confy.ReadInConfig()
+	if err != nil {
+		log.Printf("read config file(%s) failed: %v\n", cfgfile, err)
+		return
+	}
+	{
+		logpath := confy.GetWithDefault[string]("log.path", "logs")
+		loglevel := confy.GetWithDefault[uint32]("log.log_level", 1)
+		log.Println("******loglevel=", loglevel)
+		if loglevel >= 4 {
+			loglevel = 1
+		}
+		mlog.SetLogLevel(loglevel)
+		mlog.SetLogDir(logpath)
+	}
+	defer mlog.Flush()
+	confy.WatchConfig()
+
+	mrun.Register(cluster.Instance(), []mrun.ModuleMgrOption{mrun.NewPriorityModuleMgrOption(0)}, []any{&Sandbox})
+
+	err = mrun.Run(&Sandbox)
+	mlog.Infof("%s Server End!:%v", os.Args[0], err)
 }

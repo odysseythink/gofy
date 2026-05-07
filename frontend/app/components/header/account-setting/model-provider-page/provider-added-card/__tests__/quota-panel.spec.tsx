@@ -12,9 +12,9 @@ let mockWorkspaceData: {
   next_credit_reset_date: '2024-12-31',
 }
 let mockWorkspaceIsPending = false
-let mockTrialModels: string[] | undefined = ['langgenius/openai/openai']
+let mockTrialModels: string[] | undefined = ['odysseythink/openai/openai']
 let mockPlugins = [{
-  plugin_id: 'langgenius/openai',
+  plugin_id: 'odysseythink/openai',
   latest_package_identifier: 'openai@1.0.0',
 }]
 
@@ -67,7 +67,7 @@ vi.mock('@/app/components/plugins/install-plugin/install-from-marketplace', () =
 describe('QuotaPanel', () => {
   const mockProviders = [
     {
-      provider: 'langgenius/openai/openai',
+      provider: 'odysseythink/openai/openai',
       preferred_provider_type: 'custom',
       custom_configuration: { available_credentials: [{ id: '1' }] },
     },
@@ -81,8 +81,8 @@ describe('QuotaPanel', () => {
       next_credit_reset_date: '2024-12-31',
     }
     mockWorkspaceIsPending = false
-    mockTrialModels = ['langgenius/openai/openai']
-    mockPlugins = [{ plugin_id: 'langgenius/openai', latest_package_identifier: 'openai@1.0.0' }]
+    mockTrialModels = ['odysseythink/openai/openai']
+    mockPlugins = [{ plugin_id: 'odysseythink/openai', latest_package_identifier: 'openai@1.0.0' }]
   })
 
   it('should render loading state', () => {
@@ -170,7 +170,7 @@ describe('QuotaPanel', () => {
     render(
       <QuotaPanel providers={[
         {
-          provider: 'langgenius/openai/openai',
+          provider: 'odysseythink/openai/openai',
           preferred_provider_type: 'system',
           custom_configuration: { available_credentials: [] },
         },

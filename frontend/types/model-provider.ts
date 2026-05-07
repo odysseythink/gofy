@@ -3,11 +3,11 @@
  * These represent the provider identifiers that support paid/trial quotas
  */
 export enum ModelProviderQuotaGetPaid {
-  ANTHROPIC = 'langgenius/anthropic/anthropic',
-  OPENAI = 'langgenius/openai/openai',
-  // AZURE_OPENAI = 'langgenius/azure_openai/azure_openai',
-  GEMINI = 'langgenius/gemini/google',
-  X = 'langgenius/x/x',
-  DEEPSEEK = 'langgenius/deepseek/deepseek',
-  TONGYI = 'langgenius/tongyi/tongyi',
+  ANTHROPIC = 'odysseythink/anthropic/anthropic',
+  OPENAI = 'odysseythink/openai/openai',
+  // AZURE_OPENAI = 'odysseythink/azure_openai/azure_openai',
+  GEMINI = 'odysseythink/gemini/google',
+  X = 'odysseythink/x/x',
+  DEEPSEEK = 'odysseythink/deepseek/deepseek',
+  TONGYI = 'odysseythink/tongyi/tongyi',
 }

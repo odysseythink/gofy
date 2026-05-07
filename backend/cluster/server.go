@@ -11,13 +11,13 @@ import (
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/recovery"
 	"github.com/odysseythink/confy"
+	"github.com/odysseythink/gofy/backend/utils"
 	"github.com/odysseythink/mrun"
-	"mlib.com/gofy/server/utils"
 
-	"github.com/odysseythink/mlog"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"github.com/odysseythink/mlog"
 )
 
 func GetIP() string {
@@ -315,11 +315,11 @@ func (s *server) argsInit(args ...any) error {
 				recovery.StreamServerInterceptor(recovery.WithRecoveryHandler(grpcPanicRecoveryHandler)),
 			),
 		)
-		err := s.grpcServer.RegisterServiceWithoutDesc(s.rpcService, "pbapi."+s.ModuleName)
+		err := RegisterServiceByName(s.grpcServer, s.rpcService, "pbapi."+s.ModuleName)
 		if err != nil {
-			mlog.Errorf("RegisterServiceWithoutDesc failed: %v", err)
+			mlog.Errorf("RegisterServiceByName failed: %v", err)
 			s.grpcServer = nil
-			return fmt.Errorf("RegisterServiceWithoutDesc failed: %v", err)
+			return fmt.Errorf("RegisterServiceByName failed: %w", err)
 		}
 		return nil
 	}

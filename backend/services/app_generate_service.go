@@ -5,11 +5,11 @@ import (
 	"iter"
 
 	"github.com/odysseythink/confy"
-	achatgenerator "mlib.com/gofy/server/core/app/generatores/advanced_chat"
-	wfgenerator "mlib.com/gofy/server/core/app/generatores/workflow"
-	"mlib.com/gofy/server/core/exceptions"
-	appenumtypes "mlib.com/gofy/server/enum_types/app"
-	"mlib.com/gofy/server/models"
+	achatgenerator "github.com/odysseythink/gofy/backend/core/app/generatores/advanced_chat"
+	wfgenerator "github.com/odysseythink/gofy/backend/core/app/generatores/workflow"
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	appenumtypes "github.com/odysseythink/gofy/backend/enum_types/app"
+	"github.com/odysseythink/gofy/backend/models"
 )
 
 type AppGenerateService struct {

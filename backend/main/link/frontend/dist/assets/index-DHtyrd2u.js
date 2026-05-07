@@ -1,1 +1,0 @@
-import{j as r}from"./index-m2eZn9zC.js";import{D as m}from"./index-Cs87AjRp.js";const e=({isMobile:t,children:a,isOpen:o,...s})=>r.jsxs(r.Fragment,{children:[t&&r.jsx(m,{isOpen:o,...s,children:a}),!t&&o&&r.jsx(r.Fragment,{children:a})]});export{e as F};

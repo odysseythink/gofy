@@ -209,7 +209,7 @@ export type PluginManifestInMarket = {
   install_count: number
   badges: string[]
   verification: {
-    authorized_category: 'langgenius' | 'partner' | 'community'
+    authorized_category: 'odysseythink' | 'partner' | 'community'
   }
   from: Dependency['type']
 }
@@ -274,7 +274,7 @@ export type Plugin = {
   tags: { name: string }[]
   badges: string[]
   verification: {
-    authorized_category: 'langgenius' | 'partner' | 'community'
+    authorized_category: 'odysseythink' | 'partner' | 'community'
   }
   from: Dependency['type']
 }

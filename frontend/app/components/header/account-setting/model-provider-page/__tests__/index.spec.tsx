@@ -246,7 +246,7 @@ describe('ModelProviderPage', () => {
         quota_configurations: [mockQuotaConfig],
       },
     }, {
-      provider: 'langgenius/anthropic/anthropic',
+      provider: 'odysseythink/anthropic/anthropic',
       label: { en_US: 'Anthropic Fixed' },
       custom_configuration: { status: CustomConfigurationStatusEnum.active },
       system_configuration: {
@@ -255,7 +255,7 @@ describe('ModelProviderPage', () => {
         quota_configurations: [mockQuotaConfig],
       },
     }, {
-      provider: 'langgenius/openai/openai',
+      provider: 'odysseythink/openai/openai',
       label: { en_US: 'OpenAI Fixed' },
       custom_configuration: { status: CustomConfigurationStatusEnum.noConfigure },
       system_configuration: {
@@ -269,8 +269,8 @@ describe('ModelProviderPage', () => {
 
     const renderedProviders = screen.getAllByTestId('provider-card').map(item => item.textContent)
     expect(renderedProviders).toEqual([
-      'langgenius/openai/openai',
-      'langgenius/anthropic/anthropic',
+      'odysseythink/openai/openai',
+      'odysseythink/anthropic/anthropic',
       'zeta-provider',
     ])
     expect(screen.queryByText('common.modelProvider.toBeConfigured')).not.toBeInTheDocument()

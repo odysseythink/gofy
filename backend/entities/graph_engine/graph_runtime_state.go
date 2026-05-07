@@ -3,8 +3,8 @@ package graphengine
 import (
 	"time"
 
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	workflowentities "mlib.com/gofy/server/entities/workflow"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	workflowentities "github.com/odysseythink/gofy/backend/entities/workflow"
 )
 
 // GraphRuntimeState represents the runtime state of a graph.

@@ -57,7 +57,7 @@ const createMockAppDetail = (mode: string = 'chat'): Record<string, unknown> => 
   },
   model_config: {
     model: {
-      provider: 'langgenius/openai/openai',
+      provider: 'odysseythink/openai/openai',
       name: 'gpt-4',
       mode: 'chat',
     },

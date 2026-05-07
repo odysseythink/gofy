@@ -9,7 +9,7 @@ const createPayload = (overrides: Partial<LLMNodeType> = {}): LLMNodeType => ({
   ...nodeDefault.defaultValue,
   model: {
     ...nodeDefault.defaultValue.model,
-    provider: 'langgenius/openai/gpt-4.1',
+    provider: 'odysseythink/openai/gpt-4.1',
     mode: AppModeEnum.CHAT,
   },
   prompt_template: [{

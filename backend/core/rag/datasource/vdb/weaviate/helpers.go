@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"strings"
 
-	ragentities "mlib.com/gofy/server/entities/rag"
+	ragentities "github.com/odysseythink/gofy/backend/entities/rag"
 )
 
 func hashUUID(s string) string {

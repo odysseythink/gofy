@@ -5,10 +5,10 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	ragentities "github.com/odysseythink/gofy/backend/entities/rag"
 	"github.com/odysseythink/mlog"
 	"github.com/xuri/excelize/v2"
-	"mlib.com/gofy/server/core/exceptions"
-	ragentities "mlib.com/gofy/server/entities/rag"
 )
 
 type ExcelExtractor struct {

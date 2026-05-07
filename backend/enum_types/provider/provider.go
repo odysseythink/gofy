@@ -1,7 +1,7 @@
 package provider
 
 import (
-	parameterenumtypes "mlib.com/gofy/server/enum_types/parameter"
+	parameterenumtypes "github.com/odysseythink/gofy/backend/enum_types/parameter"
 )
 
 type ProviderQuotaType string

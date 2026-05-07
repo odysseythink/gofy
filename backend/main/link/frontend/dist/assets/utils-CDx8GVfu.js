@@ -1,0 +1,1 @@
+import{t as i,s as a,I as o,i as f,r as c}from"./index-ilcsQ7zy.js";import{M as s}from"./index-C6MQE079.js";const p=(t,e)=>{s&&i(t,e)},u=t=>{s&&a(t)},E=t=>{if(!s)return;const e=new o;Object.entries(t).forEach(([r,n])=>{e.set(r,n)}),f(e)},I=()=>{s&&c()};export{E as a,I as r,u as s,p as t};

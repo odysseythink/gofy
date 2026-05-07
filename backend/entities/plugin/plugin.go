@@ -7,12 +7,12 @@ import (
 	"strings"
 	"time"
 
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	agententities "github.com/odysseythink/gofy/backend/entities/agent"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	toolsentities "github.com/odysseythink/gofy/backend/entities/tools"
+	commontypes "github.com/odysseythink/gofy/backend/types/common"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/core/exceptions"
-	agententities "mlib.com/gofy/server/entities/agent"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	toolsentities "mlib.com/gofy/server/entities/tools"
-	commontypes "mlib.com/gofy/server/types/common"
 )
 
 type PluginInstallationSourceType string
@@ -244,14 +244,14 @@ func NewGenericProviderID(value string, is_hardcoded bool) *GenericProviderID {
 		panic(exceptions.NewValueError("Invalid plugin id " + value))
 	}
 	if !matched {
-		// check if matches [a-z0-9_-]+, if yes, append with langgenius/$value/$value
+		// check if matches [a-z0-9_-]+, if yes, append with odysseythink/$value/$value
 		matched, err = regexp.Match("^[a-z0-9_-]+$", []byte(value))
 		if err != nil {
 			mlog.Errorf("Invalid plugin id %v, reason:%v", value, err)
 			panic(exceptions.NewValueError("Invalid plugin id " + value))
 		}
 		if matched {
-			value = fmt.Sprintf("langgenius/%s/%s", value, value)
+			value = fmt.Sprintf("odysseythink/%s/%s", value, value)
 		} else {
 			mlog.Errorf("Invalid plugin id %v, reason:%v", value, err)
 			panic(exceptions.NewValueError("Invalid plugin id " + value))
@@ -265,8 +265,8 @@ func NewGenericProviderID(value string, is_hardcoded bool) *GenericProviderID {
 		IsHardcoded:  is_hardcoded,
 	}
 }
-func (id *GenericProviderID) IsLanggenius() bool {
-	return id.Organization == "langgenius"
+func (id *GenericProviderID) IsOdysseythink() bool {
+	return id.Organization == "odysseythink"
 }
 func (id *GenericProviderID) PluginID() string {
 	return fmt.Sprintf("%s/%s", id.Organization, id.PluginName)
@@ -284,7 +284,7 @@ func NewModelProviderID(value string, is_hardcoded bool) *ModelProviderID {
 	mp := &ModelProviderID{
 		GenericProviderID: NewGenericProviderID(value, is_hardcoded),
 	}
-	if mp.Organization == "langgenius" && mp.ProviderName == "google" {
+	if mp.Organization == "odysseythink" && mp.ProviderName == "google" {
 		mp.PluginName = "gemini"
 	}
 	return mp
@@ -298,7 +298,7 @@ func NewToolProviderID(value string, is_hardcoded bool) *ToolProviderID {
 	tp := &ToolProviderID{
 		GenericProviderID: NewGenericProviderID(value, is_hardcoded),
 	}
-	if tp.Organization == "langgenius" && slices.Contains([]string{"jina", "siliconflow", "stepfun", "gitee_ai"}, tp.ProviderName) {
+	if tp.Organization == "odysseythink" && slices.Contains([]string{"jina", "siliconflow", "stepfun", "gitee_ai"}, tp.ProviderName) {
 		tp.PluginName = fmt.Sprintf("%s_tool", tp.ProviderName)
 	}
 	return tp

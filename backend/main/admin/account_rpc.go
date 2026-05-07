@@ -7,15 +7,15 @@ import (
 	"slices"
 	"time"
 
-	"github.com/odysseythink/mlog"
 	"google.golang.org/grpc/peer"
-	"mlib.com/gofy/server/core/exceptions"
-	dbengine "mlib.com/gofy/server/db_engine"
-	"mlib.com/gofy/server/global"
-	"mlib.com/gofy/server/models"
-	"mlib.com/gofy/server/models/response"
-	"mlib.com/gofy/server/proto/pbapi"
-	"mlib.com/gofy/server/services"
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	dbengine "github.com/odysseythink/gofy/backend/db_engine"
+	"github.com/odysseythink/gofy/backend/global"
+	"github.com/odysseythink/gofy/backend/models"
+	"github.com/odysseythink/gofy/backend/models/response"
+	"github.com/odysseythink/gofy/backend/proto/pbapi"
+	"github.com/odysseythink/gofy/backend/services"
+	"github.com/odysseythink/mlog"
 )
 
 func (s *AdminService) GetAccountProfile(ctx context.Context, in *pbapi.GetAccountProfileRequest) (out *pbapi.GetAccountProfileReply, err error) {

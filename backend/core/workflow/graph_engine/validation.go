@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"slices"
 
-	"mlib.com/gofy/server/core/workflow/graph"
-	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
+	"github.com/odysseythink/gofy/backend/core/workflow/graph"
+	nodesenumtypes "github.com/odysseythink/gofy/backend/enum_types/nodes"
 )
 
 // GraphValidator validates graph structure before execution.

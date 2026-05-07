@@ -1,7 +1,7 @@
 package trigger_webhook
 
 import (
-	basenodesentities "mlib.com/gofy/server/entities/nodes/base"
+	basenodesentities "github.com/odysseythink/gofy/backend/entities/nodes/base"
 )
 
 // Method represents HTTP methods for webhook
@@ -44,15 +44,15 @@ type WebhookBodyParameter struct {
 // TriggerWebhookNodeData represents the webhook trigger node configuration
 type TriggerWebhookNodeData struct {
 	*basenodesentities.BaseNodeData
-	Method       Method                 `json:"method"`
-	ContentType  ContentType            `json:"content_type"`
-	Headers      []*WebhookParameter    `json:"headers"`
-	Params       []*WebhookParameter    `json:"params"`
+	Method       Method                  `json:"method"`
+	ContentType  ContentType             `json:"content_type"`
+	Headers      []*WebhookParameter     `json:"headers"`
+	Params       []*WebhookParameter     `json:"params"`
 	Body         []*WebhookBodyParameter `json:"body"`
-	StatusCode   int                    `json:"status_code"`
-	ResponseBody string                 `json:"response_body"`
-	WebhookID    string                 `json:"webhook_id,omitempty"`
-	Timeout      int                    `json:"timeout"`
+	StatusCode   int                     `json:"status_code"`
+	ResponseBody string                  `json:"response_body"`
+	WebhookID    string                  `json:"webhook_id,omitempty"`
+	Timeout      int                     `json:"timeout"`
 }
 
 func New() *TriggerWebhookNodeData {

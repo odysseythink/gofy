@@ -3,7 +3,7 @@ package callbacks
 import (
 	"fmt"
 
-	graphengineentities "mlib.com/gofy/server/entities/graph_engine"
+	graphengineentities "github.com/odysseythink/gofy/backend/entities/graph_engine"
 )
 
 var (

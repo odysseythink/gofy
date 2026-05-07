@@ -1,0 +1,43 @@
+provider: nomic
+label:
+  zh_Hans: Nomic
+  en_US: Nomic
+icon_small:
+  en_US: icon_s_en.svg
+icon_large:
+  en_US: icon_l_en.svg
+background: "#ECFDF5"
+help:
+  title:
+    en_US: Get your API key from Nomic Atlas
+    zh_Hans: 从 Nomic Atlas 获取 API Key
+  url:
+    en_US: https://atlas.nomic.ai/data
+supported_model_types:
+  - text-embedding
+configurate_methods:
+  - customizable-model
+model_credential_schema:
+  model:
+    label:
+      en_US: Model Name
+      zh_Hans: 模型名称
+    placeholder:
+      en_US: Enter your model name (e.g. nomic-embed-text-v1.5)
+      zh_Hans: 输入模型名称（如 nomic-embed-text-v1.5）
+  credential_form_schemas:
+    - variable: api_key
+      label:
+        en_US: API Key
+      type: secret-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入您的 API Key
+        en_US: Enter your API Key
+    - variable: context_size
+      label:
+        zh_Hans: 模型上下文长度
+        en_US: Model context size
+      required: false
+      type: text-input
+      default: '8192'

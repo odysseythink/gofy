@@ -3,7 +3,7 @@ package variableassigner
 import (
 	"fmt"
 
-	vaenumtypes "mlib.com/gofy/server/enum_types/nodes/variable_assigner"
+	vaenumtypes "github.com/odysseythink/gofy/backend/enum_types/nodes/variable_assigner"
 )
 
 type VariableOperatorNodeError struct {

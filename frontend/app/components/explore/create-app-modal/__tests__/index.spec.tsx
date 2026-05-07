@@ -26,7 +26,7 @@ vi.mock('@/next/navigation', () => ({
 vi.mock('@/context/app-context', () => ({
   useAppContext: () => ({
     userProfile: { email: 'test@example.com' },
-    langGeniusVersionInfo: { current_version: '0.0.0' },
+    odysseythinkVersionInfo: { current_version: '0.0.0' },
   }),
 }))
 

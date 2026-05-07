@@ -124,8 +124,8 @@ vi.mock('../../utils', async () => {
       'test-anthropic': 'TestAnthropic',
     },
     providerKeyToPluginId: {
-      'test-openai': 'langgenius/openai',
-      'test-anthropic': 'langgenius/anthropic',
+      'test-openai': 'odysseythink/openai',
+      'test-anthropic': 'odysseythink/anthropic',
     },
   }
 })
@@ -514,7 +514,7 @@ describe('Popup', () => {
 
   it('should install plugin when clicking install button', async () => {
     mockMarketplacePlugins.current = [
-      { plugin_id: 'langgenius/openai', latest_package_identifier: 'langgenius/openai:1.0.0' },
+      { plugin_id: 'odysseythink/openai', latest_package_identifier: 'odysseythink/openai:1.0.0' },
     ]
     mockInstallMutateAsync.mockResolvedValue({ all_installed: true, task_id: 'task-1' })
 
@@ -530,14 +530,14 @@ describe('Popup', () => {
     fireEvent.click(installButtons[0])
 
     await waitFor(() => {
-      expect(mockInstallMutateAsync).toHaveBeenCalledWith('langgenius/openai:1.0.0')
+      expect(mockInstallMutateAsync).toHaveBeenCalledWith('odysseythink/openai:1.0.0')
     })
     expect(mockRefreshPluginList).toHaveBeenCalled()
   })
 
   it('should handle install failure gracefully', async () => {
     mockMarketplacePlugins.current = [
-      { plugin_id: 'langgenius/openai', latest_package_identifier: 'langgenius/openai:1.0.0' },
+      { plugin_id: 'odysseythink/openai', latest_package_identifier: 'odysseythink/openai:1.0.0' },
     ]
     mockInstallMutateAsync.mockRejectedValue(new Error('Install failed'))
 
@@ -562,7 +562,7 @@ describe('Popup', () => {
 
   it('should run checkTaskStatus when not all_installed', async () => {
     mockMarketplacePlugins.current = [
-      { plugin_id: 'langgenius/openai', latest_package_identifier: 'langgenius/openai:1.0.0' },
+      { plugin_id: 'odysseythink/openai', latest_package_identifier: 'odysseythink/openai:1.0.0' },
     ]
     mockInstallMutateAsync.mockResolvedValue({ all_installed: false, task_id: 'task-1' })
     mockCheck.mockResolvedValue(undefined)
@@ -581,7 +581,7 @@ describe('Popup', () => {
     await waitFor(() => {
       expect(mockCheck).toHaveBeenCalledWith({
         taskId: 'task-1',
-        pluginUniqueIdentifier: 'langgenius/openai:1.0.0',
+        pluginUniqueIdentifier: 'odysseythink/openai:1.0.0',
       })
     })
     expect(mockRefreshPluginList).toHaveBeenCalled()
@@ -589,7 +589,7 @@ describe('Popup', () => {
 
   it('should skip install requests when marketplace plugins are still loading', async () => {
     mockMarketplacePlugins.current = [
-      { plugin_id: 'langgenius/openai', latest_package_identifier: 'langgenius/openai:1.0.0' },
+      { plugin_id: 'odysseythink/openai', latest_package_identifier: 'odysseythink/openai:1.0.0' },
     ]
     mockMarketplacePlugins.isLoading = true
 

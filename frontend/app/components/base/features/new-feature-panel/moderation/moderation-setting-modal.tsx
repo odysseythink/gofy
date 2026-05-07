@@ -54,7 +54,7 @@ const ModerationSettingModal: FC<ModerationSettingModalProps> = ({
     })
   }
   const { data: codeBasedExtensionList } = useCodeBasedExtensions('moderation')
-  const openaiProvider = modelProviders?.data.find(item => item.provider === 'langgenius/openai/openai')
+  const openaiProvider = modelProviders?.data.find(item => item.provider === 'odysseythink/openai/openai')
   const systemOpenaiProviderEnabled = openaiProvider?.system_configuration.enabled
   const systemOpenaiProviderQuota = systemOpenaiProviderEnabled ? openaiProvider?.system_configuration.quota_configurations.find(item => item.quota_type === openaiProvider.system_configuration.current_quota_type) : undefined
   const systemOpenaiProviderCanUse = systemOpenaiProviderQuota?.is_valid

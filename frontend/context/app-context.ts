@@ -1,5 +1,5 @@
 
-import type { ICurrentWorkspace, LangGeniusVersionResponse, UserProfileResponse } from '@/models/common'
+import type { ICurrentWorkspace, OdysseythinkVersionResponse, UserProfileResponse } from '@/models/common'
 import { noop } from 'es-toolkit/function'
 import { createContext, useContext, useContextSelector } from 'use-context-selector'
 
@@ -12,7 +12,7 @@ export type AppContextValue = {
   isCurrentWorkspaceEditor: boolean
   isCurrentWorkspaceDatasetOperator: boolean
   mutateCurrentWorkspace: VoidFunction
-  langGeniusVersionInfo: LangGeniusVersionResponse
+  odysseythinkVersionInfo: OdysseythinkVersionResponse
   useSelector: typeof useSelector
   isLoadingCurrentWorkspace: boolean
   isValidatingCurrentWorkspace: boolean
@@ -27,7 +27,7 @@ export const userProfilePlaceholder = {
   is_password_set: false,
 }
 
-export const initialLangGeniusVersionInfo = {
+export const initialOdysseythinkVersionInfo = {
   current_env: '',
   current_version: '',
   latest_version: '',
@@ -59,7 +59,7 @@ export const AppContext = createContext<AppContextValue>({
   isCurrentWorkspaceDatasetOperator: false,
   mutateUserProfile: noop,
   mutateCurrentWorkspace: noop,
-  langGeniusVersionInfo: initialLangGeniusVersionInfo,
+  odysseythinkVersionInfo: initialOdysseythinkVersionInfo,
   useSelector,
   isLoadingCurrentWorkspace: false,
   isValidatingCurrentWorkspace: false,

@@ -1,7 +1,7 @@
 package layers
 
 import (
-	"mlib.com/gofy/server/core/workflow/events"
+	"github.com/odysseythink/gofy/backend/core/workflow/events"
 )
 
 // Layer is a middleware hook into the workflow engine.
@@ -16,11 +16,11 @@ type Layer interface {
 // BaseLayer provides default no-op implementations.
 type BaseLayer struct{}
 
-func (l *BaseLayer) OnGraphStart(graphID string, inputs map[string]any)                    {}
-func (l *BaseLayer) OnGraphEnd(graphID string, outputs map[string]any, err error)           {}
-func (l *BaseLayer) OnNodeRunStart(nodeID, nodeType string, inputs map[string]any)          {}
+func (l *BaseLayer) OnGraphStart(graphID string, inputs map[string]any)                      {}
+func (l *BaseLayer) OnGraphEnd(graphID string, outputs map[string]any, err error)            {}
+func (l *BaseLayer) OnNodeRunStart(nodeID, nodeType string, inputs map[string]any)           {}
 func (l *BaseLayer) OnNodeRunEnd(nodeID, nodeType string, outputs map[string]any, err error) {}
-func (l *BaseLayer) OnEvent(event events.GraphEvent)                                        {}
+func (l *BaseLayer) OnEvent(event events.GraphEvent)                                         {}
 
 // LayerStack manages an ordered stack of layers.
 type LayerStack struct {

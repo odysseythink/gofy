@@ -4,14 +4,13 @@ import (
 	"net/http"
 	"os"
 
-	dbengine "mlib.com/gofy/server/db_engine"
-	"mlib.com/gofy/server/global"
-	"mlib.com/gofy/server/models"
-	"mlib.com/gofy/server/services"
+	dbengine "github.com/odysseythink/gofy/backend/db_engine"
+	"github.com/odysseythink/gofy/backend/global"
+	"github.com/odysseythink/gofy/backend/models"
+	"github.com/odysseythink/gofy/backend/services"
 
 	"github.com/gin-gonic/gin"
 	"github.com/odysseythink/confy"
-	"github.com/odysseythink/mlog"
 )
 
 type InitValidateApi struct {
@@ -86,8 +85,4 @@ func getInitValidateStatus() bool {
 		}
 	}
 	return true
-}
-
-func init() {
-	mlog.Debug("init_validate api registered")
 }

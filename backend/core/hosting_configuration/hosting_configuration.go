@@ -5,9 +5,9 @@ import (
 	"sync"
 
 	"github.com/odysseythink/confy"
-	providerentities "mlib.com/gofy/server/entities/provider"
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
-	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
+	providerentities "github.com/odysseythink/gofy/backend/entities/provider"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
+	providerenumtypes "github.com/odysseythink/gofy/backend/enum_types/provider"
 )
 
 type HostingQuotaer interface {

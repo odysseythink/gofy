@@ -13,7 +13,7 @@ const createChecklistItem = (overrides: Partial<ChecklistItem> = {}): ChecklistI
   errorMessages: [],
   canNavigate: false,
   isPluginMissing: true,
-  pluginUniqueIdentifier: 'langgenius/test-plugin:1.0.0@sha256',
+  pluginUniqueIdentifier: 'odysseythink/test-plugin:1.0.0@sha256',
   ...overrides,
 })
 
@@ -38,9 +38,9 @@ describe('ChecklistPluginGroup', () => {
 
   it('should set marketplace dependencies when install button is clicked', () => {
     const items: ChecklistItem[] = [
-      createChecklistItem({ id: 'node-1', pluginUniqueIdentifier: 'langgenius/test-plugin:1.0.0@sha256' }),
-      createChecklistItem({ id: 'node-2', pluginUniqueIdentifier: 'langgenius/test-plugin:1.0.0@sha256' }),
-      createChecklistItem({ id: 'node-3', pluginUniqueIdentifier: 'langgenius/another-plugin:2.0.0@sha256' }),
+      createChecklistItem({ id: 'node-1', pluginUniqueIdentifier: 'odysseythink/test-plugin:1.0.0@sha256' }),
+      createChecklistItem({ id: 'node-2', pluginUniqueIdentifier: 'odysseythink/test-plugin:1.0.0@sha256' }),
+      createChecklistItem({ id: 'node-3', pluginUniqueIdentifier: 'odysseythink/another-plugin:2.0.0@sha256' }),
     ]
 
     renderInPopover(items)
@@ -51,16 +51,16 @@ describe('ChecklistPluginGroup', () => {
       {
         type: 'marketplace',
         value: {
-          marketplace_plugin_unique_identifier: 'langgenius/test-plugin:1.0.0@sha256',
-          plugin_unique_identifier: 'langgenius/test-plugin:1.0.0@sha256',
+          marketplace_plugin_unique_identifier: 'odysseythink/test-plugin:1.0.0@sha256',
+          plugin_unique_identifier: 'odysseythink/test-plugin:1.0.0@sha256',
           version: '1.0.0',
         },
       },
       {
         type: 'marketplace',
         value: {
-          marketplace_plugin_unique_identifier: 'langgenius/another-plugin:2.0.0@sha256',
-          plugin_unique_identifier: 'langgenius/another-plugin:2.0.0@sha256',
+          marketplace_plugin_unique_identifier: 'odysseythink/another-plugin:2.0.0@sha256',
+          plugin_unique_identifier: 'odysseythink/another-plugin:2.0.0@sha256',
           version: '2.0.0',
         },
       },
@@ -78,7 +78,7 @@ describe('ChecklistPluginGroup', () => {
   })
 
   it('should omit the version when the marketplace identifier does not include one', () => {
-    renderInPopover([createChecklistItem({ pluginUniqueIdentifier: 'langgenius/test-plugin@sha256' })])
+    renderInPopover([createChecklistItem({ pluginUniqueIdentifier: 'odysseythink/test-plugin@sha256' })])
 
     fireEvent.click(getInstallButton())
 
@@ -86,8 +86,8 @@ describe('ChecklistPluginGroup', () => {
       {
         type: 'marketplace',
         value: {
-          marketplace_plugin_unique_identifier: 'langgenius/test-plugin@sha256',
-          plugin_unique_identifier: 'langgenius/test-plugin@sha256',
+          marketplace_plugin_unique_identifier: 'odysseythink/test-plugin@sha256',
+          plugin_unique_identifier: 'odysseythink/test-plugin@sha256',
           version: undefined,
         },
       },

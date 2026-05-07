@@ -1,7 +1,7 @@
 package schemavalidators
 
 import (
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
 )
 
 type ProviderCredentialSchemaValidator struct {

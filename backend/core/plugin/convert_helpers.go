@@ -3,7 +3,7 @@ package plugin
 import (
 	"encoding/json"
 
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
 )
 
 // convertRawMessages coerces the "messages" payload (typically []any of maps)

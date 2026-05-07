@@ -1,8 +1,8 @@
 package jinja2
 
 import (
-	codeexecutor "mlib.com/gofy/server/core/helper/code_executor"
-	codeexecutorenumtypes "mlib.com/gofy/server/enum_types/code_executor"
+	codeexecutor "github.com/odysseythink/gofy/backend/core/helper/code_executor"
+	codeexecutorenumtypes "github.com/odysseythink/gofy/backend/enum_types/code_executor"
 )
 
 type Jinja2Formatter struct {

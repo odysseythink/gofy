@@ -3,7 +3,7 @@ package jinja2
 import (
 	"fmt"
 
-	"mlib.com/gofy/server/core/helper/code_executor/template_transformer/base"
+	"github.com/odysseythink/gofy/backend/core/helper/code_executor/template_transformer/base"
 )
 
 type Jinja2TemplateTransformer struct {

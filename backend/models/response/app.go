@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/odysseythink/gofy/backend/models"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/models"
 )
 
 type SiteFields struct {

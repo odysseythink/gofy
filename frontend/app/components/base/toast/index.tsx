@@ -2,14 +2,14 @@
 /**
  * @deprecated Use `@/app/components/base/ui/toast` instead.
  * This component will be removed after migration is complete.
- * See: https://github.com/langgenius/gofy/issues/32811
+ * See: https://github.com/odysseythink/gofy/issues/32811
  */
 
 import type { ReactNode } from 'react'
 import type { IToastProps } from './context'
 import { noop } from 'es-toolkit/function'
 import * as React from 'react'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import ActionButton from '@/app/components/base/action-button'
 import { cn } from '@/utils/classnames'
@@ -104,15 +104,15 @@ export const ToastProvider = ({
     }
   }, [defaultDuring, mounted, params.duration])
 
+  const notify = useCallback((props: IToastProps) => {
+    setMounted(true)
+    setParams(props)
+  }, [])
+  const close = useCallback(() => setMounted(false), [])
+  const ctxValue = useMemo(() => ({ notify, close }), [notify, close])
+
   return (
-    <ToastContext.Provider value={{
-      notify: (props) => {
-        setMounted(true)
-        setParams(props)
-      },
-      close: () => setMounted(false),
-    }}
-    >
+    <ToastContext.Provider value={ctxValue}>
       {mounted && <Toast {...params} />}
       {children}
     </ToastContext.Provider>

@@ -1,0 +1,62 @@
+provider: azure_openai
+label:
+  zh_Hans: Azure OpenAI
+  en_US: Azure OpenAI
+icon_small:
+  en_US: icon_s_en.svg
+icon_large:
+  en_US: icon_l_en.svg
+background: "#E0F2FE"
+help:
+  title:
+    en_US: Get your API key and endpoint from Azure AI Foundry
+    zh_Hans: 从 Azure AI Foundry 获取 API Key 与 Endpoint
+  url:
+    en_US: https://ai.azure.com
+supported_model_types:
+  - llm
+  - text-embedding
+configurate_methods:
+  - customizable-model
+model_credential_schema:
+  model:
+    label:
+      en_US: Deployment Name
+      zh_Hans: 部署名称
+    placeholder:
+      en_US: Enter your Azure OpenAI deployment name
+      zh_Hans: 输入 Azure OpenAI 部署名称
+  credential_form_schemas:
+    - variable: openai_api_base
+      label:
+        zh_Hans: Azure 资源 Endpoint
+        en_US: Azure Resource Endpoint
+      type: text-input
+      required: true
+      placeholder:
+        zh_Hans: 例如 https://YOUR-RESOURCE.openai.azure.com
+        en_US: e.g. https://YOUR-RESOURCE.openai.azure.com
+    - variable: openai_api_key
+      label:
+        en_US: API Key
+      type: secret-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入您的 API Key
+        en_US: Enter your API Key
+    - variable: context_size
+      label:
+        zh_Hans: 模型上下文长度
+        en_US: Model context size
+      required: false
+      type: text-input
+      default: '128000'
+    - variable: max_tokens
+      label:
+        zh_Hans: 最大 token 上限
+        en_US: Upper bound for max tokens
+      default: '4096'
+      type: text-input
+      show_on:
+        - variable: __model_type
+          value: llm

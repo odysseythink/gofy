@@ -6,10 +6,10 @@ import (
 	"reflect"
 	"strconv"
 
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	"github.com/odysseythink/gofy/backend/core/file"
+	variableenumtypes "github.com/odysseythink/gofy/backend/enum_types/variable"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/core/exceptions"
-	"mlib.com/gofy/server/core/file"
-	variableenumtypes "mlib.com/gofy/server/enum_types/variable"
 )
 
 type Variabler interface {

@@ -5,13 +5,13 @@ import (
 	"fmt"
 
 	"github.com/odysseythink/confy"
+	modelentities "github.com/odysseythink/gofy/backend/entities/model"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	providerentities "github.com/odysseythink/gofy/backend/entities/provider"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
+	providerenumtypes "github.com/odysseythink/gofy/backend/enum_types/provider"
+	commontypes "github.com/odysseythink/gofy/backend/types/common"
 	"github.com/odysseythink/mlog"
-	modelentities "mlib.com/gofy/server/entities/model"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	providerentities "mlib.com/gofy/server/entities/provider"
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
-	providerenumtypes "mlib.com/gofy/server/enum_types/provider"
-	commontypes "mlib.com/gofy/server/types/common"
 )
 
 // CustomConfigurationStatus represents the status of custom configuration.

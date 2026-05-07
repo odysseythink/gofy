@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	conditionentities "mlib.com/gofy/server/entities/workflow/condition"
+	conditionentities "github.com/odysseythink/gofy/backend/entities/workflow/condition"
 )
 
 type RunCondition struct {

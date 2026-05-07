@@ -1,9 +1,9 @@
 package workflow
 
 import (
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	workflowenumtypes "mlib.com/gofy/server/enum_types/workflow"
-	"mlib.com/gofy/server/models"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	workflowenumtypes "github.com/odysseythink/gofy/backend/enum_types/workflow"
+	"github.com/odysseythink/gofy/backend/models"
 )
 
 type NodeRunResult struct {

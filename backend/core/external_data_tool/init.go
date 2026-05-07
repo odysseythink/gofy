@@ -1,5 +1,5 @@
 package externaldatatool
 
 import (
-	_ "mlib.com/gofy/server/core/external_data_tool/api"
+	_ "github.com/odysseythink/gofy/backend/core/external_data_tool/api"
 )

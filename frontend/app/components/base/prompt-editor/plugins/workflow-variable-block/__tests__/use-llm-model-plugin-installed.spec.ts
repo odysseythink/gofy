@@ -44,13 +44,13 @@ describe('useLlmModelPluginInstalled', () => {
 
   it('should return true when the matching model plugin is installed', () => {
     mockModelProviders = [
-      { provider: 'langgenius/openai/openai' },
-      { provider: 'langgenius/anthropic/claude' },
+      { provider: 'odysseythink/openai/openai' },
+      { provider: 'odysseythink/anthropic/claude' },
     ]
     const workflowNodesMap = createWorkflowNodesMap({
       id: 'target',
       type: BlockEnum.LLM,
-      modelProvider: 'langgenius/openai/gpt-4.1',
+      modelProvider: 'odysseythink/openai/gpt-4.1',
     })
 
     const { result } = renderHook(() => useLlmModelPluginInstalled('target', workflowNodesMap))
@@ -60,12 +60,12 @@ describe('useLlmModelPluginInstalled', () => {
 
   it('should return false when the matching model plugin is not installed', () => {
     mockModelProviders = [
-      { provider: 'langgenius/anthropic/claude' },
+      { provider: 'odysseythink/anthropic/claude' },
     ]
     const workflowNodesMap = createWorkflowNodesMap({
       id: 'target',
       type: BlockEnum.LLM,
-      modelProvider: 'langgenius/openai/gpt-4.1',
+      modelProvider: 'odysseythink/openai/gpt-4.1',
     })
 
     const { result } = renderHook(() => useLlmModelPluginInstalled('target', workflowNodesMap))

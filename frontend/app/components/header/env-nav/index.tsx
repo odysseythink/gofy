@@ -11,8 +11,8 @@ const headerEnvClassName: { [k: string]: string } = {
 
 const EnvNav = () => {
   const { t } = useTranslation()
-  const { langGeniusVersionInfo } = useAppContext()
-  const showEnvTag = langGeniusVersionInfo.current_env === 'TESTING' || langGeniusVersionInfo.current_env === 'DEVELOPMENT'
+  const { odysseythinkVersionInfo } = useAppContext()
+  const showEnvTag = odysseythinkVersionInfo.current_env === 'TESTING' || odysseythinkVersionInfo.current_env === 'DEVELOPMENT'
 
   if (!showEnvTag)
     return null
@@ -20,11 +20,11 @@ const EnvNav = () => {
   return (
     <div className={`
       mr-1 flex h-[22px] items-center rounded-md border px-2 text-xs font-medium
-      ${headerEnvClassName[langGeniusVersionInfo.current_env]}
+      ${headerEnvClassName[odysseythinkVersionInfo.current_env]}
     `}
     >
       {
-        langGeniusVersionInfo.current_env === 'TESTING' && (
+        odysseythinkVersionInfo.current_env === 'TESTING' && (
           <>
             <Beaker02 className="h-3 w-3" />
             <div className="ml-1 max-[1280px]:hidden">{t('environment.testing', { ns: 'common' })}</div>
@@ -32,7 +32,7 @@ const EnvNav = () => {
         )
       }
       {
-        langGeniusVersionInfo.current_env === 'DEVELOPMENT' && (
+        odysseythinkVersionInfo.current_env === 'DEVELOPMENT' && (
           <>
             <TerminalSquare className="h-3 w-3" />
             <div className="ml-1 max-[1280px]:hidden">{t('environment.development', { ns: 'common' })}</div>

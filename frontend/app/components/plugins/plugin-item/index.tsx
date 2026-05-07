@@ -65,13 +65,13 @@ const PluginItem: FC<Props> = ({
     return [PluginSource.github, PluginSource.marketplace].includes(source) ? author : ''
   }, [source, author])
 
-  const { langGeniusVersionInfo } = useAppContext()
+  const { odysseythinkVersionInfo } = useAppContext()
 
   const isGofyVersionCompatible = useMemo(() => {
-    if (!langGeniusVersionInfo.current_version)
+    if (!odysseythinkVersionInfo.current_version)
       return true
-    return isEqualOrLaterThanVersion(langGeniusVersionInfo.current_version, declarationMeta.minimum_gofy_version ?? '0.0.0')
-  }, [declarationMeta.minimum_gofy_version, langGeniusVersionInfo.current_version])
+    return isEqualOrLaterThanVersion(odysseythinkVersionInfo.current_version, declarationMeta.minimum_gofy_version ?? '0.0.0')
+  }, [declarationMeta.minimum_gofy_version, odysseythinkVersionInfo.current_version])
 
   const isDeprecated = useMemo(() => {
     return status === 'deleted' && !!deprecated_reason

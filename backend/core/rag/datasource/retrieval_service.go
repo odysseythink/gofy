@@ -7,10 +7,10 @@ import (
 	"sync"
 
 	"golang.org/x/sync/errgroup"
-	jiebakeyword "mlib.com/gofy/server/core/rag/datasource/keyword/jieba"
-	ragentities "mlib.com/gofy/server/entities/rag"
-	retrievalenumtypes "mlib.com/gofy/server/enum_types/rag/retrieval"
-	"mlib.com/gofy/server/models"
+	jiebakeyword "github.com/odysseythink/gofy/backend/core/rag/datasource/keyword/jieba"
+	ragentities "github.com/odysseythink/gofy/backend/entities/rag"
+	retrievalenumtypes "github.com/odysseythink/gofy/backend/enum_types/rag/retrieval"
+	"github.com/odysseythink/gofy/backend/models"
 )
 
 type RetrievalService struct {

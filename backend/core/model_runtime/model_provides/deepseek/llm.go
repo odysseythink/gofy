@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"iter"
 
-	"mlib.com/gofy/server/core/model_runtime/model_provides/base"
-	"mlib.com/gofy/server/core/model_runtime/model_provides/oaicompat"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
+	"github.com/odysseythink/gofy/backend/core/model_runtime/model_provides/base"
+	"github.com/odysseythink/gofy/backend/core/model_runtime/model_provides/oaicompat"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
 )
 
 const deepseekEndpoint = "https://api.deepseek.com"
@@ -26,8 +26,10 @@ func NewDeepSeekLLM() *DeepSeekLLM {
 	}
 }
 
-func (l *DeepSeekLLM) ProviderName() string                       { return "deepseek" }
-func (l *DeepSeekLLM) ModelType() modelruntimeenumtypes.ModelType { return modelruntimeenumtypes.Model_LLM }
+func (l *DeepSeekLLM) ProviderName() string { return "deepseek" }
+func (l *DeepSeekLLM) ModelType() modelruntimeenumtypes.ModelType {
+	return modelruntimeenumtypes.Model_LLM
+}
 
 func (l *DeepSeekLLM) ValidateCredentials(model string, credentials map[string]any) {
 	result := l.Invoke(model, credentials,

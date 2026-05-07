@@ -97,7 +97,7 @@ const baseAppContextValue: AppContextValue = {
   isCurrentWorkspaceEditor: true,
   isCurrentWorkspaceDatasetOperator: false,
   mutateCurrentWorkspace: vi.fn(),
-  langGeniusVersionInfo: {
+  odysseythinkVersionInfo: {
     current_env: 'testing',
     current_version: '0.1.0',
     latest_version: '0.1.0',

@@ -1,0 +1,72 @@
+provider: bedrock
+label:
+  zh_Hans: Amazon Bedrock
+  en_US: Amazon Bedrock
+icon_small:
+  en_US: icon_s_en.svg
+icon_large:
+  en_US: icon_l_en.svg
+background: "#FFF7ED"
+help:
+  title:
+    en_US: Get your AWS credentials from IAM
+    zh_Hans: 从 AWS IAM 获取访问凭证
+  url:
+    en_US: https://console.aws.amazon.com/bedrock/
+supported_model_types:
+  - llm
+  - text-embedding
+configurate_methods:
+  - customizable-model
+model_credential_schema:
+  model:
+    label:
+      en_US: Model ID
+      zh_Hans: 模型 ID
+    placeholder:
+      en_US: Enter your Bedrock model ID (e.g. anthropic.claude-3-5-sonnet-20240620-v1:0)
+      zh_Hans: 输入 Bedrock 模型 ID（如 anthropic.claude-3-5-sonnet-20240620-v1:0）
+  credential_form_schemas:
+    - variable: aws_region
+      label:
+        zh_Hans: AWS 区域
+        en_US: AWS Region
+      type: text-input
+      required: true
+      placeholder:
+        zh_Hans: 例如 us-east-1
+        en_US: e.g. us-east-1
+    - variable: aws_access_key_id
+      label:
+        zh_Hans: Access Key ID
+        en_US: Access Key ID
+      type: secret-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入 AWS Access Key ID
+        en_US: Enter AWS Access Key ID
+    - variable: aws_secret_access_key
+      label:
+        zh_Hans: Secret Access Key
+        en_US: Secret Access Key
+      type: secret-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入 AWS Secret Access Key
+        en_US: Enter AWS Secret Access Key
+    - variable: context_size
+      label:
+        zh_Hans: 模型上下文长度
+        en_US: Model context size
+      required: false
+      type: text-input
+      default: '200000'
+    - variable: max_tokens
+      label:
+        zh_Hans: 最大 token 上限
+        en_US: Upper bound for max tokens
+      default: '4096'
+      type: text-input
+      show_on:
+        - variable: __model_type
+          value: llm

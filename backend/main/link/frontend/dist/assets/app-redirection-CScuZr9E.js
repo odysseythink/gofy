@@ -1,1 +1,0 @@
-import{A as r}from"./index-m2eZn9zC.js";const n=(o,e)=>o?e.mode===r.WORKFLOW||e.mode===r.ADVANCED_CHAT?`/app/${e.id}/workflow`:`/app/${e.id}/configuration`:`/app/${e.id}/overview`,s=(o,e,t)=>{const i=n(o,e);t(i)};export{n as a,s as g};

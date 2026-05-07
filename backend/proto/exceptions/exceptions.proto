@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package exceptions;
 
-option go_package="mlib.com/gofy/server/proto/exceptions;exceptions";
+option go_package="github.com/odysseythink/gofy/backend/proto/exceptions;exceptions";
 
 message HTTPException {
 	string code    = 1;

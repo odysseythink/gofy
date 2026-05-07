@@ -7,9 +7,9 @@ import (
 	"path"
 
 	"github.com/odysseythink/confy"
+	"github.com/odysseythink/gofy/backend/main/sandbox/global"
+	"github.com/odysseythink/gofy/backend/main/sandbox/runner"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/main/sandbox/global"
-	"mlib.com/gofy/server/main/sandbox/runner"
 )
 
 //go:embed env.sh

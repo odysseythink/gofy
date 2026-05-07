@@ -4,15 +4,15 @@ import (
 	"fmt"
 	"slices"
 
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	providermanager "github.com/odysseythink/gofy/backend/core/manageres/provider_manager"
+	modelentities "github.com/odysseythink/gofy/backend/entities/model"
+	modelruntimeentities "github.com/odysseythink/gofy/backend/entities/model_runtime"
+	servicesentities "github.com/odysseythink/gofy/backend/entities/services"
+	modelenumtypes "github.com/odysseythink/gofy/backend/enum_types/model"
+	modelruntimeenumtypes "github.com/odysseythink/gofy/backend/enum_types/model_runtime"
+	"github.com/odysseythink/gofy/backend/models"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/core/exceptions"
-	providermanager "mlib.com/gofy/server/core/manageres/provider_manager"
-	modelentities "mlib.com/gofy/server/entities/model"
-	modelruntimeentities "mlib.com/gofy/server/entities/model_runtime"
-	servicesentities "mlib.com/gofy/server/entities/services"
-	modelenumtypes "mlib.com/gofy/server/enum_types/model"
-	modelruntimeenumtypes "mlib.com/gofy/server/enum_types/model_runtime"
-	"mlib.com/gofy/server/models"
 )
 
 type ModelProvideService struct {

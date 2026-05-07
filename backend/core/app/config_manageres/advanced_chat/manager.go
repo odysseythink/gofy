@@ -4,16 +4,16 @@ import (
 	"slices"
 	"sort"
 
-	"mlib.com/gofy/server/core/app/config_manageres/base"
-	fileupload "mlib.com/gofy/server/core/app/config_manageres/features/file_upload"
-	openingstatement "mlib.com/gofy/server/core/app/config_manageres/features/opening_statement"
-	speechtotext "mlib.com/gofy/server/core/app/config_manageres/features/speech_to_text"
-	suggestedquestionsafteranswer "mlib.com/gofy/server/core/app/config_manageres/features/suggested_questions_after_answer"
-	texttospeech "mlib.com/gofy/server/core/app/config_manageres/features/text_to_speech"
-	sensitivewordavoidance "mlib.com/gofy/server/core/app/config_manageres/sensitive_word_avoidance"
-	wfvariables "mlib.com/gofy/server/core/app/config_manageres/workflow_variables"
-	appconfigentities "mlib.com/gofy/server/entities/app/config"
-	"mlib.com/gofy/server/models"
+	"github.com/odysseythink/gofy/backend/core/app/config_manageres/base"
+	fileupload "github.com/odysseythink/gofy/backend/core/app/config_manageres/features/file_upload"
+	openingstatement "github.com/odysseythink/gofy/backend/core/app/config_manageres/features/opening_statement"
+	speechtotext "github.com/odysseythink/gofy/backend/core/app/config_manageres/features/speech_to_text"
+	suggestedquestionsafteranswer "github.com/odysseythink/gofy/backend/core/app/config_manageres/features/suggested_questions_after_answer"
+	texttospeech "github.com/odysseythink/gofy/backend/core/app/config_manageres/features/text_to_speech"
+	sensitivewordavoidance "github.com/odysseythink/gofy/backend/core/app/config_manageres/sensitive_word_avoidance"
+	wfvariables "github.com/odysseythink/gofy/backend/core/app/config_manageres/workflow_variables"
+	appconfigentities "github.com/odysseythink/gofy/backend/entities/app/config"
+	"github.com/odysseythink/gofy/backend/models"
 )
 
 type AdvancedChatAppConfigManager struct {

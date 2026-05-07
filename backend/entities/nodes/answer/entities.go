@@ -1,9 +1,9 @@
 package answer
 
 import (
-	basenodesentities "mlib.com/gofy/server/entities/nodes/base"
+	basenodesentities "github.com/odysseythink/gofy/backend/entities/nodes/base"
 
-	answernodesenumtypes "mlib.com/gofy/server/enum_types/nodes/answer"
+	answernodesenumtypes "github.com/odysseythink/gofy/backend/enum_types/nodes/answer"
 )
 
 // AnswerNodeData represents answer node data

@@ -1,6 +1,6 @@
 package responser
 
-import appenumtypes "mlib.com/gofy/server/enum_types/app"
+import appenumtypes "github.com/odysseythink/gofy/backend/enum_types/app"
 
 type StreamResponser interface {
 	Event() appenumtypes.StreamEventType

@@ -1,8 +1,8 @@
 package graphengine
 
 import (
-	appenumtypes "mlib.com/gofy/server/enum_types/app"
-	"mlib.com/gofy/server/models"
+	appenumtypes "github.com/odysseythink/gofy/backend/enum_types/app"
+	"github.com/odysseythink/gofy/backend/models"
 )
 
 // GraphInitParams represents the initialization parameters for a graph.

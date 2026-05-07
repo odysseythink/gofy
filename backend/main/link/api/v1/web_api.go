@@ -10,10 +10,10 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	dbengine "github.com/odysseythink/gofy/backend/db_engine"
+	"github.com/odysseythink/gofy/backend/models"
+	"github.com/odysseythink/gofy/backend/storage"
 	uuid "github.com/satori/go.uuid"
-	dbengine "mlib.com/gofy/server/db_engine"
-	"mlib.com/gofy/server/models"
-	"mlib.com/gofy/server/storage"
 )
 
 type WebApi struct{}
@@ -248,14 +248,14 @@ func (a *WebApi) GetAppParameters(c *gin.Context) {
 	}
 
 	params := map[string]any{
-		"opening_statement":    "",
-		"suggested_questions":  []string{},
-		"speech_to_text":       map[string]any{"enabled": false},
-		"text_to_speech":       map[string]any{"enabled": false},
-		"retriever_resource":   map[string]any{"enabled": false},
-		"annotation_reply":     map[string]any{"enabled": false},
-		"file_upload":          map[string]any{"enabled": false},
-		"system_parameters":    map[string]any{},
+		"opening_statement":   "",
+		"suggested_questions": []string{},
+		"speech_to_text":      map[string]any{"enabled": false},
+		"text_to_speech":      map[string]any{"enabled": false},
+		"retriever_resource":  map[string]any{"enabled": false},
+		"annotation_reply":    map[string]any{"enabled": false},
+		"file_upload":         map[string]any{"enabled": false},
+		"system_parameters":   map[string]any{},
 	}
 
 	if config != nil {

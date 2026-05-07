@@ -7,11 +7,11 @@ import (
 	"time"
 
 	"github.com/odysseythink/confy"
+	"github.com/odysseythink/gofy/backend/cache"
+	"github.com/odysseythink/gofy/backend/core/exceptions"
+	"github.com/odysseythink/gofy/backend/models"
 	"github.com/odysseythink/mlog"
 	uuid "github.com/satori/go.uuid"
-	"mlib.com/gofy/server/cache"
-	"mlib.com/gofy/server/core/exceptions"
-	"mlib.com/gofy/server/models"
 )
 
 // TokenManager handles token generation, revocation, and retrieval.

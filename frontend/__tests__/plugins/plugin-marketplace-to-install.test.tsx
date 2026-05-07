@@ -35,19 +35,19 @@ describe('Plugin Marketplace to Install Flow', () => {
     }
 
     it('should allow marketplace plugin when all sources allowed', () => {
-      const plugin = { from: 'marketplace' as const, verification: { authorized_category: 'langgenius' } }
+      const plugin = { from: 'marketplace' as const, verification: { authorized_category: 'odysseythink' } }
       const result = pluginInstallLimit(plugin as never, systemFeaturesAll as never)
       expect(result.canInstall).toBe(true)
     })
 
     it('should allow github plugin when all sources allowed', () => {
-      const plugin = { from: 'github' as const, verification: { authorized_category: 'langgenius' } }
+      const plugin = { from: 'github' as const, verification: { authorized_category: 'odysseythink' } }
       const result = pluginInstallLimit(plugin as never, systemFeaturesAll as never)
       expect(result.canInstall).toBe(true)
     })
 
     it('should block github plugin when marketplace only', () => {
-      const plugin = { from: 'github' as const, verification: { authorized_category: 'langgenius' } }
+      const plugin = { from: 'github' as const, verification: { authorized_category: 'odysseythink' } }
       const result = pluginInstallLimit(plugin as never, systemFeaturesMarketplaceOnly as never)
       expect(result.canInstall).toBe(false)
     })
@@ -59,7 +59,7 @@ describe('Plugin Marketplace to Install Flow', () => {
     })
 
     it('should allow official plugin when official only', () => {
-      const plugin = { from: 'marketplace' as const, verification: { authorized_category: 'langgenius' } }
+      const plugin = { from: 'marketplace' as const, verification: { authorized_category: 'odysseythink' } }
       const result = pluginInstallLimit(plugin as never, systemFeaturesOfficialOnly as never)
       expect(result.canInstall).toBe(true)
     })
@@ -84,7 +84,7 @@ describe('Plugin Marketplace to Install Flow', () => {
       const results = sources.map(source => ({
         source,
         canInstall: pluginInstallLimit(
-          { from: source, verification: { authorized_category: 'langgenius' } } as never,
+          { from: source, verification: { authorized_category: 'odysseythink' } } as never,
           features as never,
         ).canInstall,
       }))

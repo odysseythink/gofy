@@ -32,7 +32,7 @@ type Props = {
 }
 
 const defaultModelConfig = {
-  provider: 'langgenius/openai/openai',
+  provider: 'odysseythink/openai/openai',
   model_id: 'gpt-3.5-turbo',
   mode: ModelModeType.unset,
   configs: {

@@ -109,7 +109,7 @@ describe('Plugin Card Rendering Integration', () => {
     category: 'tool',
     type: 'plugin',
     name: 'google-search',
-    org: 'langgenius',
+    org: 'odysseythink',
     label: { en_US: 'Google Search', zh_Hans: 'Google搜索' },
     brief: { en_US: 'Search the web using Google', zh_Hans: '使用Google搜索网页' },
     icon: 'https://example.com/icon.png',
@@ -124,7 +124,7 @@ describe('Plugin Card Rendering Integration', () => {
 
     expect(screen.getByTestId('card-icon')).toBeInTheDocument()
     expect(screen.getByTestId('title')).toHaveTextContent('Google Search')
-    expect(screen.getByTestId('org-info')).toHaveTextContent('langgenius/google-search')
+    expect(screen.getByTestId('org-info')).toHaveTextContent('odysseythink/google-search')
     expect(screen.getByTestId('description')).toHaveTextContent('Search the web using Google')
   })
 

@@ -3,8 +3,8 @@ package response
 import (
 	"encoding/json"
 
+	"github.com/odysseythink/gofy/backend/models"
 	"github.com/odysseythink/mlog"
-	"mlib.com/gofy/server/models"
 )
 
 // WorkflowRunForLogResponse 对应 workflow_run_for_log_fields

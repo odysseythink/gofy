@@ -3,12 +3,12 @@ package humaninput
 import (
 	"iter"
 
-	"mlib.com/gofy/server/core/workflow/nodes/base"
-	humaninputnodesentities "mlib.com/gofy/server/entities/nodes/human_input"
-	workflowentities "mlib.com/gofy/server/entities/workflow"
-	nodesenumtypes "mlib.com/gofy/server/enum_types/nodes"
-	workflowenumtypes "mlib.com/gofy/server/enum_types/workflow"
-	"mlib.com/gofy/server/models"
+	"github.com/odysseythink/gofy/backend/core/workflow/nodes/base"
+	humaninputnodesentities "github.com/odysseythink/gofy/backend/entities/nodes/human_input"
+	workflowentities "github.com/odysseythink/gofy/backend/entities/workflow"
+	nodesenumtypes "github.com/odysseythink/gofy/backend/enum_types/nodes"
+	workflowenumtypes "github.com/odysseythink/gofy/backend/enum_types/workflow"
+	"github.com/odysseythink/gofy/backend/models"
 )
 
 type HumanInputNode struct {
@@ -24,12 +24,12 @@ func (n *HumanInputNode) Run() (run_result *workflowentities.NodeRunResult, run_
 
 	// Build form outputs
 	outputs := map[string]any{
-		"form_content":    nodeData.FormContent,
-		"inputs":          nodeData.Inputs,
-		"user_actions":    nodeData.UserActions,
+		"form_content":     nodeData.FormContent,
+		"inputs":           nodeData.Inputs,
+		"user_actions":     nodeData.UserActions,
 		"delivery_methods": nodeData.DeliveryMethods,
-		"timeout":         nodeData.Timeout,
-		"timeout_unit":    nodeData.TimeoutUnit,
+		"timeout":          nodeData.Timeout,
+		"timeout_unit":     nodeData.TimeoutUnit,
 	}
 
 	run_result = &workflowentities.NodeRunResult{

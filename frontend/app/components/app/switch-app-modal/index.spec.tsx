@@ -34,7 +34,7 @@ vi.mock('@/context/app-context', () => ({
     userProfile: {
       email: 'user@example.com',
     },
-    langGeniusVersionInfo: {
+    odysseythinkVersionInfo: {
       current_version: '1.0.0',
     },
   }),
